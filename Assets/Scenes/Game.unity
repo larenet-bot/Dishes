@@ -658,6 +658,58 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &267288740
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 267288742}
+  - component: {fileID: 267288741}
+  m_Layer: 0
+  m_Name: Bubble
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &267288741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267288740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 729bbe5731ee12a448d46e97ad485102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bubblePrefab:
+  - {fileID: 5059608596444091316, guid: cce91c0996086ee4db7d818f1189d6c6, type: 3}
+  minSpawn: 1
+  maxSpawn: 60
+  minX: -6
+  maxX: 6
+  spawnY: -6
+  bubbleSpeed: 0.001
+--- !u!4 &267288742
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267288740}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.03, y: -6.05, z: 0}
+  m_LocalScale: {x: 1, y: 0.98333, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &516159594
 GameObject:
   m_ObjectHideFlags: 0
@@ -4018,3 +4070,4 @@ SceneRoots:
   - {fileID: 661123472}
   - {fileID: 1535544643}
   - {fileID: 638805221}
+  - {fileID: 267288742}
