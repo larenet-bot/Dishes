@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Bubble : MonoBehaviour
@@ -15,7 +16,9 @@ public class Bubble : MonoBehaviour
     [SerializeField] float maxX;
     [SerializeField] float spawnY;
 
-    [SerializeField] float bubbleSpeed = 0.001f; // Upward movement speed
+    [SerializeField] public float bubbleSpeed = 0f; // Upward movement speed
+    [SerializeField] public float bubbleXAmplitude = 0f; // Distance bubble travels in x
+    [SerializeField] public float bubbleXFrequency = 0f; // How often bubble completes its swing
 
     void Start()
     {
@@ -41,6 +44,14 @@ public class Bubble : MonoBehaviour
             BubbleMover mover = spawnedBubble.AddComponent<BubbleMover>();
             mover.SetSpeed(bubbleSpeed);
 
+            // Define x Amplitude
+            BubbleMover xAmp = spawnedBubble.AddComponent<BubbleMover>();
+            xAmp.SetXAmplitude(bubbleXAmplitude);
+
+            // Define x Frequency
+            BubbleMover xFreq = spawnedBubble.AddComponent<BubbleMover>();
+            xFreq.SetXFrequency(bubbleXFrequency);
+
             // Add click-to-pop behavior
             spawnedBubble.AddComponent<BubbleClickDestroy>();
 
@@ -63,17 +74,34 @@ public class Bubble : MonoBehaviour
 
 public class BubbleMover : MonoBehaviour
 {
-    private float speed = 0.001f;
+    private float speed = 0f;
+    private float xAmplitude = 0f;
+    private float xFrequency = 2f;
 
     public void SetSpeed(float newSpeed)
     {
         speed = newSpeed;
     }
+    public void SetXAmplitude(float newXAmplitude)
+    {
+        xAmplitude = newXAmplitude;
+    }
+    public void SetXFrequency(float newXFrequency)
+    {
+        xFrequency = newXFrequency;
+    }
+
 
     void Update()
     {
-        transform.Translate(Vector3.up * speed * Time.deltaTime);
+
+        float xMovement = Mathf.Sin(Time.time * xFrequency) * xAmplitude;
+        float yMovement = speed;
+        Vector3 bubbleDirection = new Vector3(xMovement, yMovement, 0f) * Time.deltaTime;
+        transform.Translate(bubbleDirection);
+
     }
+
 }
 
 public class BubbleClickDestroy : MonoBehaviour
