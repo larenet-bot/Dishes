@@ -12,6 +12,7 @@ public class DishCounterButton : MonoBehaviour
     [Header("UI References")]
     public TMP_Text counterText;
     public TMP_Text profitText;
+    public TMP_Text profitRateText; //test
     public Button dishButton;
     public Image dishImage;
     public Sprite[] dishStages;
@@ -24,6 +25,11 @@ public class DishCounterButton : MonoBehaviour
     [Header("Counters")]
     private int count = 0;
     private float profit = 0f;
+    public float profitRate = 0f; //test
+
+    [Header("Initialized variables for profitRate")] //test
+    private float previousProfit = 0f; //test
+    private float currentProfit = 0f; //test
 
     [Tooltip("How many dishes are added to count per clean.")]
     public int dishCountIncrement = 1;
@@ -55,6 +61,9 @@ public class DishCounterButton : MonoBehaviour
     }
     void Update()
     {
+        previousProfit = currentProfit; //test
+        currentProfit = profit; //test
+        profitRate = (profit - currentProfit)/Time.deltaTime; //test
         if (autoClickEnabled)
         {
             autoClickTimer += Time.deltaTime;
@@ -142,5 +151,6 @@ public class DishCounterButton : MonoBehaviour
     {
         counterText.text = $"Dishes: {count}";
         profitText.text = $"Profit: ${profit:0.00}";
+        profitRateText.text = $"${profitRate}/second";
     }
 }
