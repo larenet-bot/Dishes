@@ -108,6 +108,7 @@ public class BubbleClickDestroy : MonoBehaviour
 {
     void OnMouseDown()
     {
+        Object.FindFirstObjectByType<AudioManager>().Play("BubblePop1");
         Destroy(gameObject);
     }
 }
