@@ -6,7 +6,7 @@ public class MainMenu : MonoBehaviour
     public void Start() // plays main theme sound at start of game
     {
         // Updated to use FindFirstObjectByType as per the deprecation warning
-        Object.FindFirstObjectByType<AudioManager>().Play("menuMusic");
+        //Object.FindFirstObjectByType<AudioManager>().Play("menuMusic");
     }
     public void PlayGame() // opens next scene in queue 
     {

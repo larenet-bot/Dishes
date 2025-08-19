@@ -11,11 +11,30 @@ using TMPro; // add at the top
 public class SettingsMenu : MonoBehaviour
 {
     public TMP_Dropdown resolutionDropdown;
+
+    public Slider masterSlider;
+    public Slider musicSlider;
+    public Slider sfxSlider;
+
     public AudioMixer audioMixer; // Reference to the AudioMixer for volume control
     //public Dropdown resolutionDropdown; // Dropdown UI element for resolutions
     Resolution[] resolutions; // Array to hold available screen resolutions
     private void Start()
     {
+        // Load saved values or default to 0.5
+        float master = PlayerPrefs.GetFloat("Master", 0.5f);
+        float music = PlayerPrefs.GetFloat("Music", 0.5f);
+        float sfx = PlayerPrefs.GetFloat("SFX", 0.5f);
+
+        // Set sliders
+        masterSlider.value = master;
+        musicSlider.value = music;
+        sfxSlider.value = sfx;
+
+        // Apply to mixer
+        SetMasterVolume(master);
+        SetMusicVolume(music);
+        SetSFXVolume(sfx);
         resolutions = Screen.resolutions; // Get all available screen resolutions
 
         resolutionDropdown.ClearOptions(); // Clear existing options in the dropdown
@@ -44,11 +63,23 @@ public class SettingsMenu : MonoBehaviour
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
         Debug.Log("Resolution set to: " + resolution.width + " x " + resolution.height);
     }
-    public void SetVolume (float volume)
+    // For a Master slider
+    public void SetMasterVolume(float volume)
     {
-        // Set the game's volume
-       audioMixer.SetFloat("Volume", volume);
-        Debug.Log("Volume set to: " + volume);
+        audioMixer.SetFloat("Master", volume <= 0.0001f ? -80f : Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("Master", volume);
+    }
+
+    public void SetMusicVolume(float volume)
+    {
+        audioMixer.SetFloat("Music", volume <= 0.0001f ? -80f : Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("Music", volume);
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        audioMixer.SetFloat("SFX", volume <= 0.0001f ? -80f : Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("SFX", volume);
     }
 
     public void SetFullScreen(bool isFullScreen)
