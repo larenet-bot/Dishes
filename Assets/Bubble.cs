@@ -106,9 +106,21 @@ public class BubbleMover : MonoBehaviour
 
 public class BubbleClickDestroy : MonoBehaviour
 {
-    void OnMouseDown()
+    private BubblePopSound popSound;
+
+    void Start()
     {
-        //Object.FindFirstObjectByType<AudioManager>().Play("BubblePop1");
-        Destroy(gameObject);
+        popSound = GetComponent<BubblePopSound>();
+    }
+
+    void OnMouseDown() 
+    {
+        if (popSound != null && popSound.popSounds.Length > 0)
+        {
+            int randomIndex = Random.Range(0, popSound.popSounds.Length);
+            AudioSource.PlayClipAtPoint(popSound.popSounds[randomIndex], transform.position);
+        }
+
+        Destroy(gameObject, 0.1f); 
     }
 }
