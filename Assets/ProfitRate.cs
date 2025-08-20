@@ -8,7 +8,10 @@ public class ProfitRate : MonoBehaviour
     public TMP_Text profitRateText;
 
     float timer = 0f;
-    float lastUpdate = 3f;
+
+    [Header("Profit Rate Settings")]
+    [SerializeField] float updateTime = 3f; // Adjustable in Inspector
+
     float previousProfit = 0f;
     float averageProfit = 0f;
     float currentProfit = 0f;
@@ -37,9 +40,9 @@ public class ProfitRate : MonoBehaviour
         currentProfit = ScoreManager.Instance.GetTotalProfit();
         timer += Time.deltaTime;
 
-        if (timer >= lastUpdate)
+        if (timer >= updateTime)
         {
-            averageProfit = (currentProfit - previousProfit) / lastUpdate;
+            averageProfit = (currentProfit - previousProfit) / updateTime;
             previousProfit = currentProfit;
             timer = 0f;
             if (averageProfit < 0)
@@ -47,7 +50,7 @@ public class ProfitRate : MonoBehaviour
                 averageProfit = 0f; // Ensure average profit doesn't go negative
             }
         }
-        Debug.Log("Average profit in the last 3 seconds " + averageProfit);
+        Debug.Log("Average profit in the last " + updateTime + " seconds " + averageProfit);
         UpdateUI();
     }
     private void UpdateUI()

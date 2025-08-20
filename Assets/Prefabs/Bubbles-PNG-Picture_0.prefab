@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 705536930956185883}
   - component: {fileID: 1251630609513123631}
   - component: {fileID: 4999486689057822933}
+  - component: {fileID: -3786094087693503840}
   m_Layer: 0
   m_Name: Bubbles-PNG-Picture_0
   m_TagString: Untagged
@@ -272,3 +273,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6cb462f0c790a3a46a5ac72ef0446494, type: 3}
   - {fileID: 8300000, guid: bcf750729ab8e6c428fad4a6062a168a, type: 3}
   - {fileID: 8300000, guid: 3264d7e84a5712a43be9b8ac105f9e20, type: 3}
+--- !u!114 &-3786094087693503840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5059608596444091316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fbb8b23998d0c04981fbb0e5d2b63f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseReward: 40
+  multiplier: 10

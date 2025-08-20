@@ -48,7 +48,7 @@ public class Bubble : MonoBehaviour
             mover.SetXFrequency(bubbleXFrequency);
 
             // Add click-to-pop behavior
-            spawnedBubble.AddComponent<BubbleClickDestroy>();
+            //spawnedBubble.AddComponent<BubbleClickDestroy>();
 
             // Destroy automatically after 5 seconds for cleanup
             Destroy(spawnedBubble, 5f);
@@ -98,29 +98,30 @@ public class BubbleMover : MonoBehaviour
 
 }
 
-public class BubbleClickDestroy : MonoBehaviour
-{
-    private BubblePopSound popSound;
-    float averageProfit = 0f; // Average profit per second, used for bubble rewards
-    float reward = 0f; // Reward amount based on average profit
+//public class BubbleClickDestroy : MonoBehaviour
+//{
+//    private BubblePopSound popSound;
+//    float averageProfit = 0f; // Average profit per second, used for bubble rewards
+//    float reward = 0f; // Reward amount based on average profit
+//    [SerializeField] private float baseReward = 20f; // Base reward amount
 
-    void Start()
-    {
-        popSound = GetComponent<BubblePopSound>();
-    }
+//    void Start()
+//    {
+//        popSound = GetComponent<BubblePopSound>();
+//    }
 
-    void OnMouseDown() 
-    {
-        averageProfit = ProfitRate.Instance.AverageProfit; // Get the average profit from ProfitRate
-        reward = 20 + (averageProfit * 10); // Calculate reward based on average profit with a base of 20
-        ScoreManager.Instance.AddBubbleReward(reward);
+//    void OnMouseDown() 
+//    {
+//        averageProfit = ProfitRate.Instance.AverageProfit; // Get the average profit from ProfitRate
+//        reward = baseReward + (averageProfit * 10); // Calculate reward based on average profit with a base of 20
+//        ScoreManager.Instance.AddBubbleReward(reward);
 
-        if (popSound != null && popSound.popSounds.Length > 0)
-        {
-            int randomIndex = Random.Range(0, popSound.popSounds.Length);
-            AudioSource.PlayClipAtPoint(popSound.popSounds[randomIndex], transform.position);
-        }
+//        if (popSound != null && popSound.popSounds.Length > 0)
+//        {
+//            int randomIndex = Random.Range(0, popSound.popSounds.Length);
+//            AudioSource.PlayClipAtPoint(popSound.popSounds[randomIndex], transform.position);
+//        }
 
-        Destroy(gameObject, 0.1f); 
-    }
-}
+//        Destroy(gameObject, 0.1f); 
+//    }
+//}
