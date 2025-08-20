@@ -19,7 +19,6 @@ public class Bubble : MonoBehaviour
     [SerializeField] public float bubbleSpeed = 0f; // Upward movement speed
     [SerializeField] public float bubbleXAmplitude = 0f; // Distance bubble travels in x
     [SerializeField] public float bubbleXFrequency = 0f; // How often bubble completes its swing
-
     void Start()
     {
         StartCoroutine(SpawnBubble());
@@ -44,13 +43,9 @@ public class Bubble : MonoBehaviour
             BubbleMover mover = spawnedBubble.AddComponent<BubbleMover>();
             mover.SetSpeed(bubbleSpeed);
 
-            // Define x Amplitude
-            BubbleMover xAmp = spawnedBubble.AddComponent<BubbleMover>();
-            xAmp.SetXAmplitude(bubbleXAmplitude);
+            mover.SetXAmplitude(bubbleXAmplitude);
 
-            // Define x Frequency
-            BubbleMover xFreq = spawnedBubble.AddComponent<BubbleMover>();
-            xFreq.SetXFrequency(bubbleXFrequency);
+            mover.SetXFrequency(bubbleXFrequency);
 
             // Add click-to-pop behavior
             spawnedBubble.AddComponent<BubbleClickDestroy>();
@@ -76,7 +71,7 @@ public class BubbleMover : MonoBehaviour
 {
     private float speed = 0f;
     private float xAmplitude = 0f;
-    private float xFrequency = 2f;
+    private float xFrequency = 0f;
 
     public void SetSpeed(float newSpeed)
     {
@@ -94,7 +89,6 @@ public class BubbleMover : MonoBehaviour
 
     void Update()
     {
-
         float xMovement = Mathf.Sin(Time.time * xFrequency) * xAmplitude;
         float yMovement = speed;
         Vector3 bubbleDirection = new Vector3(xMovement, yMovement, 0f) * Time.deltaTime;
@@ -107,6 +101,8 @@ public class BubbleMover : MonoBehaviour
 public class BubbleClickDestroy : MonoBehaviour
 {
     private BubblePopSound popSound;
+    float averageProfit = 0f; // Average profit per second, used for bubble rewards
+    float reward = 0f; // Reward amount based on average profit
 
     void Start()
     {
@@ -115,6 +111,10 @@ public class BubbleClickDestroy : MonoBehaviour
 
     void OnMouseDown() 
     {
+        averageProfit = ProfitRate.Instance.AverageProfit; // Get the average profit from ProfitRate
+        reward = 20 + (averageProfit * 10); // Calculate reward based on average profit with a base of 20
+        ScoreManager.Instance.AddBubbleReward(reward);
+
         if (popSound != null && popSound.popSounds.Length > 0)
         {
             int randomIndex = Random.Range(0, popSound.popSounds.Length);

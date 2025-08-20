@@ -2565,7 +2565,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   counterText: {fileID: 75080918}
   profitText: {fileID: 701191846}
-  profitRateText: {fileID: 1153729985}
   dishButton: {fileID: 1749801440}
   dishImage: {fileID: 1749801441}
   dishStages:
@@ -2573,7 +2572,7 @@ MonoBehaviour:
   - {fileID: 5435608014139152121, guid: fbb0023e6711c4c40b1d234b212f53fc, type: 3}
   - {fileID: 2373183141213679312, guid: c935b66786caeda4a8ac46a716414ff2, type: 3}
   clicksRequired: 3
-  profitRate: 0
+  profit: 0
   dishCountIncrement: 1
   profitPerDish: 1
   modifierButton2: {fileID: 650966330}
@@ -5670,6 +5669,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2077325599}
   m_CullTransparentMesh: 1
+--- !u!1 &2135626333
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2135626335}
+  - component: {fileID: 2135626334}
+  m_Layer: 0
+  m_Name: ProfitRate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2135626334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135626333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 878b9ddec326bc94488c895a9b852ed4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profitRateText: {fileID: 1153729985}
+--- !u!4 &2135626335
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135626333}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.3751137, y: -0.13797548, z: -2.5146596}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2136721070
 GameObject:
   m_ObjectHideFlags: 0
@@ -5804,3 +5848,4 @@ SceneRoots:
   - {fileID: 267288742}
   - {fileID: 2024755775}
   - {fileID: 2072260066}
+  - {fileID: 2135626335}

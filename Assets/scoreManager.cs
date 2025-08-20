@@ -63,6 +63,12 @@ public class ScoreManager : MonoBehaviour
         UpdateUI();
     }
 
+    public void AddBubbleReward(float reward)
+    {
+        totalProfit += reward;
+        UpdateUI();
+    }
+
     public int GetTotalDishes() => totalDishes;
     public float GetTotalProfit() => totalProfit;
     public float GetProfitPerDish() => profitPerDish;
