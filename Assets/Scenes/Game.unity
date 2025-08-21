@@ -5699,7 +5699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   profitRateText: {fileID: 1153729985}
-  updateTime: 3
+  updateTime: 1
 --- !u!4 &2135626335
 Transform:
   m_ObjectHideFlags: 0
