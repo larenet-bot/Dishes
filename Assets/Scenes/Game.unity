@@ -1321,9 +1321,9 @@ MonoBehaviour:
   minX: -6
   maxX: 5
   spawnY: -6
-  bubbleSpeed: 1
+  bubbleSpeed: 2.3
   bubbleXAmplitude: 1
-  bubbleXFrequency: 1
+  bubbleXFrequency: 2
 --- !u!4 &267288742
 Transform:
   m_ObjectHideFlags: 0
