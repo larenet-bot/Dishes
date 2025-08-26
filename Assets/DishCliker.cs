@@ -7,6 +7,7 @@ public class DishClicker : MonoBehaviour
 
     [Header("References")]
     public DishVisual dishVisual;
+    public SudsOnClick sudsOnClick; // Assign in Inspector or via code
 
     [Header("Auto Clicker")]
     public bool autoClickEnabled = false;
@@ -36,6 +37,15 @@ public class DishClicker : MonoBehaviour
     public void OnDishClicked()
     {
         ProcessClick();
+
+        // Burst bubbles at mouse position
+        if (sudsOnClick != null)
+        {
+            Vector3 mousePos = Input.mousePosition;
+            mousePos.z = Camera.main.nearClipPlane;
+            Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+            sudsOnClick.BurstBubbles(worldPos);
+        }
     }
 
     private void ProcessClick()

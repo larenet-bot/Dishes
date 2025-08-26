@@ -14,8 +14,8 @@ PlayerSettings:
   accelerometerFrequency: 60
   companyName: DefaultCompany
   productName: Incremental_Dishes
-  defaultCursor: {fileID: 2800000, guid: db93b544fc4966e4cb08fb95ab9efdba, type: 3}
-  cursorHotspot: {x: 0, y: 0}
+  defaultCursor: {fileID: 2800000, guid: f64f46058eee2664e9d1acb1c468d747, type: 3}
+  cursorHotspot: {x: 10, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 1
