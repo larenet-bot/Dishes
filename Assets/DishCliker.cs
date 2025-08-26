@@ -13,12 +13,22 @@ public class DishClicker : MonoBehaviour
     public bool autoClickEnabled = false;
     public float autoClickInterval = 1f;
 
+    [Header("Squeak Sounds")]
+    public AudioClip[] squeakClips; // Assign 3 .wav files from Sounds folder in Inspector
+    private AudioSource audioSource;
+    private int lastSqueakIndex = -1; // Track last played sound
+
     private int currentClicks = 0;
     private float autoClickTimer = 0f;
 
     private void Start()
     {
         dishVisual?.SetStage(0);
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     private void Update()
@@ -48,6 +58,26 @@ public class DishClicker : MonoBehaviour
         }
     }
 
+    private void PlayRandomSqueak()
+    {
+        if (squeakClips != null && squeakClips.Length > 1)
+        {
+            int index;
+            do
+            {
+                index = Random.Range(0, squeakClips.Length);
+            } while (index == lastSqueakIndex);
+
+            lastSqueakIndex = index;
+            audioSource.PlayOneShot(squeakClips[index]);
+        }
+        else if (squeakClips != null && squeakClips.Length == 1)
+        {
+            audioSource.PlayOneShot(squeakClips[0]);
+            lastSqueakIndex = 0;
+        }
+    }
+
     private void ProcessClick()
     {
         currentClicks++;
@@ -59,6 +89,9 @@ public class DishClicker : MonoBehaviour
             dishVisual?.SetStage(0);
 
             ScoreManager.Instance.AddScore(); // Use upgraded profitPerDish from ScoreManager
+
+            // Play random squeak sound only when clicksRequired is reached
+            PlayRandomSqueak();
         }
     }
 
