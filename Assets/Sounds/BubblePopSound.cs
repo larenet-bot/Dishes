@@ -15,7 +15,7 @@ public class BubblePopSound : MonoBehaviour
         if (popSounds.Length > 0)
         {
             int randomIndex = Random.Range(0, popSounds.Length);
-            audioSource.PlayOneShot(popSounds[randomIndex]);
+            audioSource.PlayOneShot(popSounds[randomIndex], 2f); // Boost volume scale
         }
     }
 }
