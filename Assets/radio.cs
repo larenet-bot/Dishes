@@ -20,14 +20,14 @@ public class Radio : MonoBehaviour
 
     void Update()
     {
-        // If nothing is playing, wait a bit, then auto-play next song
+        // If nothing is playing, wait a bit, then play next song
         if (!audioSource.isPlaying && !IsInvoking(nameof(PlayNextSong)))
         {
             Invoke(nameof(PlayNextSong), PauseBetweenSongs);
         }
     }
 
-    //  CLICK DETECTION (requires a 2D collider on the object)
+    //  CLICK DETECTION 
     void OnMouseDown()
     {
         SwitchSong();
@@ -65,7 +65,7 @@ public class Radio : MonoBehaviour
 
         int randomIndex = Random.Range(0, RadioSongs.Length);
 
-        // ensure it’s not the same song twice in a row
+        // ensure  not the same song twice 
         while (RadioSongs.Length > 1 && RadioSongs[randomIndex] == lastSong)
         {
             randomIndex = Random.Range(0, RadioSongs.Length);

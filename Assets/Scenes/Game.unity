@@ -912,12 +912,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RadioSongs:
-  - {fileID: 8300000, guid: 22f23c263b2e0d94b8a1b93e1d240c32, type: 3}
+  - {fileID: 8300000, guid: 8306b1c254d2b814f8ae5a64b3d592c5, type: 3}
   - {fileID: 8300000, guid: 179051b5dbeafbe4ca33464cca918563, type: 3}
   - {fileID: 8300000, guid: 7f9572d21982af248a60e3a30d8b284e, type: 3}
   - {fileID: 8300000, guid: 9f0f0e249e628ba458c0108da6d070ec, type: 3}
   - {fileID: 8300000, guid: 4e3a769a384c79c4a976dadf29a6ddc5, type: 3}
-  StaticSound: {fileID: 8300000, guid: 62869dfc1cb5359448b370b7e8a76589, type: 3}
+  - {fileID: 8300000, guid: 22f23c263b2e0d94b8a1b93e1d240c32, type: 3}
+  StaticSound: {fileID: 8300000, guid: 2e01c988e6a731b488b870f1bb72de7e, type: 3}
   PauseBetweenSongs: 3
 --- !u!82 &160032169
 AudioSource:
