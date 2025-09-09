@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -31,6 +32,18 @@ public class ScoreManager : MonoBehaviour
     public float profitPerDishStep = 1f;     // Each upgrade adds this amount
     private DishSpawner dishSpawner;
 
+    [Header("Employees")]
+    public List<Employee> employees = new List<Employee>();
+
+    public float employeeProfitInterval = 1f; // seconds
+    private float employeeProfitTimer = 0f;
+
+    [Header("Teenager Employee UI")]
+    public TMP_Text teenagerNameText;
+    public TMP_Text teenagerCostText;
+    public TMP_Text teenagerCountText;
+    public Button teenagerBuyButton;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -44,6 +57,25 @@ public class ScoreManager : MonoBehaviour
         // Replace the deprecated FindObjectOfType with FindFirstObjectByType  
         dishSpawner = Object.FindFirstObjectByType<DishSpawner>();
         UpdateUI();
+
+        // Example: Add some employee types
+        employees.Add(new Employee("Teenager", 50f, 2f));
+        employees.Add(new Employee("Elephant", 200f, 10f));
+        employees.Add(new Employee("Firefighter", 1000f, 50f));
+
+        if (teenagerBuyButton != null)
+            teenagerBuyButton.onClick.AddListener(() => BuyEmployee(0)); // 0 = Teenager index
+    }
+
+    void Update()
+    {
+        // Handle employee profit generation
+        employeeProfitTimer += Time.deltaTime;
+        if (employeeProfitTimer >= employeeProfitInterval)
+        {
+            employeeProfitTimer = 0f;
+            AddEmployeeProfits();
+        }
     }
 
     public void AddScore()
@@ -88,6 +120,17 @@ public class ScoreManager : MonoBehaviour
 
         if (profitUpgradeButton != null)
             profitUpgradeButton.interactable = totalProfit >= profitUpgradeCost;
+
+        // Update Teenager employee UI
+        var teenager = employees[0]; // Assuming Teenager is first
+        if (teenagerNameText != null)
+            teenagerNameText.text = teenager.name;
+        if (teenagerCostText != null)
+            teenagerCostText.text = $"Cost: ${teenager.cost:0.00}";
+        if (teenagerCountText != null)
+            teenagerCountText.text = $"Owned: {teenager.count}";
+        if (teenagerBuyButton != null)
+            teenagerBuyButton.interactable = totalProfit >= teenager.cost;
     }
 
     // Upgrade dish count
@@ -131,4 +174,59 @@ public class ScoreManager : MonoBehaviour
     // Button handlers
     public void OnModifierCountClicked() => TryUpgradeDishCount();
     public void OnModifierProfitClicked() => TryUpgradeProfit();
+
+    [System.Serializable]
+    public class Employee
+    {
+        public string name;
+        public float cost;
+        public float profitPerInterval;
+        public int count;
+
+        public Employee(string name, float cost, float profitPerInterval)
+        {
+            this.name = name;
+            this.cost = cost;
+            this.profitPerInterval = profitPerInterval;
+            this.count = 0;
+        }
+
+        public float GetTotalProfitPerSecond()
+        {
+            return profitPerInterval * count;
+        }
+    }
+
+    public void BuyEmployee(int employeeIndex)
+    {
+        if (employeeIndex < 0 || employeeIndex >= employees.Count)
+            return;
+
+        Employee emp = employees[employeeIndex];
+        if (totalProfit >= emp.cost)
+        {
+            SubtractProfit(emp.cost);
+            emp.count++;
+            emp.cost *= 1.15f; // Increase cost for next purchase
+            UpdateUI();
+            Debug.Log($"Bought {emp.name}, now have {emp.count}");
+        }
+        else
+        {
+            Debug.Log($"Not enough profit to buy {emp.name} (need ${emp.cost:0.00})");
+        }
+    }
+
+    private void AddEmployeeProfits()
+    {
+        float totalEmployeeProfit = 0f;
+        foreach (var emp in employees)
+            totalEmployeeProfit += emp.GetTotalProfitPerSecond();
+
+        if (totalEmployeeProfit > 0f)
+        {
+            totalProfit += totalEmployeeProfit;
+            UpdateUI();
+        }
+    }
 }
