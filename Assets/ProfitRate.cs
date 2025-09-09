@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -15,6 +16,8 @@ public class ProfitRate : MonoBehaviour
     float previousProfit = 0f;
     float averageProfit = 0f;
     float currentProfit = 0f;
+
+    //private Coroutine tempDisplayCoroutine;
 
     void Awake()
     {
@@ -42,21 +45,39 @@ public class ProfitRate : MonoBehaviour
 
         if (timer >= updateTime)
         {
-            averageProfit = (currentProfit - previousProfit) / updateTime;
+            // Add back any purchases made during this interval
+            float adjustedCurrentProfit = currentProfit + ScoreManager.PendingProfitAdjustment;
+            averageProfit = (adjustedCurrentProfit - previousProfit) / updateTime;
             previousProfit = currentProfit;
             timer = 0f;
+            ScoreManager.PendingProfitAdjustment = 0f; // Reset after use
             if (averageProfit < 0)
             {
                 averageProfit = 0f; // Ensure average profit doesn't go negative
             }
         }
-        Debug.Log("Average profit in the last " + updateTime + " seconds " + averageProfit);
         UpdateUI();
     }
+
     private void UpdateUI()
     {
         profitRateText.text = $"${averageProfit:0.00/second}";
     }
 
     public float AverageProfit => averageProfit;
+
+  
+    //public void ShowTemporaryProfitRate(float value, float duration = 1f)
+    //{
+    //    if (tempDisplayCoroutine != null)
+    //        StopCoroutine(tempDisplayCoroutine);
+    //    tempDisplayCoroutine = StartCoroutine(ShowTempProfitRateCoroutine(value, duration));
+    //}
+
+    private IEnumerator ShowTempProfitRateCoroutine(float value, float duration)
+    {
+        profitRateText.text = $"${value:0.00/second}";
+        yield return new WaitForSeconds(duration);
+        UpdateUI();
+    }
 }

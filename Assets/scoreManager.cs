@@ -38,11 +38,11 @@ public class ScoreManager : MonoBehaviour
     public float employeeProfitInterval = 1f; // seconds
     private float employeeProfitTimer = 0f;
 
-    [Header("Teenager Employee UI")]
-    public TMP_Text teenagerNameText;
-    public TMP_Text teenagerCostText;
-    public TMP_Text teenagerCountText;
-    public Button teenagerBuyButton;
+    [Header("Intern Employee UI")]
+    public TMP_Text internNameText;
+    public TMP_Text internCostText;
+    public TMP_Text internCountText;
+    public Button internBuyButton;
 
     void Awake()
     {
@@ -56,15 +56,17 @@ public class ScoreManager : MonoBehaviour
     {
         // Replace the deprecated FindObjectOfType with FindFirstObjectByType  
         dishSpawner = Object.FindFirstObjectByType<DishSpawner>();
-        UpdateUI();
 
-        // Example: Add some employee types
-        employees.Add(new Employee("Teenager", 50f, 2f));
+        // Add employee types first
+        employees.Add(new Employee("Intern", 50f, 2f));
         employees.Add(new Employee("Elephant", 200f, 10f));
         employees.Add(new Employee("Firefighter", 1000f, 50f));
 
-        if (teenagerBuyButton != null)
-            teenagerBuyButton.onClick.AddListener(() => BuyEmployee(0)); // 0 = Teenager index
+        if (internBuyButton != null)
+            internBuyButton.onClick.AddListener(() => BuyEmployee(0)); // 0 = Intern index
+
+        // Now update the UI
+        UpdateUI();
     }
 
     void Update()
@@ -95,6 +97,14 @@ public class ScoreManager : MonoBehaviour
         UpdateUI();
     }
 
+    public void SubtractProfit(float amount, bool isPurchase = false)
+    {
+        totalProfit = Mathf.Max(0, totalProfit - amount);
+        if (isPurchase)
+            PendingProfitAdjustment += amount;
+        UpdateUI();
+    }
+
     public void AddBubbleReward(float reward)
     {
         totalProfit += reward;
@@ -121,16 +131,16 @@ public class ScoreManager : MonoBehaviour
         if (profitUpgradeButton != null)
             profitUpgradeButton.interactable = totalProfit >= profitUpgradeCost;
 
-        // Update Teenager employee UI
-        var teenager = employees[0]; // Assuming Teenager is first
-        if (teenagerNameText != null)
-            teenagerNameText.text = teenager.name;
-        if (teenagerCostText != null)
-            teenagerCostText.text = $"Cost: ${teenager.cost:0.00}";
-        if (teenagerCountText != null)
-            teenagerCountText.text = $"Owned: {teenager.count}";
-        if (teenagerBuyButton != null)
-            teenagerBuyButton.interactable = totalProfit >= teenager.cost;
+        // Update Intern employee UI
+        var intern = employees[0]; // Assuming Intern is first
+        if (internNameText != null)
+            internNameText.text = intern.name;
+        if (internCostText != null)
+            internCostText.text = $"Cost: ${intern.cost:0.00}";
+        if (internCountText != null)
+            internCountText.text = $"Owned: {intern.count}";
+        if (internBuyButton != null)
+            internBuyButton.interactable = totalProfit >= intern.cost;
     }
 
     // Upgrade dish count
@@ -138,7 +148,7 @@ public class ScoreManager : MonoBehaviour
     {
         if (totalProfit >= countUpgradeCost)
         {
-            SubtractProfit(countUpgradeCost);
+            SubtractProfit(countUpgradeCost, true);
             dishCountIncrement += dishCountIncrementStep;
             countUpgradeCost += upgradeCostIncrease;
 
@@ -157,7 +167,7 @@ public class ScoreManager : MonoBehaviour
     {
         if (totalProfit >= profitUpgradeCost)
         {
-            SubtractProfit(profitUpgradeCost);
+            SubtractProfit(profitUpgradeCost, true);
             profitPerDish += profitPerDishStep;
             profitUpgradeCost += upgradeCostIncrease;
 
@@ -197,6 +207,8 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    public static float PendingProfitAdjustment = 0f;
+
     public void BuyEmployee(int employeeIndex)
     {
         if (employeeIndex < 0 || employeeIndex >= employees.Count)
@@ -205,8 +217,10 @@ public class ScoreManager : MonoBehaviour
         Employee emp = employees[employeeIndex];
         if (totalProfit >= emp.cost)
         {
-            SubtractProfit(emp.cost);
+            SubtractProfit(emp.cost, true);
             emp.count++;
+            // Track the purchase for profit rate adjustment
+            PendingProfitAdjustment += emp.cost;
             emp.cost *= 1.15f; // Increase cost for next purchase
             UpdateUI();
             Debug.Log($"Bought {emp.name}, now have {emp.count}");
@@ -221,10 +235,15 @@ public class ScoreManager : MonoBehaviour
     {
         float totalEmployeeProfit = 0f;
         foreach (var emp in employees)
-            totalEmployeeProfit += emp.GetTotalProfitPerSecond();
+        {
+            float empProfit = emp.GetTotalProfitPerSecond();
+            Debug.Log($"[ScoreManager] Employee: {emp.name}, Count: {emp.count}, ProfitPerInterval: {emp.profitPerInterval}, ProfitThisInterval: {empProfit}");
+            totalEmployeeProfit += empProfit;
+        }
 
         if (totalEmployeeProfit > 0f)
         {
+            Debug.Log($"[ScoreManager] Adding total employee profit: {totalEmployeeProfit} to totalProfit: {totalProfit}");
             totalProfit += totalEmployeeProfit;
             UpdateUI();
         }

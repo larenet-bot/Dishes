@@ -289,8 +289,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -105.74, y: 96.727}
-  m_SizeDelta: {x: 46.46, y: 62.095}
+  m_AnchoredPosition: {x: -134.33, y: -37.1}
+  m_SizeDelta: {x: 268.66, y: 74.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &37086849
 MonoBehaviour:
@@ -840,7 +840,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -483.30005, y: -62.552994}
+  m_AnchoredPosition: {x: -483.3001, y: -62.55298}
   m_SizeDelta: {x: -638.67, y: 772.98}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &135602621
@@ -2114,7 +2114,7 @@ GameObject:
   - component: {fileID: 504425516}
   - component: {fileID: 504425515}
   m_Layer: 5
-  m_Name: TeenagerEmployeeUI
+  m_Name: InternEmployeeUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3019,50 +3019,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &648872540
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 648872542}
-  - component: {fileID: 648872541}
-  m_Layer: 0
-  m_Name: Employee
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &648872541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 648872540}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 695d7fe7996130340b105f7ddc5f8c2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &648872542
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 648872540}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.89437896, y: 0.22886153, z: 6.0498805}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &650966328
 GameObject:
   m_ObjectHideFlags: 0
@@ -3306,8 +3262,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -952, y: 194}
-  m_SizeDelta: {x: 139.65, y: 48.49}
+  m_AnchoredPosition: {x: -941.23, y: 194}
+  m_SizeDelta: {x: 207.6, y: 48.49}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &701191846
 MonoBehaviour:
@@ -4237,8 +4193,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -205.76999, y: 96.73}
-  m_SizeDelta: {x: -411.55, y: -193.45}
+  m_AnchoredPosition: {x: -134.32993, y: 63.890026}
+  m_SizeDelta: {x: -268.67, y: -127.77}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1135278468
 MonoBehaviour:
@@ -4260,7 +4216,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Teenager -
+  m_text: Intern -
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4373,8 +4329,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -952.18, y: 157.3}
-  m_SizeDelta: {x: 118.33, y: 37.87}
+  m_AnchoredPosition: {x: -941.68005, y: 157.3}
+  m_SizeDelta: {x: 205.62, y: 37.87}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1153729985
 MonoBehaviour:
@@ -5206,10 +5162,10 @@ MonoBehaviour:
   profitPerDishStep: 1
   employees: []
   employeeProfitInterval: 1
-  teenagerNameText: {fileID: 1135278468}
-  teenagerCostText: {fileID: 1673178347}
-  teenagerCountText: {fileID: 37086849}
-  teenagerBuyButton: {fileID: 859566641}
+  internNameText: {fileID: 1135278468}
+  internCostText: {fileID: 1673178347}
+  internCountText: {fileID: 37086849}
+  internBuyButton: {fileID: 859566641}
 --- !u!4 &1535544643
 Transform:
   m_ObjectHideFlags: 0
@@ -5470,8 +5426,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 232.23, y: 96.732}
-  m_SizeDelta: {x: 72.89, y: 62.105}
+  m_AnchoredPosition: {x: 134.34, y: 63.89}
+  m_SizeDelta: {x: 268.66, y: 42.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1673178347
 MonoBehaviour:
@@ -7014,4 +6970,3 @@ SceneRoots:
   - {fileID: 2135626335}
   - {fileID: 454462228}
   - {fileID: 471143837042943270}
-  - {fileID: 648872542}
