@@ -95,13 +95,8 @@ public class ScoreManager : MonoBehaviour
         NotifyProfitChanged();
     }
 
-    // Add profit from bubbles or other sources
-    public void AddBubbleReward(float reward)
-    {
-        totalProfit += reward;
-        UpdateUI();
-        NotifyProfitChanged();
-    }
+    public static float PendingProfitAdjustment = 0f;
+    public static float PendingRewardAdjustment = 0f;
 
     // Subtract profit when purchasing
     public void SubtractProfit(float amount, bool isPurchase = false)
@@ -109,6 +104,14 @@ public class ScoreManager : MonoBehaviour
         totalProfit = Mathf.Max(0, totalProfit - amount);
         if (isPurchase)
             PendingProfitAdjustment += amount;
+        UpdateUI();
+    }
+
+    // Add profit from bubbles or other sources
+    public void AddBubbleReward(float reward)
+    {
+        totalProfit += reward;
+        PendingRewardAdjustment += reward;
         UpdateUI();
     }
 
@@ -202,8 +205,6 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    public static float PendingProfitAdjustment = 0f;
-
     public void BuyEmployee(int employeeIndex)
     {
         if (employeeIndex < 0 || employeeIndex >= employees.Count)
@@ -212,10 +213,8 @@ public class ScoreManager : MonoBehaviour
         Employee emp = employees[employeeIndex];
         if (totalProfit >= emp.cost)
         {
-            SubtractProfit(emp.cost, true);
+            SubtractProfit(emp.cost, true); // This already adds to PendingProfitAdjustment
             emp.count++;
-            // Track the purchase for profit rate adjustment
-            PendingProfitAdjustment += emp.cost;
             emp.cost *= 1.15f; // Increase cost for next purchase
             UpdateUI();
             Debug.Log($"Bought {emp.name}, now have {emp.count}");
@@ -232,13 +231,13 @@ public class ScoreManager : MonoBehaviour
         foreach (var emp in employees)
         {
             float empProfit = emp.GetTotalProfitPerSecond();
-            Debug.Log($"[ScoreManager] Employee: {emp.name}, Count: {emp.count}, ProfitPerInterval: {emp.profitPerInterval}, ProfitThisInterval: {empProfit}");
+            //Debug.Log($"[ScoreManager] Employee: {emp.name}, Count: {emp.count}, ProfitPerInterval: {emp.profitPerInterval}, ProfitThisInterval: {empProfit}");
             totalEmployeeProfit += empProfit;
         }
 
         if (totalEmployeeProfit > 0f)
         {
-            Debug.Log($"[ScoreManager] Adding total employee profit: {totalEmployeeProfit} to totalProfit: {totalProfit}");
+            //Debug.Log($"[ScoreManager] Adding total employee profit: {totalEmployeeProfit} to totalProfit: {totalProfit}");
             totalProfit += totalEmployeeProfit;
             UpdateUI();
         }

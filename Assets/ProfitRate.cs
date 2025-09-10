@@ -11,7 +11,7 @@ public class ProfitRate : MonoBehaviour
     float timer = 0f;
 
     [Header("Profit Rate Settings")]
-    [SerializeField] float updateTime = 3f; // Adjustable in Inspector
+    [SerializeField] float updateTime = 1f; // Adjustable in Inspector
 
     float previousProfit = 0f;
     float averageProfit = 0f;
@@ -45,16 +45,21 @@ public class ProfitRate : MonoBehaviour
 
         if (timer >= updateTime)
         {
-            // Add back any purchases made during this interval
-            float adjustedCurrentProfit = currentProfit + ScoreManager.PendingProfitAdjustment;
-            averageProfit = (adjustedCurrentProfit - previousProfit) / updateTime;
+            Debug.Log($"Average Profit pre calculation: {averageProfit}");
+            Debug.Log($"Current Profit pre calculation: {currentProfit}"); 
+            Debug.Log($"Previous Profit pre calculation: {previousProfit}");
+            averageProfit = ((currentProfit - previousProfit)
+                             + ScoreManager.PendingProfitAdjustment
+                             - ScoreManager.PendingRewardAdjustment) / updateTime;
+            Debug.Log($"Average Profit post calculation: {averageProfit}");
             previousProfit = currentProfit;
+            Debug.Log($"Previous Profit post calculation: {previousProfit}");
+
             timer = 0f;
-            ScoreManager.PendingProfitAdjustment = 0f; // Reset after use
+            ScoreManager.PendingProfitAdjustment = 0f;
+            ScoreManager.PendingRewardAdjustment = 0f;
             if (averageProfit < 0)
-            {
-                averageProfit = 0f; // Ensure average profit doesn't go negative
-            }
+                averageProfit = 0f;
         }
         UpdateUI();
     }
