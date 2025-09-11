@@ -40,6 +40,23 @@ public class ScoreManager : MonoBehaviour
     public TMP_Text internCountText;
     public Button internBuyButton;
 
+    [Header("Elephant Employee UI")]
+    public TMP_Text elephantNameText;
+    public TMP_Text elephantCostText;
+    public TMP_Text elephantCountText;
+    public Button elephantBuyButton;
+
+    [Header("Firefighter Employee UI")]
+    public TMP_Text firefighterNameText;
+    public TMP_Text firefighterCostText;
+    public TMP_Text firefighterCountText;
+    public Button firefighterBuyButton;
+
+    [Header("Employees Menu")]
+    public GameObject employeesPanel;
+    public GameObject employeesMenuButton;
+    public GameObject closeButton;         // the X button
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -59,9 +76,21 @@ public class ScoreManager : MonoBehaviour
         employees.Add(new Employee("Firefighter", 1000f, 50f));
 
         if (internBuyButton != null)
-            internBuyButton.onClick.AddListener(() => BuyEmployee(0)); // 0 = Intern index
+            internBuyButton.onClick.AddListener(() => BuyEmployee(0)); // Intern
 
-        // Now update the UI
+        if (elephantBuyButton != null)
+            elephantBuyButton.onClick.AddListener(() => BuyEmployee(1)); // Elephant
+
+        if (firefighterBuyButton != null)
+            firefighterBuyButton.onClick.AddListener(() => BuyEmployee(2)); // Firefighter
+
+        //if (employeesMenuButton != null && employeesPanel != null)
+        //{
+        //    employeesMenuButton.onClick.AddListener(ToggleEmployeesPanel);
+        //    employeesPanel.SetActive(false); // Hide by default
+        //}
+
+
         UpdateUI();
     }
 
@@ -129,8 +158,8 @@ public class ScoreManager : MonoBehaviour
         if (profitText != null)
             profitText.text = $"Profit: ${totalProfit:0.00}";
 
-        // Update Intern employee UI
-        var intern = employees[0]; // Assuming Intern is first
+        // Intern UI
+        var intern = employees[0];
         if (internNameText != null)
             internNameText.text = intern.name;
         if (internCostText != null)
@@ -139,6 +168,28 @@ public class ScoreManager : MonoBehaviour
             internCountText.text = $"Owned: {intern.count}";
         if (internBuyButton != null)
             internBuyButton.interactable = totalProfit >= intern.cost;
+
+        // Elephant UI
+        var elephant = employees[1];
+        if (elephantNameText != null)
+            elephantNameText.text = elephant.name;
+        if (elephantCostText != null)
+            elephantCostText.text = $"Cost: ${elephant.cost:0.00}";
+        if (elephantCountText != null)
+            elephantCountText.text = $"Owned: {elephant.count}";
+        if (elephantBuyButton != null)
+            elephantBuyButton.interactable = totalProfit >= elephant.cost;
+
+        // Firefighter UI
+        var firefighter = employees[2];
+        if (firefighterNameText != null)
+            firefighterNameText.text = firefighter.name;
+        if (firefighterCostText != null)
+            firefighterCostText.text = $"Cost: ${firefighter.cost:0.00}";
+        if (firefighterCountText != null)
+            firefighterCountText.text = $"Owned: {firefighter.count}";
+        if (firefighterBuyButton != null)
+            firefighterBuyButton.interactable = totalProfit >= firefighter.cost;
     }
 
     // Upgrade dish count
@@ -213,7 +264,7 @@ public class ScoreManager : MonoBehaviour
         Employee emp = employees[employeeIndex];
         if (totalProfit >= emp.cost)
         {
-            SubtractProfit(emp.cost, true); // This already adds to PendingProfitAdjustment
+            SubtractProfit(emp.cost, true); // This adds to PendingProfitAdjustment
             emp.count++;
             emp.cost *= 1.15f; // Increase cost for next purchase
             UpdateUI();
@@ -241,5 +292,25 @@ public class ScoreManager : MonoBehaviour
             totalProfit += totalEmployeeProfit;
             UpdateUI();
         }
+    }
+
+    public void ToggleEmployeesPanel()
+    {
+        if (employeesPanel != null)
+            employeesPanel.SetActive(!employeesPanel.activeSelf);
+    }
+    public void OpenEmployeesPanel()
+    {
+        employeesPanel.SetActive(true);
+        employeesMenuButton.SetActive(false);
+        closeButton.SetActive(true); // show X
+    }
+
+    // Called by the X button
+    public void CloseEmployeesPanel()
+    {
+        employeesPanel.SetActive(false);
+        employeesMenuButton.SetActive(true);
+        closeButton.SetActive(false); // hide X
     }
 }
