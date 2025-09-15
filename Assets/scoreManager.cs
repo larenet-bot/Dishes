@@ -28,35 +28,6 @@ public class ScoreManager : MonoBehaviour
     public float profitPerDishStep = 1f;     // Each upgrade adds this amount
     private DishSpawner dishSpawner;
 
-    [Header("Employees")]
-    public List<Employee> employees = new List<Employee>();
-
-    public float employeeProfitInterval = 1f; // seconds
-    private float employeeProfitTimer = 0f;
-
-    [Header("Intern Employee UI")]
-    public TMP_Text internNameText;
-    public TMP_Text internCostText;
-    public TMP_Text internCountText;
-    public Button internBuyButton;
-
-    [Header("Elephant Employee UI")]
-    public TMP_Text elephantNameText;
-    public TMP_Text elephantCostText;
-    public TMP_Text elephantCountText;
-    public Button elephantBuyButton;
-
-    [Header("Firetruck Employee UI")]
-    public TMP_Text firetruckNameText;
-    public TMP_Text firetruckCostText;
-    public TMP_Text firetruckCountText;
-    public Button firetruckBuyButton;
-
-    [Header("Employees Menu")]
-    public GameObject employeesPanel;
-    public GameObject employeesMenuButton;
-    public GameObject closeButton;         // the X button
-
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -70,39 +41,7 @@ public class ScoreManager : MonoBehaviour
         // Replace the deprecated FindObjectOfType with FindFirstObjectByType  
         dishSpawner = Object.FindFirstObjectByType<DishSpawner>();
 
-        // Add employee types first
-        employees.Add(new Employee("Intern", 50f, 2f));
-        employees.Add(new Employee("Elephant", 200f, 10f));
-        employees.Add(new Employee("Firetruck", 1000f, 50f));
-
-        if (internBuyButton != null)
-            internBuyButton.onClick.AddListener(() => BuyEmployee(0)); // Intern
-
-        if (elephantBuyButton != null)
-            elephantBuyButton.onClick.AddListener(() => BuyEmployee(1)); // Elephant
-
-        if (firetruckBuyButton != null)
-            firetruckBuyButton.onClick.AddListener(() => BuyEmployee(2)); // Firefighter
-
-        //if (employeesMenuButton != null && employeesPanel != null)
-        //{
-        //    employeesMenuButton.onClick.AddListener(ToggleEmployeesPanel);
-        //    employeesPanel.SetActive(false); // Hide by default
-        //}
-
-
         UpdateUI();
-    }
-
-    void Update()
-    {
-        // Handle employee profit generation
-        employeeProfitTimer += Time.deltaTime;
-        if (employeeProfitTimer >= employeeProfitInterval)
-        {
-            employeeProfitTimer = 0f;
-            AddEmployeeProfits();
-        }
     }
 
     // Event for profit changes
@@ -113,7 +52,16 @@ public class ScoreManager : MonoBehaviour
     {
         OnProfitChanged?.Invoke();
     }
-
+    // central adder used by EmployeeManager and others
+    public void AddProfit(float amount)
+    {
+        if (amount == 0f) return;
+        totalProfit += amount;
+        // If you want to track sources, you can add a separate pending bucket here
+        // PendingRewardAdjustment += amount; // optional
+        UpdateUI();
+        NotifyProfitChanged();
+    }
     // Add score from clicks or actions
     public void AddScore()
     {
@@ -134,6 +82,7 @@ public class ScoreManager : MonoBehaviour
         if (isPurchase)
             PendingProfitAdjustment += amount;
         UpdateUI();
+        NotifyProfitChanged();
     }
 
     // Add profit from bubbles or other sources
@@ -142,6 +91,7 @@ public class ScoreManager : MonoBehaviour
         totalProfit += reward;
         PendingRewardAdjustment += reward;
         UpdateUI();
+        NotifyProfitChanged();
     }
 
     // --- Getters ---
@@ -157,39 +107,6 @@ public class ScoreManager : MonoBehaviour
 
         if (profitText != null)
             profitText.text = $"Profit: ${totalProfit:0.00}";
-
-        // Intern UI
-        var intern = employees[0];
-        if (internNameText != null)
-            internNameText.text = intern.name;
-        if (internCostText != null)
-            internCostText.text = $"Cost: ${intern.cost:0.00}";
-        if (internCountText != null)
-            internCountText.text = $"Owned: {intern.count}";
-        if (internBuyButton != null)
-            internBuyButton.interactable = totalProfit >= intern.cost;
-
-        // Elephant UI
-        var elephant = employees[1];
-        if (elephantNameText != null)
-            elephantNameText.text = elephant.name;
-        if (elephantCostText != null)
-            elephantCostText.text = $"Cost: ${elephant.cost:0.00}";
-        if (elephantCountText != null)
-            elephantCountText.text = $"Owned: {elephant.count}";
-        if (elephantBuyButton != null)
-            elephantBuyButton.interactable = totalProfit >= elephant.cost;
-
-        // Firetruck UI
-        var firetruck = employees[2];
-        if (firetruckNameText != null)
-            firetruckNameText.text = firetruck.name;
-        if (firetruckCostText != null)
-            firetruckCostText.text = $"Cost: ${firetruck.cost:0.00}";
-        if (firetruckCountText != null)
-            firetruckCountText.text = $"Owned: {firetruck.count}";
-        if (firetruckBuyButton != null)
-            firetruckBuyButton.interactable = totalProfit >= firetruck.cost;
     }
 
     // Upgrade dish count
@@ -234,83 +151,4 @@ public class ScoreManager : MonoBehaviour
     public void OnModifierCountClicked() => TryUpgradeDishCount();
     public void OnModifierProfitClicked() => TryUpgradeProfit();
 
-    [System.Serializable]
-    public class Employee
-    {
-        public string name;
-        public float cost;
-        public float profitPerInterval;
-        public int count;
-
-        public Employee(string name, float cost, float profitPerInterval)
-        {
-            this.name = name;
-            this.cost = cost;
-            this.profitPerInterval = profitPerInterval;
-            this.count = 0;
-        }
-
-        public float GetTotalProfitPerSecond()
-        {
-            return profitPerInterval * count;
-        }
-    }
-
-    public void BuyEmployee(int employeeIndex)
-    {
-        if (employeeIndex < 0 || employeeIndex >= employees.Count)
-            return;
-
-        Employee emp = employees[employeeIndex];
-        if (totalProfit >= emp.cost)
-        {
-            SubtractProfit(emp.cost, true); // This adds to PendingProfitAdjustment
-            emp.count++;
-            emp.cost *= 1.15f; // Increase cost for next purchase
-            UpdateUI();
-            Debug.Log($"Bought {emp.name}, now have {emp.count}");
-        }
-        else
-        {
-            Debug.Log($"Not enough profit to buy {emp.name} (need ${emp.cost:0.00})");
-        }
-    }
-
-    private void AddEmployeeProfits()
-    {
-        float totalEmployeeProfit = 0f;
-        foreach (var emp in employees)
-        {
-            float empProfit = emp.GetTotalProfitPerSecond();
-            //Debug.Log($"[ScoreManager] Employee: {emp.name}, Count: {emp.count}, ProfitPerInterval: {emp.profitPerInterval}, ProfitThisInterval: {empProfit}");
-            totalEmployeeProfit += empProfit;
-        }
-
-        if (totalEmployeeProfit > 0f)
-        {
-            //Debug.Log($"[ScoreManager] Adding total employee profit: {totalEmployeeProfit} to totalProfit: {totalProfit}");
-            totalProfit += totalEmployeeProfit;
-            UpdateUI();
-        }
-    }
-
-    public void ToggleEmployeesPanel()
-    {
-        if (employeesPanel != null)
-            employeesPanel.SetActive(!employeesPanel.activeSelf);
-    }
-    public void OpenEmployeesPanel()
-    {
-        employeesPanel.SetActive(true);
-        employeesMenuButton.SetActive(false);
-        closeButton.SetActive(true); // show X
-    }
-
-    // Called by the X button
-    public void CloseEmployeesPanel()
-    {
-        employeesPanel.SetActive(false);
-        employeesMenuButton.SetActive(true);
-        closeButton.SetActive(false); // hide X
-    }
 }

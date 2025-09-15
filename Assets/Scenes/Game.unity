@@ -3539,8 +3539,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1535544642}
-        m_TargetAssemblyTypeName: ScoreManager, Assembly-CSharp
+      - m_Target: {fileID: 1151283105}
+        m_TargetAssemblyTypeName: EmployeeManager, Assembly-CSharp
         m_MethodName: CloseEmployeesPanel
         m_Mode: 1
         m_Arguments:
@@ -3870,8 +3870,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1535544642}
-        m_TargetAssemblyTypeName: ScoreManager, Assembly-CSharp
+      - m_Target: {fileID: 1151283105}
+        m_TargetAssemblyTypeName: EmployeeManager, Assembly-CSharp
         m_MethodName: OpenEmployeesPanel
         m_Mode: 1
         m_Arguments:
@@ -5561,6 +5561,68 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1138159936}
   m_CullTransparentMesh: 1
+--- !u!1 &1151283104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1151283106}
+  - component: {fileID: 1151283105}
+  m_Layer: 0
+  m_Name: EmployeeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1151283105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151283104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b62099ac9fe3a44a8db66ba773d7ee7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreManager: {fileID: 1535544642}
+  employees: []
+  employeeProfitInterval: 1
+  internNameText: {fileID: 1135278468}
+  internCostText: {fileID: 1673178347}
+  internCountText: {fileID: 37086849}
+  internBuyButton: {fileID: 859566641}
+  elephantNameText: {fileID: 1876001549}
+  elephantCostText: {fileID: 1809228597}
+  elephantCountText: {fileID: 1001263820}
+  elephantBuyButton: {fileID: 1805588721}
+  firetruckNameText: {fileID: 886869652}
+  firetruckCostText: {fileID: 1351690566}
+  firetruckCountText: {fileID: 1053776508}
+  firetruckBuyButton: {fileID: 645160702}
+  employeesPanel: {fileID: 135602619}
+  employeesMenuButton: {fileID: 751712707}
+  closeButton: {fileID: 658681995}
+--- !u!4 &1151283106
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151283104}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.7708625, y: -0.15434834, z: -0.019376142}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1153729983
 GameObject:
   m_ObjectHideFlags: 0
@@ -6700,23 +6762,6 @@ MonoBehaviour:
   upgradeCostIncrease: 10
   dishCountIncrementStep: 1
   profitPerDishStep: 1
-  employees: []
-  employeeProfitInterval: 1
-  internNameText: {fileID: 1135278468}
-  internCostText: {fileID: 1673178347}
-  internCountText: {fileID: 37086849}
-  internBuyButton: {fileID: 859566641}
-  elephantNameText: {fileID: 1876001549}
-  elephantCostText: {fileID: 1809228597}
-  elephantCountText: {fileID: 1001263820}
-  elephantBuyButton: {fileID: 1805588721}
-  firetruckNameText: {fileID: 886869652}
-  firetruckCostText: {fileID: 1351690566}
-  firetruckCountText: {fileID: 1053776508}
-  firetruckBuyButton: {fileID: 645160702}
-  employeesPanel: {fileID: 135602619}
-  employeesMenuButton: {fileID: 751712707}
-  closeButton: {fileID: 658681995}
 --- !u!4 &1535544643
 Transform:
   m_ObjectHideFlags: 0
@@ -9129,3 +9174,4 @@ SceneRoots:
   - {fileID: 454462228}
   - {fileID: 471143837042943270}
   - {fileID: 1813873886}
+  - {fileID: 1151283106}
