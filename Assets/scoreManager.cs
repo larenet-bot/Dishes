@@ -46,11 +46,11 @@ public class ScoreManager : MonoBehaviour
     public TMP_Text elephantCountText;
     public Button elephantBuyButton;
 
-    [Header("Firefighter Employee UI")]
-    public TMP_Text firefighterNameText;
-    public TMP_Text firefighterCostText;
-    public TMP_Text firefighterCountText;
-    public Button firefighterBuyButton;
+    [Header("Firetruck Employee UI")]
+    public TMP_Text firetruckNameText;
+    public TMP_Text firetruckCostText;
+    public TMP_Text firetruckCountText;
+    public Button firetruckBuyButton;
 
     [Header("Employees Menu")]
     public GameObject employeesPanel;
@@ -73,7 +73,7 @@ public class ScoreManager : MonoBehaviour
         // Add employee types first
         employees.Add(new Employee("Intern", 50f, 2f));
         employees.Add(new Employee("Elephant", 200f, 10f));
-        employees.Add(new Employee("Firefighter", 1000f, 50f));
+        employees.Add(new Employee("Firetruck", 1000f, 50f));
 
         if (internBuyButton != null)
             internBuyButton.onClick.AddListener(() => BuyEmployee(0)); // Intern
@@ -81,8 +81,8 @@ public class ScoreManager : MonoBehaviour
         if (elephantBuyButton != null)
             elephantBuyButton.onClick.AddListener(() => BuyEmployee(1)); // Elephant
 
-        if (firefighterBuyButton != null)
-            firefighterBuyButton.onClick.AddListener(() => BuyEmployee(2)); // Firefighter
+        if (firetruckBuyButton != null)
+            firetruckBuyButton.onClick.AddListener(() => BuyEmployee(2)); // Firefighter
 
         //if (employeesMenuButton != null && employeesPanel != null)
         //{
@@ -180,16 +180,16 @@ public class ScoreManager : MonoBehaviour
         if (elephantBuyButton != null)
             elephantBuyButton.interactable = totalProfit >= elephant.cost;
 
-        // Firefighter UI
-        var firefighter = employees[2];
-        if (firefighterNameText != null)
-            firefighterNameText.text = firefighter.name;
-        if (firefighterCostText != null)
-            firefighterCostText.text = $"Cost: ${firefighter.cost:0.00}";
-        if (firefighterCountText != null)
-            firefighterCountText.text = $"Owned: {firefighter.count}";
-        if (firefighterBuyButton != null)
-            firefighterBuyButton.interactable = totalProfit >= firefighter.cost;
+        // Firetruck UI
+        var firetruck = employees[2];
+        if (firetruckNameText != null)
+            firetruckNameText.text = firetruck.name;
+        if (firetruckCostText != null)
+            firetruckCostText.text = $"Cost: ${firetruck.cost:0.00}";
+        if (firetruckCountText != null)
+            firetruckCountText.text = $"Owned: {firetruck.count}";
+        if (firetruckBuyButton != null)
+            firetruckBuyButton.interactable = totalProfit >= firetruck.cost;
     }
 
     // Upgrade dish count
