@@ -1,8 +1,21 @@
+using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+using System;
 
 public class ShopManager : MonoBehaviour
 {
     public static ShopManager Instance { get; private set; }
+
+    [Header("Shop Settings")]
+    public Transform shopContainer;        // UI parent for all shop items
+    public GameObject shopItemPrefab;      // prefab for each item row
+
+    [Header("Shop Inventory")]
+    public List<ShopItemData> availableItems = new List<ShopItemData>(); // assigned in Inspector
+
+    private List<ShopItemUI> shopUIItems = new List<ShopItemUI>();
 
     private void Awake()
     {
@@ -12,28 +25,49 @@ public class ShopManager : MonoBehaviour
             Instance = this;
     }
 
-    // Called by ShopItem button
-    public void TryPurchase(ShopItem item)
+    private void Start()
     {
-        if (ScoreManager.Instance.GetTotalProfit() >= item.cost)
-        {
-            ScoreManager.Instance.SubtractProfit(item.cost);
-            item.ApplyPurchase();
+        BuildShopUI();
+    }
 
-            Debug.Log($"{item.itemName} purchased for {item.cost}!");
-        }
-        else
+    private void BuildShopUI()
+    {
+        foreach (Transform child in shopContainer)
+            Destroy(child.gameObject);
+
+        foreach (ShopItemData data in availableItems)
         {
-            Debug.Log($"Not enough profit to buy {item.itemName} (need {item.cost}).");
+            GameObject newItem = Instantiate(shopItemPrefab, shopContainer);
+            ShopItemUI ui = newItem.GetComponent<ShopItemUI>();
+            ui.Initialize(data);
+            shopUIItems.Add(ui);
         }
     }
 
-    // Optional: refresh all items when shop opens
-    public ShopItem[] shopItems; // assign all items in Inspector
-
-    public void OpenShop()
+    public bool TryPurchase(ShopItemData data)
     {
-        foreach (ShopItem item in shopItems)
-            item.RefreshButton();
+        if (ScoreManager.Instance.GetTotalProfit() >= data.cost)
+        {
+            ScoreManager.Instance.SubtractProfit(data.cost);
+            data.ApplyEffect();
+
+            data.cost += data.costIncrease; // scale price
+            data.timesPurchased++;
+
+            // refresh UI
+            foreach (var item in shopUIItems)
+                item.Refresh();
+
+            Debug.Log($"{data.itemName} purchased for ${data.cost - data.costIncrease}");
+            return true;
+        }
+
+        Debug.Log($"Not enough profit to buy {data.itemName}.");
+        return false;
+    }
+
+    internal void TryPurchase(ShopItem shopItem)
+    {
+        throw new NotImplementedException();
     }
 }

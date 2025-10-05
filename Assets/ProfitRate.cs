@@ -45,15 +45,15 @@ public class ProfitRate : MonoBehaviour
 
         if (timer >= updateTime)
         {
-            Debug.Log($"Average Profit pre calculation: {averageProfit}");
-            Debug.Log($"Current Profit pre calculation: {currentProfit}"); 
-            Debug.Log($"Previous Profit pre calculation: {previousProfit}");
+            //Debug.Log($"Average Profit pre calculation: {averageProfit}");
+            //Debug.Log($"Current Profit pre calculation: {currentProfit}"); 
+            //Debug.Log($"Previous Profit pre calculation: {previousProfit}");
             averageProfit = ((currentProfit - previousProfit)
                              + ScoreManager.PendingProfitAdjustment
                              - ScoreManager.PendingRewardAdjustment) / updateTime;
-            Debug.Log($"Average Profit post calculation: {averageProfit}");
+            //Debug.Log($"Average Profit post calculation: {averageProfit}");
             previousProfit = currentProfit;
-            Debug.Log($"Previous Profit post calculation: {previousProfit}");
+           // Debug.Log($"Previous Profit post calculation: {previousProfit}");
 
             timer = 0f;
             ScoreManager.PendingProfitAdjustment = 0f;

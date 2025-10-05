@@ -1,26 +1,27 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Manages sprite visuals for a dish based on cleaning stage.
-/// </summary>
 public class DishVisual : MonoBehaviour
 {
     [Tooltip("Image component to update visuals")]
     public Image dishImage;
 
-    [Tooltip("Sprites representing each stage (Dirty → Soapy → Clean)")]
-    public Sprite[] stageSprites;
+    private DishData currentDishData;
 
-    /// <summary>
-    /// Set the visual sprite based on the current stage index.
-    /// </summary>
+    public void SetDish(DishData data)
+    {
+        currentDishData = data;
+        SetStage(0);
+    }
+
     public void SetStage(int stage)
     {
-        if (stageSprites != null && stageSprites.Length > 0 && dishImage != null)
+        if (currentDishData != null && dishImage != null && currentDishData.stageSprites.Length > 0)
         {
-            int clamped = Mathf.Clamp(stage, 0, stageSprites.Length - 1);
-            dishImage.sprite = stageSprites[clamped];
+            int clamped = Mathf.Clamp(stage, 0, currentDishData.stageSprites.Length - 1);
+            dishImage.sprite = currentDishData.stageSprites[clamped];
         }
     }
+
+    public DishData GetDishData() => currentDishData;
 }

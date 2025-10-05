@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9bdb99a9c8c51d408242a5ec1b693ed, type: 3}
+  m_Name: Bowl
+  m_EditorClassIdentifier: 
+  dishPrefab: {fileID: 0}
+  stageSprites:
+  - {fileID: 8979297078104028494, guid: 4a51ca4d51e6d1e47bbd6fc448252461, type: 3}
+  - {fileID: 6863436470346006442, guid: 54a3958fefc46364fb2592b6793a0e8a, type: 3}
+  - {fileID: 3812891114187243292, guid: 255cdb1138cdb3c4093feac691b01820, type: 3}
+  profitPerDish: 7
+  unlockAtDishCount: 3
+  spawnChance: 0.5

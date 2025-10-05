@@ -3159,8 +3159,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bdfea0f689b5d8448116cacd87c9841, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dishPrefabs: []
-  dishParent: {fileID: 0}
+  allDishes:
+  - {fileID: 11400000, guid: 3cd3f8425b8689d42809be67103a7277, type: 2}
+  - {fileID: 11400000, guid: 62e32899bafb2c04fadba261be7cd053, type: 2}
+  spawnChanceMultiplier: 1
 --- !u!4 &638805221
 Transform:
   m_ObjectHideFlags: 0
@@ -5965,10 +5967,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dishImage: {fileID: 1749801441}
-  stageSprites:
-  - {fileID: 5370487811579151587, guid: fbefbcf905be1864a883533098e0e007, type: 3}
-  - {fileID: -3690930136437393494, guid: 2f29a7aeb0e1f154a9e7982ddd44a022, type: 3}
-  - {fileID: -187032287160791366, guid: 2aa320f6cec1b9f48b9ad34a83867db5, type: 3}
 --- !u!114 &1318212022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5984,8 +5982,6 @@ MonoBehaviour:
   clicksRequired: 3
   dishVisual: {fileID: 1318212021}
   sudsOnClick: {fileID: 454462227}
-  autoClickEnabled: 0
-  autoClickInterval: 1
   squeakClips:
   - {fileID: 8300000, guid: 0b685584f2be8064a926a624bdfdbc49, type: 3}
   - {fileID: 8300000, guid: 524b8215f50bb0b49ab3e5eb03cb9841, type: 3}
@@ -6762,6 +6758,11 @@ MonoBehaviour:
   upgradeCostIncrease: 10
   dishCountIncrementStep: 1
   profitPerDishStep: 1
+  dishSpawner: {fileID: 638805220}
+  activeDish: {fileID: 1318212022}
+  allDishes:
+  - {fileID: 11400000, guid: 3cd3f8425b8689d42809be67103a7277, type: 2}
+  - {fileID: 11400000, guid: 62e32899bafb2c04fadba261be7cd053, type: 2}
 --- !u!4 &1535544643
 Transform:
   m_ObjectHideFlags: 0
@@ -8079,7 +8080,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b2b60d78eb0f143ae380ea3b7b42b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopItems: []
+  shopContainer: {fileID: 49523011}
+  shopItemPrefab: {fileID: 2022601744759499218, guid: a1c64369562759345b8722160f9efa0b, type: 3}
+  availableItems:
+  - {fileID: 11400000, guid: 72a1a77f1d6c3e84fae6d36ca76aa6b7, type: 2}
 --- !u!4 &1813873886
 Transform:
   m_ObjectHideFlags: 0

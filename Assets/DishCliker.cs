@@ -7,78 +7,25 @@ public class DishClicker : MonoBehaviour
 
     [Header("References")]
     public DishVisual dishVisual;
-    public SudsOnClick sudsOnClick; // Assign in Inspector or via code
+    public SudsOnClick sudsOnClick; // bubbles
 
-    [Header("Auto Clicker")]
-    public bool autoClickEnabled = false;
-    public float autoClickInterval = 1f;
-
-    [Header("Squeak Sounds")]
-    public AudioClip[] squeakClips; // Assign 3 .wav files from Sounds folder in Inspector
+    [Header("Sounds")]
+    public AudioClip[] squeakClips;
     private AudioSource audioSource;
-    private int lastSqueakIndex = -1; // Track last played sound
+    private int lastSqueakIndex = -1;
 
     private int currentClicks = 0;
-    private float autoClickTimer = 0f;
+    private DishData currentDish;
 
-    private void Start()
+    public void Init(DishData data)
     {
-        dishVisual?.SetStage(0);
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
-    }
-
-    private void Update()
-    {
-        if (autoClickEnabled)
-        {
-            autoClickTimer += Time.deltaTime;
-            if (autoClickTimer >= autoClickInterval)
-            {
-                autoClickTimer = 0f;
-                ProcessClick();
-            }
-        }
+        currentDish = data;
+        currentClicks = 0;
+        dishVisual.SetDish(currentDish);
+        dishVisual.SetStage(0);
     }
 
     public void OnDishClicked()
-    {
-        ProcessClick();
-
-        // Burst bubbles at mouse position
-        if (sudsOnClick != null)
-        {
-            Vector3 mousePos = Input.mousePosition;
-            mousePos.z = Camera.main.nearClipPlane;
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-            sudsOnClick.BurstBubbles(worldPos);
-        }
-    }
-
-    private void PlayRandomSqueak()
-    {
-        if (squeakClips != null && squeakClips.Length > 1)
-        {
-            int index;
-            do
-            {
-                index = Random.Range(0, squeakClips.Length);
-            } while (index == lastSqueakIndex);
-
-            lastSqueakIndex = index;
-            audioSource.PlayOneShot(squeakClips[index]);
-        }
-        else if (squeakClips != null && squeakClips.Length == 1)
-        {
-            audioSource.PlayOneShot(squeakClips[0]);
-            lastSqueakIndex = 0;
-        }
-    }
-
-    private void ProcessClick()
     {
         currentClicks++;
         dishVisual?.SetStage(currentClicks);
@@ -88,12 +35,37 @@ public class DishClicker : MonoBehaviour
             currentClicks = 0;
             dishVisual?.SetStage(0);
 
-            ScoreManager.Instance.AddScore(); // Use upgraded profitPerDish from ScoreManager
+            //  Tell ScoreManager this dish is complete
+            ScoreManager.Instance.OnDishCleaned(currentDish);
 
-            // Play random squeak sound only when clicksRequired is reached
             PlayRandomSqueak();
+        }
+
+        // Bubble burst visuals
+        if (sudsOnClick != null)
+        {
+            Vector3 mousePos = Input.mousePosition;
+            mousePos.z = Camera.main.nearClipPlane;
+            Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+            sudsOnClick.BurstBubbles(worldPos);
         }
     }
 
-    public void EnableAutoClick() => autoClickEnabled = true;
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
+    }
+
+    private void PlayRandomSqueak()
+    {
+        if (squeakClips == null || squeakClips.Length == 0) return;
+
+        int index;
+        do { index = Random.Range(0, squeakClips.Length); }
+        while (index == lastSqueakIndex && squeakClips.Length > 1);
+
+        lastSqueakIndex = index;
+        audioSource.PlayOneShot(squeakClips[index]);
+    }
 }

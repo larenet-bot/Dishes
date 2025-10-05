@@ -3,33 +3,62 @@ using UnityEngine;
 
 public class DishSpawner : MonoBehaviour
 {
-    public List<GameObject> dishPrefabs; // Add different dish prefabs here
-    public Transform dishParent;
+    [Header("Dish Pool")]
+    public List<DishData> allDishes;
 
-    private int dishesSpawned = 1;
+    [Header("Spawn Chance Multiplier")]
+    [Range(0.01f, 10f)]
+    public float spawnChanceMultiplier = 1f;
 
-    public void TrySpawnDish(int totalDishes)
+    private List<DishData> unlockedDishes = new List<DishData>();
+
+    private void Start()
     {
-        if (totalDishes / 100 >= dishesSpawned && dishesSpawned < dishPrefabs.Count)
+        // Ensure the first dish is always unlocked
+        if (allDishes.Count > 0 && !unlockedDishes.Contains(allDishes[0]))
         {
-            SpawnDish(dishesSpawned); // Index matches milestone
-            dishesSpawned++;
+            unlockedDishes.Add(allDishes[0]);
+            Debug.Log($" Starting with unlocked dish: {allDishes[0].name}");
         }
     }
 
-    private void SpawnDish(int index)
+    public DishData GetRandomDish(int totalDishesCleaned)
     {
-        GameObject prefabToSpawn = dishPrefabs[index];
-        GameObject newDish = Instantiate(prefabToSpawn, dishParent);
-
-        RectTransform rt = newDish.GetComponent<RectTransform>();
-        if (rt != null)
+        // Unlock new dishes when threshold is reached
+        foreach (var dish in allDishes)
         {
-            rt.localScale = Vector3.one;
-            rt.anchoredPosition = Vector2.zero;
+            if (totalDishesCleaned >= dish.unlockAtDishCount && !unlockedDishes.Contains(dish))
+            {
+                unlockedDishes.Add(dish);
+                Debug.Log($" Unlocked new dish: {dish.name} (Threshold: {dish.unlockAtDishCount})");
+            }
         }
 
-        Debug.Log($"Dish {index + 1} spawned!");
+        if (unlockedDishes.Count == 0)
+        {
+            Debug.LogWarning(" No unlocked dishes found!");
+            return null;
+        }
+
+        // Weighted random selection based on spawnChance and multiplier
+        float totalChance = 0f;
+        foreach (var dish in unlockedDishes)
+            totalChance += dish.spawnChance * spawnChanceMultiplier;
+
+        float roll = Random.value * totalChance;
+        float cumulative = 0f;
+
+        foreach (var dish in unlockedDishes)
+        {
+            cumulative += dish.spawnChance * spawnChanceMultiplier;
+            if (roll <= cumulative)
+            {
+                Debug.Log($" Spawned dish: {dish.name} (Roll={roll:F2})");
+                return dish;
+            }
+        }
+
+        // fallback (shouldn’t happen, but safe)
+        return unlockedDishes[unlockedDishes.Count - 1];
     }
 }
-

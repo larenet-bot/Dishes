@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -11,10 +10,6 @@ public class ScoreManager : MonoBehaviour
     public TMP_Text dishCountText;
     public TMP_Text profitText;
 
-    [Header("Tracking")]
-    private int totalDishes = 0;
-    private float totalProfit = 0f;
-
     [Header("Dish Modifiers")]
     public int dishCountIncrement = 1;
     public float profitPerDish = 1f;
@@ -22,13 +17,30 @@ public class ScoreManager : MonoBehaviour
     [Header("Upgrade Settings")]
     public float countUpgradeCost = 10f;
     public float profitUpgradeCost = 25f;
+    public float upgradeCostIncrease = 10f;
+    public int dishCountIncrementStep = 1;
+    public float profitPerDishStep = 1f;
 
-    public float upgradeCostIncrease = 10f; // Flat cost increase per upgrade
-    public int dishCountIncrementStep = 1;   // Each upgrade adds this amount
-    public float profitPerDishStep = 1f;     // Each upgrade adds this amount
-    private DishSpawner dishSpawner;
+    [Header("Game References")]
+    public DishSpawner dishSpawner;
+    public DishClicker activeDish;
 
-    void Awake()
+    [Header("Tracking")]
+    private int totalDishes = 0;
+    private float totalProfit = 0f;
+
+    [Header("Dish Types")]
+    public List<DishData> allDishes;
+    private DishData currentDish;
+
+    public static float PendingProfitAdjustment = 0f;
+    public static float PendingRewardAdjustment = 0f;
+
+    // Profit change event
+    public delegate void ProfitChanged();
+    public static event ProfitChanged OnProfitChanged;
+
+    private void Awake()
     {
         if (Instance != null && Instance != this)
             Destroy(gameObject);
@@ -36,56 +48,58 @@ public class ScoreManager : MonoBehaviour
             Instance = this;
     }
 
-    void Start()
+    private void Start()
     {
-        // Replace the deprecated FindObjectOfType with FindFirstObjectByType  
-        dishSpawner = Object.FindFirstObjectByType<DishSpawner>();
+        // Start with first dish if available
+        if (allDishes.Count > 0)
+        {
+            currentDish = allDishes[0];
+            activeDish.Init(currentDish);
+        }
 
         UpdateUI();
     }
 
-    // Event for profit changes
-    public delegate void ProfitChanged();
-    public static event ProfitChanged OnProfitChanged;
+    private void NotifyProfitChanged() => OnProfitChanged?.Invoke();
 
-    private void NotifyProfitChanged()
+    // Called when a dish is clicked enough times to complete it
+    public void OnDishCleaned(DishData finishedDish)
     {
-        OnProfitChanged?.Invoke();
+        totalDishes += dishCountIncrement;
+        totalProfit += dishCountIncrement * finishedDish.profitPerDish;
+
+        NotifyProfitChanged();
+        UpdateUI();
+
+        // Pick next dish using DishSpawner
+        if (dishSpawner != null && activeDish != null)
+        {
+            DishData nextDish = dishSpawner.GetRandomDish(totalDishes);
+            if (nextDish != null)
+            {
+                currentDish = nextDish;
+                activeDish.Init(currentDish);
+            }
+        }
     }
-    // central adder used by EmployeeManager and others
+
+    // --- Manual Add / Subtract Profit ---
     public void AddProfit(float amount)
     {
         if (amount == 0f) return;
         totalProfit += amount;
-        // If you want to track sources, you can add a separate pending bucket here
-        // PendingRewardAdjustment += amount; // optional
-        UpdateUI();
-        NotifyProfitChanged();
-    }
-    // Add score from clicks or actions
-    public void AddScore()
-    {
-        totalDishes += dishCountIncrement;
-        totalProfit += dishCountIncrement * profitPerDish;
-
         UpdateUI();
         NotifyProfitChanged();
     }
 
-    public static float PendingProfitAdjustment = 0f;
-    public static float PendingRewardAdjustment = 0f;
-
-    // Subtract profit when purchasing
     public void SubtractProfit(float amount, bool isPurchase = false)
     {
         totalProfit = Mathf.Max(0, totalProfit - amount);
-        if (isPurchase)
-            PendingProfitAdjustment += amount;
+        if (isPurchase) PendingProfitAdjustment += amount;
         UpdateUI();
         NotifyProfitChanged();
     }
 
-    // Add profit from bubbles or other sources
     public void AddBubbleReward(float reward)
     {
         totalProfit += reward;
@@ -93,6 +107,42 @@ public class ScoreManager : MonoBehaviour
         UpdateUI();
         NotifyProfitChanged();
     }
+
+    // --- Upgrades ---
+    public void TryUpgradeDishCount()
+    {
+        if (totalProfit >= countUpgradeCost)
+        {
+            SubtractProfit(countUpgradeCost, true);
+            dishCountIncrement += dishCountIncrementStep;
+            countUpgradeCost += upgradeCostIncrease;
+            Debug.Log($"Dish count increased to {dishCountIncrement}");
+        }
+        else
+        {
+            Debug.Log($"Not enough profit to upgrade dish count (need ${countUpgradeCost})");
+        }
+        UpdateUI();
+    }
+
+    public void TryUpgradeProfit()
+    {
+        if (totalProfit >= profitUpgradeCost)
+        {
+            SubtractProfit(profitUpgradeCost, true);
+            profitPerDish += profitPerDishStep;
+            profitUpgradeCost += upgradeCostIncrease;
+            Debug.Log($"Profit per dish increased to ${profitPerDish:0.00}");
+        }
+        else
+        {
+            Debug.Log($"Not enough profit to upgrade profit per dish (need ${profitUpgradeCost})");
+        }
+        UpdateUI();
+    }
+
+    public void OnModifierCountClicked() => TryUpgradeDishCount();
+    public void OnModifierProfitClicked() => TryUpgradeProfit();
 
     // --- Getters ---
     public int GetTotalDishes() => totalDishes;
@@ -102,53 +152,7 @@ public class ScoreManager : MonoBehaviour
 
     private void UpdateUI()
     {
-        if (dishCountText != null)
-            dishCountText.text = $"Dishes: {totalDishes}";
-
-        if (profitText != null)
-            profitText.text = $"Profit: ${totalProfit:0.00}";
+        if (dishCountText != null) dishCountText.text = $"Dishes: {totalDishes}";
+        if (profitText != null) profitText.text = $"Profit: ${totalProfit:0.00}";
     }
-
-    // Upgrade dish count
-    public void TryUpgradeDishCount()
-    {
-        if (totalProfit >= countUpgradeCost)
-        {
-            SubtractProfit(countUpgradeCost, true);
-            dishCountIncrement += dishCountIncrementStep;
-            countUpgradeCost += upgradeCostIncrease;
-
-            Debug.Log($"Dish count increased to {dishCountIncrement}");
-        }
-        else
-        {
-            Debug.Log($"Not enough profit to upgrade dish count (need ${countUpgradeCost})");
-        }
-
-        UpdateUI();
-    }
-
-    // Upgrade profit per dish
-    public void TryUpgradeProfit()
-    {
-        if (totalProfit >= profitUpgradeCost)
-        {
-            SubtractProfit(profitUpgradeCost, true);
-            profitPerDish += profitPerDishStep;
-            profitUpgradeCost += upgradeCostIncrease;
-
-            Debug.Log($"Profit per dish increased to ${profitPerDish:0.00}");
-        }
-        else
-        {
-            Debug.Log($"Not enough profit to upgrade profit per dish (need ${profitUpgradeCost})");
-        }
-
-        UpdateUI();
-    }
-
-    // Button handlers
-    public void OnModifierCountClicked() => TryUpgradeDishCount();
-    public void OnModifierProfitClicked() => TryUpgradeProfit();
-
 }
