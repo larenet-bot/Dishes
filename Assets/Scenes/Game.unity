@@ -850,7 +850,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -483.30005, y: -62.55298}
+  m_AnchoredPosition: {x: -483.3001, y: -62.55298}
   m_SizeDelta: {x: -638.67, y: 772.98}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &135602621
@@ -3802,6 +3802,7 @@ MonoBehaviour:
   allDishes:
   - {fileID: 11400000, guid: 3cd3f8425b8689d42809be67103a7277, type: 2}
   - {fileID: 11400000, guid: 62e32899bafb2c04fadba261be7cd053, type: 2}
+  - {fileID: 11400000, guid: 2952548b87e0cbe4f98a916dc632a106, type: 2}
   spawnChanceMultiplier: 1
 --- !u!4 &638805221
 Transform:
@@ -10972,7 +10973,7 @@ MonoBehaviour:
   - tierName: Nitrile Glove
     description: When you complete a wash cycle, complete 3 dishes
     cost: 100
-    dishesAdded: 1
+    dishesAdded: 2
     icon: {fileID: 4319018798289120088, guid: 52b54fd1e09b12e418a5f9990486a707, type: 3}
     requiredDishes: 100
   gloveMenuPanel: {fileID: 1816192135}
