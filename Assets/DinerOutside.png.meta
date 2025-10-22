@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      DinerOutside_0: 3017207271964906088
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
