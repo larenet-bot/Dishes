@@ -14,6 +14,11 @@ public class ScoreManager : MonoBehaviour
     public int dishCountIncrement = 1;
     public float profitPerDish = 1f;
 
+    [Header("Multipliers")]
+    // Global multiplier applied to every DishData.profitPerDish when awarding profit.
+    // This avoids mutating ScriptableObject assets directly.
+    public float dishProfitMultiplier = 1f;
+
     [Header("Upgrade Settings")]
     public float countUpgradeCost = 10f;
     public float profitUpgradeCost = 25f;
@@ -60,13 +65,16 @@ public class ScoreManager : MonoBehaviour
         UpdateUI();
     }
 
-    private void NotifyProfitChanged() => OnProfitChanged?.Invoke();
+    public void NotifyProfitChanged() => OnProfitChanged?.Invoke();
 
     // Called when a dish is clicked enough times to complete it
     public void OnDishCleaned(DishData finishedDish)
     {
         totalDishes += dishCountIncrement;
-        totalProfit += dishCountIncrement * finishedDish.profitPerDish;
+
+        // Apply global dishProfitMultiplier here so upgrades that affect "dish profit"
+        // don't have to modify ScriptableObject asset values.
+        totalProfit += dishCountIncrement * finishedDish.profitPerDish * dishProfitMultiplier;
 
         NotifyProfitChanged();
         UpdateUI();
@@ -106,6 +114,26 @@ public class ScoreManager : MonoBehaviour
         PendingRewardAdjustment += reward;
         UpdateUI();
         NotifyProfitChanged();
+    }
+
+    // Exposed API used by upgrades to multiply dish profit globally
+    public void MultiplyDishProfit(float multiplier)
+    {
+        if (multiplier <= 0f) return;
+        dishProfitMultiplier *= multiplier;
+        NotifyProfitChanged();
+        UpdateUI();
+    }
+
+    // Exposed API used by glove upgrades to increase the dishes-per-complete
+    public void IncreaseDishCountIncrement(int amount)
+    {
+        if (amount == 0) return;
+        dishCountIncrement += amount;
+        Debug.Log($"[ScoreManager] dishCountIncrement increased by {amount} => {dishCountIncrement}");
+        // Notify subscribers (UI / rate displays) and refresh UI
+        NotifyProfitChanged();
+        UpdateUI();
     }
 
     // --- Upgrades ---

@@ -196,6 +196,17 @@ public class EmployeeManager : MonoBehaviour
         }
     }
 
+    // Public API: multiply all employee profit rates by multiplier (e.g. 1.5 => +50%)
+    public void MultiplyEmployeeProfit(float multiplier)
+    {
+        if (multiplier <= 0f) return;
+        foreach (var e in employees)
+        {
+            e.profitPerInterval *= multiplier;
+        }
+        UpdateEmployeeUI();
+    }
+
     [System.Serializable]
     public class Employee
     {
