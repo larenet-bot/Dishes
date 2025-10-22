@@ -63,9 +63,10 @@ public class DishClicker : MonoBehaviour
 
         int index;
         do { index = Random.Range(0, squeakClips.Length); }
-        while (index == lastSqueakIndex && squeakClips.Length > 1);
+        while (index == lastSqueakIndex && squeakClips.Length > 3);
 
         lastSqueakIndex = index;
         audioSource.PlayOneShot(squeakClips[index]);
+        Debug.Log($" Played: {lastSqueakIndex}");
     }
 }
