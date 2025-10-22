@@ -1,12 +1,17 @@
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class EmployeeManager : MonoBehaviour
 {
     [Header("Reference to ScoreManager")]
     [SerializeField] private ScoreManager scoreManager;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource sfxSource;
+
 
     [Header("Employees")]
     [SerializeField] private List<Employee> employees = new List<Employee>();
@@ -48,6 +53,18 @@ public class EmployeeManager : MonoBehaviour
     {
         if (scoreManager == null)
             scoreManager = FindFirstObjectByType<ScoreManager>();
+
+        if (sfxSource == null)
+        {
+            sfxSource = gameObject.AddComponent<AudioSource>();
+        }
+        if (employees.Count > 0 && employees[0].outputMixerGroup != null)
+            sfxSource.outputAudioMixerGroup = employees[0].outputMixerGroup;
+
+
+        if (scoreManager == null)
+            scoreManager = FindFirstObjectByType<ScoreManager>();
+
 
         // Seed defaults if list is empty (mirrors your previous setup)
         if (employees.Count == 0)
@@ -143,6 +160,13 @@ public class EmployeeManager : MonoBehaviour
         {
             Debug.Log($"[EmployeeManager] Not enough profit to buy {emp.name} (need ${emp.cost:0.00})");
         }
+        if (emp.buySounds != null && emp.buySounds.Length > 0)
+        {
+            var clip = emp.buySounds[Random.Range(0, emp.buySounds.Length)];
+            sfxSource.outputAudioMixerGroup = emp.outputMixerGroup;
+            sfxSource.PlayOneShot(clip);
+        }
+
     }
 
     private void AddEmployeeProfits()
@@ -215,6 +239,11 @@ public class EmployeeManager : MonoBehaviour
         public float profitPerInterval;
         public int count;
 
+        [Header("Audio Settings")]
+        public AudioClip[] buySounds; // sounds that play when bought
+        public AudioClip[] workSounds; // optional, when generating profit
+        public AudioMixerGroup outputMixerGroup; // connect to SFX group
+
         public Employee(string name, float cost, float profitPerInterval)
         {
             this.name = name;
@@ -225,4 +254,5 @@ public class EmployeeManager : MonoBehaviour
 
         public float GetTotalProfitPerSecond() => profitPerInterval * count;
     }
+
 }

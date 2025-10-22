@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dishPrefab: {fileID: 0}
   stageSprites:
-  - {fileID: -8539572593562353071, guid: f6b7c5a047d7f6d408df411f01e73a6a, type: 3}
   - {fileID: -8388422588174944434, guid: 122010cf16fe1644c811e31bb85207f4, type: 3}
   - {fileID: 6208200049565547772, guid: 8e0c77510994ba34ea727466e6b2e05a, type: 3}
   - {fileID: 8227215222182307447, guid: e44e7a5add31f4640bde401612075e11, type: 3}
+  - {fileID: -8539572593562353071, guid: f6b7c5a047d7f6d408df411f01e73a6a, type: 3}
   profitPerDish: 10
+  clicksRequired: 3
   unlockAtDishCount: 10
   spawnChance: 0.3

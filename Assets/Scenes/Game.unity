@@ -3678,6 +3678,7 @@ MonoBehaviour:
   allDishes:
   - {fileID: 11400000, guid: 3cd3f8425b8689d42809be67103a7277, type: 2}
   - {fileID: 11400000, guid: 62e32899bafb2c04fadba261be7cd053, type: 2}
+  - {fileID: 11400000, guid: 0b5b9a2228b671243ab5421f33125661, type: 2}
   spawnChanceMultiplier: 1
 --- !u!4 &638805221
 Transform:
@@ -6830,7 +6831,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreManager: {fileID: 1535544642}
-  employees: []
+  sfxSource: {fileID: 0}
+  employees:
+  - name: Intern
+    cost: 1
+    profitPerInterval: 1
+    count: 1
+    buySounds:
+    - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
+    workSounds: []
+    outputMixerGroup: {fileID: 8994725383216735636, guid: e30935e55bf325e448023fdd8451a615, type: 2}
+  - name: Elephant
+    cost: 1
+    profitPerInterval: 1
+    count: 1
+    buySounds:
+    - {fileID: 8300000, guid: 7ea08711ec9dbc74c86766f5fd894b01, type: 3}
+    workSounds: []
+    outputMixerGroup: {fileID: 8994725383216735636, guid: e30935e55bf325e448023fdd8451a615, type: 2}
+  - name: Firetruck
+    cost: 1
+    profitPerInterval: 1
+    count: 1
+    buySounds:
+    - {fileID: 8300000, guid: 1fc629ddcef30ba40a22a05d3a1e8ba8, type: 3}
+    workSounds: []
+    outputMixerGroup: {fileID: 8994725383216735636, guid: e30935e55bf325e448023fdd8451a615, type: 2}
   employeeProfitInterval: 1
   internNameText: {fileID: 1135278468}
   internCostText: {fileID: 1673178347}
