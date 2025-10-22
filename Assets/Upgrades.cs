@@ -84,7 +84,7 @@ public class Upgrades : MonoBehaviour
 
         // find canvas / graphic raycaster for raycast fallback
         if (raycastCanvas == null)
-            raycastCanvas = FindObjectOfType<Canvas>();
+            raycastCanvas = FindFirstObjectByType<Canvas>();
 
         if (raycastCanvas != null)
             graphicRaycaster = raycastCanvas.GetComponent<GraphicRaycaster>();
