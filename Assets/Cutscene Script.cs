@@ -98,30 +98,3 @@ public class CutsceneManager : MonoBehaviour
     }
 }
 
-/*
-    * HOW TO MATCH BACKGROUNDS TO DIALOGUE:
-    * -------------------------------------
-    * example:
-    * 0: "Welcome to Dish Duty!"
-    * 1: "You just got hired as a dishwasher."
-    * 2: "The manager glares at you."
-    * 3: "Time to clean some dishes."
-    *
-    *  then assign:
-    * 
-    * backgroundSprites[0] = introPosterSprite
-    * backgroundSprites[1] = playerSprite
-    * backgroundSprites[2] = managerSprite
-    *
-    * And your backgroundChangeIndices array would be:
-    * [0, 1, 2]
-    *
-    * Meaning:
-    * - At dialogue line 0 -> show introPosterSprite
-    * - At dialogue line 1 -> switch to playerSprite
-    * - At dialogue line 2 -> switch to managerSprite
-    *
-    * IMPORTANT:
-    * The order of backgroundSprites and backgroundChangeIndices must match.
-    * Index 0 in both arrays is linked together, same with index 1, 2, etc.
-    */
