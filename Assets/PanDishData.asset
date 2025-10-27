@@ -18,5 +18,6 @@ MonoBehaviour:
   - {fileID: -244619644059929732, guid: b67e23dbbcccd354387859637062b431, type: 3}
   - {fileID: -2865675941598591749, guid: ae6afa3570701ed40a30b93c2e3ecc2d, type: 3}
   profitPerDish: 12
+  clicksRequired: 3
   unlockAtDishCount: 20
-  spawnChance: 0.5
+  spawnChance: 0.25

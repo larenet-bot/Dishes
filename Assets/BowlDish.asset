@@ -10,15 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9bdb99a9c8c51d408242a5ec1b693ed, type: 3}
-  m_Name: Pan
+  m_Name: BowlDish
   m_EditorClassIdentifier: 
   dishPrefab: {fileID: 0}
   stageSprites:
-  - {fileID: -8388422588174944434, guid: 122010cf16fe1644c811e31bb85207f4, type: 3}
-  - {fileID: 6208200049565547772, guid: 8e0c77510994ba34ea727466e6b2e05a, type: 3}
-  - {fileID: 8227215222182307447, guid: e44e7a5add31f4640bde401612075e11, type: 3}
-  - {fileID: -8539572593562353071, guid: f6b7c5a047d7f6d408df411f01e73a6a, type: 3}
-  profitPerDish: 10
+  - {fileID: 5001746023961310147, guid: 11455bd5356b8e34594ad34e399097e1, type: 3}
+  - {fileID: -8137669759446092205, guid: 70499a3d7457793428cee59695333191, type: 3}
+  - {fileID: 8394152611511241524, guid: 62a2d7f1055e03740a7b2d9fd787c559, type: 3}
+  profitPerDish: 1
   clicksRequired: 3
-  unlockAtDishCount: 10
-  spawnChance: 0.3
+  unlockAtDishCount: 4
+  spawnChance: 0.25
