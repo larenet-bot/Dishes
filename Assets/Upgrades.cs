@@ -27,6 +27,8 @@ public class Upgrades : MonoBehaviour
         [Tooltip("How many additional dishes are added to the dish completion count when this tier is active (relative to base).")]
         public int dishesAdded = 0;
         public Sprite icon;
+        [Tooltip("Number of total completed dishes required to unlock this tier.")]
+        public int requiredDishes = 0;
     }
 
     [Header("Soap Tiers (index 0 is the starting unlocked bar soap)")]
@@ -137,7 +139,8 @@ public class Upgrades : MonoBehaviour
                 description = "Cheap plastic gloves. No bonus. Click to upgrade.",
                 cost = 0f,
                 dishesAdded = 0,
-                icon = null
+                icon = null,
+                requiredDishes = 0
             });
             gloveTiers.Add(new GloveTier
             {
@@ -145,9 +148,18 @@ public class Upgrades : MonoBehaviour
                 description = "Nitrile gloves: +1 dish per completed cycle.",
                 cost = 75f,
                 dishesAdded = 1,
-                icon = null
+                icon = null,
+                requiredDishes = 10 // must complete 10 dishes to unlock
             });
-            // add more tiers later if desired
+            gloveTiers.Add(new GloveTier
+            {
+                tierName = "Kevlar Gloves",
+                description = "Kevlar gloves: +2 dishes per completed cycle.",
+                cost = 250f,
+                dishesAdded = 2,
+                icon = null,
+                requiredDishes = 100 // must complete 100 dishes to unlock
+            });
         }
 
         // wire soap buttons
@@ -334,9 +346,20 @@ public class Upgrades : MonoBehaviour
         if (hasNext)
         {
             var next = gloveTiers[currentGloveIndex + 1];
-            if (gloveCostText) gloveCostText.text = $"Upgrade for ${next.cost:0.00}";
-            if (gloveUpgradeButton) gloveUpgradeButton.interactable = scoreManager != null && scoreManager.GetTotalProfit() >= next.cost;
-            if (gloveUpgradeButton) gloveUpgradeButton.GetComponentInChildren<TMP_Text>()?.SetText($"Upgrade for ${next.cost:0.00}");
+
+            // check milestone unlock using ScoreManager total dishes
+            bool unlocked = scoreManager != null && scoreManager.GetTotalDishes() >= next.requiredDishes;
+
+            if (gloveCostText)
+                gloveCostText.text = unlocked ? $"Upgrade for ${next.cost:0.00}" : $"Locked: Complete {next.requiredDishes} dishes";
+
+            if (gloveUpgradeButton)
+            {
+                gloveUpgradeButton.interactable = unlocked && scoreManager != null && scoreManager.GetTotalProfit() >= next.cost;
+                var btnText = gloveUpgradeButton.GetComponentInChildren<TMP_Text>();
+                if (btnText != null)
+                    btnText.SetText(unlocked ? $"Upgrade for ${next.cost:0.00}" : $"Locked: {next.requiredDishes} dishes");
+            }
         }
         else
         {
@@ -354,6 +377,13 @@ public class Upgrades : MonoBehaviour
         if (scoreManager == null)
         {
             Debug.LogWarning("[Upgrades] ScoreManager not found.");
+            return;
+        }
+
+        // enforce milestone
+        if (scoreManager.GetTotalDishes() < next.requiredDishes)
+        {
+            Debug.Log($"[Upgrades] {next.tierName} locked: requires {next.requiredDishes} dishes.");
             return;
         }
 
