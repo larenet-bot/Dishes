@@ -30,6 +30,18 @@ public class Upgrades : MonoBehaviour
         [Tooltip("Number of total completed dishes required to unlock this tier.")]
         public int requiredDishes = 0;
     }
+    [Serializable]
+    public class SpongeTier
+    {
+        public string tierName;
+        [TextArea] public string description;
+        public float cost;
+        [Tooltip("How many dish stages are completed per click (e.g. 1 = normal, 2 = double, etc.)")]
+        public int stagesPerClick = 1;
+        public Sprite icon;
+        [Tooltip("Number of total completed dishes required to unlock this tier.")]
+        public int requiredDishes = 0;
+    }
 
     [Header("Soap Tiers (index 0 is the starting unlocked bar soap)")]
     public List<SoapTier> soapTiers = new List<SoapTier>();
@@ -59,12 +71,28 @@ public class Upgrades : MonoBehaviour
     [Header("HUD Button Image (assign the Image component from the GloveButton)")]
     public Image gloveButtonImage;
 
+    [Header("Sponge Tiers (index 0 is starting basic sponge)")]
+    public List<SpongeTier> spongeTiers = new List<SpongeTier>();
+
+    [Header("Sponge UI")]
+    public GameObject spongeMenuPanel;
+    public TMP_Text spongeNameText;
+    public TMP_Text spongeDescText;
+    public TMP_Text spongeCostText;
+    public Button spongeUpgradeButton;
+    public Button spongeCloseButton;
+
+    [Header("HUD Button Image (assign the Image component from the SpongeButton)")]
+    public Image spongeButtonImage;
+    // Add UI fields for sponge menu if needed (similar to soap/glove) 
+
     [Header("Optional: full-screen transparent Button behind the panel")]
     [Tooltip("If set, clicking this Button will close the soap/glove menu. If not set, the script will try to detect clicks outside the panel via UI raycast.")]
     public Button backgroundOverlayButton;
 
     private int currentSoapIndex = 0;
     private int currentGloveIndex = 0;
+    private int currentSpongeIndex = 0;
     private EmployeeManager employeeManager;
     private ScoreManager scoreManager;
 
@@ -162,6 +190,38 @@ public class Upgrades : MonoBehaviour
             });
         }
 
+        // seed default sponge tiers if none set in inspector
+        if (spongeTiers.Count == 0)
+        {
+            spongeTiers.Add(new SpongeTier
+            {
+                tierName = "Basic Sponge",
+                description = "No bonus. Click to upgrade.",
+                cost = 0f,
+                stagesPerClick = 1,
+                icon = null,
+                requiredDishes = 0
+            });
+            spongeTiers.Add(new SpongeTier
+            {
+                tierName = "Scrubber Sponge",
+                description = "Completes 2 stages per click.",
+                cost = 150f,
+                stagesPerClick = 2,
+                icon = null,
+                requiredDishes = 10 // must complete 10 dishes to unlock
+            });
+            spongeTiers.Add(new SpongeTier
+            {
+                tierName = "Steel Wool",
+                description = "Completes 3 stages per click.",
+                cost = 600f,
+                stagesPerClick = 3,
+                icon = null,
+                requiredDishes = 100 // must complete 100 dishes to unlock
+            });
+        }
+
         // wire soap buttons
         if (soapUpgradeButton != null)
         {
@@ -186,6 +246,18 @@ public class Upgrades : MonoBehaviour
             gloveCloseButton.onClick.AddListener(CloseGloveMenu);
         }
 
+        // wire sponge buttons
+        if (spongeUpgradeButton != null)
+        {
+            spongeUpgradeButton.onClick.RemoveAllListeners();
+            spongeUpgradeButton.onClick.AddListener(OnSpongeUpgradeButton);
+        }
+        if (spongeCloseButton != null)
+        {
+            spongeCloseButton.onClick.RemoveAllListeners();
+            spongeCloseButton.onClick.AddListener(CloseSpongeMenu);
+        }
+
         // overlay button is optional; if provided we hook it so clicking outside the panel closes the menu
         if (backgroundOverlayButton != null)
         {
@@ -195,6 +267,7 @@ public class Upgrades : MonoBehaviour
             {
                 CloseSoapMenu();
                 CloseGloveMenu();
+                CloseSpongeMenu();
             });
             // ensure overlay is hidden initially
             if (backgroundOverlayButton.gameObject.activeSelf)
@@ -203,6 +276,7 @@ public class Upgrades : MonoBehaviour
 
         CloseSoapMenu();
         CloseGloveMenu();
+        CloseSpongeMenu();
     }
 
     private void Start()
@@ -210,8 +284,10 @@ public class Upgrades : MonoBehaviour
         // ensure starting tiers are visible/known
         currentSoapIndex = 0;
         currentGloveIndex = 0;
+        currentSpongeIndex = 0;
         UpdateSoapMenuUI(); // ensure HUD icon matches initial soap tier
         UpdateGloveMenuUI(); // ensure HUD icon matches initial glove tier
+        UpdateSpongeMenuUI(); // ensure HUD icon matches initial sponge tier
     }
 
     // --------- Soap UI API ----------
@@ -411,6 +487,131 @@ public class Upgrades : MonoBehaviour
 
         Debug.Log($"[Upgrades] Upgraded to {next.tierName} (+{delta} dish per completion)");
     }
+    
+    // --------- Sponge UI API ----------
+    public void OpenSpongeMenu()
+    {
+        if (spongeMenuPanel == null) return;
+        UpdateSpongeMenuUI();
+
+        // show overlay if available
+        if (backgroundOverlayButton != null)
+            backgroundOverlayButton.gameObject.SetActive(true);
+
+        spongeMenuPanel.SetActive(true);
+    }
+    public void CloseSpongeMenu()
+    {
+        if (spongeMenuPanel == null) return;
+        spongeMenuPanel.SetActive(false);
+        if (backgroundOverlayButton != null)
+            backgroundOverlayButton.gameObject.SetActive(false);
+    }
+
+    private void UpdateSpongeMenuUI()
+    {
+        if (spongeTiers == null || spongeTiers.Count == 0) return;
+        var current = spongeTiers[Mathf.Clamp(currentSpongeIndex, 0, spongeTiers.Count - 1)];
+        if (spongeNameText) spongeNameText.text = current.tierName;
+        if (spongeDescText) spongeDescText.text = current.description;
+        // update HUD button image to reflect current tier (if assigned)
+        if (spongeButtonImage != null && current != null && current.icon != null)
+        {
+            spongeButtonImage.sprite = current.icon;
+            // spongeButtonImage.SetNativeSize(); // optional
+        }
+        bool hasNext = currentSpongeIndex < spongeTiers.Count - 1;
+        if (hasNext)
+        {
+            var next = spongeTiers[currentSpongeIndex + 1];
+
+            // check milestone unlock using ScoreManager total dishes
+            bool unlocked = scoreManager != null && scoreManager.GetTotalDishes() >= next.requiredDishes;
+
+            if (spongeCostText)
+                spongeCostText.text = unlocked ? $"Upgrade for ${next.cost:0.00}" : $"Locked: Complete {next.requiredDishes} dishes";
+
+            if (spongeUpgradeButton)
+            {
+                spongeUpgradeButton.interactable = unlocked && scoreManager != null && scoreManager.GetTotalProfit() >= next.cost;
+                var btnText = spongeUpgradeButton.GetComponentInChildren<TMP_Text>();
+                if (btnText != null)
+                    btnText.SetText(unlocked ? $"Upgrade for ${next.cost:0.00}" : $"Locked: {next.requiredDishes} dishes");
+            }
+        }
+        else
+        {
+            if (spongeCostText) spongeCostText.text = "MAX";
+            if (spongeUpgradeButton) spongeUpgradeButton.interactable = false;
+            if (spongeUpgradeButton) spongeUpgradeButton.GetComponentInChildren<TMP_Text>()?.SetText("Max");
+        }
+    }
+
+    private void OnSpongeUpgradeButton()
+    {
+        // attempt to upgrade to next tier
+        if (currentSpongeIndex >= spongeTiers.Count - 1) return;
+        var next = spongeTiers[currentSpongeIndex + 1];
+        if (scoreManager == null)
+        {
+            Debug.LogWarning("[Upgrades] ScoreManager not found.");
+            return;
+        }
+
+        // enforce milestone like gloves
+        if (scoreManager.GetTotalDishes() < next.requiredDishes)
+        {
+            Debug.Log($"[Upgrades] {next.tierName} locked: requires {next.requiredDishes} dishes.");
+            return;
+        }
+
+        float wallet = scoreManager.GetTotalProfit();
+        if (wallet < next.cost)
+        {
+            Debug.Log($"[Upgrades] Not enough profit to buy {next.tierName} (need ${next.cost:0.00})");
+            return;
+        }
+
+        // pay
+        scoreManager.SubtractProfit(next.cost, isPurchase: true);
+
+        // advance sponge tier
+        currentSpongeIndex++;
+        UpdateSpongeMenuUI();
+
+        // Ensure DishClicker instances will pick up the new sponge value immediately.
+        // DishClicker reads stagesPerClick from Upgrades.GetCurrentStagesPerClick() on click,
+        // but some DishClicker instances may not have an Upgrades reference assigned.
+        // Set this Upgrades instance on any DishClicker found so they will use the new value immediately.
+        try
+        {
+            // prefer ScoreManager.activeDish if available
+            if (scoreManager != null && scoreManager.activeDish != null)
+            {
+                scoreManager.activeDish.upgrades = this;
+            }
+
+            // assign to all DishClicker instances in scene so UI/auto-clickers behave consistently
+            var allClickers = FindObjectsOfType<DishClicker>();
+            for (int i = 0; i < allClickers.Length; i++)
+            {
+                if (allClickers[i] != null)
+                    allClickers[i].upgrades = this;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning($"[Upgrades] Failed to apply sponge upgrade to DishClicker instances: {ex.Message}");
+        }
+
+        Debug.Log($"[Upgrades] Upgraded to {next.tierName} (stages per click: {next.stagesPerClick})");
+    }
+
+
+    public int GetCurrentStagesPerClick()
+    {
+        return spongeTiers[Mathf.Clamp(currentSpongeIndex, 0, spongeTiers.Count - 1)].stagesPerClick;
+    }
 
     private void Update()
     {
@@ -419,9 +620,11 @@ public class Upgrades : MonoBehaviour
             UpdateSoapMenuUI();
         if (gloveMenuPanel != null && gloveMenuPanel.activeSelf)
             UpdateGloveMenuUI();
+        if (spongeMenuPanel != null && spongeMenuPanel.activeSelf)
+            UpdateSpongeMenuUI();
 
         // if no explicit overlay Button configured, detect clicks outside the active panel via UI raycast
-        if ((soapMenuPanel != null && soapMenuPanel.activeSelf || gloveMenuPanel != null && gloveMenuPanel.activeSelf) && backgroundOverlayButton == null)
+        if ((soapMenuPanel != null && soapMenuPanel.activeSelf || gloveMenuPanel != null && gloveMenuPanel.activeSelf || spongeMenuPanel != null && spongeMenuPanel.activeSelf) && backgroundOverlayButton == null)
         {
             // only respond to primary mouse button down / primary touch
             if (Input.GetMouseButtonDown(0))
@@ -479,11 +682,31 @@ public class Upgrades : MonoBehaviour
                         }
                     }
                 }
+                // check sponge panel if not already clicked inside soap or glove
+                if (!clickedInsideAnyPanel && spongeMenuPanel != null && spongeMenuPanel.activeSelf)
+                {
+                    var rtSponge = spongeMenuPanel.transform as RectTransform;
+                    foreach (var r in results)
+                    {
+                        if (r.gameObject == null) continue;
+                        if (rtSponge != null && (r.gameObject.transform as RectTransform) != null && (r.gameObject.transform as RectTransform).IsChildOf(rtSponge))
+                        {
+                            clickedInsideAnyPanel = true;
+                            break;
+                        }
+                        if (r.gameObject == spongeMenuPanel)
+                        {
+                            clickedInsideAnyPanel = true;
+                            break;
+                        }
+                    }
+                }
 
                 if (!clickedInsideAnyPanel)
                 {
                     CloseSoapMenu();
                     CloseGloveMenu();
+                    CloseSpongeMenu();
                 }
             }
         }

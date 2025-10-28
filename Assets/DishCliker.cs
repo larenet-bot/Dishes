@@ -8,6 +8,7 @@ public class DishClicker : MonoBehaviour
     [Header("References")]
     public DishVisual dishVisual;
     public SudsOnClick sudsOnClick; // bubbles
+    public Upgrades upgrades; // assign in inspector or find at runtime
 
     [Header("Sounds")]
     public AudioClip[] squeakClips;
@@ -27,27 +28,51 @@ public class DishClicker : MonoBehaviour
 
     public void OnDishClicked()
     {
-        currentClicks++;
-        dishVisual?.SetStage(currentClicks);
+        if (currentDish == null) return;
 
-        if (currentClicks >= clicksRequired)
+        int stagesPerClick = upgrades != null ? upgrades.GetCurrentStagesPerClick() : 1;
+        int finalStageIndex = currentDish.stageSprites.Length - 1; // final stage index
+
+        // If we're not yet at the final stage, advance up to stagesPerClick but DO NOT complete on the same click
+        if (currentClicks < finalStageIndex)
         {
+            int nextStage = Mathf.Min(currentClicks + stagesPerClick, finalStageIndex);
+            currentClicks = nextStage;
+            dishVisual?.SetStage(currentClicks);
+
+            // Bubble burst visuals
+            if (sudsOnClick != null)
+            {
+                Vector3 mousePos = Input.mousePosition;
+                mousePos.z = Camera.main.nearClipPlane;
+                Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+                sudsOnClick.BurstBubbles(worldPos);
+            }
+
+            // If we just moved to the final stage, do not finish the dish this click.
+            // The next click (while currentClicks == finalStageIndex) will complete the dish.
+            return;
+        }
+
+        // If we're already on the final stage, complete the dish on click
+        if (currentClicks >= finalStageIndex)
+        {
+            // complete
             currentClicks = 0;
             dishVisual?.SetStage(0);
 
-            //  Tell ScoreManager this dish is complete
             ScoreManager.Instance.OnDishCleaned(currentDish);
 
             PlayRandomSqueak();
-        }
 
-        // Bubble burst visuals
-        if (sudsOnClick != null)
-        {
-            Vector3 mousePos = Input.mousePosition;
-            mousePos.z = Camera.main.nearClipPlane;
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-            sudsOnClick.BurstBubbles(worldPos);
+            // Bubble burst visuals
+            if (sudsOnClick != null)
+            {
+                Vector3 mousePos = Input.mousePosition;
+                mousePos.z = Camera.main.nearClipPlane;
+                Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+                sudsOnClick.BurstBubbles(worldPos);
+            }
         }
     }
 
