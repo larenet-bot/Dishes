@@ -605,13 +605,13 @@ MonoBehaviour:
   nextButton: {fileID: 1896927181}
   backgroundImage: {fileID: 1281278824}
   dialogueLines:
-  - diner
-  - poster
-  - inside
-  - inside
-  - kitchen
-  - poster 2
-  - kitchen
+  - '*establishing shot of either diner or tv*'
+  - '*mc see''s an add for a food challenge*'
+  - '*mc requests food challenge*'
+  - '*mc almosts completes challenges but passes out*'
+  - '*awakes in kitchen*'
+  - '*shown fine print, challenge failure = labor*'
+  - '*manaers says they will show them the ropes* cues tutorial'
   backgroundSprites:
   - {fileID: 3017207271964906088, guid: 58d930143a45369428c6569191819a00, type: 3}
   - {fileID: -2240211079081675584, guid: 268e4e0cc0218a04e9325512dfbeba6d, type: 3}

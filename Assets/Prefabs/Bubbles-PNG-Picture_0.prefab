@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1251630609513123631}
   - component: {fileID: 4999486689057822933}
   - component: {fileID: -3786094087693503840}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Bubbles-PNG-Picture_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

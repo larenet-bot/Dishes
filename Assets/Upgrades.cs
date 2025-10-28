@@ -592,7 +592,7 @@ public class Upgrades : MonoBehaviour
             }
 
             // assign to all DishClicker instances in scene so UI/auto-clickers behave consistently
-            var allClickers = FindObjectsOfType<DishClicker>();
+            var allClickers = FindObjectsByType<DishClicker>(FindObjectsSortMode.None);
             for (int i = 0; i < allClickers.Length; i++)
             {
                 if (allClickers[i] != null)
