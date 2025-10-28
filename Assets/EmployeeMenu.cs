@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.UI;
+using TMPro;
+using UnityEngine.Audio;
+using UnityEngine.EventSystems;
 
 public class EmployeeManager : MonoBehaviour
 {
@@ -12,7 +13,6 @@ public class EmployeeManager : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioSource sfxSource;
 
-
     [Header("Employees")]
     [SerializeField] private List<Employee> employees = new List<Employee>();
 
@@ -20,7 +20,6 @@ public class EmployeeManager : MonoBehaviour
     [SerializeField] private float employeeProfitInterval = 1f;
     private float employeeProfitTimer = 0f;
 
-    // --- Hardcoded UI (kept as-is for now; easy to replace with a prefab list later) ---
     [Header("Intern Employee UI")]
     [SerializeField] private TMP_Text internNameText;
     [SerializeField] private TMP_Text internCostText;
@@ -55,18 +54,12 @@ public class EmployeeManager : MonoBehaviour
             scoreManager = FindFirstObjectByType<ScoreManager>();
 
         if (sfxSource == null)
-        {
             sfxSource = gameObject.AddComponent<AudioSource>();
-        }
+
         if (employees.Count > 0 && employees[0].outputMixerGroup != null)
             sfxSource.outputAudioMixerGroup = employees[0].outputMixerGroup;
 
-
-        if (scoreManager == null)
-            scoreManager = FindFirstObjectByType<ScoreManager>();
-
-
-        // Seed defaults if list is empty (mirrors your previous setup)
+        // Seed defaults if list is empty
         if (employees.Count == 0)
         {
             employees.Add(new Employee("Intern", 50f, 2f));
@@ -74,7 +67,6 @@ public class EmployeeManager : MonoBehaviour
             employees.Add(new Employee("Firetruck", 1000f, 50f));
         }
 
-        // Button hooks (safe if null)
         if (internBuyButton) internBuyButton.onClick.AddListener(() => BuyEmployee(0));
         if (elephantBuyButton) elephantBuyButton.onClick.AddListener(() => BuyEmployee(1));
         if (firetruckBuyButton) firetruckBuyButton.onClick.AddListener(() => BuyEmployee(2));
@@ -100,15 +92,41 @@ public class EmployeeManager : MonoBehaviour
             employeeProfitTimer = 0f;
             AddEmployeeProfits();
         }
+        // detect outside click to close the employee panel
+        if (employeesPanel != null && employeesPanel.activeSelf && Input.GetMouseButtonDown(0))
+        {
+            // ignore clicks that hit UI elements *inside* the panel
+            PointerEventData pointerData = new PointerEventData(EventSystem.current)
+            {
+                position = Input.mousePosition
+            };
+            var results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerData, results);
+
+            bool clickedInsidePanel = false;
+            foreach (var r in results)
+            {
+                if (r.gameObject == null) continue;
+                if (r.gameObject.transform.IsChildOf(employeesPanel.transform))
+                {
+                    clickedInsidePanel = true;
+                    break;
+                }
+            }
+
+            if (!clickedInsidePanel)
+            {
+                CloseEmployeesPanel();
+            }
+        }
     }
 
     private void HandleProfitChanged()
     {
-        // Profit changed elsewhere ? update button interactability & labels
         UpdateEmployeeUI();
     }
 
-    // --- Public menu controls (wire from Unity buttons) ---
+    // -------------------- Panel Controls --------------------
     public void OpenEmployeesPanel()
     {
         if (employeesPanel) employeesPanel.SetActive(true);
@@ -140,7 +158,18 @@ public class EmployeeManager : MonoBehaviour
         closeButton.SetActive(false);
     }
 
-    // --- Buying / Earnings ---
+    private bool IsClickOutsidePanel(Vector2 clickPos)
+    {
+        if (employeesPanel == null) return false;
+        if (!employeesPanel.activeSelf) return false;
+
+        RectTransform panelRect = employeesPanel.GetComponent<RectTransform>();
+        if (panelRect == null) return false;
+
+        return !RectTransformUtility.RectangleContainsScreenPoint(panelRect, clickPos, null);
+    }
+
+    // -------------------- Buying --------------------
     public void BuyEmployee(int index)
     {
         if (index < 0 || index >= employees.Count || scoreManager == null) return;
@@ -152,7 +181,7 @@ public class EmployeeManager : MonoBehaviour
         {
             scoreManager.SubtractProfit(emp.cost, isPurchase: true);
             emp.count++;
-            emp.cost *= 1.15f; // same scaling
+            emp.cost *= 1.15f;
             UpdateEmployeeUI();
             Debug.Log($"[EmployeeManager] Bought {emp.name}, now have {emp.count}");
         }
@@ -160,13 +189,13 @@ public class EmployeeManager : MonoBehaviour
         {
             Debug.Log($"[EmployeeManager] Not enough profit to buy {emp.name} (need ${emp.cost:0.00})");
         }
+
         if (emp.buySounds != null && emp.buySounds.Length > 0)
         {
             var clip = emp.buySounds[Random.Range(0, emp.buySounds.Length)];
             sfxSource.outputAudioMixerGroup = emp.outputMixerGroup;
             sfxSource.PlayOneShot(clip);
         }
-
     }
 
     private void AddEmployeeProfits()
@@ -178,15 +207,12 @@ public class EmployeeManager : MonoBehaviour
             total += e.GetTotalProfitPerSecond();
 
         if (total > 0f)
-        {
-            scoreManager.AddProfit(total); // centralizes UI + event firing in ScoreManager
-        }
+            scoreManager.AddProfit(total);
     }
 
-    // --- UI ---
+    // -------------------- UI --------------------
     private void UpdateEmployeeUI()
     {
-        // Guard if ScoreManager not ready (e.g., scene startup order)
         float wallet = scoreManager ? scoreManager.GetTotalProfit() : 0f;
 
         // Intern
@@ -197,6 +223,7 @@ public class EmployeeManager : MonoBehaviour
             if (internCostText) internCostText.text = $"Cost: ${e.cost:0.00}";
             if (internCountText) internCountText.text = $"Owned: {e.count}";
             if (internBuyButton) internBuyButton.interactable = wallet >= e.cost;
+            SetIconForAffordability(e, wallet);
         }
 
         // Elephant
@@ -207,6 +234,7 @@ public class EmployeeManager : MonoBehaviour
             if (elephantCostText) elephantCostText.text = $"Cost: ${e.cost:0.00}";
             if (elephantCountText) elephantCountText.text = $"Owned: {e.count}";
             if (elephantBuyButton) elephantBuyButton.interactable = wallet >= e.cost;
+            SetIconForAffordability(e, wallet);
         }
 
         // Firetruck
@@ -217,10 +245,23 @@ public class EmployeeManager : MonoBehaviour
             if (firetruckCostText) firetruckCostText.text = $"Cost: ${e.cost:0.00}";
             if (firetruckCountText) firetruckCountText.text = $"Owned: {e.count}";
             if (firetruckBuyButton) firetruckBuyButton.interactable = wallet >= e.cost;
+            SetIconForAffordability(e, wallet);
         }
     }
 
-    // Public API: multiply all employee profit rates by multiplier (e.g. 1.5 => +50%)
+    private void SetIconForAffordability(Employee emp, float wallet)
+    {
+        if (emp.employeeImageObject == null || emp.employeeImageGreyObject == null)
+            return;
+
+        bool canAfford = wallet >= emp.cost;
+
+        // Toggle GameObjects instead of swapping Sprites
+        emp.employeeImageObject.SetActive(canAfford);
+        emp.employeeImageGreyObject.SetActive(!canAfford);
+    }
+
+    // Multiply profit rates (for upgrades, etc.)
     public void MultiplyEmployeeProfit(float multiplier)
     {
         if (multiplier <= 0f) return;
@@ -231,6 +272,7 @@ public class EmployeeManager : MonoBehaviour
         UpdateEmployeeUI();
     }
 
+    // -------------------- Data Classes --------------------
     [System.Serializable]
     public class Employee
     {
@@ -239,10 +281,14 @@ public class EmployeeManager : MonoBehaviour
         public float profitPerInterval;
         public int count;
 
+        [Header("Icon Objects (child GameObjects)")]
+        public GameObject employeeImageObject;      // Visible when affordable
+        public GameObject employeeImageGreyObject;  // Visible when unaffordable
+
         [Header("Audio Settings")]
-        public AudioClip[] buySounds; // sounds that play when bought
-        public AudioClip[] workSounds; // optional, when generating profit
-        public AudioMixerGroup outputMixerGroup; // connect to SFX group
+        public AudioClip[] buySounds;
+        public AudioClip[] workSounds;
+        public AudioMixerGroup outputMixerGroup;
 
         public Employee(string name, float cost, float profitPerInterval)
         {
@@ -254,5 +300,4 @@ public class EmployeeManager : MonoBehaviour
 
         public float GetTotalProfitPerSecond() => profitPerInterval * count;
     }
-
 }
