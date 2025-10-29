@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Activator
   layers:
   - Default
   - TransparentFX
@@ -44,5 +45,9 @@ TagManager:
   - name: Menu
     uniqueID: 1075592791
     locked: 0
+  - name: arrows
+    uniqueID: 2300484631
+    locked: 0
   m_RenderingLayers:
   - Default
+  - Menu

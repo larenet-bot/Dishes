@@ -1,39 +1,18 @@
 using UnityEngine;
 
-public class RhythmMiniGameManager : MonoBehaviour
+public class RhythmMiniGameToggle : MonoBehaviour
 {
-    public static RhythmMiniGameManager Instance { get; private set; }
-
     [Header("References")]
-    public GameObject rhythmUI;         // rhythm minigame UI
-    public GameObject mainGameUI;       // dish clicker UI
+    public GameObject rhythmMiniGame;   // parent object of rhythm elements
+    public GameObject mainGameUI;       //  game  UI
 
     private bool isActive = false;
 
-    private void Awake()
+    public void ToggleMiniGame()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-    }
+        isActive = !isActive;
+        rhythmMiniGame.SetActive(isActive);
+        mainGameUI.SetActive(!isActive);
 
-    public void OpenMiniGame()
-    {
-        if (isActive) return;
-        isActive = true;
-        rhythmUI.SetActive(true);
-
-       
-
-        //  Dim main game UI
-        mainGameUI.SetActive(false);
-    }
-
-    public void CloseMiniGame()
-    {
-        if (!isActive) return;
-
-        isActive = false;
-        rhythmUI.SetActive(false);
-        mainGameUI.SetActive(true);
     }
 }
