@@ -220,8 +220,8 @@ public class EmployeeManager : MonoBehaviour
         {
             var e = employees[0];
             if (internNameText) internNameText.text = e.name;
-            if (internCostText) internCostText.text = $"Cost: ${e.cost:0.00}";
-            if (internCountText) internCountText.text = $"Owned: {e.count}";
+            if (internCostText) internCostText.text = $"Cost: {BigNumberFormatter.FormatMoney((double)e.cost)}";
+            if (internCountText) internCountText.text = $"Owned: {BigNumberFormatter.FormatNumber(e.count)}";
             if (internBuyButton) internBuyButton.interactable = wallet >= e.cost;
             SetIconForAffordability(e, wallet);
         }
@@ -231,8 +231,8 @@ public class EmployeeManager : MonoBehaviour
         {
             var e = employees[1];
             if (elephantNameText) elephantNameText.text = e.name;
-            if (elephantCostText) elephantCostText.text = $"Cost: ${e.cost:0.00}";
-            if (elephantCountText) elephantCountText.text = $"Owned: {e.count}";
+            if (elephantCostText) elephantCostText.text = $"Cost: {BigNumberFormatter.FormatMoney((double)e.cost)}";
+            if (elephantCountText) elephantCountText.text = $"Owned: {BigNumberFormatter.FormatNumber(e.count)}";
             if (elephantBuyButton) elephantBuyButton.interactable = wallet >= e.cost;
             SetIconForAffordability(e, wallet);
         }
@@ -242,8 +242,8 @@ public class EmployeeManager : MonoBehaviour
         {
             var e = employees[2];
             if (firetruckNameText) firetruckNameText.text = e.name;
-            if (firetruckCostText) firetruckCostText.text = $"Cost: ${e.cost:0.00}";
-            if (firetruckCountText) firetruckCountText.text = $"Owned: {e.count}";
+            if (firetruckCostText) firetruckCostText.text = $"Cost: {BigNumberFormatter.FormatMoney((double)e.cost)}";
+            if (firetruckCountText) firetruckCountText.text = $"Owned: {BigNumberFormatter.FormatNumber(e.count)}";
             if (firetruckBuyButton) firetruckBuyButton.interactable = wallet >= e.cost;
             SetIconForAffordability(e, wallet);
         }

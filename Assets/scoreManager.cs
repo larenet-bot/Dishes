@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using static ConvertDecimal;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -180,7 +181,16 @@ public class ScoreManager : MonoBehaviour
 
     private void UpdateUI()
     {
-        if (dishCountText != null) dishCountText.text = $"Dishes: {totalDishes}";
-        if (profitText != null) profitText.text = $"Profit: ${totalProfit:0.00}";
+        if (dishCountText != null)
+        {
+            // totalDishes is whatever you already track (int/long). Cast as needed.
+            dishCountText.text = $"Dishes: {BigNumberFormatter.FormatNumber(totalDishes)}";
+        }
+
+        if (profitText != null)
+        {
+            // totalProfit is whatever you already track (float/double/decimal). Cast to double for formatter.
+            profitText.text = $"Profit: {BigNumberFormatter.FormatMoney((double)totalProfit)}";
+        }
     }
 }

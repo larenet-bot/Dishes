@@ -66,7 +66,8 @@ public class ProfitRate : MonoBehaviour
 
     private void UpdateUI()
     {
-        profitRateText.text = $"${averageProfit:0.00/second}";
+        //profitRateText.text = $"${averageProfit:0.00/second}";
+        profitRateText.text = $"{BigNumberFormatter.FormatMoney(averageProfit)}/second";
     }
 
     public float AverageProfit => averageProfit;
