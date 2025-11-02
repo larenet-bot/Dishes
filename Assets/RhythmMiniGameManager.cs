@@ -14,5 +14,6 @@ public class RhythmMiniGameToggle : MonoBehaviour
         rhythmMiniGame.SetActive(isActive);
         mainGameUI.SetActive(!isActive);
 
+       
     }
 }
