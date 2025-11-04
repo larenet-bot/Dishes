@@ -32,7 +32,7 @@ public class ScoreManager : MonoBehaviour
     public DishClicker activeDish;
 
     [Header("Tracking")]
-    private int totalDishes = 0;
+    private long totalDishes = 0;
     private float totalProfit = 0f;
 
     [Header("Dish Types")]
@@ -41,6 +41,17 @@ public class ScoreManager : MonoBehaviour
 
     public static float PendingProfitAdjustment = 0f;
     public static float PendingRewardAdjustment = 0f;
+
+    [Header("Employee Dish Production")]
+    [SerializeField] private EmployeeManager employeeManager;   // Drag your EmployeeManager here in Inspector
+    [SerializeField] private bool enableEmployeeDishTick = true;
+
+    // Carries fractional dish progress so displays stay integer-only
+    private double employeeDishAccumulator = 0d;
+
+    // Optional: how often we refresh UI when employees add dishes (seconds)
+    [SerializeField] private float employeeDishUIRefresh = 0.25f;
+    private float employeeDishUITimer = 0f;
 
     // Profit change event
     public delegate void ProfitChanged();
@@ -62,6 +73,9 @@ public class ScoreManager : MonoBehaviour
             currentDish = allDishes[0];
             activeDish.Init(currentDish);
         }
+
+        if (enableEmployeeDishTick && employeeManager != null)
+            StartCoroutine(EmployeeDishTicker());
 
         UpdateUI();
     }
@@ -170,11 +184,60 @@ public class ScoreManager : MonoBehaviour
         UpdateUI();
     }
 
+    private System.Collections.IEnumerator EmployeeDishTicker()
+    {
+        var wait = new WaitForEndOfFrame();
+        while (true)
+        {
+            yield return wait;
+
+            if (!enableEmployeeDishTick || employeeManager == null) continue;
+
+            // Dishes per second from all employees (static dish intervals × live counts)
+            double dps = employeeManager.GetTotalDishesPerSecond();
+
+            // Accumulate fractional dishes with frame time
+            employeeDishAccumulator += dps * Time.deltaTime;
+
+            // When we have at least 1 whole dish, apply it to total (integer-safe)
+            if (employeeDishAccumulator >= 1.0)
+            {
+                long whole = (long)System.Math.Floor(employeeDishAccumulator);
+                AddDishesFromEmployees(whole);           // increments your total & handles UI
+                employeeDishAccumulator -= whole;
+            }
+
+            // Throttle UI refresh (in case no whole dishes happened for a bit)
+            employeeDishUITimer += Time.deltaTime;
+            if (employeeDishUITimer >= employeeDishUIRefresh)
+            {
+                employeeDishUITimer = 0f;
+                UpdateUI(); // uses BigNumberFormatter in your existing method
+            }
+        }
+    }
+
+    // Centralized place to apply employee-generated dishes.
+    // Keeps ScoreManager authoritative over completed dishes.
+    private void AddDishesFromEmployees(long amount)
+    {
+        if (amount <= 0) return;
+
+        // totalDishes: use your real field type (int/long/BigInteger, etc.). long is typical.
+        totalDishes += amount;
+
+        // If other systems listen for dishes, invoke them here.
+        // e.g., OnDishesChanged?.Invoke(totalDishes);
+
+        // Update UI immediately on significant change
+        UpdateUI();
+    }
+
     public void OnModifierCountClicked() => TryUpgradeDishCount();
     public void OnModifierProfitClicked() => TryUpgradeProfit();
 
     // --- Getters ---
-    public int GetTotalDishes() => totalDishes;
+    public long GetTotalDishes() => totalDishes;
     public float GetTotalProfit() => totalProfit;
     public float GetProfitPerDish() => profitPerDish;
     public int GetDishCountIncrement() => dishCountIncrement;

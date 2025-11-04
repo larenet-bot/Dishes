@@ -1,9 +1,10 @@
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEditor;
+using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class EmployeeManager : MonoBehaviour
 {
@@ -19,6 +20,18 @@ public class EmployeeManager : MonoBehaviour
     [Header("Profit Tick")]
     [SerializeField] private float employeeProfitInterval = 1f;
     private float employeeProfitTimer = 0f;
+
+    // --- Dish conversion (profit -> dishes) ---
+    [Header("Dish Conversion")]
+    [Tooltip("How many dollars of employee profit correspond to 1 dish. Example: $2.00 profit == 1 dish => set to 2.0")]
+    [SerializeField] private float profitToDishInterval = 1f;
+
+    // Static, per-employee dish rates (dishes per second per ONE employee).
+    // These are computed ONCE from the base profitPerInterval and DO NOT change
+    // when upgrades multiply profit rates.
+    [SerializeField, ReadOnlyIfPlaying] private float intern_DishInterval = 0f;
+    [SerializeField, ReadOnlyIfPlaying] private float elephant_DishInterval = 0f;
+    [SerializeField, ReadOnlyIfPlaying] private float firetruck_DishInterval = 0f;
 
     [Header("Intern Employee UI")]
     [SerializeField] private TMP_Text internNameText;
@@ -66,6 +79,18 @@ public class EmployeeManager : MonoBehaviour
             employees.Add(new Employee("Elephant", 200f, 10f));
             employees.Add(new Employee("Firetruck", 1000f, 50f));
         }
+
+        // --- Compute static dish intervals ONCE from the base profitPerInterval ---
+        // Guard against invalid divisor
+        if (profitToDishInterval <= 0f) profitToDishInterval = 1f;
+
+        // We assume index 0=Intern, 1=Elephant, 2=Firetruck based on your current UI wiring.
+        if (employees.Count > 0) intern_DishInterval = employees[0].profitPerInterval / profitToDishInterval;
+        if (employees.Count > 1) elephant_DishInterval = employees[1].profitPerInterval / profitToDishInterval;
+        if (employees.Count > 2) firetruck_DishInterval = employees[2].profitPerInterval / profitToDishInterval;
+
+        // NOTE: These dish intervals are intentionally NOT touched again by upgrades.
+        // Upgrades may multiply e.profitPerInterval for PROFIT, but dish intervals remain fixed.
 
         if (internBuyButton) internBuyButton.onClick.AddListener(() => BuyEmployee(0));
         if (elephantBuyButton) elephantBuyButton.onClick.AddListener(() => BuyEmployee(1));
@@ -300,4 +325,70 @@ public class EmployeeManager : MonoBehaviour
 
         public float GetTotalProfitPerSecond() => profitPerInterval * count;
     }
+    // === Employee dish-rate accessors =========================================
+    // Call from ScoreManager to read dish rates without exposing your internals.
+    // Assumes you created these in EmployeeManager as per your last step:
+    //   intern_DishInterval, elephant_DishInterval, firetruck_DishInterval
+    // and that 'employees' list aligns by index (0,1,2). Adjust if needed.
+
+    public float GetDishIntervalForIndex(int i)
+    {
+        // Return the precomputed, static dish interval for the given employee index.
+        // If you add more employees, extend this switch (or convert to a List<float>).
+        switch (i)
+        {
+            case 0: return intern_DishInterval;
+            case 1: return elephant_DishInterval;
+            case 2: return firetruck_DishInterval;
+            default: return 0f;
+        }
+    }
+
+    public int GetEmployeeCountForIndex(int i)
+    {
+        if (i < 0 || i >= employees.Count) return 0;
+        return employees[i].count;
+    }
+
+    public int GetEmployeeTypeCount()
+    {
+        return employees != null ? employees.Count : 0;
+    }
+
+    /// <summary>
+    /// Sum of (dishInterval * count) across all employee types.
+    /// This is the *current* dishes per second your crew is producing.
+    /// </summary>
+    public float GetTotalDishesPerSecond()
+    {
+        float total = 0f;
+        int types = GetEmployeeTypeCount();
+        for (int i = 0; i < types; i++)
+        {
+            float di = GetDishIntervalForIndex(i);   // static dish interval (fixed)
+            int ct = GetEmployeeCountForIndex(i);  // live count
+            total += di * ct;
+        }
+        return total;
+    }
 }
+
+// Makes a serialized field read-only at runtime (play mode).
+public class ReadOnlyIfPlayingAttribute : PropertyAttribute { }
+
+#if UNITY_EDITOR
+[CustomPropertyDrawer(typeof(ReadOnlyIfPlayingAttribute))]
+public class ReadOnlyIfPlayingDrawer : PropertyDrawer
+{
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        bool prev = GUI.enabled;
+        if (Application.isPlaying) GUI.enabled = false;
+        EditorGUI.PropertyField(position, property, label, true);
+        GUI.enabled = prev;
+    }
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        => EditorGUI.GetPropertyHeight(property, label, true);
+}
+#endif

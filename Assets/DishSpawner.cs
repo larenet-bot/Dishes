@@ -22,7 +22,7 @@ public class DishSpawner : MonoBehaviour
         }
     }
 
-    public DishData GetRandomDish(int totalDishesCleaned)
+    public DishData GetRandomDish(long totalDishesCleaned)
     {
         // Unlock new dishes when threshold is reached
         foreach (var dish in allDishes)

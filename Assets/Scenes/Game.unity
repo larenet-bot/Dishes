@@ -7968,6 +7968,10 @@ MonoBehaviour:
     workSounds: []
     outputMixerGroup: {fileID: 0}
   employeeProfitInterval: 1
+  profitToDishInterval: 1000000
+  intern_DishInterval: 0
+  elephant_DishInterval: 0
+  firetruck_DishInterval: 0
   internNameText: {fileID: 1135278468}
   internCostText: {fileID: 1673178347}
   internCountText: {fileID: 37086849}
@@ -10582,6 +10586,9 @@ MonoBehaviour:
   allDishes:
   - {fileID: 11400000, guid: 3cd3f8425b8689d42809be67103a7277, type: 2}
   - {fileID: 11400000, guid: 62e32899bafb2c04fadba261be7cd053, type: 2}
+  employeeManager: {fileID: 1151283105}
+  enableEmployeeDishTick: 1
+  employeeDishUIRefresh: 0.25
 --- !u!4 &1535544643
 Transform:
   m_ObjectHideFlags: 0
