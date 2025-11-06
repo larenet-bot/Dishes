@@ -37,8 +37,7 @@ public class NoteSpawner : MonoBehaviour
         // if using custom list, copy
         if (!generateByBPM)
             noteTimes = new List<float>(customNoteTimes);
-        Vector3 testPos = new Vector3(0, 0, 0);
-        Instantiate(notePrefab, testPos, Quaternion.identity);
+        
     }
 
     void Update()
@@ -75,13 +74,17 @@ public class NoteSpawner : MonoBehaviour
     {
         noteTimes.Clear();
         if (songClip == null || songBPM <= 0f) return;
+
         float beatInterval = 60f / songBPM;
         float songLength = songClip.length;
 
-        // generate a note on every beat. you can easily change to subdivisions.
         for (float t = 0f; t < songLength; t += beatInterval)
-            noteTimes.Add(t);
+        {
+            if (t > timeAhead) // only spawn beats far enough into song
+                noteTimes.Add(t);
+        }
     }
+
 
     private void SpawnAtTime(float targetTime)
     {
@@ -92,7 +95,7 @@ public class NoteSpawner : MonoBehaviour
         spawnPos.z = 0; 
         GameObject g = Instantiate(notePrefab, spawnPos, Quaternion.identity, transform);
         Note note = g.GetComponent<Note>();
-        beatscroller scroller = g.GetComponent<beatscroller>();
+        BeatScroller scroller = g.GetComponent<BeatScroller>();
         if (note != null) note.lane = laneIndex;
         if (note != null) note.targetTime = targetTime;
         if (scroller != null)

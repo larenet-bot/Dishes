@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public bool startPlaying;
-    public beatscroller theBS;      // matches your beat scroller script
+    public BeatScroller theBS;      // matches your beat scroller script
     public AudioSource theMusic;    // uncomment this if you want the main music here
 
     private void Start()

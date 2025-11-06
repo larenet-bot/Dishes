@@ -10,4 +10,12 @@ public class Note : MonoBehaviour
 
     // optional: timestamp (seconds) when this note should arrive at the hit zone
     public float targetTime = 0f;
+    public void OnHit()
+    {
+        Destroy(gameObject);
+        //  add score/effects
+    }
+
+
 }
+
