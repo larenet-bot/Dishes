@@ -371,6 +371,13 @@ public class EmployeeManager : MonoBehaviour
         }
         return total;
     }
+    // --- TEST/DEV ONLY: add employees for a given index (free) ---
+    public void AddEmployees_Free(int index, int count)
+    {
+        if (index < 0 || index >= employees.Count || count == 0) return;
+        employees[index].count = Mathf.Max(0, employees[index].count + count);
+        UpdateEmployeeUI();
+    }
 }
 
 // Makes a serialized field read-only at runtime (play mode).

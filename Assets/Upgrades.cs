@@ -711,4 +711,98 @@ public class Upgrades : MonoBehaviour
             }
         }
     }
+    // --- TEST/DEV ONLY: set SOAP tier to an index (free or spend) ---
+    public void SetSoapTierIndex(int targetIndex, bool spend = false)
+    {
+        targetIndex = Mathf.Clamp(targetIndex, 0, soapTiers.Count - 1);
+        if (targetIndex == currentSoapIndex) { UpdateSoapMenuUI(); return; }
+
+        // move upward only; ignoring downgrades to keep math simple
+        int from = currentSoapIndex;
+        int to = Mathf.Max(targetIndex, from);
+
+        float totalCost = 0f;
+        float cumulativeMultiplier = 1f;
+
+        for (int i = from + 1; i <= to; i++)
+        {
+            totalCost += soapTiers[i].cost;
+            cumulativeMultiplier *= soapTiers[i].multiplier;
+        }
+
+        if (spend && scoreManager != null && scoreManager.GetTotalProfit() < totalCost) return;
+        if (spend && scoreManager != null) scoreManager.SubtractProfit(totalCost, isPurchase: true);
+
+        // apply the *net* multiplier once
+        if (scoreManager != null) scoreManager.MultiplyDishProfit(cumulativeMultiplier);
+        if (employeeManager != null) employeeManager.MultiplyEmployeeProfit(cumulativeMultiplier);
+
+        currentSoapIndex = to;
+        UpdateSoapMenuUI();
+    }
+
+    // --- TEST/DEV ONLY: set GLOVE tier to an index (free or spend) ---
+    public void SetGloveTierIndex(int targetIndex, bool spend = false)
+    {
+        targetIndex = Mathf.Clamp(targetIndex, 0, gloveTiers.Count - 1);
+        if (targetIndex == currentGloveIndex) { UpdateGloveMenuUI(); return; }
+
+        int from = currentGloveIndex;
+        int to = Mathf.Max(targetIndex, from);
+
+        float totalCost = 0f;
+        int addDishesDelta = gloveTiers[to].dishesAdded - gloveTiers[from].dishesAdded;
+
+        // enforce required dishes only if spending (mirrors normal flow)
+        if (spend && scoreManager != null && scoreManager.GetTotalDishes() < gloveTiers[to].requiredDishes) return;
+
+        for (int i = from + 1; i <= to; i++) totalCost += gloveTiers[i].cost;
+
+        if (spend && scoreManager != null && scoreManager.GetTotalProfit() < totalCost) return;
+        if (spend && scoreManager != null) scoreManager.SubtractProfit(totalCost, isPurchase: true);
+
+        if (addDishesDelta > 0 && scoreManager != null)
+            scoreManager.IncreaseDishCountIncrement(addDishesDelta);
+
+        currentGloveIndex = to;
+        UpdateGloveMenuUI();
+    }
+
+    // --- TEST/DEV ONLY: set SPONGE tier to an index (free or spend) ---
+    public void SetSpongeTierIndex(int targetIndex, bool spend = false)
+    {
+        targetIndex = Mathf.Clamp(targetIndex, 0, spongeTiers.Count - 1);
+        if (targetIndex == currentSpongeIndex) { UpdateSpongeMenuUI(); return; }
+
+        int from = currentSpongeIndex;
+        int to = Mathf.Max(targetIndex, from);
+
+        float totalCost = 0f;
+
+        // enforce required dishes only if spending
+        if (spend && scoreManager != null && scoreManager.GetTotalDishes() < spongeTiers[to].requiredDishes) return;
+
+        for (int i = from + 1; i <= to; i++) totalCost += spongeTiers[i].cost;
+
+        if (spend && scoreManager != null && scoreManager.GetTotalProfit() < totalCost) return;
+        if (spend && scoreManager != null) scoreManager.SubtractProfit(totalCost, isPurchase: true);
+
+        currentSpongeIndex = to;
+        UpdateSpongeMenuUI();
+
+        // mimic OnSpongeUpgradeButton side-effects so clickers pick up the new value immediately
+        try
+        {
+            if (scoreManager != null && scoreManager.activeDish != null)
+                scoreManager.activeDish.upgrades = this;
+
+            var allClickers = FindObjectsByType<DishClicker>(FindObjectsSortMode.None);
+            for (int i = 0; i < allClickers.Length; i++)
+                if (allClickers[i] != null) allClickers[i].upgrades = this;
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning($"[Upgrades.SetSpongeTierIndex] Apply failed: {ex.Message}");
+        }
+    }
 }

@@ -256,4 +256,19 @@ public class ScoreManager : MonoBehaviour
             profitText.text = $"Profit: {BigNumberFormatter.FormatMoney((double)totalProfit)}";
         }
     }
+
+    // --- TEST/DEV ONLY: add dishes directly (free) ---
+    public void AddDishes_ForTesting(long amount)
+    {
+        if (amount <= 0) return;
+        // Keep ScoreManager authoritative over dishes
+        // and keep UI consistent.
+        var newTotal = GetTotalDishes() + amount;
+
+        // private field is 'totalDishes' – set via backing logic
+        // since it's private, we reuse the UI method after changing.
+        // (We’re inside the class, so we can set directly.)
+        totalDishes = newTotal;
+        UpdateUI();
+    }
 }
