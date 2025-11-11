@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BubbleClickDestroy : MonoBehaviour
 {
@@ -15,6 +16,13 @@ public class BubbleClickDestroy : MonoBehaviour
 
     void OnMouseDown()
     {
+        //Block while game is paused
+        if (Time.timeScale == 0f) return;
+
+        //Block if clicking through the console/UI
+        //if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+
+
         averageProfit = ProfitRate.Instance.AverageProfit;
         reward = baseReward + (averageProfit * multiplier);
         ScoreManager.Instance.AddBubbleReward(reward);
