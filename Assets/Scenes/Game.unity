@@ -155,7 +155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.539978, y: -1.9099731}
+  m_AnchoredPosition: {x: 0.54003906, y: -1.9099731}
   m_SizeDelta: {x: -741.88, y: -557.09}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &487687
@@ -1373,9 +1373,9 @@ RectTransform:
   m_Father: {fileID: 141039822}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: -17}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &135003863
 MonoBehaviour:
@@ -1698,7 +1698,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.96300006, y: 0.92385197}
   m_AnchorMax: {x: 0.98, y: 0.95}
-  m_AnchoredPosition: {x: 0.1671753, y: -0.000061035156}
+  m_AnchoredPosition: {x: 0.16723633, y: -0.000061035156}
   m_SizeDelta: {x: -0.33422852, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &141039823
@@ -4481,7 +4481,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -0.00006484985, y: 0.0004114243}
-  m_SizeDelta: {x: 0, y: 490.81}
+  m_SizeDelta: {x: -2.6937256, y: 490.81}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &551640265
 MonoBehaviour:
@@ -7341,10 +7341,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c40b9972969f0f40849edbbcaff4b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laneKeys: 14010000180100001901000013010000
-  hitWindow: 0.3
-  scoreText: {fileID: 1845526352}
-  manager: {fileID: 1678069137}
+  keys: 
+  hitZones: []
 --- !u!1 &1001263818
 GameObject:
   m_ObjectHideFlags: 0
@@ -8312,8 +8310,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2049589609}
   m_HandleRect: {fileID: 2049589607}
   m_Direction: 2
-  m_Value: 0.9999991
-  m_Size: 0
+  m_Value: 0.9999992
+  m_Size: 0.00026823586
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8334,9 +8332,9 @@ RectTransform:
   m_Father: {fileID: 141039822}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 0}
+  m_SizeDelta: {x: 20, y: -17}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1121540046
 MonoBehaviour:
@@ -8809,27 +8807,30 @@ MonoBehaviour:
     count: 0
     employeeImageObject: {fileID: 218372023}
     employeeImageGreyObject: {fileID: 370116017}
-    buySounds: []
+    buySounds:
+    - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
     workSounds: []
-    outputMixerGroup: {fileID: 0}
+    outputMixerGroup: {fileID: 8994725383216735636, guid: e30935e55bf325e448023fdd8451a615, type: 2}
   - name: Elephant
     cost: 200
     profitPerInterval: 10
     count: 0
     employeeImageObject: {fileID: 347152624}
     employeeImageGreyObject: {fileID: 344522741}
-    buySounds: []
+    buySounds:
+    - {fileID: 8300000, guid: 7ea08711ec9dbc74c86766f5fd894b01, type: 3}
     workSounds: []
-    outputMixerGroup: {fileID: 0}
+    outputMixerGroup: {fileID: 8994725383216735636, guid: e30935e55bf325e448023fdd8451a615, type: 2}
   - name: Firetruck
     cost: 1000
     profitPerInterval: 50
     count: 0
     employeeImageObject: {fileID: 829550723}
     employeeImageGreyObject: {fileID: 1122979419}
-    buySounds: []
+    buySounds:
+    - {fileID: 8300000, guid: 1fc629ddcef30ba40a22a05d3a1e8ba8, type: 3}
     workSounds: []
-    outputMixerGroup: {fileID: 0}
+    outputMixerGroup: {fileID: 8994725383216735636, guid: e30935e55bf325e448023fdd8451a615, type: 2}
   employeeProfitInterval: 1
   profitToDishInterval: 1000000
   intern_DishInterval: 0
@@ -9303,7 +9304,7 @@ RectTransform:
   m_Father: {fileID: 1817874987}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -11664,7 +11665,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1471011463
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14272,9 +14273,9 @@ RectTransform:
   m_Father: {fileID: 141039822}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_SizeDelta: {x: -17, y: 20}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1951910382
 MonoBehaviour:
@@ -14947,8 +14948,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1137537523}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.9997307}
+  m_AnchorMax: {x: 1, y: 0.9999991}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}

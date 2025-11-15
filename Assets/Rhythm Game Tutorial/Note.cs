@@ -2,20 +2,33 @@ using UnityEngine;
 
 public class Note : MonoBehaviour
 {
-    // lane index this note belongs to (0..n)
-    public int lane = 0;
+    public int lane;            // Which lane this note belongs to
+    public float speed = 5f;
 
-    // flagged when note is hit to avoid double-hit
-    [HideInInspector] public bool hit = false;
-
-    // optional: timestamp (seconds) when this note should arrive at the hit zone
-    public float targetTime = 0f;
-    public void OnHit()
+    void Update()
     {
-        Destroy(gameObject);
-        //  add score/effects
+        transform.Translate(Vector3.down * speed * Time.deltaTime);
+
+        // Destroy if offscreen
+        if (transform.position.y < -6f)
+            Destroy(gameObject);
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("HitZone"))
+        {
+            // Ready to be hit
+        }
+    }
 
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("HitZone"))
+        {
+            // Missed the note
+            Destroy(gameObject);
+        }
+    }
 }
 

@@ -5,84 +5,33 @@ using TMPro;
 // Attach to the hit line GameObject (with a trigger collider)
 public class HitZone : MonoBehaviour
 {
-    public KeyCode[] laneKeys = new KeyCode[] { KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F };
-    public float hitWindow = 0.3f; // seconds tolerance around perfect
-    public TextMeshProUGUI scoreText;
-    public RhythmGameManager manager; // assign
-
-    // notes currently overlapping the zone
-    private List<Note> overlapping = new List<Note>();
-    private int score = 0;
+    public KeyCode[] keys; // e.g. Left, Down, Up, Right
+    public Transform[] hitZones; // 1 per lane
 
     void Update()
     {
-        for (int i = 0; i < laneKeys.Length; i++)
+        for (int i = 0; i < keys.Length; i++)
         {
-            if (Input.GetKeyDown(laneKeys[i]))
+            if (Input.GetKeyDown(keys[i]))
             {
-                TryHitLane(i);
+                CheckHit(i);
             }
         }
     }
 
-    private void TryHitLane(int laneIndex)
+    void CheckHit(int laneIndex)
     {
-        // find best candidate in lane
-        Note best = null;
-        float bestDelta = float.MaxValue;
+        Collider2D note = Physics2D.OverlapBox(
+            hitZones[laneIndex].position,
+            new Vector2(0.8f, 0.4f),  // width, height of detection
+            0f,
+            LayerMask.GetMask("Notes")
+        );
 
-        float songTime = manager.GetSongTime();
-
-        foreach (Note n in overlapping)
+        if (note != null)
         {
-            if (n == null || n.lane != laneIndex || n.hit) continue;
-            float delta = Mathf.Abs(n.targetTime - songTime);
-            if (delta < bestDelta)
-            {
-                bestDelta = delta;
-                best = n;
-            }
+            Destroy(note.gameObject);
+            Debug.Log($"Hit note in lane {laneIndex}!");
         }
-
-        if (best != null && bestDelta <= hitWindow)
-        {
-            OnHit(best, bestDelta);
-        }
-        else
-        {
-            OnMiss();
-        }
-    }
-
-    private void OnHit(Note n, float delta)
-    {
-        n.hit = true;
-        score += 100; // basic scoring
-        UpdateScoreText();
-        manager.NoteHit(n, delta);
-        Destroy(n.gameObject);
-    }
-
-    private void OnMiss()
-    {
-        manager.NoteMissed();
-        // optional - show feedback
-    }
-
-    private void UpdateScoreText()
-    {
-        if (scoreText != null) scoreText.text = "Score: " + score;
-    }
-
-    private void OnTriggerEnter2D(Collider2D col)
-    {
-        Note n = col.GetComponent<Note>();
-        if (n != null) overlapping.Add(n);
-    }
-
-    private void OnTriggerExit2D(Collider2D col)
-    {
-        Note n = col.GetComponent<Note>();
-        if (n != null) overlapping.Remove(n);
     }
 }

@@ -44,7 +44,7 @@ public class NoteSpawner : MonoBehaviour
     {
         if (spawning && musicSource != null)
         {
-            Debug.Log($"Spawner running... time={musicSource.time:F2}");
+            //Debug.Log($"Spawner running... time={musicSource.time:F2}");
         }
         if (!spawning || musicSource == null || nextIndex >= noteTimes.Count) return;
 
@@ -61,7 +61,7 @@ public class NoteSpawner : MonoBehaviour
     {
         nextIndex = 0;
         spawning = true;
-        Debug.Log($"Spawner started! noteTimes count = {noteTimes.Count}");
+        //Debug.Log($"Spawner started! noteTimes count = {noteTimes.Count}");
     }
 
 
@@ -88,21 +88,31 @@ public class NoteSpawner : MonoBehaviour
 
     private void SpawnAtTime(float targetTime)
     {
+
+
         int laneIndex = Random.Range(0, laneSpawnPoints.Length);
         Transform spawnPoint = laneSpawnPoints[laneIndex];
         Vector3 spawnPos = spawnPoint.position + new Vector3(0, spawnYOffset, 0);
-        Debug.Log($"Spawning note at lane {laneIndex}, pos={spawnPos}");
+        //Debug.Log($"Spawning note at lane {laneIndex}, pos={spawnPos}");
         spawnPos.z = 0; 
         GameObject g = Instantiate(notePrefab, spawnPos, Quaternion.identity, transform);
         Note note = g.GetComponent<Note>();
         BeatScroller scroller = g.GetComponent<BeatScroller>();
         if (note != null) note.lane = laneIndex;
-        if (note != null) note.targetTime = targetTime;
+        //if (note != null) note.targetTime = targetTime;
         if (scroller != null)
         {
             scroller.scrollSpeed = noteScrollSpeed;
             scroller.hasStarted = true;
         }
+       
+
+        RectTransform rt = g.GetComponent<RectTransform>();
+        if (rt != null)
+        {
+            rt.sizeDelta = new Vector2(100f, 100f); // customize size
+        }
+
     }
 
 
