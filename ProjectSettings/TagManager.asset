@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Activator
+  - HitBox
   layers:
   - Default
   - TransparentFX

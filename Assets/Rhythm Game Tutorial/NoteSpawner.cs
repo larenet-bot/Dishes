@@ -5,23 +5,33 @@ public class NoteSpawner : MonoBehaviour
 {
     [Header("Prefab / Spawn")]
     public GameObject notePrefab;
-    public Transform[] laneSpawnPoints; // assign transforms for each lane (x,y spawn positions)
-    public float spawnYOffset = 0f; // additional offset if needed
+    public Transform[] laneSpawnPoints;
+    public float spawnYOffset = 0f;
 
-    [Header("Timing")]
+    [Header("Song / Audio")]
     public AudioSource musicSource;
     public AudioClip songClip;
-    public float songBPM = 120f;
-    public bool generateByBPM = true;
-    public List<float> customNoteTimes = new List<float>(); // seconds
+
+    [Header("Chart File (.txt)")]
+    public TextAsset chartFile;   // <-- assign your .txt file here
 
     [Header("Spawn Settings")]
-    public float timeAhead = 2.0f; // how many seconds before targetTime to spawn the note
-    public float noteScrollSpeed = 5f; // passed to BeatScroller on spawn
+    public float timeAhead = 2.0f;     // spawn notes early so they scroll perfectly
+    public float noteScrollSpeed = 5f;
 
-    private List<float> noteTimes = new List<float>();
+    // ---------------------------------------------------------
+
+    private class ParsedNote
+    {
+        public float time;
+        public int lane;
+    }
+
+    private List<ParsedNote> parsedNotes = new List<ParsedNote>();
     private int nextIndex = 0;
     private bool spawning = false;
+
+    // ---------------------------------------------------------
 
     void Start()
     {
@@ -31,89 +41,120 @@ public class NoteSpawner : MonoBehaviour
             musicSource.clip = songClip;
         }
 
-        if (generateByBPM)
-            GenerateByBPM();
-
-        // if using custom list, copy
-        if (!generateByBPM)
-            noteTimes = new List<float>(customNoteTimes);
-        
+        LoadChart();
     }
+
+    // ---------------------------------------------------------
+    // Load .txt chart file
+    // ---------------------------------------------------------
+    private void LoadChart()
+    {
+        parsedNotes.Clear();
+        nextIndex = 0;
+
+        if (chartFile == null)
+        {
+            Debug.LogError("No chart file assigned to NoteSpawner!");
+            return;
+        }
+
+        string[] lines = chartFile.text.Split('\n');
+
+        foreach (string raw in lines)
+        {
+            string line = raw.Trim();
+
+            // Skip comments and empty lines
+            if (line.StartsWith("#") || string.IsNullOrEmpty(line))
+                continue;
+
+            string[] parts = line.Split(' ');
+
+            if (parts.Length < 2)
+                continue;
+
+            float time;
+            int lane;
+
+            if (!float.TryParse(parts[0], out time))
+            {
+                Debug.LogWarning($"Invalid time value in chart: '{parts[0]}'");
+                continue;
+            }
+
+            if (!int.TryParse(parts[1], out lane))
+            {
+                Debug.LogWarning($"Invalid lane value in chart: '{parts[1]}'");
+                continue;
+            }
+
+            if (lane < 0 || lane >= laneSpawnPoints.Length)
+            {
+                Debug.LogWarning($"Lane {lane} out of range! Skipping.");
+                continue;
+            }
+
+            parsedNotes.Add(new ParsedNote { time = time, lane = lane });
+        }
+
+        Debug.Log($"Loaded {parsedNotes.Count} notes from '{chartFile.name}'.");
+    }
+
+    // ---------------------------------------------------------
 
     void Update()
     {
-        if (spawning && musicSource != null)
-        {
-            //Debug.Log($"Spawner running... time={musicSource.time:F2}");
-        }
-        if (!spawning || musicSource == null || nextIndex >= noteTimes.Count) return;
+        if (!spawning || musicSource == null) return;
+        if (nextIndex >= parsedNotes.Count) return;
 
         float songTime = musicSource.time;
-        // spawn when current time reaches (target - timeAhead)
-        if (songTime >= noteTimes[nextIndex] - timeAhead)
+
+        ParsedNote note = parsedNotes[nextIndex];
+
+        // Time to spawn?
+        if (songTime >= note.time - timeAhead)
         {
-            SpawnAtTime(noteTimes[nextIndex]);
+            SpawnSpecific(note.lane);
             nextIndex++;
         }
     }
+
+    // ---------------------------------------------------------
 
     public void StartSpawning()
     {
         nextIndex = 0;
         spawning = true;
-        //Debug.Log($"Spawner started! noteTimes count = {noteTimes.Count}");
+        Debug.Log("Spawner started!");
     }
-
 
     public void StopSpawning()
     {
         spawning = false;
     }
 
-    private void GenerateByBPM()
+    // ---------------------------------------------------------
+    // Spawn a note at a specific lane
+    // ---------------------------------------------------------
+    private void SpawnSpecific(int lane)
     {
-        noteTimes.Clear();
-        if (songClip == null || songBPM <= 0f) return;
-
-        float beatInterval = 60f / songBPM;
-        float songLength = songClip.length;
-
-        for (float t = 0f; t < songLength; t += beatInterval)
-        {
-            if (t > timeAhead) // only spawn beats far enough into song
-                noteTimes.Add(t);
-        }
-    }
-
-
-    private void SpawnAtTime(float targetTime)
-    {
-
-
-        int laneIndex = Random.Range(0, laneSpawnPoints.Length);
-        Transform spawnPoint = laneSpawnPoints[laneIndex];
+        Transform spawnPoint = laneSpawnPoints[lane];
         Vector3 spawnPos = spawnPoint.position + new Vector3(0, spawnYOffset, 0);
-        //Debug.Log($"Spawning note at lane {laneIndex}, pos={spawnPos}");
-        spawnPos.z = 0; 
+        spawnPos.z = 0;
+
         GameObject g = Instantiate(notePrefab, spawnPos, Quaternion.identity, transform);
-        Note note = g.GetComponent<Note>();
+
+        // Set scroll speed
         BeatScroller scroller = g.GetComponent<BeatScroller>();
-        if (note != null) note.lane = laneIndex;
-        //if (note != null) note.targetTime = targetTime;
         if (scroller != null)
         {
             scroller.scrollSpeed = noteScrollSpeed;
             scroller.hasStarted = true;
         }
-       
 
-        RectTransform rt = g.GetComponent<RectTransform>();
-        if (rt != null)
-        {
-            rt.sizeDelta = new Vector2(100f, 100f); // customize size
-        }
-
+        // Optional: set lane on Note component
+        Note note = g.GetComponent<Note>();
+        if (note != null)
+            note.lane = lane;
     }
-
-
 }

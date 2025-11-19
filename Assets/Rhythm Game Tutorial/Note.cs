@@ -2,33 +2,25 @@ using UnityEngine;
 
 public class Note : MonoBehaviour
 {
-    public int lane;            // Which lane this note belongs to
-    public float speed = 5f;
+    public int lane;
+    public bool canBeHit;
 
-    void Update()
+    // Add this method to fix CS1061
+    public void Hit()
     {
-        transform.Translate(Vector3.down * speed * Time.deltaTime);
-
-        // Destroy if offscreen
-        if (transform.position.y < -6f)
-            Destroy(gameObject);
+        // Implement note hit logic here (e.g., destroy note, play sound, etc.)
+        Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (other.CompareTag("HitZone"))
-        {
-            // Ready to be hit
-        }
+        if (collision.CompareTag("HitBox"))
+            canBeHit = true;
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (other.CompareTag("HitZone"))
-        {
-            // Missed the note
-            Destroy(gameObject);
-        }
+        if (collision.CompareTag("HitBox"))
+            canBeHit = false;
     }
 }
-
