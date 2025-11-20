@@ -15,7 +15,9 @@ public static class ChartParser
 
         foreach (string line in lines)
         {
+
             string trimmed = line.Trim();
+            if (trimmed.StartsWith("#")) continue;
 
             // Skip full-line comments
             if (trimmed.StartsWith("//")) continue;

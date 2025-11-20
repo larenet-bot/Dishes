@@ -49,12 +49,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollSpeed: 5
   hasStarted: 0
-  moveDirection: {x: 0, y: -1, z: 0}
-  destroyY: -5
-  hitY: 0
+  hitY: -2
   hitTolerance: 0.5
   lane: 0
-  wasHit: 0
 --- !u!61 &6326515386848086667
 BoxCollider2D:
   m_ObjectHideFlags: 0

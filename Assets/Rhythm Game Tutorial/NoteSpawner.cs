@@ -1,14 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class NoteSpawner : MonoBehaviour
 {
+
     [Header("Prefab / Spawn")]
     public GameObject notePrefab;
     public Transform[] laneSpawnPoints;
     public float spawnYOffset = 0f;
 
     [Header("Song / Audio")]
+    public AudioMixerGroup musicGroup;
     public AudioSource musicSource;
     public AudioClip songClip;
 
@@ -39,6 +42,7 @@ public class NoteSpawner : MonoBehaviour
         {
             musicSource = gameObject.AddComponent<AudioSource>();
             musicSource.clip = songClip;
+            musicSource.outputAudioMixerGroup = musicGroup; // << IMPORTANT
         }
 
         LoadChart();

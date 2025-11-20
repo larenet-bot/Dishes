@@ -5,10 +5,17 @@ public class Note : MonoBehaviour
     public int lane;
     public bool canBeHit;
 
-    // Add this method to fix CS1061
+    //private LaneInput laneInput;
+
+    void Start()
+    {
+        // Find the correct lane and register this note with it
+       // laneInput = Object.FindFirstObjectByType<LaneInputManager>().GetLane(lane);
+       // laneInput.RegisterNote(this);
+    }
+
     public void Hit()
     {
-        // Implement note hit logic here (e.g., destroy note, play sound, etc.)
         Destroy(gameObject);
     }
 
