@@ -159,6 +159,10 @@ public class NoteSpawner : MonoBehaviour
         // Optional: set lane on Note component
         Note note = g.GetComponent<Note>();
         if (note != null)
+        {
             note.lane = lane;
+            NoteRegistry.RegisterNote(lane, note);
+        }
+
     }
 }

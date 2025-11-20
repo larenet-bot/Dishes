@@ -2,41 +2,45 @@ using UnityEngine;
 
 public class LaneKey : MonoBehaviour
 {
-    public KeyCode key;
-    public int laneId;
+    public int laneIndex;
+    public KeyCode hitKey;
+    public Transform hitZone;
+    public float hitWindow = 0.2f;
 
     void Update()
     {
-        if (Input.GetKeyDown(key))
+        if (Input.GetKeyDown(hitKey))
         {
-            TryHitLane();
+            Debug.Log($"Lane {laneIndex} key pressed ({hitKey})");
+            TryHit();
         }
     }
 
-    void TryHitLane()
+
+    private void TryHit()
     {
-        // Use FindObjectsByType instead of FindObjectsOfType to fix CS0618
-        BeatScroller[] notes = Object.FindObjectsByType<BeatScroller>(FindObjectsSortMode.None);
+        Note nextNote = NoteRegistry.GetNextNote(laneIndex);
 
-        BeatScroller best = null;
-        float bestDist = float.MaxValue;
-
-        foreach (var note in notes)
+        if (nextNote == null)
         {
-            if (note.lane != laneId) continue;
-
-            float dist = Mathf.Abs(note.transform.position.y - note.hitY);
-
-            if (dist < bestDist)
-            {
-                bestDist = dist;
-                best = note;
-            }
+            Debug.Log($"Lane {laneIndex}: HIT PRESSED but NO notes available.");
+            return;
         }
 
-        if (best != null && best.TryHit())
+        float dist = Mathf.Abs(nextNote.transform.position.y - hitZone.position.y);
+
+        Debug.Log($"Lane {laneIndex}: Attempting to hit note {nextNote.GetInstanceID()} | dist = {dist}");
+
+        if (dist <= hitWindow)
         {
-            Debug.Log($"HIT lane {laneId}");
+            Debug.Log($"Lane {laneIndex}: SUCCESS hit note {nextNote.GetInstanceID()}");
+            nextNote.Hit();
+            NoteRegistry.PopNote(laneIndex);
+        }
+        else
+        {
+            Debug.Log($"Lane {laneIndex}: MISS — note {nextNote.GetInstanceID()} out of timing window.");
         }
     }
+
 }

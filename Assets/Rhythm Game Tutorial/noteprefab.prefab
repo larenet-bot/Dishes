@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8156649255393182787}
   - component: {fileID: 6326515386848086667}
   - component: {fileID: 8995528967069430823}
+  - component: {fileID: -7771621409619194591}
   m_Layer: 8
   m_Name: noteprefab
   m_TagString: Untagged
@@ -49,9 +50,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollSpeed: 5
   hasStarted: 0
-  hitY: -2
-  hitTolerance: 0.5
-  lane: 0
 --- !u!61 &6326515386848086667
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -82,7 +80,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -125,6 +123,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-7771621409619194591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2527948819576022430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdcb59624ded2a643a482faa4390accb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lane: 0
+  canBeHit: 0
 --- !u!1 &6645591648690332393
 GameObject:
   m_ObjectHideFlags: 0

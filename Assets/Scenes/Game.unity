@@ -3602,8 +3602,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5d96a811d3b844fb0295ab7adebf96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 274
-  laneId: 2
+  laneIndex: 2
+  hitKey: 274
+  hitZone: {fileID: 916176112}
+  hitWindow: 1
 --- !u!1 &454462226
 GameObject:
   m_ObjectHideFlags: 0
@@ -3809,8 +3811,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5d96a811d3b844fb0295ab7adebf96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 273
-  laneId: 1
+  laneIndex: 1
+  hitKey: 273
+  hitZone: {fileID: 1500674363}
+  hitWindow: 1
 --- !u!1 &467942471
 GameObject:
   m_ObjectHideFlags: 0
@@ -8119,8 +8123,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5d96a811d3b844fb0295ab7adebf96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 275
-  laneId: 3
+  laneIndex: 3
+  hitKey: 275
+  hitZone: {fileID: 2029921234}
+  hitWindow: 1
 --- !u!1 &1069080868
 GameObject:
   m_ObjectHideFlags: 0
@@ -12656,8 +12662,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5d96a811d3b844fb0295ab7adebf96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 276
-  laneId: 0
+  laneIndex: 0
+  hitKey: 276
+  hitZone: {fileID: 748756157}
+  hitWindow: 1
 --- !u!1 &1673178345
 GameObject:
   m_ObjectHideFlags: 0
