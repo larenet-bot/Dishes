@@ -46,19 +46,28 @@ public class NoteSpawner : MonoBehaviour
         }
 
         LoadChart();
+        Debug.Log("First note time: " + parsedNotes[0].time);
     }
 
     // ---------------------------------------------------------
     // Load .txt chart file
     // ---------------------------------------------------------
+   // private float defaultBPM = 120f;
+
+    private class BPMChange
+    {
+        public float beat;
+        public float bpm;
+    }
+
     private void LoadChart()
     {
         parsedNotes.Clear();
         nextIndex = 0;
 
-        if (chartFile == null)
+        if (!chartFile)
         {
-            Debug.LogError("No chart file assigned to NoteSpawner!");
+            Debug.LogError("No chart file assigned!");
             return;
         }
 
@@ -68,54 +77,117 @@ public class NoteSpawner : MonoBehaviour
         {
             string line = raw.Trim();
 
-            // Skip comments and empty lines
-            if (line.StartsWith("#") || string.IsNullOrEmpty(line))
-                continue;
+            if (string.IsNullOrEmpty(line)) continue;
+            if (line.StartsWith("[")) continue;
 
-            string[] parts = line.Split(' ');
-
-            if (parts.Length < 2)
-                continue;
-
-            float time;
-            int lane;
-
-            if (!float.TryParse(parts[0], out time))
+            string[] parts = line.Split(':');
+            if (parts.Length < 5)
             {
-                Debug.LogWarning($"Invalid time value in chart: '{parts[0]}'");
+                Debug.LogWarning("Invalid line: " + line);
                 continue;
             }
 
-            if (!int.TryParse(parts[1], out lane))
+            // ----  trim the time string first ----
+            string timeString = parts[0].Trim();
+
+            // ----  explicitly skip NaN ----
+            if (timeString.Equals("NaN", System.StringComparison.OrdinalIgnoreCase))
             {
-                Debug.LogWarning($"Invalid lane value in chart: '{parts[1]}'");
+                Debug.Log("Skipping NaN timestamp line: " + line);
+                continue;
+            }
+
+            // ----  TryParse AFTER trimming ----
+            if (!float.TryParse(timeString, out float timeMs))
+            {
+                Debug.LogWarning("Skipping invalid time: '" + timeString + "'");
+                continue;
+            }
+
+            float timeSec = timeMs / 1000f;
+
+            // ---- LANE ----
+           
+            if (!int.TryParse(parts[3].Trim(), out int lane))
+            {
+                Debug.LogWarning("Invalid lane: " + parts[3]);
                 continue;
             }
 
             if (lane < 0 || lane >= laneSpawnPoints.Length)
             {
-                Debug.LogWarning($"Lane {lane} out of range! Skipping.");
+                Debug.LogWarning("Lane out of range: " + lane);
                 continue;
             }
 
-            parsedNotes.Add(new ParsedNote { time = time, lane = lane });
+
+            parsedNotes.Add(new ParsedNote
+            {
+                time = timeSec,
+                lane = lane
+            });
         }
 
-        Debug.Log($"Loaded {parsedNotes.Count} notes from '{chartFile.name}'.");
+        // Remove any accidental NaN entries (safety)
+        parsedNotes.RemoveAll(n => float.IsNaN(n.time));
+
+        // Sort only valid notes
+        parsedNotes.Sort((a, b) => a.time.CompareTo(b.time));
+
+        Debug.Log($"Loaded {parsedNotes.Count} notes (after removing NaN lines).");
+    }
+
+
+    private float ConvertBeatToSeconds(float beat, List<BPMChange> bpmChanges)
+    {
+        float seconds = 0f;
+
+        for (int i = 0; i < bpmChanges.Count; i++)
+        {
+            BPMChange curr = bpmChanges[i];
+            BPMChange next = (i + 1 < bpmChanges.Count) ? bpmChanges[i + 1] : null;
+
+            float bpm = curr.bpm;
+
+            if (next != null && beat >= curr.beat && beat < next.beat)
+            {
+                // Inside this BPM range
+                return seconds + (beat - curr.beat) * (60f / bpm);
+            }
+
+            if (next != null)
+            {
+                // Add full section
+                float sectionBeats = next.beat - curr.beat;
+                seconds += sectionBeats * (60f / bpm);
+            }
+            else
+            {
+                // Last section
+                return seconds + (beat - curr.beat) * (60f / bpm);
+            }
+        }
+
+        return seconds;
     }
 
     // ---------------------------------------------------------
 
     void Update()
     {
-        if (!spawning || musicSource == null) return;
-        if (nextIndex >= parsedNotes.Count) return;
+        if (!spawning || musicSource == null)
+            return;
+
+        if (nextIndex >= parsedNotes.Count)
+            return;
 
         float songTime = musicSource.time;
 
         ParsedNote note = parsedNotes[nextIndex];
 
-        // Time to spawn?
+        // Debug AFTER checking bounds
+        // Debug.Log("songTime=" + songTime + " nextNote=" + note.time);
+
         if (songTime >= note.time - timeAhead)
         {
             SpawnSpecific(note.lane);
@@ -123,14 +195,20 @@ public class NoteSpawner : MonoBehaviour
         }
     }
 
+
     // ---------------------------------------------------------
 
     public void StartSpawning()
     {
         nextIndex = 0;
         spawning = true;
+
+        if (musicSource != null)
+            musicSource.Play();
+
         Debug.Log("Spawner started!");
     }
+
 
     public void StopSpawning()
     {
@@ -163,6 +241,8 @@ public class NoteSpawner : MonoBehaviour
             note.lane = lane;
             NoteRegistry.RegisterNote(lane, note);
         }
+        Debug.Log("Spawning note at lane " + lane + " time=" + musicSource.time);
+
 
     }
 }

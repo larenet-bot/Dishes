@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6326515386848086667}
   - component: {fileID: 8995528967069430823}
   - component: {fileID: -7771621409619194591}
+  - component: {fileID: 1452953662178065906}
   m_Layer: 8
   m_Name: noteprefab
   m_TagString: Untagged
@@ -94,7 +95,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
 --- !u!50 &8995528967069430823
 Rigidbody2D:
@@ -137,6 +138,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lane: 0
   canBeHit: 0
+--- !u!114 &1452953662178065906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2527948819576022430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0bfe4d2d1aa7e54fad3cf1691a1358b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyY: -2.5
 --- !u!1 &6645591648690332393
 GameObject:
   m_ObjectHideFlags: 0
