@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
@@ -8,53 +8,109 @@ using UnityEngine.UI;
 
 public class EmployeeManager : MonoBehaviour
 {
-    [Header("Reference to ScoreManager")]
-    [SerializeField] private ScoreManager scoreManager;
+    [Serializable]
+    public class EmployeeUpgradeTier
+    {
+        public string upgradeName;
+        [TextArea] public string description;
+        public Sprite icon;
+        [Tooltip("Cost of this upgrade tier.")]
+        public float cost = 100f;
+    }
 
-    [Header("Audio")]
+    [Serializable]
+    public class EmployeeDefinition
+    {
+        [Header("Config")]
+        public string employeeName;
+        [TextArea] public string description;
+
+        [Tooltip("Starting cost for this employee.")]
+        public float baseCost = 50f;
+
+        [Tooltip("Cost multiplier applied every time you buy one.")]
+        public float costMultiplier = 1.15f;
+
+        [Tooltip("Dishes this employee completes per second (per one employee).")]
+        public float dishesPerSecond = 0.5f;
+
+        [Tooltip("Starting debuff applied to profit. 0.1 = 10% of dish value.")]
+        public float startingDebuff = 0.1f;
+
+        [Tooltip("How much the debuff increases per upgrade. Default 0.1 = +10%.")]
+        public float debuffPerUpgrade = 0.1f;
+
+        [Header("Audio")]
+        public AudioClip[] purchaseSfx;
+
+        [Header("Upgrade Tiers (per-employee debuff upgrades)")]
+        public List<EmployeeUpgradeTier> upgrades = new List<EmployeeUpgradeTier>();
+
+        [Header("UI References")]
+        public GameObject panelRoot;           // The whole employee panel in the scroll area
+        public Button buyButton;               // Buy employee button
+        public Button upgradeButton;           // Upgrade button for this employee
+
+        public TMP_Text nameText;
+        public TMP_Text costText;
+        public TMP_Text countText;
+        public TMP_Text dishesPerSecondText;   // Shows total dishes/sec for this employee type
+        public TMP_Text profitPerSecondText;   // Shows total profit/sec for this employee type
+        public TMP_Text upgradeStatusText;     // Shows cost or "MAX"
+
+        public Image employeeImage;            // Normal employee image
+        public Image employeeBlackoutImage;    // Black overlay (active when unaffordable)
+        public Image upgradeImage;             // Current upgrade icon
+
+        // Runtime state
+        [HideInInspector] public int count;
+        [HideInInspector] public float currentCost;
+        [HideInInspector] public int currentUpgradeIndex;
+        [HideInInspector] public float currentDebuff;
+
+        public void InitializeRuntime()
+        {
+            count = 0;
+            currentCost = baseCost;
+            currentUpgradeIndex = 0;
+            currentDebuff = startingDebuff;
+        }
+
+        public float GetTotalDishesPerSecond()
+        {
+            return dishesPerSecond * count;
+        }
+    }
+
+    [Header("References")]
+    [SerializeField] private ScoreManager scoreManager;
     [SerializeField] private AudioSource sfxSource;
 
     [Header("Employees")]
-    [SerializeField] private List<Employee> employees = new List<Employee>();
+    [SerializeField] private List<EmployeeDefinition> employees = new List<EmployeeDefinition>();
 
-    [Header("Profit Tick")]
+    [Header("Employee Profit Tick")]
+    [Tooltip("How often employee profit is added (seconds).")]
     [SerializeField] private float employeeProfitInterval = 1f;
     private float employeeProfitTimer = 0f;
 
-    // --- Dish conversion (profit -> dishes) ---
-    [Header("Dish Conversion")]
-    [Tooltip("How many dollars of employee profit correspond to 1 dish. Example: $2.00 profit == 1 dish => set to 2.0")]
-    [SerializeField] private float profitToDishInterval = 1f;
+    [Header("UI: Employees Menu")]
+    [SerializeField] private GameObject employeesPanel;      // Scrollable panel
+    [SerializeField] private GameObject helpWantedButton;   // Help Wanted button
+    [SerializeField] private GameObject closeButton;        // X close button
 
-    // Static, per-employee dish rates (dishes per second per ONE employee).
-    // These are computed ONCE from the base profitPerInterval and DO NOT change
-    // when upgrades multiply profit rates.
-    [SerializeField, ReadOnlyIfPlaying] private float intern_DishInterval = 0f;
-    [SerializeField, ReadOnlyIfPlaying] private float elephant_DishInterval = 0f;
-    [SerializeField, ReadOnlyIfPlaying] private float firetruck_DishInterval = 0f;
+   // [Header("UI: Description Text")]
+    //[SerializeField] private TMP_Text descriptionText;      // Shared description display
 
-    [Header("Intern Employee UI")]
-    [SerializeField] private TMP_Text internNameText;
-    [SerializeField] private TMP_Text internCostText;
-    [SerializeField] private TMP_Text internCountText;
-    [SerializeField] private Button internBuyButton;
+    [Header("Profit Multipliers")]
+    [Tooltip("Extra global multiplier applied only to employee profit (soap upgrades call this).")]
+    [SerializeField] private float globalEmployeeProfitMultiplier = 1f;
 
-    [Header("Elephant Employee UI")]
-    [SerializeField] private TMP_Text elephantNameText;
-    [SerializeField] private TMP_Text elephantCostText;
-    [SerializeField] private TMP_Text elephantCountText;
-    [SerializeField] private Button elephantBuyButton;
-
-    [Header("Firetruck Employee UI")]
-    [SerializeField] private TMP_Text firetruckNameText;
-    [SerializeField] private TMP_Text firetruckCostText;
-    [SerializeField] private TMP_Text firetruckCountText;
-    [SerializeField] private Button firetruckBuyButton;
-
-    [Header("Employees Menu")]
-    [SerializeField] private GameObject employeesPanel;
-    [SerializeField] private GameObject employeesMenuButton;
-    [SerializeField] private GameObject closeButton; // the X
+    [Header("UI: Tooltip")]
+    [SerializeField] private Canvas canvas;           // parent canvas
+    [SerializeField] private RectTransform tooltipRoot;
+    [SerializeField] private TMP_Text tooltipText;
+    [SerializeField] private Vector2 tooltipOffset = new Vector2(16f, -16f);
 
     private void Reset()
     {
@@ -69,39 +125,20 @@ public class EmployeeManager : MonoBehaviour
         if (sfxSource == null)
             sfxSource = gameObject.AddComponent<AudioSource>();
 
-        if (employees.Count > 0 && employees[0].outputMixerGroup != null)
-            sfxSource.outputAudioMixerGroup = employees[0].outputMixerGroup;
+        foreach (var emp in employees)
+            emp.InitializeRuntime();
 
-        // Seed defaults if list is empty
-        if (employees.Count == 0)
-        {
-            employees.Add(new Employee("Intern", 50f, 2f));
-            employees.Add(new Employee("Elephant", 200f, 10f));
-            employees.Add(new Employee("Firetruck", 1000f, 50f));
-        }
+        WireButtons();
+        InitMenuVisibility();
 
-        // --- Compute static dish intervals ONCE from the base profitPerInterval ---
-        // Guard against invalid divisor
-        if (profitToDishInterval <= 0f) profitToDishInterval = 1f;
-
-        // We assume index 0=Intern, 1=Elephant, 2=Firetruck based on your current UI wiring.
-        if (employees.Count > 0) intern_DishInterval = employees[0].profitPerInterval / profitToDishInterval;
-        if (employees.Count > 1) elephant_DishInterval = employees[1].profitPerInterval / profitToDishInterval;
-        if (employees.Count > 2) firetruck_DishInterval = employees[2].profitPerInterval / profitToDishInterval;
-
-        // NOTE: These dish intervals are intentionally NOT touched again by upgrades.
-        // Upgrades may multiply e.profitPerInterval for PROFIT, but dish intervals remain fixed.
-
-        if (internBuyButton) internBuyButton.onClick.AddListener(() => BuyEmployee(0));
-        if (elephantBuyButton) elephantBuyButton.onClick.AddListener(() => BuyEmployee(1));
-        if (firetruckBuyButton) firetruckBuyButton.onClick.AddListener(() => BuyEmployee(2));
+        if (tooltipRoot != null)
+            tooltipRoot.gameObject.SetActive(false);
     }
 
     private void OnEnable()
     {
         ScoreManager.OnProfitChanged += HandleProfitChanged;
-        InitMenuVisibility();
-        UpdateEmployeeUI();
+        RefreshAllEmployeeUI();
     }
 
     private void OnDisable()
@@ -111,20 +148,25 @@ public class EmployeeManager : MonoBehaviour
 
     private void Update()
     {
+        // Employee profit tick
         employeeProfitTimer += Time.deltaTime;
         if (employeeProfitTimer >= employeeProfitInterval)
         {
             employeeProfitTimer = 0f;
             AddEmployeeProfits();
         }
-        // detect outside click to close the employee panel
+
+        // Close menu on outside click
         if (employeesPanel != null && employeesPanel.activeSelf && Input.GetMouseButtonDown(0))
         {
-            // ignore clicks that hit UI elements *inside* the panel
+            if (EventSystem.current == null)
+                return;
+
             PointerEventData pointerData = new PointerEventData(EventSystem.current)
             {
                 position = Input.mousePosition
             };
+
             var results = new List<RaycastResult>();
             EventSystem.current.RaycastAll(pointerData, results);
 
@@ -140,262 +182,369 @@ public class EmployeeManager : MonoBehaviour
             }
 
             if (!clickedInsidePanel)
-            {
                 CloseEmployeesPanel();
+        }
+        // Tooltip follow
+        if (tooltipRoot != null && tooltipRoot.gameObject.activeSelf)
+        {
+            UpdateTooltipPosition();
+        }
+    }
+
+    private void WireButtons()
+    {
+        for (int i = 0; i < employees.Count; i++)
+        {
+            int index = i;
+            var emp = employees[i];
+
+            if (emp.buyButton != null)
+            {
+                emp.buyButton.onClick.RemoveAllListeners();
+                emp.buyButton.onClick.AddListener(() => BuyEmployee(index));
+            }
+
+            if (emp.upgradeButton != null)
+            {
+                emp.upgradeButton.onClick.RemoveAllListeners();
+                emp.upgradeButton.onClick.AddListener(() => BuyEmployeeUpgrade(index));
             }
         }
     }
 
     private void HandleProfitChanged()
     {
-        UpdateEmployeeUI();
+        RefreshAllEmployeeUI();
     }
 
-    // -------------------- Panel Controls --------------------
+    // ---------------- Menu controls ----------------
+
     public void OpenEmployeesPanel()
     {
         if (employeesPanel) employeesPanel.SetActive(true);
-        if (employeesMenuButton) employeesMenuButton.SetActive(false);
+        if (helpWantedButton) helpWantedButton.SetActive(false);
         if (closeButton) closeButton.SetActive(true);
+        RefreshAllEmployeeUI();
     }
 
     public void CloseEmployeesPanel()
     {
         if (employeesPanel) employeesPanel.SetActive(false);
-        if (employeesMenuButton) employeesMenuButton.SetActive(true);
+        if (helpWantedButton) helpWantedButton.SetActive(true);
         if (closeButton) closeButton.SetActive(false);
+        ClearDescription();
     }
 
     public void ToggleEmployeesPanel()
     {
-        if (!employeesPanel) return;
+        if (employeesPanel == null) return;
+
         bool newState = !employeesPanel.activeSelf;
         employeesPanel.SetActive(newState);
-        if (employeesMenuButton) employeesMenuButton.SetActive(!newState);
+
+        if (helpWantedButton) helpWantedButton.SetActive(!newState);
         if (closeButton) closeButton.SetActive(newState);
+
+        if (newState)
+            RefreshAllEmployeeUI();
+        else
+            ClearDescription();
     }
 
     private void InitMenuVisibility()
     {
-        if (!employeesPanel || !employeesMenuButton || !closeButton) return;
+        if (!employeesPanel || !helpWantedButton || !closeButton) return;
         employeesPanel.SetActive(false);
-        employeesMenuButton.SetActive(true);
+        helpWantedButton.SetActive(true);
         closeButton.SetActive(false);
     }
 
-    private bool IsClickOutsidePanel(Vector2 clickPos)
-    {
-        if (employeesPanel == null) return false;
-        if (!employeesPanel.activeSelf) return false;
+    // ---------------- Buying employees ----------------
 
-        RectTransform panelRect = employeesPanel.GetComponent<RectTransform>();
-        if (panelRect == null) return false;
-
-        return !RectTransformUtility.RectangleContainsScreenPoint(panelRect, clickPos, null);
-    }
-
-    // -------------------- Buying --------------------
     public void BuyEmployee(int index)
     {
-        if (index < 0 || index >= employees.Count || scoreManager == null) return;
+        if (scoreManager == null) return;
+        if (index < 0 || index >= employees.Count) return;
 
         var emp = employees[index];
         float wallet = scoreManager.GetTotalProfit();
+        float cost = emp.currentCost;
 
-        if (wallet >= emp.cost)
-        {
-            scoreManager.SubtractProfit(emp.cost, isPurchase: true);
-            emp.count++;
-            emp.cost *= 1.15f;
-            UpdateEmployeeUI();
-            Debug.Log($"[EmployeeManager] Bought {emp.name}, now have {emp.count}");
-        }
-        else
-        {
-            Debug.Log($"[EmployeeManager] Not enough profit to buy {emp.name} (need ${emp.cost:0.00})");
-        }
+        if (wallet < cost)
+            return;
 
-        if (emp.buySounds != null && emp.buySounds.Length > 0)
-        {
-            var clip = emp.buySounds[Random.Range(0, emp.buySounds.Length)];
-            sfxSource.outputAudioMixerGroup = emp.outputMixerGroup;
-            sfxSource.PlayOneShot(clip);
-        }
+        // Pay
+        scoreManager.SubtractProfit(cost, isPurchase: true);
+
+        // Increment owned count
+        emp.count++;
+
+        // Scale cost
+        emp.currentCost = Mathf.Max(0.01f, emp.currentCost * emp.costMultiplier);
+
+        PlayPurchaseSfx(emp);
+        RefreshAllEmployeeUI();
     }
+
+    private void PlayPurchaseSfx(EmployeeDefinition emp)
+    {
+        if (sfxSource == null || emp.purchaseSfx == null || emp.purchaseSfx.Length == 0)
+            return;
+
+        int idx = UnityEngine.Random.Range(0, emp.purchaseSfx.Length);
+        var clip = emp.purchaseSfx[idx];
+        if (clip == null) return;
+        sfxSource.PlayOneShot(clip);
+    }
+
+    // ---------------- Upgrading employees (debuff tiers) ----------------
+
+    public void BuyEmployeeUpgrade(int index)
+    {
+        if (scoreManager == null) return;
+        if (index < 0 || index >= employees.Count) return;
+
+        var emp = employees[index];
+        if (emp.upgrades == null || emp.upgrades.Count == 0) return;
+
+        if (emp.currentUpgradeIndex >= emp.upgrades.Count)
+            return; // already max
+
+        var tier = emp.upgrades[emp.currentUpgradeIndex];
+
+        float wallet = scoreManager.GetTotalProfit();
+        if (wallet < tier.cost)
+            return;
+
+        // Pay
+        scoreManager.SubtractProfit(tier.cost, isPurchase: true);
+
+        // Increase debuff for this employee
+        emp.currentDebuff += emp.debuffPerUpgrade;
+
+        emp.currentUpgradeIndex++;
+        RefreshAllEmployeeUI();
+    }
+
+    // ---------------- Profit tick ----------------
 
     private void AddEmployeeProfits()
     {
         if (scoreManager == null) return;
 
-        float total = 0f;
-        foreach (var e in employees)
-            total += e.GetTotalProfitPerSecond();
+        // Current profit per dish, including soap multiplier
+        float baseDishProfit = scoreManager.GetProfitPerDish();
+        float dishMultiplier = scoreManager.dishProfitMultiplier;
+        float effectivePerDish = baseDishProfit * dishMultiplier;
 
-        if (total > 0f)
-            scoreManager.AddProfit(total);
-    }
-
-    // -------------------- UI --------------------
-    private void UpdateEmployeeUI()
-    {
-        float wallet = scoreManager ? scoreManager.GetTotalProfit() : 0f;
-
-        // Intern
-        if (employees.Count > 0)
-        {
-            var e = employees[0];
-            if (internNameText) internNameText.text = e.name;
-            if (internCostText) internCostText.text = $"Cost: {BigNumberFormatter.FormatMoney((double)e.cost)}";
-            if (internCountText) internCountText.text = $"Owned: {BigNumberFormatter.FormatNumber(e.count)}";
-            if (internBuyButton) internBuyButton.interactable = wallet >= e.cost;
-            SetIconForAffordability(e, wallet);
-        }
-
-        // Elephant
-        if (employees.Count > 1)
-        {
-            var e = employees[1];
-            if (elephantNameText) elephantNameText.text = e.name;
-            if (elephantCostText) elephantCostText.text = $"Cost: {BigNumberFormatter.FormatMoney((double)e.cost)}";
-            if (elephantCountText) elephantCountText.text = $"Owned: {BigNumberFormatter.FormatNumber(e.count)}";
-            if (elephantBuyButton) elephantBuyButton.interactable = wallet >= e.cost;
-            SetIconForAffordability(e, wallet);
-        }
-
-        // Firetruck
-        if (employees.Count > 2)
-        {
-            var e = employees[2];
-            if (firetruckNameText) firetruckNameText.text = e.name;
-            if (firetruckCostText) firetruckCostText.text = $"Cost: {BigNumberFormatter.FormatMoney((double)e.cost)}";
-            if (firetruckCountText) firetruckCountText.text = $"Owned: {BigNumberFormatter.FormatNumber(e.count)}";
-            if (firetruckBuyButton) firetruckBuyButton.interactable = wallet >= e.cost;
-            SetIconForAffordability(e, wallet);
-        }
-    }
-
-    private void SetIconForAffordability(Employee emp, float wallet)
-    {
-        if (emp.employeeImageObject == null || emp.employeeImageGreyObject == null)
+        if (effectivePerDish <= 0f)
             return;
 
-        bool canAfford = wallet >= emp.cost;
+        float totalProfitDelta = 0f;
 
-        // Toggle GameObjects instead of swapping Sprites
-        emp.employeeImageObject.SetActive(canAfford);
-        emp.employeeImageGreyObject.SetActive(!canAfford);
-    }
-
-    // Multiply profit rates (for upgrades, etc.)
-    public void MultiplyEmployeeProfit(float multiplier)
-    {
-        if (multiplier <= 0f) return;
-        foreach (var e in employees)
+        for (int i = 0; i < employees.Count; i++)
         {
-            e.profitPerInterval *= multiplier;
-        }
-        UpdateEmployeeUI();
-    }
+            var emp = employees[i];
+            if (emp.count <= 0) continue;
 
-    // -------------------- Data Classes --------------------
-    [System.Serializable]
-    public class Employee
-    {
-        public string name;
-        public float cost;
-        public float profitPerInterval;
-        public int count;
+            float dps = emp.GetTotalDishesPerSecond();
+            float debuff = Mathf.Max(emp.currentDebuff, 0f);
 
-        [Header("Icon Objects (child GameObjects)")]
-        public GameObject employeeImageObject;      // Visible when affordable
-        public GameObject employeeImageGreyObject;  // Visible when unaffordable
+            float profitPerSecond =
+                dps * effectivePerDish * debuff * globalEmployeeProfitMultiplier;
 
-        [Header("Audio Settings")]
-        public AudioClip[] buySounds;
-        public AudioClip[] workSounds;
-        public AudioMixerGroup outputMixerGroup;
-
-        public Employee(string name, float cost, float profitPerInterval)
-        {
-            this.name = name;
-            this.cost = cost;
-            this.profitPerInterval = profitPerInterval;
-            this.count = 0;
+            totalProfitDelta += profitPerSecond * employeeProfitInterval;
         }
 
-        public float GetTotalProfitPerSecond() => profitPerInterval * count;
+        if (totalProfitDelta > 0f)
+            scoreManager.AddProfit(totalProfitDelta);
     }
-    // === Employee dish-rate accessors =========================================
-    // Call from ScoreManager to read dish rates without exposing your internals.
-    // Assumes you created these in EmployeeManager as per your last step:
-    //   intern_DishInterval, elephant_DishInterval, firetruck_DishInterval
-    // and that 'employees' list aligns by index (0,1,2). Adjust if needed.
 
-    public float GetDishIntervalForIndex(int i)
+    // ---------------- UI refresh ----------------
+
+    private void RefreshAllEmployeeUI()
     {
-        // Return the precomputed, static dish interval for the given employee index.
-        // If you add more employees, extend this switch (or convert to a List<float>).
-        switch (i)
+        if (scoreManager == null) return;
+
+        float wallet = scoreManager.GetTotalProfit();
+        float baseDishProfit = scoreManager.GetProfitPerDish();
+        float dishMultiplier = scoreManager.dishProfitMultiplier;
+        float effectivePerDish = baseDishProfit * dishMultiplier;
+
+        for (int i = 0; i < employees.Count; i++)
+            RefreshEmployeeUI(employees[i], wallet, effectivePerDish);
+    }
+
+    private void RefreshEmployeeUI(EmployeeDefinition emp, float wallet, float effectivePerDish)
+    {
+        if (emp.panelRoot == null)
+            return;
+
+        if (emp.nameText != null)
+            emp.nameText.text = emp.employeeName;
+
+        if (emp.countText != null)
+            emp.countText.text = $"Owned: {BigNumberFormatter.FormatNumber(emp.count)}";
+
+        if (emp.costText != null)
+            emp.costText.text = $"Cost: {BigNumberFormatter.FormatMoney(emp.currentCost)}";
+
+        float totalDps = emp.GetTotalDishesPerSecond();
+        if (emp.dishesPerSecondText != null)
         {
-            case 0: return intern_DishInterval;
-            case 1: return elephant_DishInterval;
-            case 2: return firetruck_DishInterval;
-            default: return 0f;
+            emp.dishesPerSecondText.text =
+                $"Dishes/sec: {BigNumberFormatter.FormatNumber(totalDps)}";
+        }
+
+        float profitPerSecond = 0f;
+        if (effectivePerDish > 0f && emp.count > 0)
+        {
+            float debuff = Mathf.Max(emp.currentDebuff, 0f);
+            profitPerSecond = totalDps * effectivePerDish * debuff * globalEmployeeProfitMultiplier;
+        }
+
+        if (emp.profitPerSecondText != null)
+        {
+            emp.profitPerSecondText.text =
+                $"{BigNumberFormatter.FormatMoney(profitPerSecond)}/sec";
+        }
+
+        bool canAffordEmployee = wallet >= emp.currentCost;
+
+        if (emp.buyButton != null)
+            emp.buyButton.interactable = canAffordEmployee;
+
+        // Grey out whole panel on unaffordable
+        var cg = emp.panelRoot.GetComponent<CanvasGroup>();
+        if (cg != null)
+        {
+            cg.alpha = canAffordEmployee ? 1f : 0.5f;
+            cg.interactable = true; // still allow hover
+        }
+
+        // Blackout image when unaffordable
+        if (emp.employeeBlackoutImage != null)
+            emp.employeeBlackoutImage.gameObject.SetActive(!canAffordEmployee);
+
+        // Upgrade UI
+        if (emp.upgradeButton != null || emp.upgradeStatusText != null || emp.upgradeImage != null)
+        {
+            if (emp.upgrades != null && emp.upgrades.Count > 0 && emp.currentUpgradeIndex < emp.upgrades.Count)
+            {
+                var tier = emp.upgrades[emp.currentUpgradeIndex];
+
+                if (emp.upgradeImage != null && tier.icon != null)
+                    emp.upgradeImage.sprite = tier.icon;
+
+                if (emp.upgradeStatusText != null)
+                    emp.upgradeStatusText.text = BigNumberFormatter.FormatMoney(tier.cost);
+
+                if (emp.upgradeButton != null)
+                    emp.upgradeButton.interactable = wallet >= tier.cost;
+            }
+            else
+            {
+                if (emp.upgradeStatusText != null)
+                    emp.upgradeStatusText.text = "MAX";
+
+                if (emp.upgradeButton != null)
+                    emp.upgradeButton.interactable = false;
+            }
         }
     }
 
-    public int GetEmployeeCountForIndex(int i)
+    // ---------------- Description hover API ----------------
+    // Hook these to EventTrigger.PointerEnter/Exit for each employee panel
+    // and upgrade image (pass the employee index).
+
+    public void ShowEmployeeDescription(int index)
     {
-        if (i < 0 || i >= employees.Count) return 0;
-        return employees[i].count;
+        if (tooltipRoot == null || tooltipText == null) return;
+        if (index < 0 || index >= employees.Count) return;
+
+        var emp = employees[index];
+        tooltipText.text = emp.description;
+
+        tooltipRoot.gameObject.SetActive(true);
+        UpdateTooltipPosition();
     }
 
-    public int GetEmployeeTypeCount()
+    public void ShowEmployeeUpgradeDescription(int index)
     {
-        return employees != null ? employees.Count : 0;
+        if (tooltipRoot == null || tooltipText == null) return;
+        if (index < 0 || index >= employees.Count) return;
+
+        var emp = employees[index];
+        string text;
+
+        if (emp.upgrades == null || emp.upgrades.Count == 0)
+        {
+            text = "No upgrades for this employee.";
+        }
+        else if (emp.currentUpgradeIndex >= emp.upgrades.Count)
+        {
+            text = $"{emp.employeeName} upgrade maxed.";
+        }
+        else
+        {
+            var tier = emp.upgrades[emp.currentUpgradeIndex];
+            text = tier.description;
+        }
+
+        tooltipText.text = text;
+        tooltipRoot.gameObject.SetActive(true);
+        UpdateTooltipPosition();
     }
+
+    public void ClearDescription()
+    {
+        if (tooltipRoot != null)
+            tooltipRoot.gameObject.SetActive(false);
+    }
+
+    private void UpdateTooltipPosition()
+    {
+        if (tooltipRoot == null || canvas == null)
+            return;
+
+        Vector2 screenPos = Input.mousePosition;
+        Vector2 localPos;
+
+        // For Screen Space Overlay or Camera, this handles position conversion
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvas.transform as RectTransform,
+            screenPos,
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera,
+            out localPos
+        );
+
+        tooltipRoot.anchoredPosition = localPos + tooltipOffset;
+    }
+
+
+
+    // ---------------- Public API for ScoreManager / Upgrades ----------------
 
     /// <summary>
-    /// Sum of (dishInterval * count) across all employee types.
-    /// This is the *current* dishes per second your crew is producing.
+    /// Sum of dishes per second from all employees.
+    /// ScoreManager uses this to feed the employee dish ticker.
     /// </summary>
     public float GetTotalDishesPerSecond()
     {
         float total = 0f;
-        int types = GetEmployeeTypeCount();
-        for (int i = 0; i < types; i++)
-        {
-            float di = GetDishIntervalForIndex(i);   // static dish interval (fixed)
-            int ct = GetEmployeeCountForIndex(i);  // live count
-            total += di * ct;
-        }
+        for (int i = 0; i < employees.Count; i++)
+            total += employees[i].GetTotalDishesPerSecond();
         return total;
     }
-    // --- TEST/DEV ONLY: add employees for a given index (free) ---
-    public void AddEmployees_Free(int index, int count)
+
+    /// <summary>
+    /// Called by Upgrades to increase employee profit globally
+    /// in addition to dish profit multipliers.
+    /// </summary>
+    public void MultiplyEmployeeProfit(float multiplier)
     {
-        if (index < 0 || index >= employees.Count || count == 0) return;
-        employees[index].count = Mathf.Max(0, employees[index].count + count);
-        UpdateEmployeeUI();
+        if (multiplier <= 0f) return;
+        globalEmployeeProfitMultiplier *= multiplier;
+        RefreshAllEmployeeUI();
     }
 }
-
-// Makes a serialized field read-only at runtime (play mode).
-public class ReadOnlyIfPlayingAttribute : PropertyAttribute { }
-
-#if UNITY_EDITOR
-[CustomPropertyDrawer(typeof(ReadOnlyIfPlayingAttribute))]
-public class ReadOnlyIfPlayingDrawer : PropertyDrawer
-{
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-    {
-        bool prev = GUI.enabled;
-        if (Application.isPlaying) GUI.enabled = false;
-        EditorGUI.PropertyField(position, property, label, true);
-        GUI.enabled = prev;
-    }
-
-    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-        => EditorGUI.GetPropertyHeight(property, label, true);
-}
-#endif

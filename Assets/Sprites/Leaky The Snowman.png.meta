@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 36ac74ab109a5f140846994cb9b7db69
+guid: c021d7b3db9cefb4b833ed1cd567c8d0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8089144100773066083
-    second: 574-5749425_shapes-clipart-rectangle-shapes-rectangle-transparent-coloured-rectangle_0
+      213: 7567063417251660712
+    second: output-onlinepngtools (3)_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 574-5749425_shapes-clipart-rectangle-shapes-rectangle-transparent-coloured-rectangle_0
+      name: output-onlinepngtools (3)_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 880
-        height: 530
+        x: 22
+        y: 64
+        width: 557
+        height: 615
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d9a89786c469dbf80800000000000000
-      internalID: -8089144100773066083
+      spriteID: 8a38322061c930960800000000000000
+      internalID: 7567063417251660712
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      574-5749425_shapes-clipart-rectangle-shapes-rectangle-transparent-coloured-rectangle_0: -8089144100773066083
+      output-onlinepngtools (3)_0: 7567063417251660712
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

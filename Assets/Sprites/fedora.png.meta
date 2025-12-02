@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 36ac74ab109a5f140846994cb9b7db69
+guid: 0661737939d1d18448722daffc713414
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8089144100773066083
-    second: 574-5749425_shapes-clipart-rectangle-shapes-rectangle-transparent-coloured-rectangle_0
+      213: 8323835199223898917
+    second: fedora_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 574-5749425_shapes-clipart-rectangle-shapes-rectangle-transparent-coloured-rectangle_0
+      name: fedora_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 880
-        height: 530
+        x: 114
+        y: 326
+        width: 404
+        height: 167
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d9a89786c469dbf80800000000000000
-      internalID: -8089144100773066083
+      spriteID: 52322aa1304348370800000000000000
+      internalID: 8323835199223898917
       vertices: []
       indices: 
       edges: []
@@ -134,8 +134,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      574-5749425_shapes-clipart-rectangle-shapes-rectangle-transparent-coloured-rectangle_0: -8089144100773066083
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

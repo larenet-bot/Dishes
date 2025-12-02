@@ -217,16 +217,16 @@ public class DevConsole : MonoBehaviour
 
         var sub = p[1].ToLowerInvariant();
 
-        if (sub == "list")
-        {
-            int types = employees.GetEmployeeTypeCount();
-            for (int i = 0; i < types; i++)
-            {
-                var count = employees.GetEmployeeCountForIndex(i);
-                PrintLine($"[{i}] count={count}");
-            }
-            return;
-        }
+        //if (sub == "list")
+        //{
+        //    int types = employees.GetEmployeeTypeCount();
+        //    for (int i = 0; i < types; i++)
+        //    {
+        //        var count = employees.GetEmployeeCountForIndex(i);
+        //        PrintLine($"[{i}] count={count}");
+        //    }
+        //    return;
+        //}
 
         if (p.Length < 4) { PrintLine("Usage: emp add|buy <idx|name> <n>"); return; }
 
@@ -235,20 +235,20 @@ public class DevConsole : MonoBehaviour
 
         if (index < 0) { PrintLine("Unknown employee."); return; }
 
-        if (sub == "add")
-        {
-            employees.AddEmployees_Free(index, n);
-            PrintLine($"Gave +{n} to employee[{index}].");
-        }
-        else if (sub == "buy")
-        {
-            for (int i = 0; i < n; i++) employees.BuyEmployee(index);
-            PrintLine($"Bought {n}x employee[{index}].");
-        }
-        else
-        {
-            PrintLine("Usage: emp add|buy <idx|name> <n>");
-        }
+        //if (sub == "add")
+        //{
+        //    employees.AddEmployees_Free(index, n);
+        //    PrintLine($"Gave +{n} to employee[{index}].");
+        //}
+        //else if (sub == "buy")
+        //{
+        //    for (int i = 0; i < n; i++) employees.BuyEmployee(index);
+        //    PrintLine($"Bought {n}x employee[{index}].");
+        //}
+        //else
+        //{
+        //    PrintLine("Usage: emp add|buy <idx|name> <n>");
+        //}
     }
 
     // up set soap|glove|sponge idx [spend]
