@@ -3,10 +3,14 @@ using UnityEngine;
 public class Rythmstart : MonoBehaviour
 {
     public NoteSpawner spawner;
+    private bool hasStarted = false;
 
-    void Start()
+    void Update()
     {
-        spawner.StartSpawning();
-        spawner.musicSource.Play();
+        if (!hasStarted && Input.GetKeyDown(KeyCode.Space))
+        {
+            hasStarted = true;
+            spawner.StartSpawning();
+        }
     }
 }
