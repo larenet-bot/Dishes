@@ -5538,6 +5538,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rhythmMiniGame: {fileID: 2000261553}
   mainGameUI: {fileID: 125825043}
+  mainGameAudioSources:
+  - {fileID: 2072260067}
+  - {fileID: 1318212023}
+  - {fileID: 160032169}
+  - {fileID: 454462229}
+  minigameAudioSource: {fileID: 20115327}
 --- !u!1 &546323906
 GameObject:
   m_ObjectHideFlags: 0
@@ -18215,6 +18221,7 @@ GameObject:
   - component: {fileID: 2072260066}
   - component: {fileID: 2072260065}
   - component: {fileID: 2072260067}
+  - component: {fileID: 2072260068}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -18257,7 +18264,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2072260064}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 1698371678404170224, guid: e30935e55bf325e448023fdd8451a615, type: 2}
   m_audioClip: {fileID: 8300000, guid: 179051b5dbeafbe4ca33464cca918563, type: 3}
@@ -18347,6 +18354,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2072260068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072260064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2559fe7df73e554b8abcb33b01b5fac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicSource: {fileID: 160032169}
+  musicGroup: {fileID: 1698371678404170224, guid: e30935e55bf325e448023fdd8451a615, type: 2}
 --- !u!1 &2118491250
 GameObject:
   m_ObjectHideFlags: 0
