@@ -3,21 +3,26 @@ using UnityEngine;
 public class RhythmMiniGameToggle : MonoBehaviour
 {
     [Header("References")]
-    public GameObject rhythmMiniGame;      // parent object for minigame UI
-    public GameObject mainGameUI;          // normal game UI
-
-    //[Header("Audio Sources")]
-    //public AudioSource mainAudioSource;     // background music or ambient audio
-    //public AudioSource minigameAudioSource; // rhythm game music
-
-    private bool isActive = false;
-
-
-    [Header("Main Game Audio Sources")]
-    public AudioSource[] mainGameAudioSources;
+    public GameObject rhythmMiniGame;
+    public GameObject mainGameUI;
 
     [Header("Minigame Audio")]
     public AudioSource minigameAudioSource;
+
+    private bool isActive = false;
+    private bool waitingForStart = false;
+
+    void Update()
+    {
+        // If minigame is active and waiting for user to start it
+        if (isActive && waitingForStart)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                StartMinigameMusic();
+            }
+        }
+    }
 
     public void ToggleMiniGame()
     {
@@ -28,23 +33,34 @@ public class RhythmMiniGameToggle : MonoBehaviour
 
         if (isActive)
         {
-            foreach (var src in mainGameAudioSources)
-                if (src != null) src.Stop();
+            // Mute main game music
+            AudioManager.instance.MuteMainMusic(true);
 
-            if (minigameAudioSource != null)
-            {
-                minigameAudioSource.time = 0;
-                minigameAudioSource.Play();
-            }
+            // Set flag so Update() waits for space press
+            waitingForStart = true;
         }
         else
         {
-            foreach (var src in mainGameAudioSources)
-                if (src != null) src.Play();
-
+            // Stop minigame audio
             if (minigameAudioSource != null)
                 minigameAudioSource.Stop();
+
+            // Restore main game music
+            AudioManager.instance.MuteMainMusic(false);
+            AudioManager.instance.RestoreMainMusic();
+
+            waitingForStart = false;
         }
     }
 
+    private void StartMinigameMusic()
+    {
+        if (minigameAudioSource != null)
+        {
+            minigameAudioSource.time = 0f;
+            minigameAudioSource.Play();
+        }
+
+        waitingForStart = false;
+    }
 }

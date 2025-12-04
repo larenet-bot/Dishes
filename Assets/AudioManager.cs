@@ -33,4 +33,11 @@ public class AudioManager : MonoBehaviour
     {
         PlayMusic(mainMusic);
     }
+    public void MuteMainMusic(bool mute)
+    {
+        Debug.Log($"Mute main music: {mute}");
+        musicSource.mute = mute;
+        
+    }
+
 }

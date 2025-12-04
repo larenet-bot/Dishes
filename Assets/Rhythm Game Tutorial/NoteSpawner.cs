@@ -15,13 +15,13 @@ public class NoteSpawner : MonoBehaviour
     public AudioClip songClip;
 
     [Header("Chart File (.txt)")]
-    public TextAsset chartFile; // <-- assign your .txt file here
+    public TextAsset chartFile;
 
     [Header("Spawn Settings")]
-    public float timeAhead = 2.0f;     // spawn notes early so they scroll perfectly
+    public float timeAhead = 2.0f;
     public float noteScrollSpeed = 5f;
 
-    // ---------------------------------------------------------
+    // ----------------------
     private class ParsedNote
     {
         public float time;
@@ -31,27 +31,24 @@ public class NoteSpawner : MonoBehaviour
     private List<ParsedNote> parsedNotes = new List<ParsedNote>();
     private int nextIndex = 0;
     private bool spawning = false;
-    // ---------------------------------------------------------
+    // ----------------------
 
     void Start()
     {
-        
+        if (musicSource == null && songClip != null)
+        {
+            musicSource = gameObject.AddComponent<AudioSource>();
+            musicSource.clip = songClip;
+            musicSource.outputAudioMixerGroup = musicGroup;
+        }
 
         LoadChart();
-
-        if (parsedNotes.Count > 0)
-            Debug.Log("First note time: " + parsedNotes[0].time);
+        Debug.Log("Loaded " + parsedNotes.Count + " notes.");
     }
 
-    // ---------------------------------------------------------
+    // ----------------------
     // Load .txt chart file
-    // ---------------------------------------------------------
-    private class BPMChange
-    {
-        public float beat;
-        public float bpm;
-    }
-
+    // ----------------------
     private void LoadChart()
     {
         parsedNotes.Clear();
@@ -72,90 +69,34 @@ public class NoteSpawner : MonoBehaviour
             if (line.StartsWith("[")) continue;
 
             string[] parts = line.Split(':');
-            if (parts.Length < 5)
-            {
-                Debug.LogWarning("Invalid line: " + line);
-                continue;
-            }
+            if (parts.Length < 5) continue;
 
-            // ---- trim the time string first ----
             string timeString = parts[0].Trim();
+            if (timeString.Equals("NaN", System.StringComparison.OrdinalIgnoreCase)) continue;
 
-            // ---- explicitly skip NaN ----
-            if (timeString.Equals("NaN", System.StringComparison.OrdinalIgnoreCase))
-            {
-                Debug.Log("Skipping NaN timestamp line: " + line);
-                continue;
-            }
-
-            // ---- TryParse AFTER trimming ----
             if (!float.TryParse(timeString, out float timeMs))
-            {
-                Debug.LogWarning("Skipping invalid time: '" + timeString + "'");
                 continue;
-            }
 
             float timeSec = timeMs / 1000f;
 
-            // ---- LANE ----
             if (!int.TryParse(parts[3].Trim(), out int lane))
-            {
-                Debug.LogWarning("Invalid lane: " + parts[3]);
                 continue;
-            }
 
             if (lane < 0 || lane >= laneSpawnPoints.Length)
-            {
-                Debug.LogWarning("Lane out of range: " + lane);
                 continue;
-            }
 
-            parsedNotes.Add(new ParsedNote { time = timeSec, lane = lane });
+            parsedNotes.Add(new ParsedNote
+            {
+                time = timeSec,
+                lane = lane
+            });
         }
 
-        // Remove any accidental NaN entries (safety)
         parsedNotes.RemoveAll(n => float.IsNaN(n.time));
-
-        // Sort only valid notes
         parsedNotes.Sort((a, b) => a.time.CompareTo(b.time));
-
-        Debug.Log($"Loaded {parsedNotes.Count} notes (after removing NaN lines).");
     }
 
-    private float ConvertBeatToSeconds(float beat, List<BPMChange> bpmChanges)
-    {
-        float seconds = 0f;
-
-        for (int i = 0; i < bpmChanges.Count; i++)
-        {
-            BPMChange curr = bpmChanges[i];
-            BPMChange next = (i + 1 < bpmChanges.Count) ? bpmChanges[i + 1] : null;
-
-            float bpm = curr.bpm;
-
-            if (next != null && beat >= curr.beat && beat < next.beat)
-            {
-                // Inside this BPM range
-                return seconds + (beat - curr.beat) * (60f / bpm);
-            }
-
-            if (next != null)
-            {
-                // Add full section
-                float sectionBeats = next.beat - curr.beat;
-                seconds += sectionBeats * (60f / bpm);
-            }
-            else
-            {
-                // Last section
-                return seconds + (beat - curr.beat) * (60f / bpm);
-            }
-        }
-
-        return seconds;
-    }
-
-    // ---------------------------------------------------------
+    // ----------------------
     void Update()
     {
         if (!spawning || musicSource == null) return;
@@ -171,23 +112,26 @@ public class NoteSpawner : MonoBehaviour
         }
     }
 
-    // ---------------------------------------------------------
+    // ----------------------
     public void StartSpawning()
     {
         nextIndex = 0;
         spawning = true;
-        if (musicSource != null) musicSource.Play();
+
+        if (musicSource != null)
+            musicSource.Play();
+
         Debug.Log("Spawner started!");
     }
 
     public void StopSpawning()
     {
         spawning = false;
+        if (musicSource != null)
+            musicSource.Stop();
     }
 
-    // ---------------------------------------------------------
-    // Spawn a note at a specific lane
-    // ---------------------------------------------------------
+    // ----------------------
     private void SpawnSpecific(int lane)
     {
         Transform spawnPoint = laneSpawnPoints[lane];
@@ -196,7 +140,6 @@ public class NoteSpawner : MonoBehaviour
 
         GameObject g = Instantiate(notePrefab, spawnPos, Quaternion.identity, transform);
 
-        // Set scroll speed
         BeatScroller scroller = g.GetComponent<BeatScroller>();
         if (scroller != null)
         {
@@ -204,14 +147,11 @@ public class NoteSpawner : MonoBehaviour
             scroller.hasStarted = true;
         }
 
-        // Optional: set lane on Note component
         Note note = g.GetComponent<Note>();
         if (note != null)
         {
             note.lane = lane;
             NoteRegistry.RegisterNote(lane, note);
         }
-
-        Debug.Log("Spawning note at lane " + lane + " time=" + musicSource.time);
     }
 }
