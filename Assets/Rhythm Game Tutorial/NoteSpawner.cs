@@ -107,9 +107,10 @@ public class NoteSpawner : MonoBehaviour
 
         if (songTime >= note.time - timeAhead)
         {
-            SpawnSpecific(note.lane);
+            SpawnSpecific(note);
             nextIndex++;
         }
+
     }
 
     // ----------------------
@@ -132,8 +133,10 @@ public class NoteSpawner : MonoBehaviour
     }
 
     // ----------------------
-    private void SpawnSpecific(int lane)
+    private void SpawnSpecific(ParsedNote parsed)
     {
+        int lane = parsed.lane;
+
         Transform spawnPoint = laneSpawnPoints[lane];
         Vector3 spawnPos = spawnPoint.position + new Vector3(0, spawnYOffset, 0);
         spawnPos.z = 0;
@@ -151,7 +154,13 @@ public class NoteSpawner : MonoBehaviour
         if (note != null)
         {
             note.lane = lane;
+
+           
+            note.targetTime = parsed.time;
+
             NoteRegistry.RegisterNote(lane, note);
         }
     }
+
+
 }

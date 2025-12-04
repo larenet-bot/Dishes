@@ -2,27 +2,36 @@ using UnityEngine;
 
 public class Note : MonoBehaviour
 {
-    [HideInInspector] public int lane;   // Assigned by spawner
+    [HideInInspector] public int lane;       // assigned by spawner
+    public float targetTime;                 // when this note SHOULD be hit
     public bool canBeHit = false;
 
-    // Optional: events / feedback hooks
-    public System.Action<Note> OnHit;
+    private HitWindow hitWindow;
+    private AudioSource musicSource;
 
+    void Start()
+    {
+        hitWindow = Object.FindFirstObjectByType<HitWindow>();
+        musicSource = Object.FindFirstObjectByType<AudioSource>();
+
+        Debug.Log($"Note spawned in lane {lane} (targetTime={targetTime})");
+    }
+
+    // Called when the player presses a key
     public void Hit()
     {
-        // Trigger callback (e.g., score, effects)
-        OnHit?.Invoke(this);
+        if (!canBeHit) return;
 
-        // Destroy the note
+        float diff = musicSource.time - targetTime;
+        hitWindow.JudgeNoteHit(diff);
+
         Destroy(gameObject);
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("HitBox"))
-        {
             canBeHit = true;
-            Debug.Log($"NOTE {gameObject.GetInstanceID()} lane {lane} ENTERED HIT ZONE");
-        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -30,13 +39,13 @@ public class Note : MonoBehaviour
         if (collision.CompareTag("HitBox"))
         {
             canBeHit = false;
-            Debug.Log($"NOTE {gameObject.GetInstanceID()} lane {lane} EXITED HIT ZONE");
-        }
-    }
 
-    void Start()
-    {
-        Debug.Log($"Note spawned in lane {lane}");
+            // Only judge miss here
+            MiniScoreManager.AddMiss();
+            UI_RhythmHUD.Instance.ShowFeedback("MISS");
+
+            Destroy(gameObject);
+        }
     }
 
 }
