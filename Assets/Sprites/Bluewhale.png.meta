@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Bluewhale_0: -4112335321582555246
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

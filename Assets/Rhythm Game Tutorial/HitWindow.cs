@@ -1,34 +1,59 @@
 using UnityEngine;
 
+public enum HitType
+{
+    Perfect,
+    Good,
+    Bad,
+    Miss
+}
+
 public class HitWindow : MonoBehaviour
 {
+    [Header("Timing windows in seconds")]
     public float perfectRange = 0.05f;
     public float goodRange = 0.10f;
     public float badRange = 0.20f;
 
-    public void JudgeNoteHit(float timeDifference)
+    /// <summary>
+    /// Judge a note hit based on timing difference (absolute seconds)
+    /// </summary>
+    /// <param name="timeDifference">Difference between note target time and actual hit time (seconds)</param>
+    /// <returns>The HitType of the note</returns>
+    public HitType JudgeNoteHit(float timeDifference)
     {
-        timeDifference = Mathf.Abs(timeDifference);
+        float absDiff = Mathf.Abs(timeDifference);
+        HitType result;
 
-        if (timeDifference <= perfectRange)
+        if (absDiff <= perfectRange)
         {
             MiniScoreManager.AddPerfect();
-            UI_RhythmHUD.Instance.ShowFeedback("PERFECT");
+            result = HitType.Perfect;
         }
-        else if (timeDifference <= goodRange)
+        else if (absDiff <= goodRange)
         {
             MiniScoreManager.AddGood();
-            UI_RhythmHUD.Instance.ShowFeedback("GOOD");
+            result = HitType.Good;
         }
-        else if (timeDifference <= badRange)
+        else if (absDiff <= badRange)
         {
             MiniScoreManager.AddBad();
-            UI_RhythmHUD.Instance.ShowFeedback("BAD");
+            result = HitType.Bad;
         }
         else
         {
             MiniScoreManager.AddMiss();
-            UI_RhythmHUD.Instance.ShowFeedback("MISS");
+            result = HitType.Miss;
         }
+
+        // Show feedback if the HUD exists
+        if (UI_RhythmHUD.Instance != null)
+        {
+            UI_RhythmHUD.Instance.ShowFeedback(result.ToString().ToUpper());
+        }
+        Debug.Log($"JudgeNoteHit called | diff={absDiff} | HUD={(UI_RhythmHUD.Instance != null ? "OK" : "NULL")}");
+
+        return result;
+
     }
 }

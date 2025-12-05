@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      CarWasher_0: -5340893247509571021
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
