@@ -1070,11 +1070,11 @@ MonoBehaviour:
   payButtonText: {fileID: 686284900}
   loanTiers:
   - loanName: Pay Your Bill!
-    amount: 100
+    amount: 1000
     loadSceneOnPay: 0
     sceneName: 
   - loanName: Payoff Your Shares
-    amount: 1000
+    amount: 1000000
     loadSceneOnPay: 0
     sceneName: 
   usePersistence: 0
@@ -1197,7 +1197,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 123
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5103e6827c60fae428eeddf3e521c5b3, type: 2}
   m_sharedMaterial: {fileID: 4333766662371971464, guid: 5103e6827c60fae428eeddf3e521c5b3, type: 2}
@@ -1292,8 +1292,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -952, y: 240}
-  m_SizeDelta: {x: 123.05, y: 48.49}
+  m_AnchoredPosition: {x: -944, y: 239}
+  m_SizeDelta: {x: 201.17, y: 48.49}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &79121434
 GameObject:
@@ -2927,8 +2927,8 @@ Transform:
   m_GameObject: {fileID: 160032166}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -274.1, y: 218.595, z: -5557.5}
-  m_LocalScale: {x: 26.33438, y: 26.285475, z: 61.75}
+  m_LocalPosition: {x: -275.98, y: 220.48, z: -5557.5}
+  m_LocalScale: {x: 24.754316, y: 24.708345, z: 61.75}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1819217423}
@@ -2997,7 +2997,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7255708920522865734, guid: 29004336f505a1745a180e7fb6bf276a, type: 3}
+  m_Sprite: {fileID: -8070686850402279387, guid: 8f6f95fd59bdf204e9db9afcff2702d1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3046,7 +3046,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.4, y: 2.25}
+    oldSize: {x: 2.47, y: 2.54}
     newSize: {x: 2.4, y: 2.25}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -3931,8 +3931,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bubblePrefab:
   - {fileID: 5059608596444091316, guid: cce91c0996086ee4db7d818f1189d6c6, type: 3}
-  minSpawn: 1
-  maxSpawn: 10
+  minSpawn: 30
+  maxSpawn: 75
   minX: -6
   maxX: 5
   spawnY: -6
@@ -5118,7 +5118,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -229.09, y: -640.30005}
+  m_AnchoredPosition: {x: 0, y: -640.30005}
   m_SizeDelta: {x: 256.90002, y: 100.119995}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &377703406
@@ -6132,7 +6132,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -46.12729, y: 235.56398}
+  m_AnchoredPosition: {x: -46.127285, y: 235.56398}
   m_SizeDelta: {x: 43.68, y: 63.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &448278899
@@ -6605,7 +6605,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -275.99988, y: 131.4}
+  m_AnchoredPosition: {x: -275.99994, y: 131.4}
   m_SizeDelta: {x: -1716.8, y: -963.71}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &467942473
@@ -9325,7 +9325,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -229.09, y: -440.5}
+  m_AnchoredPosition: {x: 0, y: -440.5}
   m_SizeDelta: {x: 256.90002, y: 100.119995}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &668071338
@@ -9948,7 +9948,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -228.59003, y: -50.700012}
+  m_AnchoredPosition: {x: 0, y: -50.700012}
   m_SizeDelta: {x: 257.90002, y: 101.400024}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &733844047
@@ -10751,7 +10751,7 @@ MonoBehaviour:
   m_Content: {fileID: 1434085333}
   m_Horizontal: 1
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -10820,10 +10820,10 @@ RectTransform:
   - {fileID: 1668736057}
   m_Father: {fileID: 967766790}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -452.25, y: -61.437}
-  m_SizeDelta: {x: 270.34, y: 389.12}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 509.5, y: -601.43}
+  m_SizeDelta: {x: 273.84, y: 389.13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &813657633
 GameObject:
@@ -12782,7 +12782,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -229.09, y: -540.4}
+  m_AnchoredPosition: {x: 0, y: -540.4}
   m_SizeDelta: {x: 256.90002, y: 100.119995}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &959229279
@@ -13318,7 +13318,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -229.09, y: -348.87024}
+  m_AnchoredPosition: {x: 0, y: -348.87024}
   m_SizeDelta: {x: 256.90002, y: 100.119995}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &996047179
@@ -14347,7 +14347,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -229.09, y: -248.96997}
+  m_AnchoredPosition: {x: 0, y: -248.96997}
   m_SizeDelta: {x: 256.90002, y: 100.119995}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1093939291
@@ -15132,7 +15132,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -229.09, y: -148.53}
+  m_AnchoredPosition: {x: 0, y: -148.53}
   m_SizeDelta: {x: 256.90002, y: 101.21002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1151200013
@@ -15208,17 +15208,17 @@ MonoBehaviour:
   - employeeName: Helpful Critter
     description: A helpful critter who always dreamed he'd work at a resturant. Just
       not as a dishwasher.
-    baseCost: 10
+    baseCost: 15
     costMultiplier: 1.15
-    dishesPerSecond: 0.1
+    dishesPerSecond: 0.2
     startingDebuff: 0.5
-    debuffPerUpgrade: 0.1
+    debuffPerUpgrade: 0.25
     purchaseSfx: []
     upgrades:
-    - upgradeName: Peanut
-      description: A Yummy Lunch
-      icon: {fileID: 8391765393788991538, guid: 5341f7a98d9452f44b79cf26f3d5145b, type: 3}
-      cost: 10000
+    - upgradeName: Old Cheese
+      description: Stinky cheese
+      icon: {fileID: -5933261652459859058, guid: 9f84b53421c199142b89a5c62d6a63e5, type: 3}
+      cost: 75
     panelRoot: {fileID: 733844045}
     buyButton: {fileID: 600557292}
     upgradeButton: {fileID: 1282179137}
@@ -15237,17 +15237,17 @@ MonoBehaviour:
     currentDebuff: 0
   - employeeName: Snowman
     description: They're made for this
-    baseCost: 20
+    baseCost: 100
     costMultiplier: 1.15
-    dishesPerSecond: 0.5
+    dishesPerSecond: 0.4
     startingDebuff: 0.5
-    debuffPerUpgrade: 0.1
+    debuffPerUpgrade: 0.25
     purchaseSfx: []
     upgrades:
     - upgradeName: Magic Fedora
       description: Give him sentience to do dishes
       icon: {fileID: 8323835199223898917, guid: 0661737939d1d18448722daffc713414, type: 3}
-      cost: 200
+      cost: 500
     panelRoot: {fileID: 1151200011}
     buyButton: {fileID: 1802688140}
     upgradeButton: {fileID: 954743448}
@@ -15266,9 +15266,9 @@ MonoBehaviour:
     currentDebuff: 0
   - employeeName: Intern
     description: It's free labor
-    baseCost: 50
+    baseCost: 800
     costMultiplier: 1.15
-    dishesPerSecond: 2
+    dishesPerSecond: 0.8
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
     purchaseSfx: []
@@ -15276,7 +15276,7 @@ MonoBehaviour:
     - upgradeName: College Credit
       description: Gain 1 college credit per semester
       icon: {fileID: 6288186759268838618, guid: 956cb4a06360a274d92bed189063ee26, type: 3}
-      cost: 500
+      cost: 4000
     panelRoot: {fileID: 1093939289}
     buyButton: {fileID: 272885701}
     upgradeButton: {fileID: 556772813}
@@ -15295,9 +15295,9 @@ MonoBehaviour:
     currentDebuff: 0
   - employeeName: Clown
     description: They have a killer work ethic
-    baseCost: 100
+    baseCost: 3000
     costMultiplier: 1.15
-    dishesPerSecond: 5
+    dishesPerSecond: 1.6
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
     purchaseSfx: []
@@ -15305,7 +15305,7 @@ MonoBehaviour:
     - upgradeName: Unicycle
       description: Unicycle
       icon: {fileID: 6152696501759033333, guid: 5c177249a8e215b4fba38ce035764dc5, type: 3}
-      cost: 1000
+      cost: 15000
     panelRoot: {fileID: 996047177}
     buyButton: {fileID: 1826988134}
     upgradeButton: {fileID: 887479105}
@@ -15324,9 +15324,9 @@ MonoBehaviour:
     currentDebuff: 0
   - employeeName: Spitle
     description: USE WATER PUMP!
-    baseCost: 200
+    baseCost: 12000
     costMultiplier: 1.15
-    dishesPerSecond: 15
+    dishesPerSecond: 3.2
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
     purchaseSfx: []
@@ -15334,7 +15334,7 @@ MonoBehaviour:
     - upgradeName: Unique Candy
       description: Gain valuable work experience
       icon: {fileID: -4455473766417857067, guid: b39d2151ddd338147aa50689b3591d64, type: 3}
-      cost: 2000
+      cost: 60000
     panelRoot: {fileID: 668071336}
     buyButton: {fileID: 780514774}
     upgradeButton: {fileID: 893146693}
@@ -15353,9 +15353,9 @@ MonoBehaviour:
     currentDebuff: 0
   - employeeName: Car Washers
     description: Car washers owned by a respectable business owner
-    baseCost: 500
+    baseCost: 50000
     costMultiplier: 1.15
-    dishesPerSecond: 30
+    dishesPerSecond: 6.4
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
     purchaseSfx: []
@@ -15363,7 +15363,7 @@ MonoBehaviour:
     - upgradeName: Roof Pizza
       description: Roof Pizza
       icon: {fileID: 4761689613559636558, guid: 127c3add30acefa498fd69287ed5e08a, type: 3}
-      cost: 5000
+      cost: 250000
     panelRoot: {fileID: 959229277}
     buyButton: {fileID: 2100155783}
     upgradeButton: {fileID: 995707965}
@@ -15382,9 +15382,9 @@ MonoBehaviour:
     currentDebuff: 0
   - employeeName: Elephant
     description: Trunk power
-    baseCost: 1000
+    baseCost: 150000
     costMultiplier: 1.15
-    dishesPerSecond: 50
+    dishesPerSecond: 12.8
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
     purchaseSfx: []
@@ -15392,7 +15392,7 @@ MonoBehaviour:
     - upgradeName: Peanut
       description: A Peanut!
       icon: {fileID: 8391765393788991538, guid: 5341f7a98d9452f44b79cf26f3d5145b, type: 3}
-      cost: 10000
+      cost: 750000
     panelRoot: {fileID: 377703404}
     buyButton: {fileID: 99651381}
     upgradeButton: {fileID: 35822222}
@@ -15411,9 +15411,9 @@ MonoBehaviour:
     currentDebuff: 0
   - employeeName: Firetruck
     description: It's time to get the city involved
-    baseCost: 2000
+    baseCost: 400000
     costMultiplier: 1.15
-    dishesPerSecond: 100
+    dishesPerSecond: 25.6
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
     purchaseSfx: []
@@ -15421,7 +15421,7 @@ MonoBehaviour:
     - upgradeName: Fire Hose
       description: 2000 psi Firehose
       icon: {fileID: 3166240362032845361, guid: ba675b1b7ff70694094e2319af791e3e, type: 3}
-      cost: 20000
+      cost: 2000000
     panelRoot: {fileID: 1351300950}
     buyButton: {fileID: 1711302153}
     upgradeButton: {fileID: 1891120431}
@@ -15440,9 +15440,9 @@ MonoBehaviour:
     currentDebuff: 0
   - employeeName: Blue Whale
     description: Nature's greatest dishwasher
-    baseCost: 5000
+    baseCost: 900000
     costMultiplier: 1.15
-    dishesPerSecond: 250
+    dishesPerSecond: 51.2
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
     purchaseSfx: []
@@ -15450,7 +15450,7 @@ MonoBehaviour:
     - upgradeName: Barnacle
       description: Barnacle
       icon: {fileID: 2691655998432282992, guid: 9739f1651cd9a014e8c00b5546c8b31f, type: 3}
-      cost: 50000
+      cost: 4500000
     panelRoot: {fileID: 1262461150}
     buyButton: {fileID: 2084087157}
     upgradeButton: {fileID: 1475911185}
@@ -17178,7 +17178,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -229.09, y: -840.1001}
+  m_AnchoredPosition: {x: 0, y: -840.1001}
   m_SizeDelta: {x: 256.90002, y: 100.119995}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1262461152
@@ -17848,7 +17848,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -229.09, y: -740.2001}
+  m_AnchoredPosition: {x: 0, y: -740.2001}
   m_SizeDelta: {x: 256.90002, y: 100.119995}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1351300952
@@ -19232,8 +19232,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 352, y: 0.0000038147}
-  m_SizeDelta: {x: -526.76, y: 906.37}
+  m_AnchoredPosition: {x: 127.119644, y: 0.000000014901}
+  m_SizeDelta: {x: -127.12, y: 906.18}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1440343731
 GameObject:
@@ -22000,7 +22000,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 398759187}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.42931694
+  m_Size: 0.42941806
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

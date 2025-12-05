@@ -285,5 +285,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fbb8b23998d0c04981fbb0e5d2b63f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseReward: 40
-  multiplier: 10
+  baseReward: 25
+  multiplier: 25
