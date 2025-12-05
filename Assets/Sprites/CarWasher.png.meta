@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a860f0712713a3e4cb2b693d886704c1
+guid: 6f9d2025e543e6746b5b782450852200
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8283620988547500454
-    second: elephant_0
+      213: -5340893247509571021
+    second: CarWasher_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: elephant_0
+      name: CarWasher_0
       rect:
         serializedVersion: 2
-        x: 9
+        x: 141
         y: 0
-        width: 82
-        height: 53
+        width: 223
+        height: 242
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a56f7a3799aaa0d80800000000000000
-      internalID: -8283620988547500454
+      spriteID: 33ad8ee73e551e5b0800000000000000
+      internalID: -5340893247509571021
       vertices: []
       indices: 
       edges: []

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a860f0712713a3e4cb2b693d886704c1
+guid: 127c3add30acefa498fd69287ed5e08a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8283620988547500454
-    second: elephant_0
+      213: 4761689613559636558
+    second: RoofPizza_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: elephant_0
+      name: RoofPizza_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 0
-        width: 82
-        height: 53
+        x: 169
+        y: 64
+        width: 171
+        height: 168
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a56f7a3799aaa0d80800000000000000
-      internalID: -8283620988547500454
+      spriteID: e42a3ea997be41240800000000000000
+      internalID: 4761689613559636558
       vertices: []
       indices: 
       edges: []
