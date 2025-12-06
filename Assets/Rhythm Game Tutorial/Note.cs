@@ -2,25 +2,34 @@ using UnityEngine;
 
 public class Note : MonoBehaviour
 {
-    [HideInInspector] public int lane;       // assigned by spawner
-    public float targetTime;                 // when this note SHOULD be hit
+    [HideInInspector] public int lane;
+    public float targetTime;
     public bool canBeHit = false;
+
+    public bool wasHit = false;
 
     private HitWindow hitWindow;
     private AudioSource musicSource;
+
+    public SpriteRenderer noteSprite;
+    public Color highlightColor = Color.yellow;
+    private Color originalColor;
 
     void Start()
     {
         hitWindow = Object.FindFirstObjectByType<HitWindow>();
         musicSource = Object.FindFirstObjectByType<AudioSource>();
 
-        Debug.Log($"Note spawned in lane {lane} (targetTime={targetTime})");
+        if (noteSprite != null)
+            originalColor = noteSprite.color;
     }
 
-    // Called when the player presses a key
     public void Hit()
     {
-        if (!canBeHit) return;
+        if (!canBeHit || wasHit)
+            return;
+
+        wasHit = true;
 
         float diff = musicSource.time - targetTime;
         hitWindow.JudgeNoteHit(diff);
@@ -31,7 +40,12 @@ public class Note : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("HitBox"))
+        {
             canBeHit = true;
+
+            if (noteSprite != null)
+                noteSprite.color = highlightColor;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -40,12 +54,17 @@ public class Note : MonoBehaviour
         {
             canBeHit = false;
 
-            // Only judge miss here
-            MiniScoreManager.AddMiss();
-            UI_RhythmHUD.Instance.ShowFeedback("MISS");
+            if (wasHit == false)
+            {
+                // TRUE miss
+                MiniScoreManager.AddMiss();
+                UI_RhythmHUD.Instance.ShowFeedback("MISS");
+            }
+
+            if (noteSprite != null)
+                noteSprite.color = originalColor;
 
             Destroy(gameObject);
         }
     }
-
 }

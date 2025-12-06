@@ -11,9 +11,9 @@ public enum HitType
 public class HitWindow : MonoBehaviour
 {
     [Header("Timing windows in seconds")]
-    public float perfectRange = 0.05f;
-    public float goodRange = 0.10f;
-    public float badRange = 0.20f;
+    public float perfectRange = 0.25f;
+    public float goodRange = 0.35f;
+    public float badRange = 0.50f;
 
     /// <summary>
     /// Judge a note hit based on timing difference (absolute seconds)
@@ -51,7 +51,7 @@ public class HitWindow : MonoBehaviour
         {
             UI_RhythmHUD.Instance.ShowFeedback(result.ToString().ToUpper());
         }
-        Debug.Log($"JudgeNoteHit called | diff={absDiff} | HUD={(UI_RhythmHUD.Instance != null ? "OK" : "NULL")}");
+        //Debug.Log($"JudgeNoteHit called | diff={absDiff} | HUD={(UI_RhythmHUD.Instance != null ? "OK" : "NULL")}");
 
         return result;
 

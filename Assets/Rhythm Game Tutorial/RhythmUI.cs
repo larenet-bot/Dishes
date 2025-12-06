@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class UI_RhythmHUD : MonoBehaviour
@@ -28,14 +27,17 @@ public class UI_RhythmHUD : MonoBehaviour
         MiniScoreManager.OnScoreUpdated -= UpdateScore;
     }
 
+    // Called whenever score changes
     void UpdateScore()
     {
         scoreText.text = "Score: " + MiniScoreManager.Score.ToString();
     }
 
+    // Called by HitWindow / LaneKey
     public void ShowFeedback(string msg)
     {
         feedbackText.text = msg;
+        feedbackText.color = new Color(feedbackText.color.r, feedbackText.color.g, feedbackText.color.b, 1f);
         feedbackTimer = feedbackDuration;
     }
 
@@ -46,7 +48,13 @@ public class UI_RhythmHUD : MonoBehaviour
             feedbackTimer -= Time.deltaTime;
 
             float alpha = feedbackTimer / feedbackDuration;
-            feedbackText.color = new Color(feedbackText.color.r, feedbackText.color.g, feedbackText.color.b, alpha);
+
+            feedbackText.color = new Color(
+                feedbackText.color.r,
+                feedbackText.color.g,
+                feedbackText.color.b,
+                alpha
+            );
         }
     }
 }

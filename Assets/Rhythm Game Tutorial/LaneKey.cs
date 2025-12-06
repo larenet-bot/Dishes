@@ -5,8 +5,8 @@ public class LaneKey : MonoBehaviour
     public int laneIndex;
     public KeyCode hitKey;
 
-    public HitWindow hitWindow;  // assign in inspector
-    public AudioSource musicSource; // assign the same AudioSource used for timing
+    public HitWindow hitWindow;      // assign in inspector
+    public AudioSource musicSource;  // assign the same AudioSource used for timing
 
     void Update()
     {
@@ -18,21 +18,28 @@ public class LaneKey : MonoBehaviour
 
     private void TryHit()
     {
-        // 1. Get the next note for this lane
-        Note nextNote = NoteRegistry.GetNextNote(laneIndex);
-        if (nextNote == null) return;
+        Debug.Log("KEY PRESSED on lane " + laneIndex);
 
-        // 2. Only judge if note is inside the hitbox
-        if (!nextNote.canBeHit) return;
+        // Find the nearest hittable note in this lane BEFORE exit can trigger
+        Note[] notes = Object.FindObjectsByType<Note>(FindObjectsSortMode.None);
+        Note best = null;
 
-        // --- FIX 1: Remove BEFORE judging ---
-        NoteRegistry.PopNote(laneIndex);
-        Destroy(nextNote.gameObject);
+        foreach (var n in notes)
+        {
+            if (n.lane == laneIndex && n.canBeHit && !n.wasHit)
+            {
+                best = n;
+                break; // stop at the first hittable note
+            }
+        }
 
-        // 3. Calculate timing difference
-        float diff = Mathf.Abs(musicSource.time - nextNote.targetTime);
+        if (best != null)
+        {
+            Debug.Log("Found note with targetTime = " + best.targetTime + " | canBeHit = " + best.canBeHit);
 
-        // --- FIX 2: Feed absolute timing difference ---
-        hitWindow.JudgeNoteHit(diff);
+            // Mark as hit immediately so OnTriggerExit2D does not count it as a miss
+            best.wasHit = true;
+            best.Hit();
+        }
     }
 }
