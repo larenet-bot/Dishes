@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9bdb99a9c8c51d408242a5ec1b693ed, type: 3}
-  m_Name: Plate
+  m_Name: BreadPan
   m_EditorClassIdentifier: 
   dishPrefab: {fileID: 0}
   stageSprites:
-  - {fileID: 5370487811579151587, guid: fbefbcf905be1864a883533098e0e007, type: 3}
-  - {fileID: -3690930136437393494, guid: 2f29a7aeb0e1f154a9e7982ddd44a022, type: 3}
-  - {fileID: -187032287160791366, guid: 2aa320f6cec1b9f48b9ad34a83867db5, type: 3}
-  profitPerDish: 1
+  - {fileID: -7423247573598235085, guid: 57eb30a0a50f286499a37b1dc61b5d10, type: 3}
+  - {fileID: 252795690013099719, guid: 4cc8100ed4769f9409c4879883574e46, type: 3}
+  - {fileID: 3613583612938040932, guid: f239c3a773e8f734aa37ce473aa7ca4c, type: 3}
+  profitPerDish: 256
   clicksRequired: 3
-  unlockAtDishCount: 0
-  spawnChance: 0.5
+  unlockAtDishCount: 12000
+  spawnChance: 0.3
