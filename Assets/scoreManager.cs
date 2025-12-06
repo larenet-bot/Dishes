@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using static ConvertDecimal;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -83,13 +84,17 @@ public class ScoreManager : MonoBehaviour
     public void NotifyProfitChanged() => OnProfitChanged?.Invoke();
 
     // Called when a dish is clicked enough times to complete it
-    public void OnDishCleaned(DishData finishedDish)
+    // Called when a dish is clicked enough times to complete it
+    public float OnDishCleaned(DishData finishedDish)
     {
+        if (finishedDish == null) return 0f;
+
         totalDishes += dishCountIncrement;
 
-        // Apply global dishProfitMultiplier here so upgrades that affect "dish profit"
-        // don't have to modify ScriptableObject asset values.
-        totalProfit += dishCountIncrement * finishedDish.profitPerDish * dishProfitMultiplier;
+        // Apply global dishProfitMultiplier here so upgrades that affect
+        // "dish profit" don't have to modify ScriptableObject asset values.
+        float reward = dishCountIncrement * finishedDish.profitPerDish * dishProfitMultiplier;
+        totalProfit += reward;
 
         NotifyProfitChanged();
         UpdateUI();
@@ -104,6 +109,8 @@ public class ScoreManager : MonoBehaviour
                 activeDish.Init(currentDish);
             }
         }
+
+        return reward;
     }
 
     // --- Manual Add / Subtract Profit ---

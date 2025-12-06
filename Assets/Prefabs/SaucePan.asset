@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9bdb99a9c8c51d408242a5ec1b693ed, type: 3}
-  m_Name: BowlDish
+  m_Name: SaucePan
   m_EditorClassIdentifier: 
   dishPrefab: {fileID: 0}
   stageSprites:
-  - {fileID: 5001746023961310147, guid: 11455bd5356b8e34594ad34e399097e1, type: 3}
-  - {fileID: -8137669759446092205, guid: 70499a3d7457793428cee59695333191, type: 3}
-  - {fileID: 8394152611511241524, guid: 62a2d7f1055e03740a7b2d9fd787c559, type: 3}
-  profitPerDish: 2
+  - {fileID: -7602668290662570163, guid: d182ee99f501fdc43bbbc7909648f208, type: 3}
+  - {fileID: -5061926496918866857, guid: 0f2d91667a08c9d458760ba05c5cd9af, type: 3}
+  - {fileID: 6829703572050286450, guid: 54ce419fb67d2ad4399a6ccb046964ba, type: 3}
+  profitPerDish: 4
   clicksRequired: 3
-  unlockAtDishCount: 10
-  spawnChance: 0.45
+  unlockAtDishCount: 150
+  spawnChance: 0.4

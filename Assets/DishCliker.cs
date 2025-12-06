@@ -10,6 +10,10 @@ public class DishClicker : MonoBehaviour
     public SudsOnClick sudsOnClick; // bubbles
     public Upgrades upgrades; // assign in inspector or find at runtime
 
+    [Header("Reward Text")]
+    [SerializeField] private GameObject rewardTextPrefab;      // same prefab you used for bubbles
+    [SerializeField] private Vector3 rewardTextOffset = new Vector3(0f, 0.5f, 0f);
+
     [Header("Sounds")]
     public AudioClip[] squeakClips;
     private AudioSource audioSource;
@@ -61,17 +65,36 @@ public class DishClicker : MonoBehaviour
             currentClicks = 0;
             dishVisual?.SetStage(0);
 
-            ScoreManager.Instance.OnDishCleaned(currentDish);
+            // Let ScoreManager handle profit and dishes, and get the reward amount back
+            float reward = ScoreManager.Instance.OnDishCleaned(currentDish);
+
+            // Get world position under cursor once
+            Vector3 mousePos = Input.mousePosition;
+            mousePos.z = Camera.main.nearClipPlane;
+            Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
 
             PlayRandomSqueak();
 
             // Bubble burst visuals
             if (sudsOnClick != null)
             {
-                Vector3 mousePos = Input.mousePosition;
-                mousePos.z = Camera.main.nearClipPlane;
-                Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
                 sudsOnClick.BurstBubbles(worldPos);
+            }
+            // Floating reward text
+            if (rewardTextPrefab != null && Camera.main != null && reward > 0f)
+            {
+                Vector3 textPos = worldPos;
+                textPos.z = 0f; // keep on gameplay plane (adjust if needed)
+                textPos += rewardTextOffset;
+
+                GameObject go = Instantiate(rewardTextPrefab, textPos, Quaternion.identity);
+
+                var floating = go.GetComponent<BubbleRewardText>();
+                if (floating != null)
+                {
+                    string formatted = BigNumberFormatter.FormatMoney(reward);
+                    floating.Initialize("+ " + formatted);
+                }
             }
         }
     }
