@@ -4,12 +4,12 @@ public class Note : MonoBehaviour
 {
     [HideInInspector] public int lane;
     public float targetTime;
-    public bool canBeHit = false;
 
+    public bool canBeHit = false;
     public bool wasHit = false;
 
-    private HitWindow hitWindow;
-    private AudioSource musicSource;
+    public HitWindow hitWindow;
+    public AudioSource musicSource;
 
     public SpriteRenderer noteSprite;
     public Color highlightColor = Color.yellow;
@@ -17,23 +17,20 @@ public class Note : MonoBehaviour
 
     void Start()
     {
-        hitWindow = Object.FindFirstObjectByType<HitWindow>();
-        musicSource = Object.FindFirstObjectByType<AudioSource>();
-
         if (noteSprite != null)
             originalColor = noteSprite.color;
     }
 
-    public void Hit()
+    // Called by LaneKey, receives correct time difference
+    public void Hit(float timeDifference)
     {
-        if (!canBeHit || wasHit)
+        if (!canBeHit || wasHit == false)
             return;
 
-        wasHit = true;
+        // Judge the hit
+        hitWindow.JudgeNoteHit(timeDifference);
 
-        float diff = musicSource.time - targetTime;
-        hitWindow.JudgeNoteHit(diff);
-
+        // Destroy immediately to avoid MISS on trigger exit
         Destroy(gameObject);
     }
 
@@ -54,9 +51,8 @@ public class Note : MonoBehaviour
         {
             canBeHit = false;
 
-            if (wasHit == false)
+            if (!wasHit)
             {
-                // TRUE miss
                 MiniScoreManager.AddMiss();
                 UI_RhythmHUD.Instance.ShowFeedback("MISS");
             }

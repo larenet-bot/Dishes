@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Rythmstart : MonoBehaviour
 {
-    public NoteSpawner spawner;
+    public NoteSpawner spawner;  // assign in inspector
     private bool hasStarted = false;
 
     void Update()
@@ -10,7 +10,16 @@ public class Rythmstart : MonoBehaviour
         if (!hasStarted && Input.GetKeyDown(KeyCode.Space))
         {
             hasStarted = true;
-            spawner.StartSpawning();
+
+            if (spawner != null)
+            {
+                spawner.StartSpawning();
+                Debug.Log("Spawning started!");
+            }
+            else
+            {
+                Debug.LogWarning("No spawner assigned to Rythmstart!");
+            }
         }
     }
 }

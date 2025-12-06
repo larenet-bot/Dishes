@@ -1,166 +1,95 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
 
 public class NoteSpawner : MonoBehaviour
 {
-    [Header("Prefab / Spawn")]
     public GameObject notePrefab;
     public Transform[] laneSpawnPoints;
+
+    public AudioSource musicSource;    // assign your rhythm track AudioSource
+    public HitWindow hitWindow;        // assign in inspector
+
+    public TextAsset chartFile;
     public float spawnYOffset = 0f;
 
-    [Header("Song / Audio")]
-    public AudioMixerGroup musicGroup;
-    public AudioSource musicSource;
-    public AudioClip songClip;
+    private float songStartTime;
 
-    [Header("Chart File (.txt)")]
-    public TextAsset chartFile;
-
-    [Header("Spawn Settings")]
-    public float timeAhead = 2.0f;
-    public float noteScrollSpeed = 5f;
-
-    // ----------------------
-    private class ParsedNote
-    {
-        public float time;
-        public int lane;
-    }
-
-    private List<ParsedNote> parsedNotes = new List<ParsedNote>();
-    private int nextIndex = 0;
-    private bool spawning = false;
-    // ----------------------
-
+    // Do NOT spawn notes automatically — wait for SPACE press
     void Start()
     {
-        if (musicSource == null && songClip != null)
-        {
-            musicSource = gameObject.AddComponent<AudioSource>();
-            musicSource.clip = songClip;
-            musicSource.outputAudioMixerGroup = musicGroup;
-        }
-
-        LoadChart();
-        Debug.Log("Loaded " + parsedNotes.Count + " notes.");
+        // intentionally empty
     }
 
-    // ----------------------
-    // Load .txt chart file
-    // ----------------------
-    private void LoadChart()
-    {
-        parsedNotes.Clear();
-        nextIndex = 0;
-
-        if (!chartFile)
-        {
-            Debug.LogError("No chart file assigned!");
-            return;
-        }
-
-        string[] lines = chartFile.text.Split('\n');
-
-        foreach (string raw in lines)
-        {
-            string line = raw.Trim();
-            if (string.IsNullOrEmpty(line)) continue;
-            if (line.StartsWith("[")) continue;
-
-            string[] parts = line.Split(':');
-            if (parts.Length < 5) continue;
-
-            string timeString = parts[0].Trim();
-            if (timeString.Equals("NaN", System.StringComparison.OrdinalIgnoreCase)) continue;
-
-            if (!float.TryParse(timeString, out float timeMs))
-                continue;
-
-            float timeSec = timeMs / 1000f;
-
-            if (!int.TryParse(parts[3].Trim(), out int lane))
-                continue;
-
-            if (lane < 0 || lane >= laneSpawnPoints.Length)
-                continue;
-
-            parsedNotes.Add(new ParsedNote
-            {
-                time = timeSec,
-                lane = lane
-            });
-        }
-
-        parsedNotes.RemoveAll(n => float.IsNaN(n.time));
-        parsedNotes.Sort((a, b) => a.time.CompareTo(b.time));
-    }
-
-    // ----------------------
-    void Update()
-    {
-        if (!spawning || musicSource == null) return;
-        if (nextIndex >= parsedNotes.Count) return;
-
-        float songTime = musicSource.time;
-        ParsedNote note = parsedNotes[nextIndex];
-
-        if (songTime >= note.time - timeAhead)
-        {
-            SpawnSpecific(note);
-            nextIndex++;
-        }
-
-    }
-
-    // ----------------------
+    // Called by Rythmstart.cs when SPACE is pressed
     public void StartSpawning()
     {
-        nextIndex = 0;
-        spawning = true;
+        songStartTime = Time.time;
+        SpawnNotesFromChart();
 
         if (musicSource != null)
             musicSource.Play();
-
-        Debug.Log("Spawner started!");
     }
 
-    public void StopSpawning()
+    void SpawnNotesFromChart()
     {
-        spawning = false;
-        if (musicSource != null)
-            musicSource.Stop();
+        string[] lines = chartFile.text.Split('\n');
+
+        foreach (string rawLine in lines)
+        {
+            string line = rawLine.Trim();
+
+            // Skip header or empty lines
+            if (string.IsNullOrEmpty(line) || line.StartsWith("["))
+                continue;
+
+            string[] parts = line.Split(':');
+
+            // Must have exactly 5 values
+            if (parts.Length != 5)
+            {
+                Debug.LogWarning("Invalid line (expected 5 values): " + line);
+                continue;
+            }
+
+            // Parse time
+            if (!float.TryParse(parts[0], out float timeMs))
+            {
+                Debug.LogWarning("Invalid TIME value: " + line);
+                continue;
+            }
+
+            // Parse lane and auto-wrap
+            if (!int.TryParse(parts[1], out int lane))
+            {
+                Debug.LogWarning("Invalid LANE value: " + line);
+                continue;
+            }
+
+            // AUTO-WRAP lane to valid range
+            lane = lane % laneSpawnPoints.Length;
+            if (lane < 0) lane += laneSpawnPoints.Length;
+
+            // Parse the remaining fields (can be ignored if not used)
+            if (!int.TryParse(parts[2], out int sustain)) sustain = 0;
+            if (!int.TryParse(parts[3], out int type)) type = 0;
+            if (!int.TryParse(parts[4], out int extra)) extra = 0;
+
+            // safe spawn
+            SpawnSingleNote(timeMs, lane);
+        }
     }
 
-    // ----------------------
-    private void SpawnSpecific(ParsedNote parsed)
+    private void SpawnSingleNote(float timeMs, int lane)
     {
-        int lane = parsed.lane;
+        Vector3 spawnPosition = laneSpawnPoints[lane].position + new Vector3(0, spawnYOffset, 0);
+        GameObject note = Instantiate(notePrefab, spawnPosition, Quaternion.identity);
 
-        Transform spawnPoint = laneSpawnPoints[lane];
-        Vector3 spawnPos = spawnPoint.position + new Vector3(0, spawnYOffset, 0);
-        spawnPos.z = 0;
-
-        GameObject g = Instantiate(notePrefab, spawnPos, Quaternion.identity, transform);
-
-        BeatScroller scroller = g.GetComponent<BeatScroller>();
-        if (scroller != null)
+        Note n = note.GetComponent<Note>();
+        if (n != null)
         {
-            scroller.scrollSpeed = noteScrollSpeed;
-            scroller.hasStarted = true;
-        }
-
-        Note note = g.GetComponent<Note>();
-        if (note != null)
-        {
-            note.lane = lane;
-
-           
-            note.targetTime = parsed.time;
-
-            NoteRegistry.RegisterNote(lane, note);
+            n.lane = lane;
+            n.targetTime = timeMs / 1000f; // convert ms to seconds
+            n.musicSource = musicSource;
+            n.hitWindow = hitWindow;
         }
     }
-
-
 }

@@ -5226,7 +5226,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laneIndex: 4
   hitKey: 108
-  hitWindow: {fileID: 87064710}
   musicSource: {fileID: 20115327}
 --- !u!1 &377703404
 GameObject:
@@ -6086,13 +6085,10 @@ MonoBehaviour:
   - {fileID: 449126104}
   - {fileID: 1055967766}
   - {fileID: 376158846}
-  spawnYOffset: 0
-  musicGroup: {fileID: 1698371678404170224, guid: e30935e55bf325e448023fdd8451a615, type: 2}
   musicSource: {fileID: 2072260067}
-  songClip: {fileID: 8300000, guid: f00486f2aeab6c741b9100de70ba9dde, type: 3}
+  hitWindow: {fileID: 87064710}
   chartFile: {fileID: 4900000, guid: 7c24e36bc997f414aa5279df7bba771f, type: 3}
-  timeAhead: 2
-  noteScrollSpeed: 5
+  spawnYOffset: 0
 --- !u!1 &425471085
 GameObject:
   m_ObjectHideFlags: 0
@@ -6500,7 +6496,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laneIndex: 2
   hitKey: 106
-  hitWindow: {fileID: 87064710}
   musicSource: {fileID: 20115327}
 --- !u!1 &450934206
 GameObject:
@@ -6845,7 +6840,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laneIndex: 1
   hitKey: 102
-  hitWindow: {fileID: 87064710}
   musicSource: {fileID: 20115327}
 --- !u!1 &467942471
 GameObject:
@@ -14689,7 +14683,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laneIndex: 3
   hitKey: 107
-  hitWindow: {fileID: 87064710}
   musicSource: {fileID: 20115327}
 --- !u!1 &1069080868
 GameObject:
@@ -22819,7 +22812,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laneIndex: 0
   hitKey: 100
-  hitWindow: {fileID: 87064710}
   musicSource: {fileID: 20115327}
 --- !u!1 &1668736055
 GameObject:
