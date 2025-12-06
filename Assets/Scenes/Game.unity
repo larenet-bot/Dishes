@@ -3931,8 +3931,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bubblePrefab:
   - {fileID: 5059608596444091316, guid: cce91c0996086ee4db7d818f1189d6c6, type: 3}
-  minSpawn: 30
-  maxSpawn: 75
+  minSpawn: 25
+  maxSpawn: 60
   minX: -6
   maxX: 5
   spawnY: -6

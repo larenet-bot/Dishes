@@ -287,3 +287,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseReward: 25
   multiplier: 25
+  rewardTextPrefab: {fileID: 6862005837800310114, guid: e5b1e0badc27be84db05cb7af759d7ba, type: 3}
+  rewardTextOffset: {x: 3, y: 0, z: 0}
