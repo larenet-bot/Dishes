@@ -24,11 +24,16 @@ public class Note : MonoBehaviour
     // Called by LaneKey, receives correct time difference
     public void Hit(float timeDifference)
     {
-        if (!canBeHit || wasHit == false)
+        // Only accept hit if hittable and not already hit
+        if (!canBeHit || wasHit)
             return;
 
-        // Judge the hit
-        hitWindow.JudgeNoteHit(timeDifference);
+        // mark as hit to prevent duplicates
+        wasHit = true;
+
+        // Judge the hit (updates MiniScoreManager and HUD)
+        if (hitWindow != null)
+            hitWindow.JudgeNoteHit(timeDifference);
 
         // Destroy immediately to avoid MISS on trigger exit
         Destroy(gameObject);

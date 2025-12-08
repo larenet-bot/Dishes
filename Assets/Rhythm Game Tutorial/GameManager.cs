@@ -1,3 +1,4 @@
+// GameManager.cs
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -5,8 +6,11 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public bool startPlaying;
-    public BeatScroller theBS;      // matches your beat scroller script
-    public AudioSource theMusic;    // uncomment this if you want the main music here
+    public BeatScroller theBS;
+    public AudioSource theMusic;
+
+    // ADD THIS
+    public NoteSpawner noteSpawner;
 
     private void Start()
     {
@@ -17,22 +21,30 @@ public class GameManager : MonoBehaviour
     {
         if (!startPlaying)
         {
-            if (Input.anyKeyDown)
+            // SPACE to start
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 startPlaying = true;
-                theBS.hasStarted = true;
-                theMusic.Play();
+
+                if (theBS != null)
+                    theBS.hasStarted = true;
+
+                if (theMusic != null)
+                    theMusic.Play();
+
+                if (noteSpawner != null)
+                    noteSpawner.StartSpawning();
             }
         }
     }
-
-    public void NoteHit()
-    {
-        Debug.Log("Hit");
-    }
-
     public void NoteMissed()
     {
-        Debug.Log("Missed");
+        // Whatever needs to happen on a miss
+        // Example:
+        // scoreManager.Miss();
+        // combo = 0;
+
+        Debug.Log("Note missed");
     }
+
 }
