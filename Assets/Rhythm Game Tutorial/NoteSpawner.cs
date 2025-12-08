@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,7 +32,7 @@ public class NoteSpawner : MonoBehaviour
 
     private float songStartTime;
 
-    // Do NOT spawn notes automatically — wait for SPACE press
+    // Do NOT spawn notes automatically � wait for SPACE press
     void Start()
     {
         // intentionally empty
