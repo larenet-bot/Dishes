@@ -321,11 +321,23 @@ public class DevConsole : MonoBehaviour
         if (scrollRect != null) scrollRect.verticalNormalizedPosition = 0f; // stick to bottom
     }
 
+
     void SetOpen(bool open)
     {
         _open = open;
-        if (panel != null) panel.SetActive(open);
-        if (open && inputField != null) inputField.ActivateInputField();
+
+        // Make sure our console canvas is actually active in the hierarchy
+        if (rootCanvas != null && !rootCanvas.gameObject.activeSelf)
+        {
+            rootCanvas.gameObject.SetActive(true);
+        }
+
+        if (panel != null)
+            panel.SetActive(open);
+
+        if (open && inputField != null)
+            inputField.ActivateInputField();
+
         Time.timeScale = open ? 0f : 1f; // pause while typing (optional)
     }
 
