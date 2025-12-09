@@ -6,37 +6,57 @@ using System.Collections;
 
 public class CutsceneManager : MonoBehaviour
 {
+    [Header("Data (preferred)")]
+    public CutsceneData cutsceneData;
+
     [Header("UI References")]
     public TMP_Text dialogueText;
     public Button nextButton;
     public Image backgroundImage;
 
-    [Header("Dialogue Settings")]
+    [Header("Legacy / Fallback fields (optional)")]
     [TextArea(2, 5)]
     public string[] dialogueLines;
-
-    [Header("Background Settings")]
-    public Sprite[] backgroundSprites;          // Sprites for backgrounds
-    public int[] backgroundChangeIndices;       // Line numbers where each background changes
-
-    [Header("Scene Transition")]
+    public AudioClip[] dialogueSFX;
+    public AudioClip typingSFX;
+    public int typingSFXIntervalChars = 2;
+    public Sprite[] backgroundSprites;
+    public int[] backgroundChangeIndices;
     public string nextSceneName = "MainGameScene";
+
+    [Header("Typewriter")]
+    public float typeSpeed = 0.02f;
 
     private int currentLine = 0;
     private bool isTyping = false;
-    private int currentBackgroundIndex = -1;
 
     private void Start()
     {
-        nextButton.onClick.AddListener(OnNextClicked);
-        ShowLine();
+        if (nextButton != null)
+            nextButton.onClick.AddListener(OnNextClicked);
+
+        // If a CutsceneData asset is provided, adopt its defaults
+        if (cutsceneData != null)
+        {
+            typingSFX = cutsceneData.typingSFX;
+            typingSFXIntervalChars = Mathf.Max(1, cutsceneData.typingSFXIntervalChars);
+            typeSpeed = Mathf.Max(0.001f, cutsceneData.typeSpeed);
+            nextSceneName = cutsceneData.nextSceneName;
+        }
+
         UpdateBackground();
+        ShowLine();
     }
 
     private void ShowLine()
     {
         StopAllCoroutines();
-        StartCoroutine(TypeText(dialogueLines[currentLine]));
+        StartCoroutine(TypeText(GetLineText(currentLine)));
+
+        AudioClip sfx = GetLineSFX(currentLine);
+        if (AudioManager.instance != null && sfx != null)
+            AudioManager.instance.PlaySFX(sfx);
+
         UpdateBackground();
     }
 
@@ -44,10 +64,19 @@ public class CutsceneManager : MonoBehaviour
     {
         isTyping = true;
         dialogueText.text = "";
+        int charCount = 0;
         foreach (char c in line)
         {
             dialogueText.text += c;
-            yield return new WaitForSeconds(0.02f);
+            charCount++;
+
+            if (typingSFX != null && AudioManager.instance != null && typingSFXIntervalChars > 0)
+            {
+                if ((charCount % typingSFXIntervalChars) == 0)
+                    AudioManager.instance.PlaySFX(typingSFX);
+            }
+
+            yield return new WaitForSeconds(typeSpeed);
         }
         isTyping = false;
     }
@@ -57,14 +86,13 @@ public class CutsceneManager : MonoBehaviour
         if (isTyping)
         {
             StopAllCoroutines();
-            dialogueText.text = dialogueLines[currentLine];
+            dialogueText.text = GetLineText(currentLine);
             isTyping = false;
             return;
         }
 
         currentLine++;
-
-        if (currentLine >= dialogueLines.Length)
+        if (currentLine >= GetTotalLines())
         {
             StartCoroutine(EndCutscene());
         }
@@ -76,17 +104,10 @@ public class CutsceneManager : MonoBehaviour
 
     private void UpdateBackground()
     {
-        for (int i = 0; i < backgroundChangeIndices.Length; i++)
+        Sprite desired = GetLineBackground(currentLine);
+        if (desired != null && backgroundImage != null && backgroundImage.sprite != desired)
         {
-            if (currentLine >= backgroundChangeIndices[i])
-            {
-                // Update only if background index changes
-                if (currentBackgroundIndex != i)
-                {
-                    currentBackgroundIndex = i;
-                    backgroundImage.sprite = backgroundSprites[i];
-                }
-            }
+            backgroundImage.sprite = desired;
         }
     }
 
@@ -95,6 +116,64 @@ public class CutsceneManager : MonoBehaviour
         dialogueText.text = "Loading...";
         yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene(nextSceneName);
+    }
+
+    // Helpers (support either CutsceneData or legacy arrays)
+    private int GetTotalLines()
+    {
+        if (cutsceneData != null && cutsceneData.lines != null)
+            return cutsceneData.lines.Length;
+        return (dialogueLines != null) ? dialogueLines.Length : 0;
+    }
+
+    private string GetLineText(int index)
+    {
+        if (cutsceneData != null && cutsceneData.lines != null)
+        {
+            if (index >= 0 && index < cutsceneData.lines.Length)
+                return cutsceneData.lines[index].text;
+            return string.Empty;
+        }
+        if (dialogueLines != null && index >= 0 && index < dialogueLines.Length)
+            return dialogueLines[index];
+        return string.Empty;
+    }
+
+    private AudioClip GetLineSFX(int index)
+    {
+        if (cutsceneData != null && cutsceneData.lines != null)
+        {
+            if (index >= 0 && index < cutsceneData.lines.Length)
+                return cutsceneData.lines[index].sfx;
+            return null;
+        }
+        if (dialogueSFX != null && index >= 0 && index < dialogueSFX.Length)
+            return dialogueSFX[index];
+        return null;
+    }
+
+    private Sprite GetLineBackground(int index)
+    {
+        if (cutsceneData != null && cutsceneData.lines != null)
+        {
+            if (index >= 0 && index < cutsceneData.lines.Length)
+                return cutsceneData.lines[index].background;
+            return null;
+        }
+
+        // Legacy behavior: pick the last background whose change index <= current line
+        Sprite result = null;
+        if (backgroundSprites == null || backgroundChangeIndices == null)
+            return null;
+        for (int i = 0; i < backgroundChangeIndices.Length; i++)
+        {
+            if (index >= backgroundChangeIndices[i])
+            {
+                if (i < backgroundSprites.Length)
+                    result = backgroundSprites[i];
+            }
+        }
+        return result;
     }
 }
 

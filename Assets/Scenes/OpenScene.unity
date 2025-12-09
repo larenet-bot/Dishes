@@ -430,7 +430,6 @@ RectTransform:
   m_Children:
   - {fileID: 1281278823}
   - {fileID: 1456047607}
-  - {fileID: 2146108086}
   - {fileID: 912630442}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -601,17 +600,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c5feced8eb2e54fbe0ab1a826c9dc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cutsceneData: {fileID: 0}
   dialogueText: {fileID: 302059930}
   nextButton: {fileID: 1896927181}
   backgroundImage: {fileID: 1281278824}
   dialogueLines:
-  - '*establishing shot of either diner or tv*'
-  - '*mc see''s an add for a food challenge*'
-  - '*mc requests food challenge*'
-  - '*mc almosts completes challenges but passes out*'
-  - '*awakes in kitchen*'
-  - '*shown fine print, challenge failure = labor*'
-  - '*manaers says they will show them the ropes* cues tutorial'
+  - 'After yet another roomate kicks you out for leaving dishes in the sink you walk
+    the streets. '
+  - All this walking has made you VERY hungry.
+  - 'You see out of the corner or you eye a poster. '
+  - '"Take on Benny''s Burger and eat for free!"'
+  - You go in and order
+  - THATS A LOTTA MEAT
+  - ...maybe you bit off more then you could chew...
+  - You awake in the kitchen, how strange.
+  - '"Ya didaint read da fine print didya! Ya owe me some labor for wastin muh meat!"'
+  - ...well damn, guess you better get to work.
+  dialogueSFX:
+  - {fileID: 0}
+  typingSFX: {fileID: 0}
+  typingSFXIntervalChars: 2
   backgroundSprites:
   - {fileID: 3017207271964906088, guid: 58d930143a45369428c6569191819a00, type: 3}
   - {fileID: -2240211079081675584, guid: 268e4e0cc0218a04e9325512dfbeba6d, type: 3}
@@ -619,8 +627,9 @@ MonoBehaviour:
   - {fileID: 2968203222402819555, guid: 202bd0d955f2c0445b81a1906932dfcf, type: 3}
   - {fileID: -3011681440091969271, guid: b64cd288598d20243a17683592397f9c, type: 3}
   - {fileID: 2968203222402819555, guid: 202bd0d955f2c0445b81a1906932dfcf, type: 3}
-  backgroundChangeIndices: 000000000100000002000000040000000500000006000000
+  backgroundChangeIndices: 000000000300000004000000070000000800000009000000
   nextSceneName: Game
+  typeSpeed: 0.02
 --- !u!4 &1049557283
 Transform:
   m_ObjectHideFlags: 0
@@ -1206,81 +1215,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!1 &2146108085
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2146108086}
-  - component: {fileID: 2146108088}
-  - component: {fileID: 2146108087}
-  m_Layer: 5
-  m_Name: CharacterImage
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &2146108086
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2146108085}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 525138378}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -186.2619, y: -2.5848}
-  m_SizeDelta: {x: 113.4761, y: 153.17}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2146108087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2146108085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: -1694539822947403700, guid: 49d6a429ff087ed44b9a49082576dfbd, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &2146108088
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2146108085}
-  m_CullTransparentMesh: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

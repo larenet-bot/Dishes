@@ -122,6 +122,7 @@ public class EmployeeManager : MonoBehaviour
         if (scoreManager == null)
             scoreManager = FindFirstObjectByType<ScoreManager>();
 
+        // Keep a local sfxSource as a fallback in case AudioManager isn't present.
         if (sfxSource == null)
             sfxSource = gameObject.AddComponent<AudioSource>();
 
@@ -288,13 +289,25 @@ public class EmployeeManager : MonoBehaviour
 
     private void PlayPurchaseSfx(EmployeeDefinition emp)
     {
-        if (sfxSource == null || emp.purchaseSfx == null || emp.purchaseSfx.Length == 0)
+        if (emp == null || emp.purchaseSfx == null || emp.purchaseSfx.Length == 0)
             return;
 
         int idx = UnityEngine.Random.Range(0, emp.purchaseSfx.Length);
         var clip = emp.purchaseSfx[idx];
         if (clip == null) return;
-        sfxSource.PlayOneShot(clip);
+
+        // Prefer centralized AudioManager if available so all SFX go through the same mixer / routing.
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.PlaySFX(clip);
+            return;
+        }
+
+        // Fallback to local AudioSource if AudioManager isn't present in the scene.
+        if (sfxSource != null)
+        {
+            sfxSource.PlayOneShot(clip);
+        }
     }
 
     // ---------------- Upgrading employees (debuff tiers) ----------------

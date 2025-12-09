@@ -16091,7 +16091,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreManager: {fileID: 1535544642}
-  sfxSource: {fileID: 0}
+  sfxSource: {fileID: 2072260067}
   employees:
   - employeeName: Helpful Critter
     description: A helpful critter who always dreamed he'd work at a resturant. Just
@@ -16101,7 +16101,8 @@ MonoBehaviour:
     dishesPerSecond: 0.2
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
-    purchaseSfx: []
+    purchaseSfx:
+    - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
     upgrades:
     - upgradeName: Old Cheese
       description: Stinky cheese
@@ -16130,7 +16131,8 @@ MonoBehaviour:
     dishesPerSecond: 0.4
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
-    purchaseSfx: []
+    purchaseSfx:
+    - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
     upgrades:
     - upgradeName: Magic Fedora
       description: Give him sentience to do dishes
@@ -16159,7 +16161,8 @@ MonoBehaviour:
     dishesPerSecond: 0.8
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
-    purchaseSfx: []
+    purchaseSfx:
+    - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
     upgrades:
     - upgradeName: College Credit
       description: Gain 1 college credit per semester
@@ -16188,7 +16191,8 @@ MonoBehaviour:
     dishesPerSecond: 1.6
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
-    purchaseSfx: []
+    purchaseSfx:
+    - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
     upgrades:
     - upgradeName: Unicycle
       description: Unicycle
@@ -16217,7 +16221,8 @@ MonoBehaviour:
     dishesPerSecond: 3.2
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
-    purchaseSfx: []
+    purchaseSfx:
+    - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
     upgrades:
     - upgradeName: Unique Candy
       description: Gain valuable work experience
@@ -16246,7 +16251,8 @@ MonoBehaviour:
     dishesPerSecond: 6.4
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
-    purchaseSfx: []
+    purchaseSfx:
+    - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
     upgrades:
     - upgradeName: Roof Pizza
       description: Roof Pizza
@@ -16269,13 +16275,14 @@ MonoBehaviour:
     currentUpgradeIndex: 0
     currentDebuff: 0
   - employeeName: Elephant
-    description: Trunk power
+    description: They'll work for peanuts
     baseCost: 150000
     costMultiplier: 1.15
     dishesPerSecond: 12.8
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
-    purchaseSfx: []
+    purchaseSfx:
+    - {fileID: 8300000, guid: 7ea08711ec9dbc74c86766f5fd894b01, type: 3}
     upgrades:
     - upgradeName: Peanut
       description: A Peanut!
@@ -16304,7 +16311,8 @@ MonoBehaviour:
     dishesPerSecond: 25.6
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
-    purchaseSfx: []
+    purchaseSfx:
+    - {fileID: 8300000, guid: 1fc629ddcef30ba40a22a05d3a1e8ba8, type: 3}
     upgrades:
     - upgradeName: Fire Hose
       description: 2000 psi Firehose
@@ -16333,7 +16341,8 @@ MonoBehaviour:
     dishesPerSecond: 51.2
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
-    purchaseSfx: []
+    purchaseSfx:
+    - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
     upgrades:
     - upgradeName: Barnacle
       description: Barnacle
