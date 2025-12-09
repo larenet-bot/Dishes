@@ -20,4 +20,8 @@ public class DishData : ScriptableObject
 
     [Header("Spawn Settings")]
     [Range(0f, 1f)] public float spawnChance = 1f; // chance among unlocked dishes
+
+    [Header("UI")]
+    [Tooltip("Scale factor for the main dish button. 1 = baseline plate size, >1 = bigger, <1 = smaller.")]
+    public float uiScale = 1f;
 }

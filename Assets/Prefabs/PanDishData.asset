@@ -21,3 +21,4 @@ MonoBehaviour:
   clicksRequired: 3
   unlockAtDishCount: 3000
   spawnChance: 0.35
+  uiScale: 2
