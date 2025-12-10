@@ -2969,7 +2969,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &125825044
 Transform:
   m_ObjectHideFlags: 0
@@ -17347,12 +17347,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 750338128}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1547463541}
+  m_Script: {fileID: 11500000, guid: 17d74541835b3774a9c83bb89b75f594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   noteSpawner: {fileID: 419930832}
   miniToggle: {fileID: 542946269}
   options: []
+  sharedAudioClip: {fileID: 0}
   difficultyButtons:
   - {fileID: 1985671519}
   - {fileID: 1002732166}
@@ -26948,13 +26949,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1282540598}
+  - component: {fileID: 1282540599}
   m_Layer: 0
   m_Name: BeatmapSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1282540598
 Transform:
   m_ObjectHideFlags: 0
@@ -26970,6 +26972,41 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2000261554}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1282540599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282540597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17d74541835b3774a9c83bb89b75f594, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noteSpawner: {fileID: 419930832}
+  miniToggle: {fileID: 542946269}
+  options:
+  - label: Easy
+    chartFile: {fileID: 4900000, guid: dd3015280104977458ae4cdb4b767868, type: 3}
+    audioClip: {fileID: 0}
+    icon: {fileID: 0}
+  - label: Medium
+    chartFile: {fileID: 4900000, guid: ab30425c28570dd42b23decfc38d076f, type: 3}
+    audioClip: {fileID: 0}
+    icon: {fileID: 0}
+  - label: Hard
+    chartFile: {fileID: 4900000, guid: d9ce6ca6e20c7484cbd4ad6450654f4b, type: 3}
+    audioClip: {fileID: 0}
+    icon: {fileID: 0}
+  sharedAudioClip: {fileID: 8300000, guid: f00486f2aeab6c741b9100de70ba9dde, type: 3}
+  difficultyButtons:
+  - {fileID: 1985671519}
+  - {fileID: 1002732166}
+  - {fileID: 853155163}
+  startButton: {fileID: 1987998723}
+  selectedLabel: {fileID: 0}
+  startImmediately: 0
 --- !u!1 &1294187799
 GameObject:
   m_ObjectHideFlags: 0
@@ -32296,21 +32333,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawner: {fileID: 419930832}
---- !u!115 &1547463541
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: BeatmapSelector
-  m_Namespace: 
-  m_AssemblyName: Assembly-CSharp
 --- !u!1 &1553108759
 GameObject:
   m_ObjectHideFlags: 0
@@ -40697,7 +40719,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2000261554
 Transform:
   m_ObjectHideFlags: 0
