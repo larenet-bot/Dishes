@@ -32,6 +32,12 @@ public class NoteSpawner : MonoBehaviour
 
     private float songStartTime;
 
+    // Exposed: fired when the parsed chart completes (after last note hit/miss buffer).
+    public static event Action OnChartCompleted;
+
+    // Exposed: count of notes parsed from the last loaded chart (helps ranking)
+    public static int LastChartNoteCount { get; private set; } = 0;
+
     // Do NOT spawn notes automatically — wait for SPACE press
     void Start()
     {
@@ -91,6 +97,7 @@ public class NoteSpawner : MonoBehaviour
     private IEnumerator SpawnNotesFromChartCoroutine()
     {
         var noteDefs = new List<NoteDef>();
+        LastChartNoteCount = 0;
 
         // split lines robustly (handle CRLF)
         string[] lines = chartFile.text.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
@@ -153,6 +160,8 @@ public class NoteSpawner : MonoBehaviour
             yield break;
         }
 
+        LastChartNoteCount = noteDefs.Count;
+
         // sort by targetTime ascending
         noteDefs.Sort((a, b) => a.targetTime.CompareTo(b.targetTime));
         Debug.Log($"[NoteSpawner] Scheduled {noteDefs.Count} notes (lead {spawnLeadTime:0.00}s)");
@@ -172,6 +181,34 @@ public class NoteSpawner : MonoBehaviour
             // spawn on next frame
             SpawnSingleNote(nd.timeMs, nd.lane);
         }
+
+        // All notes spawned. Schedule an end-of-chart monitor using last note's targetTime.
+        float lastTargetTime = noteDefs[noteDefs.Count - 1].targetTime;
+        StartCoroutine(EndOfChartCoroutine(lastTargetTime));
+    }
+
+    private IEnumerator EndOfChartCoroutine(float lastTargetTime)
+    {
+        // Wait until last note's hit window has elapsed.
+        // Compute a safe DSP time after which no more hits/misses should occur.
+        float badWindow = (hitWindow != null) ? hitWindow.badRange : 0.5f;
+        float safetyBuffer = 0.25f; // small extra buffer
+        double waitUntilDsp = globalSongStartDspTime + lastTargetTime + badWindow + safetyBuffer;
+
+        while (AudioSettings.dspTime < waitUntilDsp)
+            yield return null;
+
+        // Stop audio if still playing
+        if (musicSource != null)
+        {
+            try { musicSource.Stop(); } catch { }
+        }
+
+        // Small delay to let any final OnTriggerExit/OnHit logic finish
+        yield return new WaitForSeconds(0.05f);
+
+        // Fire the completion event for any UI/logic to consume
+        OnChartCompleted?.Invoke();
     }
 
     private void SpawnSingleNote(float timeMs, int lane)

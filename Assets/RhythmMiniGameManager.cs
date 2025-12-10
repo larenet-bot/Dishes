@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class RhythmMiniGameToggle : MonoBehaviour
@@ -24,33 +25,47 @@ public class RhythmMiniGameToggle : MonoBehaviour
         }
     }
 
+    // Legacy toggle kept for compatibility with existing wiring
     public void ToggleMiniGame()
     {
-        isActive = !isActive;
+        if (!isActive) OpenMiniGame(waitForSpace: true);
+        else CloseMiniGame();
+    }
 
-        rhythmMiniGame.SetActive(isActive);
-        mainGameUI.SetActive(!isActive);
+    // New API: Open the minigame UI. If waitForSpace==false you expect to start audio/spawning immediately from caller.
+    public void OpenMiniGame(bool waitForSpace = true)
+    {
+        if (isActive) return;
 
-        if (isActive)
-        {
-            // Mute main game music
+        isActive = true;
+        if (rhythmMiniGame != null) rhythmMiniGame.SetActive(true);
+        if (mainGameUI != null) mainGameUI.SetActive(false);
+
+        if (AudioManager.instance != null)
             AudioManager.instance.MuteMainMusic(true);
 
-            // Set flag so Update() waits for space press
-            waitingForStart = true;
-        }
-        else
-        {
-            // Stop minigame audio
-            if (minigameAudioSource != null)
-                minigameAudioSource.Stop();
+        waitingForStart = waitForSpace;
+    }
 
-            // Restore main game music
+    // Close the mini-game UI and stop minigame audio
+    public void CloseMiniGame()
+    {
+        if (!isActive) return;
+
+        isActive = false;
+        if (rhythmMiniGame != null) rhythmMiniGame.SetActive(false);
+        if (mainGameUI != null) mainGameUI.SetActive(true);
+
+        if (minigameAudioSource != null)
+            minigameAudioSource.Stop();
+
+        if (AudioManager.instance != null)
+        {
             AudioManager.instance.MuteMainMusic(false);
             AudioManager.instance.RestoreMainMusic();
-
-            waitingForStart = false;
         }
+
+        waitingForStart = false;
     }
 
     private void StartMinigameMusic()
