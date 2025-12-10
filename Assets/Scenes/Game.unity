@@ -2225,8 +2225,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.43502, y: -30}
-  m_SizeDelta: {x: 228.03, y: 17.77}
+  m_AnchoredPosition: {x: 0.4351, y: 31.894}
+  m_SizeDelta: {x: 228.03, y: 46.09}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &99804683
 CanvasRenderer:
@@ -7231,8 +7231,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0039959, y: 17.202}
-  m_SizeDelta: {x: 228.91, y: 70.305}
+  m_AnchoredPosition: {x: 0.0050259, y: -15.37}
+  m_SizeDelta: {x: 228.91, y: 46.24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &338507487
 CanvasRenderer:
@@ -18695,8 +18695,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000014305, y: -28.09}
-  m_SizeDelta: {x: 228.9, y: 20.28}
+  m_AnchoredPosition: {x: -0.000088692, y: 29.365}
+  m_SizeDelta: {x: 228.9, y: 45.98}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &896693150
 CanvasRenderer:
@@ -21356,8 +21356,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0049896, y: -31.2}
-  m_SizeDelta: {x: 228.9, y: 18.4}
+  m_AnchoredPosition: {x: 0.0049896, y: 31.85}
+  m_SizeDelta: {x: 228.9, y: 39.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1105987379
 CanvasRenderer:
@@ -23231,8 +23231,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000053406, y: 14.802}
-  m_SizeDelta: {x: 228.9, y: 73.604}
+  m_AnchoredPosition: {x: -0.00045776, y: -14.155}
+  m_SizeDelta: {x: 228.9, y: 52.49}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1192016310
 CanvasRenderer:
@@ -28334,8 +28334,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.43499, y: 16.913}
-  m_SizeDelta: {x: 228.03, y: 76.055}
+  m_AnchoredPosition: {x: -0.43999, y: -15.018}
+  m_SizeDelta: {x: 228.03, y: 47.735}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1460034763
 CanvasRenderer:
@@ -37638,16 +37638,19 @@ MonoBehaviour:
   soapTiers:
   - tierName: Bar Soap
     description: Affects ALL DPS. Currently has no affect
+    loreDescription: Cheap Bar Soap that barely cleans
     cost: 100
     multiplier: 1
     icon: {fileID: 8160856787165218221, guid: bfa0394716ca628469a34c76cf123161, type: 3}
   - tierName: Dish Soap
     description: Increases ALL DPS by 50%
+    loreDescription: Plain Dish Soap
     cost: 100
     multiplier: 1.5
     icon: {fileID: -7309660979087376691, guid: d010a97ad69e230489a057250235478b, type: 3}
   - tierName: Premium Soap
     description: Increases ALL DPS by 50%
+    loreDescription: Can clean a duck really well
     cost: 1000
     multiplier: 1.5
     icon: {fileID: -6550787402295075670, guid: 59c3961594a5dd24fb265ab1623cc74c, type: 3}
@@ -37662,18 +37665,21 @@ MonoBehaviour:
   - tierName: Plastic Glove
     description: Increase the number of dishes done per hand wash. Currently has
       no affect.
+    loreDescription: Not very durable plastic gloves
     cost: 100
     dishesAdded: 0
     icon: {fileID: 5363654752389830098, guid: f6a5c623f9cdd544496b0486268da885, type: 3}
     requiredDishes: 0
   - tierName: Latex Glove
     description: When you complete a wash cycle, complete 2 dishes
+    loreDescription: Gloves that wear down quickly
     cost: 100
     dishesAdded: 1
     icon: {fileID: 7274173115437100561, guid: 1ca911c2098c144478f2d2a31f2d745c, type: 3}
     requiredDishes: 10
   - tierName: Nitrile Glove
     description: When you complete a wash cycle, complete 3 dishes
+    loreDescription: Reliable, but uncomfortable gloves
     cost: 100
     dishesAdded: 2
     icon: {fileID: 4319018798289120088, guid: 52b54fd1e09b12e418a5f9990486a707, type: 3}
@@ -37688,12 +37694,14 @@ MonoBehaviour:
   spongeTiers:
   - tierName: Abrasive Sponge
     description: Increases the number of clicks per click
+    loreDescription: Taken from the beach. Doesn't clean well
     cost: 10
     stagesPerClick: 1
     icon: {fileID: 8979297078104028494, guid: 4a51ca4d51e6d1e47bbd6fc448252461, type: 3}
     requiredDishes: 0
   - tierName: Sponge Gramps
     description: Clicks one more click per click
+    loreDescription: Cheap, stor bought sponge.
     cost: 20
     stagesPerClick: 2
     icon: {fileID: 6863436470346006442, guid: 54a3958fefc46364fb2592b6793a0e8a, type: 3}

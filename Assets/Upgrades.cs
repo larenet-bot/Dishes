@@ -12,6 +12,7 @@ public class Upgrades : MonoBehaviour
     {
         public string tierName;
         [TextArea] public string description;
+        [TextArea] public string loreDescription;
         public float cost;
         [Tooltip("Multiplier to apply to existing profit values (e.g. 1.5 = +50%)")]
         public float multiplier = 1f;
@@ -23,6 +24,7 @@ public class Upgrades : MonoBehaviour
     {
         public string tierName;
         [TextArea] public string description;
+        [TextArea] public string loreDescription;
         public float cost;
         [Tooltip("How many additional dishes are added to the dish completion count when this tier is active (relative to base).")]
         public int dishesAdded = 0;
@@ -35,6 +37,7 @@ public class Upgrades : MonoBehaviour
     {
         public string tierName;
         [TextArea] public string description;
+        [TextArea] public string loreDescription;
         public float cost;
         [Tooltip("How many dish stages are completed per click (e.g. 1 = normal, 2 = double, etc.)")]
         public int stagesPerClick = 1;
@@ -316,29 +319,42 @@ public class Upgrades : MonoBehaviour
         if (soapTiers == null || soapTiers.Count == 0) return;
 
         var current = soapTiers[Mathf.Clamp(currentSoapIndex, 0, soapTiers.Count - 1)];
-        if (soapNameText) soapNameText.text = current.tierName;
-        if (soapDescText) soapDescText.text = current.description;
 
-        // update HUD button image to reflect current tier (if assigned)
+        if (soapNameText) soapNameText.text = current.tierName;
+        if (soapDescText) soapDescText.text = current.description; // in-game effect
+
+        // Where the old cost text was: now show IRL / lore description
+        if (soapCostText)
+            soapCostText.text = string.IsNullOrEmpty(current.loreDescription)
+                ? string.Empty
+                : current.loreDescription;
+
+        // HUD icon stays the same
         if (soapButtonImage != null && current != null && current.icon != null)
-        {
             soapButtonImage.sprite = current.icon;
-            // soapButtonImage.SetNativeSize(); // optional
-        }
 
         bool hasNext = currentSoapIndex < soapTiers.Count - 1;
-        if (hasNext)
+
+        if (soapUpgradeButton)
         {
-            var next = soapTiers[currentSoapIndex + 1];
-            if (soapCostText) soapCostText.text = $"Upgrade for ${next.cost:0.00}";
-            if (soapUpgradeButton) soapUpgradeButton.interactable = scoreManager != null && scoreManager.GetTotalProfit() >= next.cost;
-            if (soapUpgradeButton) soapUpgradeButton.GetComponentInChildren<TMP_Text>()?.SetText($"Upgrade for ${next.cost:0.00}");
-        }
-        else
-        {
-            if (soapCostText) soapCostText.text = "MAX";
-            if (soapUpgradeButton) soapUpgradeButton.interactable = false;
-            if (soapUpgradeButton) soapUpgradeButton.GetComponentInChildren<TMP_Text>()?.SetText("Max");
+            var btnText = soapUpgradeButton.GetComponentInChildren<TMP_Text>();
+            float wallet = (scoreManager != null) ? scoreManager.GetTotalProfit() : 0f;
+
+            if (hasNext)
+            {
+                var next = soapTiers[currentSoapIndex + 1];
+
+                soapUpgradeButton.interactable = scoreManager != null && wallet >= next.cost;
+
+                if (btnText != null)
+                    btnText.SetText($"Upgrade for ${next.cost:0.00}");
+            }
+            else
+            {
+                soapUpgradeButton.interactable = false;
+                if (btnText != null)
+                    btnText.SetText("Max");
+            }
         }
     }
 
@@ -408,40 +424,46 @@ public class Upgrades : MonoBehaviour
         if (gloveTiers == null || gloveTiers.Count == 0) return;
 
         var current = gloveTiers[Mathf.Clamp(currentGloveIndex, 0, gloveTiers.Count - 1)];
-        if (gloveNameText) gloveNameText.text = current.tierName;
-        if (gloveDescText) gloveDescText.text = current.description;
 
-        // update HUD button image to reflect current glove tier (if assigned)
+        if (gloveNameText) gloveNameText.text = current.tierName;
+        if (gloveDescText) gloveDescText.text = current.description; // in-game effect
+
+        // Former cost text now shows IRL / lore description
+        if (gloveCostText)
+            gloveCostText.text = string.IsNullOrEmpty(current.loreDescription)
+                ? string.Empty
+                : current.loreDescription;
+
         if (gloveButtonImage != null && current != null && current.icon != null)
-        {
             gloveButtonImage.sprite = current.icon;
-            // gloveButtonImage.SetNativeSize(); // optional
-        }
 
         bool hasNext = currentGloveIndex < gloveTiers.Count - 1;
-        if (hasNext)
+        float wallet = (scoreManager != null) ? scoreManager.GetTotalProfit() : 0f;
+
+        if (gloveUpgradeButton)
         {
-            var next = gloveTiers[currentGloveIndex + 1];
+            var btnText = gloveUpgradeButton.GetComponentInChildren<TMP_Text>();
 
-            // check milestone unlock using ScoreManager total dishes
-            bool unlocked = scoreManager != null && scoreManager.GetTotalDishes() >= next.requiredDishes;
-
-            if (gloveCostText)
-                gloveCostText.text = unlocked ? $"Upgrade for ${next.cost:0.00}" : $"Locked: Complete {next.requiredDishes} dishes";
-
-            if (gloveUpgradeButton)
+            if (hasNext)
             {
-                gloveUpgradeButton.interactable = unlocked && scoreManager != null && scoreManager.GetTotalProfit() >= next.cost;
-                var btnText = gloveUpgradeButton.GetComponentInChildren<TMP_Text>();
+                var next = gloveTiers[currentGloveIndex + 1];
+                bool unlocked = scoreManager != null && scoreManager.GetTotalDishes() >= next.requiredDishes;
+
+                gloveUpgradeButton.interactable = unlocked && wallet >= next.cost;
+
                 if (btnText != null)
-                    btnText.SetText(unlocked ? $"Upgrade for ${next.cost:0.00}" : $"Locked: {next.requiredDishes} dishes");
+                {
+                    btnText.SetText(unlocked
+                        ? $"Upgrade for ${next.cost:0.00}"
+                        : $"Locked: {next.requiredDishes} dishes");
+                }
             }
-        }
-        else
-        {
-            if (gloveCostText) gloveCostText.text = "MAX";
-            if (gloveUpgradeButton) gloveUpgradeButton.interactable = false;
-            if (gloveUpgradeButton) gloveUpgradeButton.GetComponentInChildren<TMP_Text>()?.SetText("Max");
+            else
+            {
+                gloveUpgradeButton.interactable = false;
+                if (btnText != null)
+                    btnText.SetText("Max");
+            }
         }
     }
 
@@ -511,39 +533,48 @@ public class Upgrades : MonoBehaviour
     private void UpdateSpongeMenuUI()
     {
         if (spongeTiers == null || spongeTiers.Count == 0) return;
+
         var current = spongeTiers[Mathf.Clamp(currentSpongeIndex, 0, spongeTiers.Count - 1)];
+
         if (spongeNameText) spongeNameText.text = current.tierName;
-        if (spongeDescText) spongeDescText.text = current.description;
-        // update HUD button image to reflect current tier (if assigned)
+        if (spongeDescText) spongeDescText.text = current.description; // in-game effect
+
+        // Former cost text now shows IRL / lore description
+        if (spongeCostText)
+            spongeCostText.text = string.IsNullOrEmpty(current.loreDescription)
+                ? string.Empty
+                : current.loreDescription;
+
         if (spongeButtonImage != null && current != null && current.icon != null)
-        {
             spongeButtonImage.sprite = current.icon;
-            // spongeButtonImage.SetNativeSize(); // optional
-        }
+
         bool hasNext = currentSpongeIndex < spongeTiers.Count - 1;
-        if (hasNext)
+        float wallet = (scoreManager != null) ? scoreManager.GetTotalProfit() : 0f;
+
+        if (spongeUpgradeButton)
         {
-            var next = spongeTiers[currentSpongeIndex + 1];
+            var btnText = spongeUpgradeButton.GetComponentInChildren<TMP_Text>();
 
-            // check milestone unlock using ScoreManager total dishes
-            bool unlocked = scoreManager != null && scoreManager.GetTotalDishes() >= next.requiredDishes;
-
-            if (spongeCostText)
-                spongeCostText.text = unlocked ? $"Upgrade for ${next.cost:0.00}" : $"Locked: Complete {next.requiredDishes} dishes";
-
-            if (spongeUpgradeButton)
+            if (hasNext)
             {
-                spongeUpgradeButton.interactable = unlocked && scoreManager != null && scoreManager.GetTotalProfit() >= next.cost;
-                var btnText = spongeUpgradeButton.GetComponentInChildren<TMP_Text>();
+                var next = spongeTiers[currentSpongeIndex + 1];
+                bool unlocked = scoreManager != null && scoreManager.GetTotalDishes() >= next.requiredDishes;
+
+                spongeUpgradeButton.interactable = unlocked && wallet >= next.cost;
+
                 if (btnText != null)
-                    btnText.SetText(unlocked ? $"Upgrade for ${next.cost:0.00}" : $"Locked: {next.requiredDishes} dishes");
+                {
+                    btnText.SetText(unlocked
+                        ? $"Upgrade for ${next.cost:0.00}"
+                        : $"Locked: {next.requiredDishes} dishes");
+                }
             }
-        }
-        else
-        {
-            if (spongeCostText) spongeCostText.text = "MAX";
-            if (spongeUpgradeButton) spongeUpgradeButton.interactable = false;
-            if (spongeUpgradeButton) spongeUpgradeButton.GetComponentInChildren<TMP_Text>()?.SetText("Max");
+            else
+            {
+                spongeUpgradeButton.interactable = false;
+                if (btnText != null)
+                    btnText.SetText("Max");
+            }
         }
     }
 
