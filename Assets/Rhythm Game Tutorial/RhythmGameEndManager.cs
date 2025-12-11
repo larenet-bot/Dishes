@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -8,6 +9,10 @@ using UnityEngine;
 /// </summary>
 public class RhythmGameEndManager : MonoBehaviour
 {
+    public GameObject rhythmMiniGame;
+    public GameObject mainGameUI;
+    public bool isOnCooldown = false;
+
     [Header("UI References")]
     public GameObject resultsPanel; // root panel to toggle
     public TMP_Text rankText;
@@ -132,6 +137,34 @@ public class RhythmGameEndManager : MonoBehaviour
 
         // Reset mini-score so next run starts cleanly (UI will update via events)
         MiniScoreManager.ResetScore();
+    }
+    public void ContinueAndExit()
+    {
+        // Hide results
+        if (resultsPanel != null)
+            resultsPanel.SetActive(false);
+
+        // Disable minigame
+        if (rhythmMiniGame != null)
+            rhythmMiniGame.SetActive(false);
+
+        // Re-enable main game
+        if (mainGameUI != null)
+            mainGameUI.SetActive(true);
+
+        // Trigger cooldown
+        StartCoroutine(MinigameCooldownRoutine());
+    }
+
+    private IEnumerator MinigameCooldownRoutine()
+    {
+        isOnCooldown = true;
+
+        // however long you want the cooldown to be
+        float cooldownTime = 10f;
+        yield return new WaitForSeconds(cooldownTime);
+
+        isOnCooldown = false;
     }
 
     // Hook this to a "Close" button on the results panel

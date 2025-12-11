@@ -5,6 +5,10 @@ using TMPro;
 
 public partial class BeatmapSelector : MonoBehaviour
 {
+    [Header("UI Panel Root")]
+    public GameObject beatmapPanel;
+
+
     [Header("References")]
     public NoteSpawner noteSpawner;
     public RhythmMiniGameToggle miniToggle;
@@ -39,11 +43,15 @@ public partial class BeatmapSelector : MonoBehaviour
         if (startButton != null)
         {
             startButton.onClick.RemoveAllListeners();
-            startButton.onClick.AddListener(() => StartSelected(startImmediately));
+            startButton.onClick.AddListener(() => StartSelected(true));
+
         }
 
         UpdateUI();
         ApplySelectionToSpawner();
+        if (beatmapPanel != null)
+            beatmapPanel.SetActive(true);
+
     }
 
     public void Select(int index)
@@ -60,7 +68,11 @@ public partial class BeatmapSelector : MonoBehaviour
 
         ApplySelectionToSpawner();
 
-        // Open the mini-game UI. If immediate == true we won't wait for space to start.
+        // Hide the beatmap selector UI
+        if (beatmapPanel != null)
+            beatmapPanel.SetActive(false);
+
+        // Open the mini-game UI
         if (miniToggle != null)
         {
             miniToggle.OpenMiniGame(waitForSpace: !immediate);

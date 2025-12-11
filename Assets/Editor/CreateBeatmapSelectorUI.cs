@@ -43,7 +43,7 @@ public static class BeatmapSelectorUICreator
         // Title
         var title = CreateTMP("Title", "Select Difficulty", 30, new Vector2(0, 110), new Vector2(720, 48), panel.transform);
 
-        // Difficulty buttons container (horizontal)
+        // Difficulty buttons container
         GameObject diffRow = new GameObject("DifficultyRow", typeof(RectTransform), typeof(HorizontalLayoutGroup));
         Undo.RegisterCreatedObjectUndo(diffRow, "Create DifficultyRow");
         diffRow.transform.SetParent(panel.transform, false);
@@ -54,7 +54,7 @@ public static class BeatmapSelectorUICreator
         hlg.spacing = 12;
         hlg.childAlignment = TextAnchor.MiddleCenter;
 
-        // Helper to create a button with TMP child and return Button
+        // Button helper
         Button CreateButton(string name, string label)
         {
             GameObject btn = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
@@ -98,7 +98,7 @@ public static class BeatmapSelectorUICreator
             startBtn = btn.GetComponent<Button>();
         }
 
-        // Find or create BeatmapSelector and assign references
+        // Find or create BeatmapSelector
         BeatmapSelector selector = Object.FindObjectOfType<BeatmapSelector>();
         if (selector == null)
         {
@@ -107,50 +107,61 @@ public static class BeatmapSelectorUICreator
             selector = selGO.AddComponent<BeatmapSelector>();
         }
 
-        // Auto-wire NoteSpawner / RhythmMiniGameToggle if present
+        // Auto-wire spawner + mini toggle
         var spawner = Object.FindObjectOfType<NoteSpawner>();
         var mini = Object.FindObjectOfType<RhythmMiniGameToggle>();
 
+        if (mini != null && mini.rhythmMiniGame != null)
+        {
+            Undo.SetTransformParent(panel.transform, mini.rhythmMiniGame.transform, "Reparent BeatmapSelectorPanel");
+        }
+
+        // Assign references
         Undo.RecordObject(selector, "Assign BeatmapSelector refs");
         selector.noteSpawner = spawner;
         selector.miniToggle = mini;
         selector.difficultyButtons = new Button[] { easyBtn, normalBtn, hardBtn };
         selector.startButton = startBtn;
         selector.selectedLabel = selectedLabel;
+
+        // NEW: Auto-wire the main panel so BeatmapSelector can enable it
+        selector.beatmapPanel = panel;
+
         EditorUtility.SetDirty(selector);
 
-        // Hide panel by default
-        panel.SetActive(false);
+        // DO NOT HIDE THE PANEL ANYMORE
+        // panel.SetActive(false);
 
-        // Select created panel in Hierarchy
+        // Select in hierarchy
         Selection.activeGameObject = panel;
 
-        // Mark scene dirty so changes persist
-        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+        // Mark scene dirty
+        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
+            UnityEngine.SceneManagement.SceneManager.GetActiveScene()
+        );
     }
 
     private static Canvas GetTargetCanvas()
     {
-        // Prefer the selected GameObject if it is a Canvas
         if (Selection.activeGameObject != null)
         {
             var selCanvas = Selection.activeGameObject.GetComponent<Canvas>();
             if (selCanvas != null) return selCanvas;
         }
 
-        // Try common canvas names
-        var byName = GameObject.Find("Canvas") ?? GameObject.Find("UI Canvas") ?? GameObject.Find("Main Canvas");
+        var byName = GameObject.Find("Canvas") ??
+                     GameObject.Find("UI Canvas") ??
+                     GameObject.Find("Main Canvas");
+
         if (byName != null)
         {
             var c = byName.GetComponent<Canvas>();
             if (c != null) return c;
         }
 
-        // Fallback to first found in scene
         var found = Object.FindObjectOfType<Canvas>();
         if (found != null) return found;
 
-        // If none exist, create a new Canvas + EventSystem
         GameObject canvasGO = new GameObject("Canvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
         Undo.RegisterCreatedObjectUndo(canvasGO, "Create Canvas");
         var canvas = canvasGO.GetComponent<Canvas>();

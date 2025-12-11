@@ -80,25 +80,24 @@ public static class RhythmResultsUICreator
         hlg.spacing = 10;
         hlg.childAlignment = TextAnchor.MiddleCenter;
 
+        // Create Continue button only
         GameObject CreateButton(string name, string label)
         {
             GameObject btn = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
             Undo.RegisterCreatedObjectUndo(btn, "Create " + name);
             btn.transform.SetParent(btnRow.transform, false);
             var rt = btn.GetComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(160, 40);
+            rt.sizeDelta = new Vector2(200, 45);
             var img = btn.GetComponent<Image>();
             img.color = new Color(0.16f, 0.16f, 0.16f, 1f);
-            var txt = CreateTMP("Text", label, 18, Vector2.zero, new Vector2(160, 40), btn.transform);
+            var txt = CreateTMP("Text", label, 20, Vector2.zero, new Vector2(200, 45), btn.transform);
             txt.alignment = TextAlignmentOptions.Center;
             return btn;
         }
 
-        var closeBtn = CreateButton("CloseButton", "Close");
-        var retryBtn = CreateButton("RetryButton", "Retry");
         var continueBtn = CreateButton("ContinueButton", "Continue");
 
-        // Find or create RhythmGameEndManager and assign references
+        // Find or create manager
         RhythmGameEndManager manager = Object.FindObjectOfType<RhythmGameEndManager>();
         if (manager == null)
         {
@@ -107,6 +106,7 @@ public static class RhythmResultsUICreator
             manager = mgrGO.AddComponent<RhythmGameEndManager>();
         }
 
+        // Assign manager references
         Undo.RecordObject(manager, "Assign RhythmGameEndManager refs");
         manager.resultsPanel = panel;
         manager.rankText = rank;
@@ -118,29 +118,27 @@ public static class RhythmResultsUICreator
         manager.rewardText = reward;
         EditorUtility.SetDirty(manager);
 
-        // Hide panel initially
+        // Hide results initially
         panel.SetActive(false);
 
-        // Add persistent Close button listener
-        var closeBtnComp = closeBtn.GetComponent<Button>();
-        Undo.RecordObject(closeBtnComp, "Add Close Listener");
-        UnityEventTools.AddPersistentListener(closeBtnComp.onClick, manager.CloseResults);
-        EditorUtility.SetDirty(closeBtnComp);
+        // Wire the continue button to manager.ContinueAndExit()
+        var continueBtnComp = continueBtn.GetComponent<Button>();
+        Undo.RecordObject(continueBtnComp, "Add Continue Listener");
+        UnityEventTools.AddPersistentListener(continueBtnComp.onClick, manager.ContinueAndExit);
+        EditorUtility.SetDirty(continueBtnComp);
 
-        // Select created panel
+        // Select panel in hierarchy
         Selection.activeGameObject = panel;
     }
 
     private static Canvas GetTargetCanvas()
     {
-        // Prefer the selected GameObject if it is a Canvas
         if (Selection.activeGameObject != null)
         {
             var selCanvas = Selection.activeGameObject.GetComponent<Canvas>();
             if (selCanvas != null) return selCanvas;
         }
 
-        // Try common canvas names (use whatever name your project uses)
         var byName = GameObject.Find("Canvas") ?? GameObject.Find("UI Canvas") ?? GameObject.Find("Main Canvas");
         if (byName != null)
         {
@@ -148,11 +146,9 @@ public static class RhythmResultsUICreator
             if (c != null) return c;
         }
 
-        // Fallback to first found in scene
         var found = Object.FindObjectOfType<Canvas>();
         if (found != null) return found;
 
-        // If none exist, create a new Canvas + EventSystem (same code used earlier)
         GameObject canvasGO = new GameObject("Canvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
         Undo.RegisterCreatedObjectUndo(canvasGO, "Create Canvas");
         var canvas = canvasGO.GetComponent<Canvas>();
