@@ -386,7 +386,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 960, y: 540}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -403,8 +403,8 @@ Canvas:
   m_GameObject: {fileID: 525138374}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 2094204892}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -606,29 +606,37 @@ MonoBehaviour:
   nextButton: {fileID: 1896927181}
   backgroundImage: {fileID: 1281278824}
   dialogueLines:
-  - 'After yet another roomate kicks you out for leaving dishes in the sink you walk
-    the streets. '
-  - All this walking has made you VERY hungry.
-  - 'You see out of the corner or you eye a poster. '
+  - 'After yet another roomate kicks you out for leaving dishes in the sink, you
+    aimlessly walk the streets. '
+  - All this walking has made you VERY hungry. You don't even have any change either.
+  - 'You see out of the corner of you eye a poster. '
   - '"Take on Benny''s Burger and eat for free!"'
-  - You go in and order
-  - THATS A LOTTA MEAT
-  - ...maybe you bit off more then you could chew...
-  - You awake in the kitchen, how strange.
-  - '"Ya didaint read da fine print didya! Ya owe me some labor for wastin muh meat!"'
+  - You go in and take on the challenge.
+  - THAT'S A LOTTA MEAT
+  - ...Maybe you bit off more than you could chew...
+  - ...
+  - You awake to see the owner before you.
+  - '"Ya didn''t read da fine print, didya!?" '
+  - '"Ya owe me some labor for wastin'' muh meat!"'
   - ...well dang, guess you better get to work.
   dialogueSFX:
   - {fileID: 0}
   typingSFX: {fileID: 0}
   typingSFXIntervalChars: 2
   backgroundSprites:
-  - {fileID: 3017207271964906088, guid: 58d930143a45369428c6569191819a00, type: 3}
-  - {fileID: -2240211079081675584, guid: 268e4e0cc0218a04e9325512dfbeba6d, type: 3}
-  - {fileID: 133982719826790466, guid: a05b92aa195c0c2499b48e5f57fc54bf, type: 3}
-  - {fileID: 2968203222402819555, guid: 202bd0d955f2c0445b81a1906932dfcf, type: 3}
-  - {fileID: -3011681440091969271, guid: b64cd288598d20243a17683592397f9c, type: 3}
-  - {fileID: 2968203222402819555, guid: 202bd0d955f2c0445b81a1906932dfcf, type: 3}
-  backgroundChangeIndices: 000000000300000004000000070000000800000009000000
+  - {fileID: 4850878120845980919, guid: 0dd04368b68655a479b4877bb54922a1, type: 3}
+  - {fileID: -1625096493650568400, guid: 5183c70a21fbba646b61274053c44dd1, type: 3}
+  - {fileID: 4850878120845980919, guid: 0dd04368b68655a479b4877bb54922a1, type: 3}
+  - {fileID: -6705866497878393880, guid: 9d4689b799782bf4a9d6cf834a8832bd, type: 3}
+  - {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
+  - {fileID: -5654681492125983662, guid: f2b4201dc72847b46ad5fa7ade9b3d8c, type: 3}
+  - {fileID: -7670856166824447854, guid: bc49aa708aaa04d428667b4569125151, type: 3}
+  - {fileID: 284140387538969895, guid: 91bd71809a172f84282316a265354713, type: 3}
+  - {fileID: -2232703539582777383, guid: 9c2e1a50f6a6fa94786cac5d895324bf, type: 3}
+  - {fileID: -2888777204600070448, guid: 1427537051391b84292095a9ad58225b, type: 3}
+  - {fileID: 5349049136137013527, guid: 4013cbb0e066b7740a18bc6b23461093, type: 3}
+  - {fileID: -1955448553306655712, guid: d67b9fb55a4841e479fb1466558317f4, type: 3}
+  backgroundChangeIndices: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
   nextSceneName: Game
   typeSpeed: 0.02
 --- !u!4 &1049557283
@@ -704,7 +712,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 3017207271964906088, guid: 58d930143a45369428c6569191819a00, type: 3}
+  m_Sprite: {fileID: 4850878120845980919, guid: 0dd04368b68655a479b4877bb54922a1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -797,7 +805,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9960785, g: 0.5372549, b: 0.80392164, a: 0.54901963}
+  m_Color: {r: 0.99607843, g: 0.69924706, b: 0.8717645, a: 0.101960786}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1055,7 +1063,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9245283, g: 0.86928916, b: 0.86928916, a: 1}
+  m_Color: {r: 0.745283, g: 0.46755964, b: 0.6167126, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
