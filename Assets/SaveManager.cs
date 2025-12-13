@@ -24,10 +24,13 @@ public class SaveManager : MonoBehaviour
     // Optional: if you want to see the path in editor logs.
     [SerializeField] private bool logSaveEvents = false;
 
+    [SerializeField] private LoanManager loans;
+
     private float _timer;
     private SaveData _loadedData;
     private bool _hasLoadedFile;
     private bool _hasAppliedToCurrentScene;
+
 
     private string SavePath => Path.Combine(Application.persistentDataPath, "save.json");
 
@@ -88,6 +91,7 @@ public class SaveManager : MonoBehaviour
         score = null;
         employees = null;
         upgrades = null;
+        loans = null;
 
         _hasAppliedToCurrentScene = false;
 
@@ -100,6 +104,8 @@ public class SaveManager : MonoBehaviour
         if (score == null) score = FindFirstObjectByType<ScoreManager>();
         if (employees == null) employees = FindFirstObjectByType<EmployeeManager>();
         if (upgrades == null) upgrades = FindFirstObjectByType<Upgrades>();
+        if (loans == null) loans = FindFirstObjectByType<LoanManager>();
+
     }
 
     private void ReadSaveFileToMemory()
@@ -131,7 +137,7 @@ public class SaveManager : MonoBehaviour
 
     private bool HaveAllRefs()
     {
-        return score != null && employees != null && upgrades != null;
+        return score != null && employees != null && upgrades != null && loans != null;
     }
 
     private void TryApplyLoadedDataToScene()
@@ -160,6 +166,9 @@ public class SaveManager : MonoBehaviour
         // ---- Employees ----
         employees.ApplySaveState(_loadedData.employees);
 
+        // ---- Loans ----
+        loans.ApplyLoanIndexFromSave(_loadedData.currentLoanIndex);
+
         _hasAppliedToCurrentScene = true;
 
         if (logSaveEvents) Debug.Log("[SaveManager] Applied loaded save data to current scene managers.");
@@ -172,6 +181,8 @@ public class SaveManager : MonoBehaviour
         if (!HaveAllRefs()) return;
 
         var data = new SaveData();
+
+        data.currentLoanIndex = loans.GetLoanIndexForSave();
 
         // ---- Score ----
         data.totalDishes = score.GetTotalDishes();

@@ -17,6 +17,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/OpenScene.unity
     guid: b29ba24360024f040a21cedf5cb93ca0
+  - enabled: 1
+    path: Assets/Scenes/Loan0.unity
+    guid: a3c266ab562e395419de0a68bca41d2d
+  - enabled: 1
+    path: Assets/Scenes/Loan1.unity
+    guid: bbaddbd0f4ed02f49905aa76b5983391
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

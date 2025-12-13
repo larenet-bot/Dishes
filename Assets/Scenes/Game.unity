@@ -1384,12 +1384,12 @@ MonoBehaviour:
   loanTiers:
   - loanName: Pay Your Bill!
     amount: 1000
-    loadSceneOnPay: 0
-    sceneName: OpenScene
+    loadSceneOnPay: 1
+    sceneName: Loan0
   - loanName: Payoff Your Shares
     amount: 1000000
-    loadSceneOnPay: 0
-    sceneName: 
+    loadSceneOnPay: 1
+    sceneName: Loan1
   usePersistence: 0
   prefsKey_CurrentLoanIndex: LOAN_CURRENT_INDEX
 --- !u!1 &68355194

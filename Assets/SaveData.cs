@@ -4,6 +4,7 @@ using System.Collections.Generic;
 [Serializable]
 public class SaveData
 {
+    public int currentLoanIndex;
     // ScoreManager
     public long totalDishes;
     public float totalProfit;

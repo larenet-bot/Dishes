@@ -131,6 +131,11 @@ public class LoanManager : MonoBehaviour
 
         // Advance to the next loan tier
         currentLoanIndex++;
+
+        // Force-save immediately so a scene change can't "skip" the new index
+        if (SaveManager.Instance != null)
+            SaveManager.Instance.Save();
+
         if (usePersistence)
         {
             PlayerPrefs.SetInt(prefsKey_CurrentLoanIndex, currentLoanIndex);
@@ -144,6 +149,19 @@ public class LoanManager : MonoBehaviour
             return; // scene is changing; no need to refresh here
         }
 
+        RefreshUI();
+    }
+    // SaveManager needs the raw value (can equal loanTiers.Count meaning "all loans paid")
+    public int GetLoanIndexForSave()
+    {
+        return currentLoanIndex;
+    }
+
+    // Allow restoring "all loans paid" state too
+    public void ApplyLoanIndexFromSave(int index)
+    {
+        int max = (loanTiers != null) ? loanTiers.Count : 0;   // allow == Count
+        currentLoanIndex = Mathf.Clamp(index, 0, max);
         RefreshUI();
     }
 
