@@ -42550,6 +42550,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7f9572d21982af248a60e3a30d8b284e, type: 3}
   - {fileID: 8300000, guid: 22f23c263b2e0d94b8a1b93e1d240c32, type: 3}
   - {fileID: 8300000, guid: 4e3a769a384c79c4a976dadf29a6ddc5, type: 3}
+  autoPlayNext: 1
+  avoidImmediateRepeat: 1
+  crossfadeEnabled: 1
+  crossfadeDuration: 3
 --- !u!82 &2072260069
 AudioSource:
   m_ObjectHideFlags: 0
