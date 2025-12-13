@@ -25085,7 +25085,7 @@ MonoBehaviour:
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
     purchaseSfx:
-    - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
+    - {fileID: 8300000, guid: 90135d1f05bcfcd4aab4d25c7981584d, type: 3}
     upgrades:
     - upgradeName: Old Cheese
       description: Stinky cheese
@@ -25115,7 +25115,7 @@ MonoBehaviour:
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
     purchaseSfx:
-    - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
+    - {fileID: 8300000, guid: e6f3a7fadd750494685f2c6cd54a8d8d, type: 3}
     upgrades:
     - upgradeName: Magic Fedora
       description: Give him sentience to do dishes
@@ -25205,7 +25205,7 @@ MonoBehaviour:
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
     purchaseSfx:
-    - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
+    - {fileID: 8300000, guid: d769c2644a0087b449e415c687eb8169, type: 3}
     upgrades:
     - upgradeName: Unique Candy
       description: Gain valuable work experience
@@ -25235,7 +25235,7 @@ MonoBehaviour:
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
     purchaseSfx:
-    - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
+    - {fileID: 8300000, guid: ef0b8f3064dacc5418907d2a6250ef32, type: 3}
     upgrades:
     - upgradeName: Roof Pizza
       description: Roof Pizza
@@ -25325,7 +25325,7 @@ MonoBehaviour:
     startingDebuff: 0.5
     debuffPerUpgrade: 0.25
     purchaseSfx:
-    - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
+    - {fileID: 8300000, guid: 3c858bee5de052541a5cd99ecbe8ceea, type: 3}
     upgrades:
     - upgradeName: Barnacle
       description: Barnacle
