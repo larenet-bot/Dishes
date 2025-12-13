@@ -263,7 +263,19 @@ public class ScoreManager : MonoBehaviour
             profitText.text = $"Profit: {BigNumberFormatter.FormatMoney((double)totalProfit)}";
         }
     }
+    public void LoadFromSave(long dishes, float profit, int countInc, float dishProfitMult)
+    {
+        totalDishes = dishes;
+        totalProfit = profit;
+        dishCountIncrement = countInc;
+        dishProfitMultiplier = dishProfitMult;
 
+        PendingProfitAdjustment = 0f;
+        PendingRewardAdjustment = 0f;
+
+        NotifyProfitChanged();
+        UpdateUI();
+    }
     // --- TEST/DEV ONLY: add dishes directly (free) ---
     public void AddDishes_ForTesting(long amount)
     {

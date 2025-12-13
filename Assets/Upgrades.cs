@@ -285,9 +285,6 @@ public class Upgrades : MonoBehaviour
     private void Start()
     {
         // ensure starting tiers are visible/known
-        currentSoapIndex = 0;
-        currentGloveIndex = 0;
-        currentSpongeIndex = 0;
         UpdateSoapMenuUI(); // ensure HUD icon matches initial soap tier
         UpdateGloveMenuUI(); // ensure HUD icon matches initial glove tier
         UpdateSpongeMenuUI(); // ensure HUD icon matches initial sponge tier
@@ -834,6 +831,44 @@ public class Upgrades : MonoBehaviour
         catch (System.Exception ex)
         {
             Debug.LogWarning($"[Upgrades.SetSpongeTierIndex] Apply failed: {ex.Message}");
+        }
+    }
+    public void GetSaveState(out int soap, out int glove, out int sponge)
+    {
+        soap = currentSoapIndex;
+        glove = currentGloveIndex;
+        sponge = currentSpongeIndex;
+    }
+
+    public void ApplySaveState(int soap, int glove, int sponge)
+    {
+        // Make sure refs exist (bootstrapping can change init order)
+        if (scoreManager == null) scoreManager = FindFirstObjectByType<ScoreManager>();
+        if (employeeManager == null) employeeManager = FindFirstObjectByType<EmployeeManager>();
+
+        // Only restore indices. Do NOT apply multipliers or dishCountIncrement here,
+        // because ScoreManager already loaded those values from disk.
+        currentSoapIndex = Mathf.Clamp(soap, 0, soapTiers.Count - 1);
+        currentGloveIndex = Mathf.Clamp(glove, 0, gloveTiers.Count - 1);
+        currentSpongeIndex = Mathf.Clamp(sponge, 0, spongeTiers.Count - 1);
+
+        UpdateSoapMenuUI();
+        UpdateGloveMenuUI();
+        UpdateSpongeMenuUI();
+
+        // Sponge needs the clickers to reference this Upgrades instance.
+        try
+        {
+            if (scoreManager != null && scoreManager.activeDish != null)
+                scoreManager.activeDish.upgrades = this;
+
+            var allClickers = FindObjectsByType<DishClicker>(FindObjectsSortMode.None);
+            for (int i = 0; i < allClickers.Length; i++)
+                if (allClickers[i] != null) allClickers[i].upgrades = this;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning($"[Upgrades] Failed to apply sponge refs on load: {ex.Message}");
         }
     }
 }

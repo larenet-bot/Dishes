@@ -32,13 +32,13 @@ public class HelpOverlay : MonoBehaviour
         if (isOpen) return;
         isOpen = true;
 
+        // SHOW help
         if (helpOverlayUI != null)
             helpOverlayUI.SetActive(true);
 
-        // Keep mainGameUI visible underneath if you want it dimmed by overlay,
-        // or hide it if you want help to be its own screen.
+        // HIDE main game UI
         if (mainGameUI != null)
-            mainGameUI.SetActive(true);
+            mainGameUI.SetActive(false);
 
         if (pauseGame)
         {
@@ -53,8 +53,13 @@ public class HelpOverlay : MonoBehaviour
         if (!isOpen) return;
         isOpen = false;
 
+        // HIDE help
         if (helpOverlayUI != null)
             helpOverlayUI.SetActive(false);
+
+        // SHOW main game UI again
+        if (mainGameUI != null)
+            mainGameUI.SetActive(true);
 
         if (pauseGame)
             Time.timeScale = previousTimeScale;

@@ -560,4 +560,39 @@ public class EmployeeManager : MonoBehaviour
         globalEmployeeProfitMultiplier *= multiplier;
         RefreshAllEmployeeUI();
     }
+    public List<EmployeeSave> GetSaveState()
+    {
+        var list = new List<EmployeeSave>(employees.Count);
+        for (int i = 0; i < employees.Count; i++)
+        {
+            var e = employees[i];
+            list.Add(new EmployeeSave
+            {
+                count = e.count,
+                currentCost = e.currentCost,
+                currentUpgradeIndex = e.currentUpgradeIndex,
+                currentDebuff = e.currentDebuff
+            });
+        }
+        return list;
+    }
+
+    public void ApplySaveState(List<EmployeeSave> saved)
+    {
+        if (saved == null) return;
+
+        int n = Mathf.Min(saved.Count, employees.Count);
+        for (int i = 0; i < n; i++)
+        {
+            var s = saved[i];
+            var e = employees[i];
+
+            e.count = Mathf.Max(0, s.count);
+            e.currentCost = Mathf.Max(0.01f, s.currentCost);
+            e.currentUpgradeIndex = Mathf.Max(0, s.currentUpgradeIndex);
+            e.currentDebuff = Mathf.Max(0f, s.currentDebuff);
+        }
+
+        RefreshAllEmployeeUI();
+    }
 }
