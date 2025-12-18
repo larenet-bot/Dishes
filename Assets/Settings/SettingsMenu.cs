@@ -17,10 +17,23 @@ public class SettingsMenu : MonoBehaviour
     public Slider sfxSlider;
 
     public AudioMixer audioMixer; // Reference to the AudioMixer for volume control
-    //public Dropdown resolutionDropdown; // Dropdown UI element for resolutions
-    Resolution[] resolutions; // Array to hold available screen resolutions
+
+    // Removed the dynamic resolution list and dropdown population.
     private void Start()
     {
+        // Force the game into the locked resolution immediately
+        Screen.SetResolution(1920, 1080, Screen.fullScreen);
+        Debug.Log("Resolution locked to: 1920 x 1080");
+
+        // Hide or disable the resolution dropdown if assigned so user cannot change it from UI
+        if (resolutionDropdown != null)
+        {
+            // Either deactivate the whole GameObject:
+            resolutionDropdown.gameObject.SetActive(false);
+            // Or just make it non-interactable:
+            // resolutionDropdown.interactable = false;
+        }
+
         // Load saved values or default to 0.5
         float master = PlayerPrefs.GetFloat("Master", 0.5f);
         float music = PlayerPrefs.GetFloat("Music", 0.5f);
@@ -39,34 +52,15 @@ public class SettingsMenu : MonoBehaviour
         SetMasterVolume(master);
         SetMusicVolume(music);
         SetSFXVolume(sfx);
-        resolutions = Screen.resolutions; // Get all available screen resolutions
-
-        resolutionDropdown.ClearOptions(); // Clear existing options in the dropdown
-        List<string> options = new List<string>(); // Create a list to hold resolution options
-                                                   // 
-        int currentResolutionIndex = 0; // Variable to track the current resolution index
-        for (int i =0; i < resolutions.Length; i++)
-        {
-            // Add each resolution to the options list
-            string option = resolutions[i].width + " x " + resolutions[i].height;
-            options.Add(option);
-
-            if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
-            {
-                currentResolutionIndex = i; // Set the current resolution index if it matches the current screen resolution
-            }
-        }
-        resolutionDropdown.AddOptions(options); // Add the options to the dropdown
-        resolutionDropdown.value = currentResolutionIndex; // Set the dropdown value to the current resolution index
-        resolutionDropdown.RefreshShownValue(); // Refresh the dropdown to show the current value
     }
+
+    // Kept as a no-op so any existing UI bindings won't change resolution.
     public void SetResolution(int resolutionIndex)
     {
-        // Set the screen resolution based on the selected index
-        Resolution resolution = resolutions[resolutionIndex];
-        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
-        Debug.Log("Resolution set to: " + resolution.width + " x " + resolution.height);
+        // Resolution change is locked. Do nothing.
+        Debug.Log("Resolution change attempted but is locked to 1920 x 1080.");
     }
+
     // For a Master slider
     public void SetMasterVolume(float volume)
     {
@@ -91,11 +85,13 @@ public class SettingsMenu : MonoBehaviour
         // Set the game's fullscreen mode
         Screen.fullScreen = isFullScreen;
         Debug.Log("Fullscreen mode set to: " + isFullScreen);
+
+        // Re-apply locked resolution when fullscreen mode changes
+        Screen.SetResolution(1920, 1080, Screen.fullScreen);
     }
+
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
     }
-
-
 }

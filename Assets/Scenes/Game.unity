@@ -27290,6 +27290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingsMenu: {fileID: 863348881}
+  menuSceneName: Menu
 --- !u!1 &1283580351
 GameObject:
   m_ObjectHideFlags: 0

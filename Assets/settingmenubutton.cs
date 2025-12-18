@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InGameSettingsButton : MonoBehaviour
 {
     [SerializeField] private GameObject settingsMenu;
+    [SerializeField] private string menuSceneName = "MainMenu";
 
     private bool isOpen = false;
 
@@ -23,6 +25,18 @@ public class InGameSettingsButton : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    public void GoToMenu()
+    {
+        // Ensure time is running and settings UI closed
+        CloseSettings();
 
+        if (string.IsNullOrEmpty(menuSceneName))
+        {
+            Debug.LogWarning("Menu scene name is empty. Set `menuSceneName` in the inspector.");
+            return;
+        }
+
+        SceneManager.LoadScene(menuSceneName);
+    }
 }
 
