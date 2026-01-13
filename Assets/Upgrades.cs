@@ -46,6 +46,16 @@ public class Upgrades : MonoBehaviour
         public int requiredDishes = 0;
     }
 
+    [Serializable]
+    public class Mp3Tier
+    {
+        public string tierName;
+        [TextArea] public string description;
+        [TextArea] public string loreDescription;
+        public float cost;
+        public Sprite icon;
+    }
+
     [Header("Soap Tiers (index 0 is the starting unlocked bar soap)")]
     public List<SoapTier> soapTiers = new List<SoapTier>();
 
@@ -86,8 +96,31 @@ public class Upgrades : MonoBehaviour
     public Button spongeCloseButton;
 
     [Header("HUD Button Image (assign the Image component from the SpongeButton)")]
-    public Image spongeButtonImage;
+    public Image spongeButtonImage; 
     // Add UI fields for sponge menu if needed (similar to soap/glove) 
+
+    [Header("MP3 Tiers (index 0 is the starting/unlocked mp3 upgrade)")]
+    public List<Mp3Tier> mp3Tiers = new List<Mp3Tier>();
+
+    [Header("MP3 UI")]
+    public GameObject mp3MenuPanel;
+    public TMP_Text mp3NameText;
+    public TMP_Text mp3DescText;
+    public TMP_Text mp3CostText;
+    public Button mp3UpgradeButton;
+    public Button mp3CloseButton;
+
+    [Header("HUD Button Image (assign the Image component from the MP3Button)")]
+    public Image mp3ButtonImage;
+
+    [Header("MP3 HUD")]
+    [Tooltip("Optional: assign the Button used in the HUD to open the MP3 menu (calls OpenMp3Menu).")]
+    public Button mp3OpenButton;
+
+    [Header("MP3 Player UI (shown after purchase)")]
+    [Tooltip("Assign the MP3 player panel GameObject or Mp3PlayerUI component. When the MP3 upgrade is purchased, clicking the HUD MP3 button will open this instead.")]
+    public GameObject mp3PlayerPanel;       // optional: panel GameObject for the advanced player
+    public Mp3PlayerUI mp3PlayerUI;         // optional: script on the player panel that handles song list & controls
 
     [Header("Optional: full-screen transparent Button behind the panel")]
     [Tooltip("If set, clicking this Button will close the soap/glove menu. If not set, the script will try to detect clicks outside the panel via UI raycast.")]
@@ -96,6 +129,7 @@ public class Upgrades : MonoBehaviour
     private int currentSoapIndex = 0;
     private int currentGloveIndex = 0;
     private int currentSpongeIndex = 0;
+    private int currentMp3Index = 0;
     private EmployeeManager employeeManager;
     private ScoreManager scoreManager;
 
@@ -225,6 +259,31 @@ public class Upgrades : MonoBehaviour
             });
         }
 
+        // seed default mp3 tiers if none set in inspector
+        // include a base (index 0) and the purchasable MP3 tier (index 1)
+        if (mp3Tiers.Count == 0)
+        {
+            mp3Tiers.Add(new Mp3Tier
+            {
+                tierName = "No MP3",
+                description = "Default radio. No custom songs.",
+                loreDescription = string.Empty,
+                cost = 0f,
+                icon = null
+            });
+            mp3Tiers.Add(new Mp3Tier
+            {
+                tierName = "MP3",
+                description = "Change the songs",
+                loreDescription = string.Empty,
+                cost = 100f,
+                icon = null
+            });
+        }
+
+        // Try to auto-assign mp3 UI references if user didn't assign them in inspector.
+        AutoAssignMp3UI();
+
         // wire soap buttons
         if (soapUpgradeButton != null)
         {
@@ -261,6 +320,25 @@ public class Upgrades : MonoBehaviour
             spongeCloseButton.onClick.AddListener(CloseSpongeMenu);
         }
 
+        // wire mp3 buttons
+        if (mp3UpgradeButton != null)
+        {
+            mp3UpgradeButton.onClick.RemoveAllListeners();
+            mp3UpgradeButton.onClick.AddListener(OnMp3UpgradeButton);
+        }
+        if (mp3CloseButton != null)
+        {
+            mp3CloseButton.onClick.RemoveAllListeners();
+            mp3CloseButton.onClick.AddListener(CloseMp3Menu);
+        }
+
+        // wire mp3 HUD open button (optional)
+        if (mp3OpenButton != null)
+        {
+            mp3OpenButton.onClick.RemoveAllListeners();
+            mp3OpenButton.onClick.AddListener(OpenMp3Menu);
+        }
+
         // overlay button is optional; if provided we hook it so clicking outside the panel closes the menu
         if (backgroundOverlayButton != null)
         {
@@ -271,6 +349,13 @@ public class Upgrades : MonoBehaviour
                 CloseSoapMenu();
                 CloseGloveMenu();
                 CloseSpongeMenu();
+                CloseMp3Menu();
+
+                // also close mp3 player panel if present
+                if (mp3PlayerUI != null)
+                    mp3PlayerUI.Close();
+                else if (mp3PlayerPanel != null)
+                    mp3PlayerPanel.SetActive(false);
             });
             // ensure overlay is hidden initially
             if (backgroundOverlayButton.gameObject.activeSelf)
@@ -280,6 +365,7 @@ public class Upgrades : MonoBehaviour
         CloseSoapMenu();
         CloseGloveMenu();
         CloseSpongeMenu();
+        CloseMp3Menu();
     }
 
     private void Start()
@@ -288,6 +374,48 @@ public class Upgrades : MonoBehaviour
         UpdateSoapMenuUI(); // ensure HUD icon matches initial soap tier
         UpdateGloveMenuUI(); // ensure HUD icon matches initial glove tier
         UpdateSpongeMenuUI(); // ensure HUD icon matches initial sponge tier
+        UpdateMp3MenuUI(); // ensure HUD icon / menu for mp3 is initialized
+
+        // Ensure the HUD MP3 button is bound to the appropriate action depending on whether MP3 is owned.
+        RebindMp3OpenButtonForPlayer();
+    }
+
+    // Helper: rebind the HUD MP3 open button so after purchase it opens the player panel/UI
+    private void RebindMp3OpenButtonForPlayer()
+    {
+        if (mp3OpenButton == null) return;
+
+        // clear existing listeners and bind appropriately
+        mp3OpenButton.onClick.RemoveAllListeners();
+
+        if (currentMp3Index > 0)
+        {
+            // MP3 purchased -> open player UI if available
+            if (mp3PlayerUI != null)
+            {
+                mp3OpenButton.onClick.AddListener(() =>
+                {
+                    if (backgroundOverlayButton != null)
+                        backgroundOverlayButton.gameObject.SetActive(true);
+                    mp3PlayerUI.Open();
+                });
+                return;
+            }
+
+            if (mp3PlayerPanel != null)
+            {
+                mp3OpenButton.onClick.AddListener(() =>
+                {
+                    if (backgroundOverlayButton != null)
+                        backgroundOverlayButton.gameObject.SetActive(true);
+                    mp3PlayerPanel.SetActive(true);
+                });
+                return;
+            }
+        }
+
+        // Default: open the purchasable MP3 upgrade menu (existing behavior)
+        mp3OpenButton.onClick.AddListener(OpenMp3Menu);
     }
 
     // --------- Soap UI API ----------
@@ -641,18 +769,145 @@ public class Upgrades : MonoBehaviour
         return spongeTiers[Mathf.Clamp(currentSpongeIndex, 0, spongeTiers.Count - 1)].stagesPerClick;
     }
 
+    // --------- MP3 UI API ----------
+    public void OpenMp3Menu()
+    {
+        // If MP3 upgrade has been purchased (any index > 0) and a player UI exists, open the player panel instead.
+        if (currentMp3Index > 0)
+        {
+            // Prefer Mp3PlayerUI if assigned
+            if (mp3PlayerUI != null)
+            {
+                if (backgroundOverlayButton != null)
+                    backgroundOverlayButton.gameObject.SetActive(true);
+
+                mp3PlayerUI.Open();
+                return;
+            }
+
+            // fallback: open mp3PlayerPanel GameObject if assigned
+            if (mp3PlayerPanel != null)
+            {
+                if (backgroundOverlayButton != null)
+                    backgroundOverlayButton.gameObject.SetActive(true);
+
+                mp3PlayerPanel.SetActive(true);
+                return;
+            }
+        }
+
+        // Otherwise open the purchasable MP3 upgrade menu (existing behavior)
+        Debug.Log($"[Upgrades] OpenMp3Menu called. mp3MenuPanel is {(mp3MenuPanel == null ? "null" : "assigned")}");
+        if (mp3MenuPanel == null) return;
+        UpdateMp3MenuUI();
+
+        if (backgroundOverlayButton != null)
+            backgroundOverlayButton.gameObject.SetActive(true);
+
+        mp3MenuPanel.SetActive(true);
+    }
+
+    public void CloseMp3Menu()
+    {
+        if (mp3MenuPanel == null) return;
+        mp3MenuPanel.SetActive(false);
+        if (backgroundOverlayButton != null)
+            backgroundOverlayButton.gameObject.SetActive(false);
+    }
+
+    private void UpdateMp3MenuUI()
+    {
+        if (mp3Tiers == null || mp3Tiers.Count == 0) return;
+
+        var current = mp3Tiers[Mathf.Clamp(currentMp3Index, 0, mp3Tiers.Count - 1)];
+
+        if (mp3NameText) mp3NameText.text = current.tierName;
+        if (mp3DescText) mp3DescText.text = current.description;
+
+        if (mp3CostText)
+            mp3CostText.text = string.IsNullOrEmpty(current.loreDescription)
+                ? string.Empty
+                : current.loreDescription;
+
+        if (mp3ButtonImage != null && current != null && current.icon != null)
+            mp3ButtonImage.sprite = current.icon;
+
+        bool hasNext = currentMp3Index < mp3Tiers.Count - 1;
+
+        if (mp3UpgradeButton)
+        {
+            var btnText = mp3UpgradeButton.GetComponentInChildren<TMP_Text>();
+            float wallet = (scoreManager != null) ? scoreManager.GetTotalProfit() : 0f;
+
+            if (hasNext)
+            {
+                var next = mp3Tiers[currentMp3Index + 1];
+                mp3UpgradeButton.interactable = scoreManager != null && wallet >= next.cost;
+
+                if (btnText != null)
+                    btnText.SetText($"Upgrade for ${next.cost:0.00}");
+            }
+            else
+            {
+                mp3UpgradeButton.interactable = false;
+                if (btnText != null)
+                    btnText.SetText("Max");
+            }
+        }
+    }
+
+    private void OnMp3UpgradeButton()
+    {
+        // attempt to upgrade to next tier
+        if (currentMp3Index >= mp3Tiers.Count - 1) return;
+        var next = mp3Tiers[currentMp3Index + 1];
+        if (scoreManager == null)
+        {
+            Debug.LogWarning("[Upgrades] ScoreManager not found.");
+            return;
+        }
+
+        float wallet = scoreManager.GetTotalProfit();
+        if (wallet < next.cost)
+        {
+            Debug.Log($"[Upgrades] Not enough profit to buy {next.tierName} (need ${next.cost:0.00})");
+            return;
+        }
+
+        // pay
+        scoreManager.SubtractProfit(next.cost, isPurchase: true);
+
+        // advance mp3 tier
+        currentMp3Index++;
+        UpdateMp3MenuUI();
+
+        // Rebind HUD MP3 button to open player UI/panel so next press opens the player
+        RebindMp3OpenButtonForPlayer();
+
+        // Optional: you can choose to immediately open the MP3 player UI after purchase.
+        // If you'd like that UX, uncomment the following lines:
+        
+        if (mp3PlayerUI != null) mp3PlayerUI.Open();
+        else if (mp3PlayerPanel != null) mp3PlayerPanel.SetActive(true);
+        
+
+        Debug.Log($"[Upgrades] Upgraded to {next.tierName} (mp3 purchased)");
+    }
+
     private void Update()
     {
-        // keep the upgrade interactable state up to date while menus are open
+        // keep the upgrade interactable state up to date while menus are active
         if (soapMenuPanel != null && soapMenuPanel.activeSelf)
             UpdateSoapMenuUI();
         if (gloveMenuPanel != null && gloveMenuPanel.activeSelf)
             UpdateGloveMenuUI();
         if (spongeMenuPanel != null && spongeMenuPanel.activeSelf)
             UpdateSpongeMenuUI();
+        if (mp3MenuPanel != null && mp3MenuPanel.activeSelf)
+            UpdateMp3MenuUI();
 
         // if no explicit overlay Button configured, detect clicks outside the active panel via UI raycast
-        if ((soapMenuPanel != null && soapMenuPanel.activeSelf || gloveMenuPanel != null && gloveMenuPanel.activeSelf || spongeMenuPanel != null && spongeMenuPanel.activeSelf) && backgroundOverlayButton == null)
+        if ((soapMenuPanel != null && soapMenuPanel.activeSelf || gloveMenuPanel != null && gloveMenuPanel.activeSelf || spongeMenuPanel != null && spongeMenuPanel.activeSelf || mp3MenuPanel != null && mp3MenuPanel.activeSelf) && backgroundOverlayButton == null)
         {
             // only respond to primary mouse button down / primary touch
             if (Input.GetMouseButtonDown(0))
@@ -730,11 +985,32 @@ public class Upgrades : MonoBehaviour
                     }
                 }
 
+                // check mp3 panel if not already clicked inside others
+                if (!clickedInsideAnyPanel && mp3MenuPanel != null && mp3MenuPanel.activeSelf)
+                {
+                    var rtMp3 = mp3MenuPanel.transform as RectTransform;
+                    foreach (var r in results)
+                    {
+                        if (r.gameObject == null) continue;
+                        if (rtMp3 != null && (r.gameObject.transform as RectTransform) != null && (r.gameObject.transform as RectTransform).IsChildOf(rtMp3))
+                        {
+                            clickedInsideAnyPanel = true;
+                            break;
+                        }
+                        if (r.gameObject == mp3MenuPanel)
+                        {
+                            clickedInsideAnyPanel = true;
+                            break;
+                        }
+                    }
+                }
+
                 if (!clickedInsideAnyPanel)
                 {
                     CloseSoapMenu();
                     CloseGloveMenu();
                     CloseSpongeMenu();
+                    CloseMp3Menu();
                 }
             }
         }
@@ -858,7 +1134,7 @@ public class Upgrades : MonoBehaviour
 
         // Sponge needs the clickers to reference this Upgrades instance.
         try
-        {
+        {   
             if (scoreManager != null && scoreManager.activeDish != null)
                 scoreManager.activeDish.upgrades = this;
 
@@ -870,5 +1146,103 @@ public class Upgrades : MonoBehaviour
         {
             Debug.LogWarning($"[Upgrades] Failed to apply sponge refs on load: {ex.Message}");
         }
+
+        // If MP3 was already owned on load, ensure the HUD button opens the player panel/UI.
+        RebindMp3OpenButtonForPlayer();
+    }
+
+    // Auto-assign helper for MP3 UI references (called at Awake)
+    private void AutoAssignMp3UI()
+    {
+        // Try a few common GameObject names for the panel
+        if (mp3MenuPanel == null)
+        {
+            string[] panelNames = { "MP3MenuPanel" };
+            foreach (var n in panelNames)
+            {
+                var go = GameObject.Find(n);
+                if (go != null)
+                {
+                    mp3MenuPanel = go;
+                    Debug.Log($"[Upgrades] Auto-assigned MP3MenuPanel from GameObject.Find(\"{n}\")");
+                    break;
+                }
+            }
+        }
+
+        // Try to auto-find the HUD open button if not assigned
+        if (mp3OpenButton == null)
+        {
+            string[] buttonNames = { "Mp3Button", "MP3Button", "mp3Button", "mp3OpenButton", "btnMp3" };
+            foreach (var n in buttonNames)
+            {
+                var go = GameObject.Find(n);
+                if (go != null)
+                {
+                    var btn = go.GetComponent<Button>();
+                    if (btn != null)
+                    {
+                        mp3OpenButton = btn;
+                        Debug.Log($"[Upgrades] Auto-assigned mp3OpenButton from GameObject.Find(\"{n}\")");
+                        break;
+                    }
+                }
+            }
+        }
+
+        // If we found the panel but not the close button, attempt to find a close button inside the panel
+        if (mp3MenuPanel != null && mp3CloseButton == null)
+        {
+            // Direct child lookups
+            var close = mp3MenuPanel.transform.Find("CloseButton")?.GetComponent<Button>()
+                        ?? mp3MenuPanel.transform.Find("Close")?.GetComponent<Button>()
+                        ?? mp3MenuPanel.transform.Find("X")?.GetComponent<Button>();
+
+            if (close == null)
+            {
+                // fallback: search children for a Button with "close" or "x" in its name
+                var buttons = mp3MenuPanel.GetComponentsInChildren<Button>(true);
+                foreach (var b in buttons)
+                {
+                    var lower = b.name.ToLower();
+                    if (lower.Contains("close") || lower == "x")
+                    {
+                        close = b;
+                        break;
+                    }
+                }
+            }
+
+            if (close != null)
+            {
+                mp3CloseButton = close;
+                Debug.Log("[Upgrades] Auto-assigned mp3CloseButton from panel children.");
+            }
+        }
+
+        // Try to auto-assign a player panel and Mp3PlayerUI script if available
+        if (mp3PlayerPanel == null)
+        {
+            var p = GameObject.Find("MP3PlayerPanel") ?? GameObject.Find("Mp3PlayerPanel") ?? GameObject.Find("mp3PlayerPanel");
+            if (p != null)
+            {
+                mp3PlayerPanel = p;
+                Debug.Log("[Upgrades] Auto-assigned mp3PlayerPanel from GameObject.Find.");
+            }
+        }
+
+        if (mp3PlayerUI == null && mp3PlayerPanel != null)
+        {
+            mp3PlayerUI = mp3PlayerPanel.GetComponent<Mp3PlayerUI>();
+            if (mp3PlayerUI != null)
+                Debug.Log("[Upgrades] Auto-assigned Mp3PlayerUI from mp3PlayerPanel.");
+        }
+
+        // Ensure mp3 panel is hidden initially
+        if (mp3MenuPanel != null && mp3MenuPanel.activeSelf)
+            mp3MenuPanel.SetActive(false);
+
+        if (mp3PlayerPanel != null && mp3PlayerPanel.activeSelf)
+            mp3PlayerPanel.SetActive(false);
     }
 }
