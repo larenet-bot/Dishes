@@ -1,302 +1,380 @@
-//csharp Assets/Editor/CreateMp3PlayerUI.cs
-using System.IO;
+﻿using System.IO;
 using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Editor utility: Creates a ready-to-use MP3 player panel UI in the current scene and saves a song-button prefab asset.
-/// Usage: Menu -> Tools -> Create MP3 Player UI
-/// The created panel includes a ScrollRect song list, a saved Button prefab (Assets/MP3SongButton.prefab),
-/// current song label, prev/next/close buttons and loop/shuffle toggles. It also attaches the existing Mp3PlayerUI script
-/// and wires its public fields.
-/// </summary>
 public static class CreateMp3PlayerUI
 {
     private const string SongButtonPrefabPath = "Assets/MP3SongButton.prefab";
 
-    [MenuItem("Tools/Create MP3 Player UI")]
+    [MenuItem("Tools/Create MP3 Player UI (Full Fixed)")]
     public static void Create()
     {
-        // Ensure there's a Canvas
-        var canvas = Object.FindObjectOfType<Canvas>();
-        if (canvas == null)
+        // ================= Canvas =================
+        var canvas = Object.FindFirstObjectByType<Canvas>();
+        if (!canvas)
         {
-            var canvasGO = new GameObject("Canvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
-            canvas = canvasGO.GetComponent<Canvas>();
+            var c = new GameObject("Canvas",
+                typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+            canvas = c.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            var scaler = canvasGO.GetComponent<CanvasScaler>();
+
+            var scaler = c.GetComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920, 1080);
-            Undo.RegisterCreatedObjectUndo(canvasGO, "Create Canvas");
         }
 
-        // Ensure EventSystem exists
-        if (Object.FindObjectOfType<UnityEngine.EventSystems.EventSystem>() == null)
+        if (!Object.FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>())
         {
-            var es = new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem), typeof(UnityEngine.EventSystems.StandaloneInputModule));
-            Undo.RegisterCreatedObjectUndo(es, "Create EventSystem");
+            new GameObject("EventSystem",
+                typeof(UnityEngine.EventSystems.EventSystem),
+                typeof(UnityEngine.EventSystems.StandaloneInputModule));
         }
 
-        // Create MP3PlayerPanel
-        var panelGO = new GameObject("MP3PlayerPanel", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-        Undo.RegisterCreatedObjectUndo(panelGO, "Create MP3PlayerPanel");
-        panelGO.transform.SetParent(canvas.transform, false);
-        var rt = panelGO.GetComponent<RectTransform>();
-        rt.sizeDelta = new Vector2(720, 420);
-        rt.anchorMin = new Vector2(0.5f, 0.5f);
-        rt.anchorMax = new Vector2(0.5f, 0.5f);
-        rt.pivot = new Vector2(0.5f, 0.5f);
-        rt.anchoredPosition = Vector2.zero;
-        var panelImage = panelGO.GetComponent<Image>();
-        panelImage.color = new Color(0.07f, 0.07f, 0.08f, 0.95f);
+        // ================= Panel =================
+        var panel = new GameObject("MP3PlayerPanel",
+            typeof(RectTransform), typeof(Image));
+        panel.transform.SetParent(canvas.transform, false);
 
-        // Add Mp3PlayerUI component
-        var mp3UI = panelGO.AddComponent<Mp3PlayerUI>();
+        var panelRT = panel.GetComponent<RectTransform>();
+        panelRT.anchorMin = panelRT.anchorMax = new Vector2(0.5f, 0.5f);
+        panelRT.sizeDelta = new Vector2(820, 520);
 
-        // Create header area (current song + close)
-        var header = new GameObject("Header", typeof(RectTransform));
-        header.transform.SetParent(panelGO.transform, false);
+        panel.GetComponent<Image>().color = new Color(0.08f, 0.08f, 0.1f, 0.95f);
+
+        var ui = panel.AddComponent<Mp3PlayerUI>();
+
+        // ================= Header =================
+        var header = CreateArea(panel.transform, "Header", 60);
+        // Lock header transforms so it won't be affected by layout
         var hr = header.GetComponent<RectTransform>();
         hr.anchorMin = new Vector2(0f, 1f);
         hr.anchorMax = new Vector2(1f, 1f);
         hr.pivot = new Vector2(0.5f, 1f);
-        hr.sizeDelta = new Vector2(0, 60);
-        hr.anchoredPosition = new Vector2(0, -10);
+        hr.sizeDelta = new Vector2(0, 56);
+        hr.anchoredPosition = new Vector2(0, -8);
 
-        // Current song text
-        var currentTextGO = new GameObject("CurrentSongText", typeof(RectTransform));
-        currentTextGO.transform.SetParent(header.transform, false);
-        var ct = currentTextGO.AddComponent<TextMeshProUGUI>();
-        ct.text = "<none>";
-        ct.fontSize = 24;
-        ct.alignment = TextAlignmentOptions.Center;
-        ct.color = Color.white;
-        var ctrt = currentTextGO.GetComponent<RectTransform>();
-        ctrt.anchorMin = new Vector2(0.1f, 0f);
-        ctrt.anchorMax = new Vector2(0.9f, 1f);
-        ctrt.offsetMin = Vector2.zero;
-        ctrt.offsetMax = Vector2.zero;
+        CreateLabel(header, "CurrentSongText", "No song playing", 20, TextAlignmentOptions.MidlineLeft);
 
-        // Close button
-        var closeBtn = CreateButton("CloseButton", header.transform, new Vector2(0.92f, 0.5f), new Vector2(0.12f, 0.8f), "Close");
-        // Prev/Next controls (bottom)
-        var controls = new GameObject("Controls", typeof(RectTransform));
-        controls.transform.SetParent(panelGO.transform, false);
-        var ctrlRt = controls.GetComponent<RectTransform>();
-        ctrlRt.anchorMin = new Vector2(0f, 0f);
-        ctrlRt.anchorMax = new Vector2(1f, 0f);
-        ctrlRt.pivot = new Vector2(0.5f, 0f);
-        ctrlRt.sizeDelta = new Vector2(0, 70);
-        ctrlRt.anchoredPosition = new Vector2(0, 10);
+        CreateButton(header, "CloseButton", "X", 32, out var closeBtn);
 
-        var prevBtn = CreateButton("PrevButton", controls.transform, new Vector2(0.2f, 0.5f), new Vector2(0.18f, 0.8f), "Prev");
-        var nextBtn = CreateButton("NextButton", controls.transform, new Vector2(0.8f, 0.5f), new Vector2(0.18f, 0.8f), "Next");
+        // Fix close button layout (pinned to right)
+        var closeRt = closeBtn.GetComponent<RectTransform>();
+        closeRt.anchorMin = closeRt.anchorMax = new Vector2(1f, 0.5f);
+        closeRt.pivot = new Vector2(1f, 0.5f);
+        closeRt.sizeDelta = new Vector2(36, 32);
+        closeRt.anchoredPosition = new Vector2(-10, 0);
 
-        // Toggles for loop/shuffle
-        var togglesParent = new GameObject("Toggles", typeof(RectTransform));
-        togglesParent.transform.SetParent(controls.transform, false);
-        var togglesRt = togglesParent.GetComponent<RectTransform>();
-        togglesRt.anchorMin = new Vector2(0.45f, 0.1f);
-        togglesRt.anchorMax = new Vector2(0.55f, 0.9f);
-        togglesRt.offsetMin = Vector2.zero;
-        togglesRt.offsetMax = Vector2.zero;
+        // Stretch current song text with padding
+        var currentSongGO = header.transform.Find("CurrentSongText");
+        if (currentSongGO)
+        {
+            var ctrt = currentSongGO.GetComponent<RectTransform>();
+            ctrt.anchorMin = new Vector2(0f, 0f);
+            ctrt.anchorMax = new Vector2(1f, 1f);
+            ctrt.offsetMin = new Vector2(12, 4);
+            ctrt.offsetMax = new Vector2(-52, -4);
 
-        var loopToggle = CreateToggle("LoopToggle", togglesParent.transform, new Vector2(0.5f, 0.66f), "Loop");
-        var shuffleToggle = CreateToggle("ShuffleToggle", togglesParent.transform, new Vector2(0.5f, 0.33f), "Shuffle");
+            var ct = currentSongGO.GetComponent<TextMeshProUGUI>();
+            ct.enableAutoSizing = false;
+            ct.alignment = TextAlignmentOptions.MidlineLeft;
+            ct.color = Color.white;
+        }
 
-        // Create ScrollRect and content for song list
-        var scrollGO = new GameObject("SongListScroll", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Mask), typeof(ScrollRect));
-        scrollGO.transform.SetParent(panelGO.transform, false);
-        var srt = scrollGO.GetComponent<RectTransform>();
-        srt.anchorMin = new Vector2(0.05f, 0.15f);
-        srt.anchorMax = new Vector2(0.95f, 0.82f);
-        srt.offsetMin = srt.offsetMax = Vector2.zero;
-        var scrollImage = scrollGO.GetComponent<Image>();
-        scrollImage.color = new Color(0.04f, 0.04f, 0.05f, 0.95f);
-        var mask = scrollGO.GetComponent<Mask>();
-        mask.showMaskGraphic = false;
-        var scrollRect = scrollGO.GetComponent<ScrollRect>();
-        scrollRect.horizontal = false;
+        // ================= Queue Label =================
+        var queueLabelArea = CreateArea(panel.transform, "QueueLabel", 36);
+        CreateLabel(queueLabelArea, "QueueText", "Queue", 16, TextAlignmentOptions.MidlineLeft);
 
-        var contentGO = new GameObject("SongListContent", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
-        contentGO.transform.SetParent(scrollGO.transform, false);
-        var contentRt = contentGO.GetComponent<RectTransform>();
-        contentRt.anchorMin = new Vector2(0f, 1f);
-        contentRt.anchorMax = new Vector2(1f, 1f);
-        contentRt.pivot = new Vector2(0.5f, 1f);
-        contentRt.anchoredPosition = Vector2.zero;
-        contentRt.sizeDelta = new Vector2(0, 0);
-        var vlg = contentGO.GetComponent<VerticalLayoutGroup>();
-        vlg.childForceExpandHeight = false;
-        vlg.childControlHeight = true;
+        // ================= ScrollRect =================
+        var scrollGO = new GameObject("SongScroll",
+            typeof(RectTransform), typeof(Image), typeof(Mask), typeof(ScrollRect));
+        scrollGO.transform.SetParent(panel.transform, false);
+
+        var scrollRT = scrollGO.GetComponent<RectTransform>();
+        scrollRT.anchorMin = new Vector2(0.05f, 0.25f);
+        scrollRT.anchorMax = new Vector2(0.95f, 0.75f);
+        scrollRT.offsetMin = scrollRT.offsetMax = Vector2.zero;
+
+        scrollGO.GetComponent<Image>().color = new Color(0.05f, 0.05f, 0.06f);
+        scrollGO.GetComponent<Mask>().showMaskGraphic = false;
+
+        var scroll = scrollGO.GetComponent<ScrollRect>();
+        scroll.horizontal = false;
+
+        // ---------- Content ----------
+        var content = new GameObject("SongListContent",
+            typeof(RectTransform),
+            typeof(VerticalLayoutGroup),
+            typeof(ContentSizeFitter));
+        content.transform.SetParent(scrollGO.transform, false);
+
+        var contentRT = content.GetComponent<RectTransform>();
+        contentRT.anchorMin = new Vector2(0, 1);
+        contentRT.anchorMax = new Vector2(1, 1);
+        contentRT.pivot = new Vector2(0.5f, 1);
+        contentRT.anchoredPosition = Vector2.zero;
+        contentRT.sizeDelta = Vector2.zero;
+
+        var vlg = content.GetComponent<VerticalLayoutGroup>();
         vlg.spacing = 6;
-        var csf = contentGO.GetComponent<ContentSizeFitter>();
-        csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        vlg.childControlHeight = true;
+        vlg.childForceExpandHeight = false;
+        vlg.childForceExpandWidth = true;
+        vlg.childAlignment = TextAnchor.UpperLeft;
+        vlg.padding = new RectOffset(6, 6, 6, 6);
 
-        scrollRect.content = contentRt;
+        var fitter = content.GetComponent<ContentSizeFitter>();
+        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-        // Create song button prefab and save it as asset
-        var prefabGO = new GameObject("MP3SongButton", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
-        var prefabRt = prefabGO.GetComponent<RectTransform>();
-        prefabRt.sizeDelta = new Vector2(0, 40);
-        var btnImage = prefabGO.GetComponent<Image>();
-        btnImage.color = new Color(0.18f, 0.18f, 0.22f, 1f);
-        var btn = prefabGO.GetComponent<Button>();
+        scroll.content = contentRT;
 
-        // Add TMP label (ensure CanvasRenderer present and text color visible)
-        var labelGO = new GameObject("Label", typeof(RectTransform), typeof(CanvasRenderer));
-        labelGO.transform.SetParent(prefabGO.transform, false);
+        // ================= Footer Controls =================
+        var footer = CreateArea(panel.transform, "Footer", 70);
+        // Lock footer like header so layout doesn't drift
+        var fr = footer.GetComponent<RectTransform>();
+        fr.anchorMin = new Vector2(0f, 0f);
+        fr.anchorMax = new Vector2(1f, 0f);
+        fr.pivot = new Vector2(0.5f, 0f);
+        fr.sizeDelta = new Vector2(0, 72);
+        fr.anchoredPosition = new Vector2(0, 8);
+
+        CreateButton(footer, "PrevButton", "<<", 28, out var prevBtn);
+        CreateButton(footer, "PlayNextButton", ">>", 28, out var nextBtn);
+
+        // Create a centered toggle row and move Loop/Shuffle under it
+        var controls = new GameObject("Controls", typeof(RectTransform));
+        controls.transform.SetParent(footer.transform, false);
+        var controlsRt = controls.GetComponent<RectTransform>();
+        controlsRt.anchorMin = controlsRt.anchorMax = new Vector2(0.5f, 0.5f);
+        controlsRt.sizeDelta = new Vector2(420, 40);
+        controlsRt.anchoredPosition = Vector2.zero;
+
+        // Place prev/next on left/right inside footer for simple layout
+        var prevRt = prevBtn.GetComponent<RectTransform>();
+        prevRt.anchorMin = prevRt.anchorMax = new Vector2(0f, 0.5f);
+        prevRt.pivot = new Vector2(0f, 0.5f);
+        prevRt.sizeDelta = new Vector2(64, 40);
+        prevRt.anchoredPosition = new Vector2(12, 0);
+
+        var nextRt = nextBtn.GetComponent<RectTransform>();
+        nextRt.anchorMin = nextRt.anchorMax = new Vector2(1f, 0.5f);
+        nextRt.pivot = new Vector2(1f, 0.5f);
+        nextRt.sizeDelta = new Vector2(64, 40);
+        nextRt.anchoredPosition = new Vector2(-12, 0);
+
+        // Toggle row
+        var toggleRow = new GameObject("ToggleRow",
+            typeof(RectTransform), typeof(HorizontalLayoutGroup));
+        toggleRow.transform.SetParent(controls.transform, false);
+
+        var trRt = toggleRow.GetComponent<RectTransform>();
+        trRt.anchorMin = trRt.anchorMax = new Vector2(0.5f, 0.5f);
+        trRt.sizeDelta = new Vector2(240, 32);
+
+        var hlg = toggleRow.GetComponent<HorizontalLayoutGroup>();
+        hlg.spacing = 16;
+        hlg.childControlWidth = true;
+        hlg.childForceExpandWidth = false;
+        hlg.childAlignment = TextAnchor.MiddleCenter;
+        hlg.padding = new RectOffset(4, 4, 4, 4);
+
+        // Create toggles and parent them under toggleRow
+        CreateToggle(toggleRow, "LoopToggle", "Loop", out var loopToggle);
+        CreateToggle(toggleRow, "ShuffleToggle", "Shuffle", out var shuffleToggle);
+
+        // ================= Song Button Prefab =================
+        // Build an explicit prefab with Label, QueueButton, LoopButton and EnableToggle
+        var prefab = new GameObject("MP3SongButton", typeof(RectTransform), typeof(Image), typeof(Button));
+        prefab.transform.SetParent(null, false);
+
+        // Background image
+        var bg = prefab.GetComponent<Image>();
+        bg.color = new Color(0.18f, 0.18f, 0.22f, 1f);
+
+        // LayoutElement so VerticalLayoutGroup controls size (stable list - no squish)
+        var prefabLayout = prefab.AddComponent<LayoutElement>();
+        prefabLayout.preferredHeight = 40f;
+        prefabLayout.minHeight = 40f;
+        prefabLayout.flexibleHeight = 0;
+        prefabLayout.flexibleWidth = 1;
+
+        // Label (center-left, leaves room for toggle + buttons)
+        var labelGO = new GameObject("Label", typeof(RectTransform));
+        labelGO.transform.SetParent(prefab.transform, false);
+
+        var labelRT = labelGO.GetComponent<RectTransform>();
+        labelRT.anchorMin = new Vector2(0.12f, 0f);
+        labelRT.anchorMax = new Vector2(0.72f, 1f);
+        labelRT.offsetMin = Vector2.zero;
+        labelRT.offsetMax = Vector2.zero;
+
         var tmp = labelGO.AddComponent<TextMeshProUGUI>();
-        tmp.text = "Song";
+        tmp.text = "Song Name";
         tmp.fontSize = 18;
+        tmp.enableAutoSizing = false;
         tmp.alignment = TextAlignmentOptions.MidlineLeft;
+        tmp.overflowMode = TextOverflowModes.Ellipsis;
+        tmp.textWrappingMode = TextWrappingModes.NoWrap;
         tmp.color = Color.white;
-        var tmpRt = labelGO.GetComponent<RectTransform>();
-        tmpRt.anchorMin = new Vector2(0f, 0f);
-        tmpRt.anchorMax = new Vector2(1f, 1f);
-        tmpRt.offsetMin = new Vector2(8f, 4f);
-        tmpRt.offsetMax = new Vector2(-8f, -4f);
 
-        // Try to set default TMP font asset (if available)
-        var defaultFont = TMPro.TMP_Settings.defaultFontAsset;
-        if (defaultFont != null)
-            tmp.font = defaultFont;
+        // Queue button (small, right side)
+        var queueBtnGO = new GameObject("QueueButton", typeof(RectTransform), typeof(Image), typeof(Button));
+        queueBtnGO.transform.SetParent(prefab.transform, false);
+        var qbRt = queueBtnGO.GetComponent<RectTransform>();
+        qbRt.anchorMin = new Vector2(0.74f, 0.1f);
+        qbRt.anchorMax = new Vector2(0.84f, 0.9f);
+        qbRt.offsetMin = qbRt.offsetMax = Vector2.zero;
+        var qbImg = queueBtnGO.GetComponent<Image>();
+        qbImg.color = new Color(0.12f, 0.6f, 0.9f, 1f);
+        var qbTextGO = new GameObject("Text", typeof(RectTransform));
+        qbTextGO.transform.SetParent(queueBtnGO.transform, false);
+        var qbText = qbTextGO.AddComponent<TextMeshProUGUI>();
+        qbText.text = "Q";
+        qbText.fontSize = 14;
+        qbText.alignment = TextAlignmentOptions.Center;
+        qbText.color = Color.white;
 
-        // Save prefab asset (overwrite if exists)
-        GameObject prefabAsset = null;
-        if (File.Exists(SongButtonPrefabPath))
-        {
-            prefabAsset = AssetDatabase.LoadAssetAtPath<GameObject>(SongButtonPrefabPath);
-            // replace existing asset
-            PrefabUtility.SaveAsPrefabAssetAndConnect(prefabGO, SongButtonPrefabPath, InteractionMode.AutomatedAction);
-            prefabAsset = AssetDatabase.LoadAssetAtPath<GameObject>(SongButtonPrefabPath);
-        }
-        else
-        {
-            prefabAsset = PrefabUtility.SaveAsPrefabAsset(prefabGO, SongButtonPrefabPath);
-        }
+        // Loop button (small, rightmost)
+        var loopBtnGO = new GameObject("LoopButton", typeof(RectTransform), typeof(Image), typeof(Button));
+        loopBtnGO.transform.SetParent(prefab.transform, false);
+        var lbRt = loopBtnGO.GetComponent<RectTransform>();
+        lbRt.anchorMin = new Vector2(0.86f, 0.1f);
+        lbRt.anchorMax = new Vector2(0.96f, 0.9f);
+        lbRt.offsetMin = lbRt.offsetMax = Vector2.zero;
+        var lbImg = loopBtnGO.GetComponent<Image>();
+        lbImg.color = new Color(0.9f, 0.8f, 0.2f, 1f);
+        var lbTextGO = new GameObject("Text", typeof(RectTransform));
+        lbTextGO.transform.SetParent(loopBtnGO.transform, false);
+        var lbText = lbTextGO.AddComponent<TextMeshProUGUI>();
+        lbText.text = "⤾";
+        lbText.fontSize = 14;
+        lbText.alignment = TextAlignmentOptions.Center;
+        lbText.color = Color.white;
 
-        // Destroy transient prefabGO from scene (we only wanted the asset)
-        Object.DestroyImmediate(prefabGO);
+        // Enable Toggle (left side checkbox style)
+        var enableToggleGO = new GameObject("EnableToggle",
+            typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Toggle));
+        enableToggleGO.transform.SetParent(prefab.transform, false);
 
-        // Wire Mp3PlayerUI fields
-        mp3UI.panel = panelGO;
-        mp3UI.songListParent = contentRt;
-        if (prefabAsset != null)
-            mp3UI.songButtonPrefab = prefabAsset.GetComponent<Button>();
-        mp3UI.currentSongText = ct;
-        mp3UI.closeButton = closeBtn;
-        mp3UI.prevButton = prevBtn;
-        mp3UI.nextButton = nextBtn;
-        mp3UI.loopToggle = loopToggle;
-        mp3UI.shuffleToggle = shuffleToggle;
+        var etRt = enableToggleGO.GetComponent<RectTransform>();
+        etRt.anchorMin = new Vector2(0.02f, 0.2f);
+        etRt.anchorMax = new Vector2(0.10f, 0.8f);
+        etRt.offsetMin = Vector2.zero;
+        etRt.offsetMax = Vector2.zero;
 
-        // Default the panel to inactive so it doesn't show immediately
-        panelGO.SetActive(false);
+        var etBg = enableToggleGO.GetComponent<Image>();
+        etBg.color = new Color(0.2f, 0.8f, 0.2f, 1f);
 
-        // Clean up selection and mark scene dirty
-        Selection.activeGameObject = panelGO;
-        EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-
-        Debug.Log("MP3 Player UI created. Song button prefab saved to: " + SongButtonPrefabPath);
-    }
-
-    private static Button CreateButton(string name, Transform parent, Vector2 anchorPos, Vector2 sizePercent, string label)
-    {
-        var go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
-        go.transform.SetParent(parent, false);
-        var rt = go.GetComponent<RectTransform>();
-
-        // anchor the button around anchorPos and give a fixed pixel size for reliable visibility
-        rt.anchorMin = anchorPos;
-        rt.anchorMax = anchorPos;
-        rt.pivot = new Vector2(0.5f, 0.5f);
-        rt.sizeDelta = new Vector2(120f, 40f); // fixed visible size
-        rt.anchoredPosition = Vector2.zero;
-
-        var img = go.GetComponent<Image>();
-        img.color = new Color(0.22f, 0.22f, 0.26f, 1f);
-        img.raycastTarget = true;
-        var btn = go.GetComponent<Button>();
-
-        var textGO = new GameObject("Text", typeof(RectTransform), typeof(CanvasRenderer));
-        textGO.transform.SetParent(go.transform, false);
-        var tmp = textGO.AddComponent<TextMeshProUGUI>();
-        tmp.text = label;
-        tmp.alignment = TextAlignmentOptions.Center;
-        tmp.fontSize = 16;
-        tmp.color = Color.white;
-        var tr = textGO.GetComponent<RectTransform>();
-        tr.anchorMin = new Vector2(0f, 0f);
-        tr.anchorMax = new Vector2(1f, 1f);
-        tr.offsetMin = tr.offsetMax = Vector2.zero;
-
-        // Set TMP font if available
-        var defaultFont = TMPro.TMP_Settings.defaultFontAsset;
-        if (defaultFont != null)
-            tmp.font = defaultFont;
-
-        return btn;
-    }
-
-    private static Toggle CreateToggle(string name, Transform parent, Vector2 anchorPos, string label)
-    {
-        var go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer));
-        go.transform.SetParent(parent, false);
-        var rt = go.GetComponent<RectTransform>();
-        rt.anchorMin = anchorPos;
-        rt.anchorMax = anchorPos;
-        rt.pivot = new Vector2(0.5f, 0.5f);
-        rt.sizeDelta = new Vector2(160f, 28f);
-        rt.anchoredPosition = Vector2.zero;
-
-        // Toggle root
-        var toggleGO = new GameObject("Toggle", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Toggle));
-        toggleGO.transform.SetParent(go.transform, false);
-        var togRt = toggleGO.GetComponent<RectTransform>();
-        togRt.anchorMin = new Vector2(0f, 0.1f);
-        togRt.anchorMax = new Vector2(0.14f, 0.9f);
-        togRt.offsetMin = togRt.offsetMax = Vector2.zero;
-
-        var bgImg = toggleGO.GetComponent<Image>();
-        bgImg.color = new Color(0.9f, 0.9f, 0.9f, 1f);
+        var etToggle = enableToggleGO.GetComponent<Toggle>();
+        etToggle.isOn = true;
 
         // Checkmark
-        var check = new GameObject("Checkmark", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-        check.transform.SetParent(toggleGO.transform, false);
-        var checkImg = check.GetComponent<Image>();
-        checkImg.color = new Color(0.2f, 0.6f, 1f, 1f);
-        var checkRt = check.GetComponent<RectTransform>();
-        checkRt.anchorMin = new Vector2(0.15f, 0.15f);
-        checkRt.anchorMax = new Vector2(0.85f, 0.85f);
-        checkRt.offsetMin = checkRt.offsetMax = Vector2.zero;
+        var checkGO = new GameObject("Checkmark",
+            typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+        checkGO.transform.SetParent(enableToggleGO.transform, false);
 
-        // Label
-        var labelGO = new GameObject("Label", typeof(RectTransform), typeof(CanvasRenderer));
-        labelGO.transform.SetParent(go.transform, false);
-        var labelText = labelGO.AddComponent<TextMeshProUGUI>();
-        labelText.text = label;
-        labelText.fontSize = 14;
-        labelText.alignment = TextAlignmentOptions.MidlineLeft;
-        labelText.color = Color.white;
-        var lblRt = labelGO.GetComponent<RectTransform>();
-        lblRt.anchorMin = new Vector2(0.16f, 0f);
-        lblRt.anchorMax = new Vector2(1f, 1f);
-        lblRt.offsetMin = new Vector2(6f, 0f);
-        lblRt.offsetMax = Vector2.zero;
+        var checkImg = checkGO.GetComponent<Image>();
+        checkImg.color = Color.white;
 
-        var toggle = toggleGO.GetComponent<Toggle>();
-        toggle.graphic = checkImg;
-        toggle.targetGraphic = bgImg;
+        var chkRt = checkGO.GetComponent<RectTransform>();
+        chkRt.anchorMin = new Vector2(0.2f, 0.2f);
+        chkRt.anchorMax = new Vector2(0.8f, 0.8f);
+        chkRt.offsetMin = chkRt.offsetMax = Vector2.zero;
 
-        // Set TMP font if available
-        var defaultFont = TMPro.TMP_Settings.defaultFontAsset;
-        if (defaultFont != null)
-            labelText.font = defaultFont;
+        etToggle.graphic = checkImg;
+        etToggle.targetGraphic = etBg;
 
-        return toggle;
+        // Add SongButtonUI component (use non-generic AddComponent to avoid generic constraint compile issue)
+        prefab.AddComponent(typeof(SongButtonUI));
+        // Note: runtime code (Mp3PlayerUI) should GetComponent<SongButtonUI>() on instantiated buttons and wire fields if necessary.
+        // This keeps the editor creation script free of assembly/generic constraint issues.
+
+        // Save prefab asset
+        var prefabAsset = PrefabUtility.SaveAsPrefabAsset(prefab, SongButtonPrefabPath);
+        Object.DestroyImmediate(prefab);
+
+        // ================= Wire =================
+        ui.panel = panel;
+        ui.currentSongText = panel.transform.Find("Header/CurrentSongText").GetComponent<TextMeshProUGUI>();
+        ui.queueText = panel.transform.Find("QueueLabel/QueueText").GetComponent<TextMeshProUGUI>();
+        ui.songListParent = contentRT;
+        ui.songButtonPrefab = prefabAsset.GetComponent<Button>();
+        ui.prevButton = prevBtn.GetComponent<Button>();
+        ui.nextButton = nextBtn.GetComponent<Button>();
+        ui.closeButton = closeBtn.GetComponent<Button>();
+        ui.loopToggle = loopToggle.GetComponent<Toggle>();
+        ui.shuffleToggle = shuffleToggle.GetComponent<Toggle>();
+
+        panel.SetActive(false);
+        Selection.activeGameObject = panel;
+        EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+
+        Debug.Log("MP3 Player UI created (full feature set, fixed layout, enable/disable support).");
+    }
+
+    // ================= Helpers =================
+
+    private static GameObject CreateArea(Transform parent, string name, float height)
+    {
+        var go = new GameObject(name, typeof(RectTransform), typeof(LayoutElement));
+        go.transform.SetParent(parent, false);
+        go.GetComponent<LayoutElement>().preferredHeight = height;
+        return go;
+    }
+
+    private static void CreateLabel(GameObject parent, string name, string text, int size, TextAlignmentOptions align)
+    {
+        var go = new GameObject(name, typeof(RectTransform));
+        go.transform.SetParent(parent.transform, false);
+
+        var tmp = go.AddComponent<TextMeshProUGUI>();
+        tmp.text = text;
+        tmp.fontSize = size;
+        tmp.enableAutoSizing = false;
+        tmp.alignment = align;
+        tmp.color = Color.white;
+
+        // Default label rect: stretch to fill parent unless caller adjusts
+        var rt = go.GetComponent<RectTransform>();
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = rt.offsetMax = Vector2.zero;
+    }
+
+    private static void CreateButton(GameObject parent, string name, string label, int fontSize, out GameObject buttonGO)
+    {
+        buttonGO = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
+        buttonGO.transform.SetParent(parent.transform, false);
+
+        var textGO = new GameObject("Text", typeof(RectTransform));
+        textGO.transform.SetParent(buttonGO.transform, false);
+
+        var tmp = textGO.AddComponent<TextMeshProUGUI>();
+        tmp.text = label;
+        tmp.fontSize = fontSize;
+        tmp.enableAutoSizing = false;
+        tmp.alignment = TextAlignmentOptions.Center;
+        tmp.color = Color.white;
+
+        // Default button text stretches to fill button
+        var rt = textGO.GetComponent<RectTransform>();
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = rt.offsetMax = Vector2.zero;
+    }
+
+    private static void CreateToggle(GameObject parent, string name, string label, out GameObject toggleGO)
+    {
+        toggleGO = new GameObject(name, typeof(RectTransform), typeof(Toggle));
+        toggleGO.transform.SetParent(parent.transform, false);
+
+        // Label as child of toggle for consistent layout
+        CreateLabel(toggleGO, "Label", label, 14, TextAlignmentOptions.MidlineLeft);
+
+        // Adjust toggle rect so it sizes correctly when placed in layout groups
+        var rt = toggleGO.GetComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(100, 24);
     }
 }

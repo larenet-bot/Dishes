@@ -157,10 +157,12 @@ public class SaveManager : MonoBehaviour
         );
 
         // ---- Upgrades ----
+        // Pass mp3 index as well (new ApplySaveState signature expects mp3)
         upgrades.ApplySaveState(
             _loadedData.currentSoapIndex,
             _loadedData.currentGloveIndex,
-            _loadedData.currentSpongeIndex
+            _loadedData.currentSpongeIndex,
+            _loadedData.currentMp3Index
         );
 
         // ---- Employees ----
@@ -168,6 +170,20 @@ public class SaveManager : MonoBehaviour
 
         // ---- Loans ----
         loans.ApplyLoanIndexFromSave(_loadedData.currentLoanIndex);
+
+        // ---- MP3 Player extra state (queue + loop) ----
+        var mp3UI = FindFirstObjectByType<Mp3PlayerUI>();
+        if (mp3UI != null)
+        {
+            try
+            {
+                mp3UI.ApplySaveState(_loadedData.mp3Queue, _loadedData.mp3LoopedSongName, _loadedData.mp3LoopEnabled);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"[SaveManager] Failed to apply MP3 player save state: {ex.Message}");
+            }
+        }
 
         _hasAppliedToCurrentScene = true;
 
@@ -191,10 +207,35 @@ public class SaveManager : MonoBehaviour
         data.dishProfitMultiplier = score.dishProfitMultiplier;
 
         // ---- Upgrades ----
-        upgrades.GetSaveState(out data.currentSoapIndex, out data.currentGloveIndex, out data.currentSpongeIndex);
+        // Upgrades.GetSaveState now returns mp3 index too
+        upgrades.GetSaveState(out data.currentSoapIndex, out data.currentGloveIndex, out data.currentSpongeIndex, out data.currentMp3Index);
 
         // ---- Employees ----
         data.employees = employees.GetSaveState();
+
+        // ---- MP3 Player extra state (queue + loop) ----
+        var mp3UI = FindFirstObjectByType<Mp3PlayerUI>();
+        if (mp3UI != null)
+        {
+            try
+            {
+                mp3UI.GetSaveState(out data.mp3Queue, out data.mp3LoopedSongName, out data.mp3LoopEnabled);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"[SaveManager] Failed to gather MP3 player save state: {ex.Message}");
+                data.mp3Queue = new List<string>();
+                data.mp3LoopedSongName = null;
+                data.mp3LoopEnabled = false;
+            }
+        }
+        else
+        {
+            // Ensure non-null defaults
+            data.mp3Queue = new List<string>();
+            data.mp3LoopedSongName = null;
+            data.mp3LoopEnabled = false;
+        }
 
         try
         {

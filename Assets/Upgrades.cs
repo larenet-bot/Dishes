@@ -1109,14 +1109,18 @@ public class Upgrades : MonoBehaviour
             Debug.LogWarning($"[Upgrades.SetSpongeTierIndex] Apply failed: {ex.Message}");
         }
     }
-    public void GetSaveState(out int soap, out int glove, out int sponge)
+
+    // Modified to include MP3 index so SaveManager can persist purchase
+    public void GetSaveState(out int soap, out int glove, out int sponge, out int mp3)
     {
         soap = currentSoapIndex;
         glove = currentGloveIndex;
         sponge = currentSpongeIndex;
+        mp3 = currentMp3Index;
     }
 
-    public void ApplySaveState(int soap, int glove, int sponge)
+    // Apply save now restores MP3 purchase state as well.
+    public void ApplySaveState(int soap, int glove, int sponge, int mp3)
     {
         // Make sure refs exist (bootstrapping can change init order)
         if (scoreManager == null) scoreManager = FindFirstObjectByType<ScoreManager>();
@@ -1128,9 +1132,13 @@ public class Upgrades : MonoBehaviour
         currentGloveIndex = Mathf.Clamp(glove, 0, gloveTiers.Count - 1);
         currentSpongeIndex = Mathf.Clamp(sponge, 0, spongeTiers.Count - 1);
 
+        // Restore mp3 index (purchase state). Clamp to valid range.
+        currentMp3Index = Mathf.Clamp(mp3, 0, mp3Tiers.Count - 1);
+
         UpdateSoapMenuUI();
         UpdateGloveMenuUI();
         UpdateSpongeMenuUI();
+        UpdateMp3MenuUI();
 
         // Sponge needs the clickers to reference this Upgrades instance.
         try
