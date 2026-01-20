@@ -24,6 +24,9 @@ public class SaveData
 
     // Employees
     public List<EmployeeSave> employees = new List<EmployeeSave>();
+
+    //Cutscene
+    public bool hasWatched = false;
 }
 
 [Serializable]

@@ -35,7 +35,7 @@ public class PauseMenu : MonoBehaviour
     public void Pause()
     {
         pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f;
+        Time.timeScale = 1f;
         GameIsPaused = true;
         Debug.Log("Game Paused");
     }
@@ -56,6 +56,17 @@ public class PauseMenu : MonoBehaviour
 
         // Use async load to avoid hitching; this will activate the scene once loaded.
         StartCoroutine(LoadMenuAsync());
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Quitting game...");
+
+        // Make sure time scale is reset (important if quitting from pause)
+        Time.timeScale = 1f;
+        GameIsPaused = false;
+
+        Application.Quit();
     }
 
     private IEnumerator LoadMenuAsync()
