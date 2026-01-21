@@ -14,15 +14,15 @@ public class InGameSettingsButton : MonoBehaviour
         settingsMenu.SetActive(isOpen);
 
         // Pause game when menu is open
-        Time.timeScale = isOpen ? 0f : 1f;
-        Debug.Log("Time.timeScale = " + Time.timeScale);
+        //Time.timeScale = isOpen ? 0f : 1f;
+        //Debug.Log("Time.timeScale = " + Time.timeScale);
 
     }
     public void CloseSettings()
     {
         settingsMenu.SetActive(false);
         isOpen = false;
-        Time.timeScale = 1f;
+        //Time.timeScale = 1f;
     }
 
     public void GoToMenu()

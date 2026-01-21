@@ -271,8 +271,12 @@ public class SaveManager : MonoBehaviour
             _loadedData = null;
             _hasLoadedFile = false;
             _hasAppliedToCurrentScene = false;
-
-            if (logSaveEvents) Debug.Log($"[SaveManager] Wiped save file at: {SavePath}");
+            if (PlayerPrefs.GetInt("HasSeenIntro", 1) == 1)
+            {
+                // First time playing — go to the intro cutscene
+                PlayerPrefs.SetInt("HasSeenIntro", 0);
+            }
+                if (logSaveEvents) Debug.Log($"[SaveManager] Wiped save file at: {SavePath}");
         }
         catch (System.Exception e)
         {

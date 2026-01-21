@@ -7313,8 +7313,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bubblePrefab:
   - {fileID: 5059608596444091316, guid: cce91c0996086ee4db7d818f1189d6c6, type: 3}
-  minSpawn: 10
-  maxSpawn: 15
+  minSpawn: 20
+  maxSpawn: 60
   minX: -6
   maxX: 5
   spawnY: -6
@@ -23584,7 +23584,6 @@ RectTransform:
   - {fileID: 948768374}
   - {fileID: 895039196}
   - {fileID: 1069080869}
-  - {fileID: 863348883}
   - {fileID: 1217270754}
   - {fileID: 764468234}
   - {fileID: 222056638}
@@ -23592,6 +23591,7 @@ RectTransform:
   - {fileID: 777029269}
   - {fileID: 1051638272}
   - {fileID: 549219902}
+  - {fileID: 863348883}
   m_Father: {fileID: 125825044}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -40825,6 +40825,7 @@ GameObject:
   - component: {fileID: 1833350544}
   - component: {fileID: 1833350546}
   - component: {fileID: 1833350545}
+  - component: {fileID: 1833350547}
   m_Layer: 7
   m_Name: Background
   m_TagString: Untagged
@@ -40889,6 +40890,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1833350543}
   m_CullTransparentMesh: 1
+--- !u!225 &1833350547
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833350543}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1843512512
 GameObject:
   m_ObjectHideFlags: 0
