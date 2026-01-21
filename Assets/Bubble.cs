@@ -20,6 +20,7 @@ public class Bubble : MonoBehaviour
     [SerializeField] public float bubbleXFrequency = 0f; // How often bubble completes its swing
     void Start()
     {
+        //WaitForSeconds wait = new WaitForSeconds(1f);
         StartCoroutine(SpawnBubble());
     }
 
@@ -27,6 +28,7 @@ public class Bubble : MonoBehaviour
     {
         while (true)
         {
+            yield return new WaitForSeconds(Random.Range(minSpawn, maxSpawn));
             // Choose a random X position within the defined range
             float randomX = Random.Range(minX, maxX);
             Vector3 spawnPosition = new Vector3(randomX, spawnY, 0);
@@ -58,7 +60,7 @@ public class Bubble : MonoBehaviour
             //   e.g., minSpawn = 1.0, maxSpawn = 2.0
             // Change these in the Inspector or directly above.
             // ------------------------------------------------------
-            yield return new WaitForSeconds(Random.Range(minSpawn, maxSpawn));
+            
         }
     }
 }

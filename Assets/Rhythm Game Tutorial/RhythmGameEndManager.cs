@@ -40,6 +40,9 @@ public class RhythmGameEndManager : MonoBehaviour
     [Tooltip("Minimum accuracy used when dividing — prevents divide-by-zero / enormous rewards.")]
     [Range(0.0001f, 0.1f)] public float minAccuracy = 0.01f;
 
+    [Tooltip("Global scale applied to the computed reward. Use < 1 to make rewards smaller.")]
+    [Range(0f, 1f)] public float rewardScale = 0.05f;
+
     [Tooltip("Optional reference to a RhythmMiniGame toggle component; if set, will call ToggleMiniGame() after showing results (optional).")]
     public RhythmMiniGameToggle toggleRef;
 
@@ -95,15 +98,12 @@ public class RhythmGameEndManager : MonoBehaviour
         else if (ScoreManager.Instance != null)
             baseValue = ScoreManager.Instance.GetProfitPerDish() * ScoreManager.Instance.GetDishCountIncrement();
 
-        // Current player profit (to be added to the computed reward)
-        float currentProfit = (ScoreManager.Instance != null) ? ScoreManager.Instance.GetTotalProfit() : 0f;
-
-        // NEW FORMULA (user requested "divide by accuracy"):
-        // reward = (totalNotes / accuracy) * baseValue * rankMultiplier + currentProfit
-        // Protect against divide-by-zero / runaway rewards by clamping accuracy to a small minimum (configurable).
-        float accuracy = fraction;
-        float safeAccuracy = Mathf.Max(accuracy, minAccuracy);
-        float reward = ((float)totalNotes / safeAccuracy) * baseValue * multiplier + currentProfit;
+        
+        // reward = baseValue * totalNotes * rankMultiplier * accuracy * rewardScale
+        
+        float accuracy = Mathf.Clamp01(fraction);
+        float safeAccuracy = Mathf.Max(accuracy, 0f); // accuracy already clamped; keep explicit
+        float reward = baseValue * (float)totalNotes * multiplier * safeAccuracy * rewardScale;
         reward = Mathf.Max(0f, reward);
 
         // Award reward via ScoreManager so UI/profit-rate trackers receive pending adjustments correctly

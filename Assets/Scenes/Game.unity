@@ -7313,8 +7313,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bubblePrefab:
   - {fileID: 5059608596444091316, guid: cce91c0996086ee4db7d818f1189d6c6, type: 3}
-  minSpawn: 25
-  maxSpawn: 60
+  minSpawn: 10
+  maxSpawn: 15
   minX: -6
   maxX: 5
   spawnY: -6
@@ -29211,6 +29211,7 @@ MonoBehaviour:
   cMultiplier: 1.25
   dMultiplier: 1
   minAccuracy: 0.01
+  rewardScale: 0.05
   toggleRef: {fileID: 542946269}
 --- !u!4 &1283580353
 Transform:
