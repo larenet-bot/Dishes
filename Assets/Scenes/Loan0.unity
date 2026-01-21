@@ -606,11 +606,11 @@ MonoBehaviour:
   nextButton: {fileID: 1896927181}
   backgroundImage: {fileID: 1281278824}
   dialogueLines:
-  - 'Wow, you paid off what you owe me already. You got talent kid! What say we go
-    into business together? '
+  - 'Wow, you paid off what you owe me already. You got talent, kid! What say we
+    go into business together? '
   - ...
-  - Great! All I'll let the bank know you'll finance this mess. You and I are going
-    places, kid.
+  - Great! I'll let the bank know you'll finance this mess. You and I are going places,
+    kid.
   dialogueSFX:
   - {fileID: 0}
   typingSFX: {fileID: 0}
