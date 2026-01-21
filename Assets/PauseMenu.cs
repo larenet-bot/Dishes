@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     public static bool GameIsPaused = false;
-
+    public InGameSettingsButton settingsButton;
     [Header("UI References")]
     public GameObject pauseMenuUI;
 
@@ -31,9 +31,18 @@ public class PauseMenu : MonoBehaviour
         GameIsPaused = false;
         Debug.Log("Game Resumed");
     }
+    public void Settings()
+    {
+        settingsButton.ToggleSettings();
+        pauseMenuUI.SetActive(false);
+        Time.timeScale = 1f;
+        GameIsPaused = false;
+        Debug.Log("Game Resumed");
+    }
 
     public void Pause()
     {
+        settingsButton.CloseSettings();
         pauseMenuUI.SetActive(true);
         Time.timeScale = 1f;
         GameIsPaused = true;
