@@ -15,6 +15,7 @@ public class SaveData
     public int currentSoapIndex;
     public int currentGloveIndex;
     public int currentSpongeIndex;
+    public bool radioOwned;            // NEW: whether the single-tier radio was purchased
     public int currentMp3Index; 
 
     // MP3 Player state 

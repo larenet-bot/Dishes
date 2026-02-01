@@ -105,7 +105,6 @@ public class SaveManager : MonoBehaviour
         if (employees == null) employees = FindFirstObjectByType<EmployeeManager>();
         if (upgrades == null) upgrades = FindFirstObjectByType<Upgrades>();
         if (loans == null) loans = FindFirstObjectByType<LoanManager>();
-
     }
 
     private void ReadSaveFileToMemory()
@@ -145,7 +144,7 @@ public class SaveManager : MonoBehaviour
         if (_hasAppliedToCurrentScene) return;
         if (!_hasLoadedFile || _loadedData == null) return;
 
-        // Don’t apply until the target managers exist (likely only in gameplay scene).
+        // Don't apply until the target managers exist (likely only in gameplay scene).
         if (!HaveAllRefs()) return;
 
         // ---- Score ----
@@ -157,12 +156,12 @@ public class SaveManager : MonoBehaviour
         );
 
         // ---- Upgrades ----
-        // Pass mp3 index as well (new ApplySaveState signature expects mp3)
+        // Apply saved indices and radio ownership (no spending on load)
         upgrades.ApplySaveState(
             _loadedData.currentSoapIndex,
             _loadedData.currentGloveIndex,
             _loadedData.currentSpongeIndex,
-            _loadedData.currentMp3Index
+            _loadedData.radioOwned
         );
 
         // ---- Employees ----
@@ -171,20 +170,6 @@ public class SaveManager : MonoBehaviour
         // ---- Loans ----
         loans.ApplyLoanIndexFromSave(_loadedData.currentLoanIndex);
 
-        // ---- MP3 Player extra state (queue + loop) ----
-        var mp3UI = FindFirstObjectByType<Mp3PlayerUI>();
-        if (mp3UI != null)
-        {
-            try
-            {
-                mp3UI.ApplySaveState(_loadedData.mp3Queue, _loadedData.mp3LoopedSongName, _loadedData.mp3LoopEnabled);
-            }
-            catch (System.Exception ex)
-            {
-                Debug.LogWarning($"[SaveManager] Failed to apply MP3 player save state: {ex.Message}");
-            }
-        }
-
         _hasAppliedToCurrentScene = true;
 
         if (logSaveEvents) Debug.Log("[SaveManager] Applied loaded save data to current scene managers.");
@@ -192,7 +177,7 @@ public class SaveManager : MonoBehaviour
 
     public void Save()
     {
-        // If we’re in a scene where the managers don’t exist, don’t overwrite the file.
+        // If we're in a scene where the managers don't exist, don't overwrite the file.
         TryBindRefs();
         if (!HaveAllRefs()) return;
 
@@ -207,46 +192,20 @@ public class SaveManager : MonoBehaviour
         data.dishProfitMultiplier = score.dishProfitMultiplier;
 
         // ---- Upgrades ----
-        // Upgrades.GetSaveState now returns mp3 index too
-        upgrades.GetSaveState(out data.currentSoapIndex, out data.currentGloveIndex, out data.currentSpongeIndex, out data.currentMp3Index);
+        // Upgrades.GetSaveState updated to output radioOwned as well
+        upgrades.GetSaveState(out data.currentSoapIndex, out data.currentGloveIndex, out data.currentSpongeIndex, out data.radioOwned);
 
         // ---- Employees ----
         data.employees = employees.GetSaveState();
 
-        // ---- MP3 Player extra state (queue + loop) ----
-        var mp3UI = FindFirstObjectByType<Mp3PlayerUI>();
-        if (mp3UI != null)
-        {
-            try
-            {
-                mp3UI.GetSaveState(out data.mp3Queue, out data.mp3LoopedSongName, out data.mp3LoopEnabled);
-            }
-            catch (System.Exception ex)
-            {
-                Debug.LogWarning($"[SaveManager] Failed to gather MP3 player save state: {ex.Message}");
-                data.mp3Queue = new List<string>();
-                data.mp3LoopedSongName = null;
-                data.mp3LoopEnabled = false;
-            }
-        }
-        else
-        {
-            // Ensure non-null defaults
-            data.mp3Queue = new List<string>();
-            data.mp3LoopedSongName = null;
-            data.mp3LoopEnabled = false;
-        }
-
+        // Write to disk
         try
         {
             var json = JsonUtility.ToJson(data, true);
             File.WriteAllText(SavePath, json);
-
-            // Keep an in-memory copy so scene transitions can re-apply without re-reading.
             _loadedData = data;
             _hasLoadedFile = true;
-
-            if (logSaveEvents) Debug.Log($"[SaveManager] Saved to: {SavePath}");
+            if (logSaveEvents) Debug.Log($"[SaveManager] Saved data to: {SavePath}");
         }
         catch (System.Exception e)
         {
@@ -273,10 +232,10 @@ public class SaveManager : MonoBehaviour
             _hasAppliedToCurrentScene = false;
             if (PlayerPrefs.GetInt("HasSeenIntro", 1) == 1)
             {
-                // First time playing — go to the intro cutscene
+                // First time playing – go to the intro cutscene
                 PlayerPrefs.SetInt("HasSeenIntro", 0);
             }
-                if (logSaveEvents) Debug.Log($"[SaveManager] Wiped save file at: {SavePath}");
+            if (logSaveEvents) Debug.Log($"[SaveManager] Wiped save file at: {SavePath}");
         }
         catch (System.Exception e)
         {

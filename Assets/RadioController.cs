@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class RadioCOntroller : MonoBehaviour
@@ -13,6 +13,10 @@ public class RadioCOntroller : MonoBehaviour
     private AudioSource radioAudioSource;
     private bool isTransitioning;
 
+    [Header("Playback")]
+    [Tooltip("When false the radio will not start playing on Scene Start. Call StartRadio() to begin playback (useful when radio must be purchased first).")]
+    public bool autoPlayOnAwake = false;
+
     private void Start()
     {
         radioAudioSource = GetComponent<AudioSource>();
@@ -25,7 +29,45 @@ public class RadioCOntroller : MonoBehaviour
 
         currentTrackIndex = 0;
         updateTrack(currentTrackIndex);
-        radioAudioSource.Play();
+
+        // Only play automatically if explicitly allowed
+        if (autoPlayOnAwake)
+        {
+            radioAudioSource.Play();
+            StartCoroutine(PlaybackMonitor());
+        }
+    }
+
+    /// <summary>
+    /// Start radio playback (stops ambient via AudioManager if present).
+    /// Safe to call multiple times.
+    /// </summary>
+    public void StartRadio()
+    {
+        if (radioAudioSource == null)
+            radioAudioSource = GetComponent<AudioSource>();
+
+        // Ask AudioManager to stop ambient loop if available
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.DisableAmbientLooping();
+        }
+
+        if (audiotracks == null || audiotracks.Length == 0)
+        {
+            Debug.LogWarning("[RadioCOntroller] No audio tracks assigned.");
+            return;
+        }
+
+        // ensure track is correct and playing
+        updateTrack(currentTrackIndex);
+        if (!radioAudioSource.isPlaying)
+        {
+            radioAudioSource.volume = 1f; // use audio source volume (AudioManager may control mixer)
+            radioAudioSource.Play();
+        }
+
+        // ensure the playback monitor coroutine is running
         StartCoroutine(PlaybackMonitor());
     }
 
@@ -48,14 +90,15 @@ public class RadioCOntroller : MonoBehaviour
         if (isTransitioning) return;
         if (!radioAudioSource.isPlaying)
         {
-            StartCoroutine(FadeIn(radioAudioSource, 0.5f));
+            radioAudioSource.Play();
         }
     }
 
     void updateTrack(int index)
     {
         radioAudioSource.clip = audiotracks[index].trackAudioClip;
-        trackTitleText.text = audiotracks[index].trackAudioClip.name;
+        if (trackTitleText != null)
+            trackTitleText.text = audiotracks[index].trackAudioClip.name;
     }
 
     public void PauseAudio()
@@ -66,7 +109,7 @@ public class RadioCOntroller : MonoBehaviour
     public void StopAudio()
     {
         if (isTransitioning) return;
-        StartCoroutine(FadeOut(radioAudioSource, 0.5f));
+        radioAudioSource.Stop();
     }
 
     public void LoopAudio()
@@ -165,7 +208,7 @@ public class RadioCOntroller : MonoBehaviour
             }
             else
             {
-                // stopped or paused manually � do nothing and continue monitoring
+                // stopped or paused manually — do nothing and continue monitoring
                 yield return null;
             }
         }

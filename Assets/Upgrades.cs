@@ -1,12 +1,26 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class Upgrades : MonoBehaviour
 {
+    [Serializable]
+    public class RadioTier
+    {
+        public string tierName;
+        [TextArea] public string description;
+        [TextArea] public string loreDescription;
+        public float cost;
+        [Tooltip("How many additional dishes are added to the dish completion count when this tier is active (relative to base).")]
+        public int dishesAdded = 0;
+        [Tooltip("Number of total completed dishes required to unlock this tier.")]
+        public int requiredDishes = 0;
+        [Tooltip("Control the music")]
+        public Sprite icon; // assign per-tier icon in inspector (bar soap, bottle, etc.)
+    }
+
     [Serializable]
     public class SoapTier
     {
@@ -46,15 +60,19 @@ public class Upgrades : MonoBehaviour
         public int requiredDishes = 0;
     }
 
-    [Serializable]
-    public class Mp3Tier
-    {
-        public string tierName;
-        [TextArea] public string description;
-        [TextArea] public string loreDescription;
-        public float cost;
-        public Sprite icon;
-    }
+    [Header("Radio Tiers")]
+    public List<RadioTier> radioTiers = new List<RadioTier>();
+
+    [Header("Radio UI")]
+    public GameObject radioMenuPanel;
+    public TMP_Text radioNameText;
+    public TMP_Text radioDescText;
+    public TMP_Text radioCostText;
+    public Button radioUpgradeButton;
+    public Button radioCloseButton;
+
+    [Header("HUD Button Image (assign the Image component from the radioButton)")]
+    public Image RadioButtonImage;
 
     [Header("Soap Tiers (index 0 is the starting unlocked bar soap)")]
     public List<SoapTier> soapTiers = new List<SoapTier>();
@@ -99,29 +117,6 @@ public class Upgrades : MonoBehaviour
     public Image spongeButtonImage; 
     // Add UI fields for sponge menu if needed (similar to soap/glove) 
 
-    [Header("MP3 Tiers (index 0 is the starting/unlocked mp3 upgrade)")]
-    public List<Mp3Tier> mp3Tiers = new List<Mp3Tier>();
-
-    [Header("MP3 UI")]
-    public GameObject mp3MenuPanel;
-    public TMP_Text mp3NameText;
-    public TMP_Text mp3DescText;
-    public TMP_Text mp3CostText;
-    public Button mp3UpgradeButton;
-    public Button mp3CloseButton;
-
-    [Header("HUD Button Image (assign the Image component from the MP3Button)")]
-    public Image mp3ButtonImage;
-
-    [Header("MP3 HUD")]
-    [Tooltip("Optional: assign the Button used in the HUD to open the MP3 menu (calls OpenMp3Menu).")]
-    public Button mp3OpenButton;
-
-    [Header("MP3 Player UI (shown after purchase)")]
-    [Tooltip("Assign the MP3 player panel GameObject or Mp3PlayerUI component. When the MP3 upgrade is purchased, clicking the HUD MP3 button will open this instead.")]
-    public GameObject mp3PlayerPanel;       // optional: panel GameObject for the advanced player
-    public Mp3PlayerUI mp3PlayerUI;         // optional: script on the player panel that handles song list & controls
-
     [Header("Optional: full-screen transparent Button behind the panel")]
     [Tooltip("If set, clicking this Button will close the soap/glove menu. If not set, the script will try to detect clicks outside the panel via UI raycast.")]
     public Button backgroundOverlayButton;
@@ -129,7 +124,7 @@ public class Upgrades : MonoBehaviour
     private int currentSoapIndex = 0;
     private int currentGloveIndex = 0;
     private int currentSpongeIndex = 0;
-    private int currentMp3Index = 0;
+    private int currentRadioIndex = 0;
     private EmployeeManager employeeManager;
     private ScoreManager scoreManager;
 
@@ -137,6 +132,7 @@ public class Upgrades : MonoBehaviour
     private GraphicRaycaster graphicRaycaster;
     [Tooltip("Optional Canvas used for UI raycasts when backgroundOverlayButton is not provided. If null the script will try to find one at runtime.")]
     public Canvas raycastCanvas;
+    private bool radioPurchased = false;
 
     private void Reset()
     {
@@ -191,6 +187,20 @@ public class Upgrades : MonoBehaviour
                 description = "Massive boost to all profit generation (x3).",
                 cost = 2000f,
                 multiplier = 3f,
+                icon = null
+            });
+        }
+
+        // seed default radio tiers if none set in inspector (single tier only)
+        if (radioTiers.Count == 0)
+        {
+            radioTiers.Add(new RadioTier
+            {
+                tierName = "Radio",
+                description = "Old radio. No upgrades available.",
+                cost = 0f,
+                dishesAdded = 0,
+                requiredDishes = 0,
                 icon = null
             });
         }
@@ -259,31 +269,6 @@ public class Upgrades : MonoBehaviour
             });
         }
 
-        // seed default mp3 tiers if none set in inspector
-        // include a base (index 0) and the purchasable MP3 tier (index 1)
-        if (mp3Tiers.Count == 0)
-        {
-            mp3Tiers.Add(new Mp3Tier
-            {
-                tierName = "No MP3",
-                description = "Default radio. No custom songs.",
-                loreDescription = string.Empty,
-                cost = 0f,
-                icon = null
-            });
-            mp3Tiers.Add(new Mp3Tier
-            {
-                tierName = "MP3",
-                description = "Change the songs",
-                loreDescription = string.Empty,
-                cost = 100f,
-                icon = null
-            });
-        }
-
-        // Try to auto-assign mp3 UI references if user didn't assign them in inspector.
-        AutoAssignMp3UI();
-
         // wire soap buttons
         if (soapUpgradeButton != null)
         {
@@ -294,6 +279,17 @@ public class Upgrades : MonoBehaviour
         {
             soapCloseButton.onClick.RemoveAllListeners();
             soapCloseButton.onClick.AddListener(CloseSoapMenu);
+        }
+        // wire radio buttons (single-tier: keep handler but UI will show Max)
+        if (radioUpgradeButton != null)
+        {
+            radioUpgradeButton.onClick.RemoveAllListeners();
+            radioUpgradeButton.onClick.AddListener(OnRadioUpgradeButton);
+        }
+        if (radioCloseButton != null)
+        {
+            radioCloseButton.onClick.RemoveAllListeners();
+            radioCloseButton.onClick.AddListener(CloseRadioMenu);
         }
 
         // wire glove buttons
@@ -320,25 +316,6 @@ public class Upgrades : MonoBehaviour
             spongeCloseButton.onClick.AddListener(CloseSpongeMenu);
         }
 
-        // wire mp3 buttons
-        if (mp3UpgradeButton != null)
-        {
-            mp3UpgradeButton.onClick.RemoveAllListeners();
-            mp3UpgradeButton.onClick.AddListener(OnMp3UpgradeButton);
-        }
-        if (mp3CloseButton != null)
-        {
-            mp3CloseButton.onClick.RemoveAllListeners();
-            mp3CloseButton.onClick.AddListener(CloseMp3Menu);
-        }
-
-        // wire mp3 HUD open button (optional)
-        if (mp3OpenButton != null)
-        {
-            mp3OpenButton.onClick.RemoveAllListeners();
-            mp3OpenButton.onClick.AddListener(OpenMp3Menu);
-        }
-
         // overlay button is optional; if provided we hook it so clicking outside the panel closes the menu
         if (backgroundOverlayButton != null)
         {
@@ -349,13 +326,7 @@ public class Upgrades : MonoBehaviour
                 CloseSoapMenu();
                 CloseGloveMenu();
                 CloseSpongeMenu();
-                CloseMp3Menu();
-
-                // also close mp3 player panel if present
-                if (mp3PlayerUI != null)
-                    mp3PlayerUI.Close();
-                else if (mp3PlayerPanel != null)
-                    mp3PlayerPanel.SetActive(false);
+                CloseRadioMenu();
             });
             // ensure overlay is hidden initially
             if (backgroundOverlayButton.gameObject.activeSelf)
@@ -365,7 +336,15 @@ public class Upgrades : MonoBehaviour
         CloseSoapMenu();
         CloseGloveMenu();
         CloseSpongeMenu();
-        CloseMp3Menu();
+        CloseRadioMenu();
+    }
+
+    public void CloseRadioMenu()
+    {
+        if (radioMenuPanel == null) return;
+        radioMenuPanel.SetActive(false);
+        if (backgroundOverlayButton != null)
+            backgroundOverlayButton.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -374,48 +353,57 @@ public class Upgrades : MonoBehaviour
         UpdateSoapMenuUI(); // ensure HUD icon matches initial soap tier
         UpdateGloveMenuUI(); // ensure HUD icon matches initial glove tier
         UpdateSpongeMenuUI(); // ensure HUD icon matches initial sponge tier
-        UpdateMp3MenuUI(); // ensure HUD icon / menu for mp3 is initialized
-
-        // Ensure the HUD MP3 button is bound to the appropriate action depending on whether MP3 is owned.
-        RebindMp3OpenButtonForPlayer();
+        UpdateRadioMenuUI();
     }
 
-    // Helper: rebind the HUD MP3 open button so after purchase it opens the player panel/UI
-    private void RebindMp3OpenButtonForPlayer()
+    public void UpdateRadioMenuUI()
     {
-        if (mp3OpenButton == null) return;
+        if (radioTiers == null || radioTiers.Count == 0) return;
 
-        // clear existing listeners and bind appropriately
-        mp3OpenButton.onClick.RemoveAllListeners();
+        var current = radioTiers[Mathf.Clamp(currentRadioIndex, 0, radioTiers.Count - 1)];
 
-        if (currentMp3Index > 0)
+        if (radioNameText) radioNameText.text = current.tierName;
+        if (radioDescText) radioDescText.text = current.description; // in-game effect
+
+        // Former cost text now shows IRL / lore description
+        if (radioCostText)
+            radioCostText.text = string.IsNullOrEmpty(current.loreDescription)
+                ? string.Empty
+                : current.loreDescription;
+
+        // HUD icon stays the same
+        if (RadioButtonImage != null && current != null && current.icon != null)
+            RadioButtonImage.sprite = current.icon;
+
+        bool hasNext = currentRadioIndex < radioTiers.Count - 1;
+        float wallet = score_manager_safe();
+
+        if (radioUpgradeButton)
         {
-            // MP3 purchased -> open player UI if available
-            if (mp3PlayerUI != null)
+            var btnText = radioUpgradeButton.GetComponentInChildren<TMP_Text>();
+
+            if (hasNext)
             {
-                mp3OpenButton.onClick.AddListener(() =>
+                var next = radioTiers[currentRadioIndex + 1];
+                bool unlocked = scoreManager != null && scoreManager.GetTotalDishes() >= next.requiredDishes;
+
+                radioUpgradeButton.interactable = unlocked && wallet >= next.cost;
+
+                if (btnText != null)
                 {
-                    if (backgroundOverlayButton != null)
-                        backgroundOverlayButton.gameObject.SetActive(true);
-                    mp3PlayerUI.Open();
-                });
-                return;
+                    btnText.SetText(unlocked
+                        ? $"Upgrade for ${next.cost:0.00}"
+                        : $"Locked: {next.requiredDishes} dishes");
+                }
+            }
+            else
+            {
+                radioUpgradeButton.interactable = !radioPurchased;
+                if (btnText != null)
+                    btnText.SetText(radioPurchased ? "Owned" : "Buy");
             }
 
-            if (mp3PlayerPanel != null)
-            {
-                mp3OpenButton.onClick.AddListener(() =>
-                {
-                    if (backgroundOverlayButton != null)
-                        backgroundOverlayButton.gameObject.SetActive(true);
-                    mp3PlayerPanel.SetActive(true);
-                });
-                return;
-            }
         }
-
-        // Default: open the purchasable MP3 upgrade menu (existing behavior)
-        mp3OpenButton.onClick.AddListener(OpenMp3Menu);
     }
 
     // --------- Soap UI API ----------
@@ -430,6 +418,41 @@ public class Upgrades : MonoBehaviour
 
         soapMenuPanel.SetActive(true);
     }
+    public void OpenRadioMenu()
+    {
+        if (radioMenuPanel == null) return;
+
+        // If radio not purchased yet, show the purchase UI
+        if (!radioPurchased)
+        {
+            UpdateRadioMenuUI();
+
+            if (backgroundOverlayButton != null)
+                backgroundOverlayButton.gameObject.SetActive(true);
+
+            radioMenuPanel.SetActive(true);
+            return;
+        }
+
+        // Radio already purchased → open radio control panel instead
+        OpenRadioControlPanel();
+    }
+    [SerializeField] private GameObject radioControlPanel;
+
+    private void OpenRadioControlPanel()
+    {
+        if (radioControlPanel == null)
+        {
+            Debug.LogWarning("[Upgrades] Radio control panel not assigned.");
+            return;
+        }
+
+        if (backgroundOverlayButton != null)
+            backgroundOverlayButton.gameObject.SetActive(true);
+
+        radioControlPanel.SetActive(true);
+    }
+
 
     public void CloseSoapMenu()
     {
@@ -438,6 +461,9 @@ public class Upgrades : MonoBehaviour
         if (backgroundOverlayButton != null)
             backgroundOverlayButton.gameObject.SetActive(false);
     }
+
+
+
 
     private void UpdateSoapMenuUI()
     {
@@ -463,13 +489,13 @@ public class Upgrades : MonoBehaviour
         if (soapUpgradeButton)
         {
             var btnText = soapUpgradeButton.GetComponentInChildren<TMP_Text>();
-            float wallet = (scoreManager != null) ? scoreManager.GetTotalProfit() : 0f;
+            float wallet = (scoreManager != null) ? score_manager_safe() : 0f;
 
             if (hasNext)
             {
                 var next = soapTiers[currentSoapIndex + 1];
 
-                soapUpgradeButton.interactable = scoreManager != null && wallet >= next.cost;
+                soapUpgradeButton.interactable = score_manager_safe() >= next.cost;
 
                 if (btnText != null)
                     btnText.SetText($"Upgrade for ${next.cost:0.00}");
@@ -481,6 +507,12 @@ public class Upgrades : MonoBehaviour
                     btnText.SetText("Max");
             }
         }
+    }
+
+    // small helper to avoid repetitive null checks for scoreManager
+    private float score_manager_safe()
+    {
+        return (scoreManager != null) ? scoreManager.GetTotalProfit() : 0f;
     }
 
     private void OnSoapUpgradeButton()
@@ -515,13 +547,18 @@ public class Upgrades : MonoBehaviour
         else
         {
             employeeManager = FindFirstObjectByType<EmployeeManager>();
-            if (employeeManager != null) employeeManager.MultiplyEmployeeProfit(next.multiplier);
+            if (employeeManager != null) employee_manager_safe_multiply(next.multiplier);
         }
 
         currentSoapIndex++;
         UpdateSoapMenuUI();
 
         Debug.Log($"[Upgrades] Upgraded to {next.tierName} (x{next.multiplier:0.00})");
+    }
+
+    private void employee_manager_safe_multiply(float multiplier)
+    {
+        if (employeeManager != null) employeeManager.MultiplyEmployeeProfit(multiplier);
     }
 
     // --------- Glove UI API ----------
@@ -563,7 +600,7 @@ public class Upgrades : MonoBehaviour
             gloveButtonImage.sprite = current.icon;
 
         bool hasNext = currentGloveIndex < gloveTiers.Count - 1;
-        float wallet = (scoreManager != null) ? scoreManager.GetTotalProfit() : 0f;
+        float wallet = score_manager_safe();
 
         if (gloveUpgradeButton)
         {
@@ -634,6 +671,84 @@ public class Upgrades : MonoBehaviour
 
         Debug.Log($"[Upgrades] Upgraded to {next.tierName} (+{delta} dish per completion)");
     }
+
+    // --------- Radio  ----------
+    private void OnRadioUpgradeButton()
+    {
+        if (radioPurchased) return;
+
+        var radio = radioTiers[0];
+
+        if (scoreManager == null) return;
+
+        float wallet = scoreManager.GetTotalProfit();
+        if (wallet < radio.cost)
+        {
+            Debug.Log("[Upgrades] Not enough money to buy Radio.");
+            return;
+        }
+
+        // Pay once
+        scoreManager.SubtractProfit(radio.cost, isPurchase: true);
+
+        radioPurchased = true;
+
+        UpdateRadioMenuUI();
+        CloseRadioMenu();
+
+        // Immediately open the real radio panel
+        OpenRadioControlPanel();
+
+        // Stop ambient loop and start radio playback (if RadioCOntroller exists)
+        try
+        {
+            if (AudioManager.instance != null)
+            {
+                AudioManager.instance.DisableAmbientLooping();
+            }
+
+            var radioController = FindFirstObjectByType<RadioCOntroller>();
+            if (radioController != null)
+            {
+                radioController.StartRadio();
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning($"[Upgrades] Failed to start radio after purchase: {ex.Message}");
+        }
+
+        Debug.Log("[Upgrades] Radio purchased.");
+    }
+
+
+    // --- TEST/DEV ONLY: set RADIO tier to an index (free or spend) ---
+    public void SetRadioTierIndex(int targetIndex, bool spend = false)
+    {
+        // Clamp to available single tier safely.
+        targetIndex = Mathf.Clamp(targetIndex, 0, radioTiers.Count - 1);
+        if (targetIndex == currentRadioIndex) { UpdateRadioMenuUI(); return; }
+
+        // Only allow moving forward if there are multiple tiers (defensive).
+        int from = currentRadioIndex;
+        int to = Mathf.Max(targetIndex, from);
+
+        float totalCost = 0f;
+        int addDishesDelta = radioTiers[to].dishesAdded - radioTiers[from].dishesAdded;
+
+        if (spend && score_manager_has_enough_dishes(radioTiers[to].requiredDishes) == false) return;
+
+        for (int i = from + 1; i <= to; i++) totalCost += radioTiers[i].cost;
+
+        if (spend && score_manager_safe() < totalCost) return;
+        if (spend && scoreManager != null) scoreManager.SubtractProfit(totalCost, isPurchase: true);
+
+        if (addDishesDelta > 0 && scoreManager != null)
+            scoreManager.IncreaseDishCountIncrement(addDishesDelta);
+
+        currentRadioIndex = to;
+        UpdateRadioMenuUI();
+    }
     
     // --------- Sponge UI API ----------
     public void OpenSpongeMenu()
@@ -674,7 +789,7 @@ public class Upgrades : MonoBehaviour
             spongeButtonImage.sprite = current.icon;
 
         bool hasNext = currentSpongeIndex < spongeTiers.Count - 1;
-        float wallet = (scoreManager != null) ? scoreManager.GetTotalProfit() : 0f;
+        float wallet = score_manager_safe();
 
         if (spongeUpgradeButton)
         {
@@ -715,13 +830,13 @@ public class Upgrades : MonoBehaviour
         }
 
         // enforce milestone like gloves
-        if (scoreManager.GetTotalDishes() < next.requiredDishes)
+        if (score_manager_has_enough_dishes(next.requiredDishes) == false)
         {
             Debug.Log($"[Upgrades] {next.tierName} locked: requires {next.requiredDishes} dishes.");
             return;
         }
 
-        float wallet = scoreManager.GetTotalProfit();
+        float wallet = score_manager_safe();
         if (wallet < next.cost)
         {
             Debug.Log($"[Upgrades] Not enough profit to buy {next.tierName} (need ${next.cost:0.00})");
@@ -744,7 +859,7 @@ public class Upgrades : MonoBehaviour
             // prefer ScoreManager.activeDish if available
             if (scoreManager != null && scoreManager.activeDish != null)
             {
-                scoreManager.activeDish.upgrades = this;
+                score_manager_assign_active_dish();
             }
 
             // assign to all DishClicker instances in scene so UI/auto-clickers behave consistently
@@ -763,258 +878,22 @@ public class Upgrades : MonoBehaviour
         Debug.Log($"[Upgrades] Upgraded to {next.tierName} (stages per click: {next.stagesPerClick})");
     }
 
+    private void score_manager_assign_active_dish()
+    {
+        if (scoreManager != null && scoreManager.activeDish != null)
+            scoreManager.activeDish.upgrades = this;
+    }
+
+    private bool score_manager_has_enough_dishes(int required)
+    {
+        return scoreManager != null && scoreManager.GetTotalDishes() >= required;
+    }
 
     public int GetCurrentStagesPerClick()
     {
         return spongeTiers[Mathf.Clamp(currentSpongeIndex, 0, spongeTiers.Count - 1)].stagesPerClick;
     }
 
-    // --------- MP3 UI API ----------
-    public void OpenMp3Menu()
-    {
-        // If MP3 upgrade has been purchased (any index > 0) and a player UI exists, open the player panel instead.
-        if (currentMp3Index > 0)
-        {
-            // Prefer Mp3PlayerUI if assigned
-            if (mp3PlayerUI != null)
-            {
-                if (backgroundOverlayButton != null)
-                    backgroundOverlayButton.gameObject.SetActive(true);
-
-                mp3PlayerUI.Open();
-                return;
-            }
-
-            // fallback: open mp3PlayerPanel GameObject if assigned
-            if (mp3PlayerPanel != null)
-            {
-                if (backgroundOverlayButton != null)
-                    backgroundOverlayButton.gameObject.SetActive(true);
-
-                mp3PlayerPanel.SetActive(true);
-                return;
-            }
-        }
-
-        // Otherwise open the purchasable MP3 upgrade menu (existing behavior)
-        Debug.Log($"[Upgrades] OpenMp3Menu called. mp3MenuPanel is {(mp3MenuPanel == null ? "null" : "assigned")}");
-        if (mp3MenuPanel == null) return;
-        UpdateMp3MenuUI();
-
-        if (backgroundOverlayButton != null)
-            backgroundOverlayButton.gameObject.SetActive(true);
-
-        mp3MenuPanel.SetActive(true);
-    }
-
-    public void CloseMp3Menu()
-    {
-        if (mp3MenuPanel == null) return;
-        mp3MenuPanel.SetActive(false);
-        if (backgroundOverlayButton != null)
-            backgroundOverlayButton.gameObject.SetActive(false);
-    }
-
-    private void UpdateMp3MenuUI()
-    {
-        if (mp3Tiers == null || mp3Tiers.Count == 0) return;
-
-        var current = mp3Tiers[Mathf.Clamp(currentMp3Index, 0, mp3Tiers.Count - 1)];
-
-        if (mp3NameText) mp3NameText.text = current.tierName;
-        if (mp3DescText) mp3DescText.text = current.description;
-
-        if (mp3CostText)
-            mp3CostText.text = string.IsNullOrEmpty(current.loreDescription)
-                ? string.Empty
-                : current.loreDescription;
-
-        if (mp3ButtonImage != null && current != null && current.icon != null)
-            mp3ButtonImage.sprite = current.icon;
-
-        bool hasNext = currentMp3Index < mp3Tiers.Count - 1;
-
-        if (mp3UpgradeButton)
-        {
-            var btnText = mp3UpgradeButton.GetComponentInChildren<TMP_Text>();
-            float wallet = (scoreManager != null) ? scoreManager.GetTotalProfit() : 0f;
-
-            if (hasNext)
-            {
-                var next = mp3Tiers[currentMp3Index + 1];
-                mp3UpgradeButton.interactable = scoreManager != null && wallet >= next.cost;
-
-                if (btnText != null)
-                    btnText.SetText($"Upgrade for ${next.cost:0.00}");
-            }
-            else
-            {
-                mp3UpgradeButton.interactable = false;
-                if (btnText != null)
-                    btnText.SetText("Max");
-            }
-        }
-    }
-
-    private void OnMp3UpgradeButton()
-    {
-        // attempt to upgrade to next tier
-        if (currentMp3Index >= mp3Tiers.Count - 1) return;
-        var next = mp3Tiers[currentMp3Index + 1];
-        if (scoreManager == null)
-        {
-            Debug.LogWarning("[Upgrades] ScoreManager not found.");
-            return;
-        }
-
-        float wallet = scoreManager.GetTotalProfit();
-        if (wallet < next.cost)
-        {
-            Debug.Log($"[Upgrades] Not enough profit to buy {next.tierName} (need ${next.cost:0.00})");
-            return;
-        }
-
-        // pay
-        scoreManager.SubtractProfit(next.cost, isPurchase: true);
-
-        // advance mp3 tier
-        currentMp3Index++;
-        UpdateMp3MenuUI();
-
-        // Rebind HUD MP3 button to open player UI/panel so next press opens the player
-        RebindMp3OpenButtonForPlayer();
-
-        // Optional: you can choose to immediately open the MP3 player UI after purchase.
-        // If you'd like that UX, uncomment the following lines:
-        
-        if (mp3PlayerUI != null) mp3PlayerUI.Open();
-        else if (mp3PlayerPanel != null) mp3PlayerPanel.SetActive(true);
-        
-
-        Debug.Log($"[Upgrades] Upgraded to {next.tierName} (mp3 purchased)");
-    }
-
-    private void Update()
-    {
-        // keep the upgrade interactable state up to date while menus are active
-        if (soapMenuPanel != null && soapMenuPanel.activeSelf)
-            UpdateSoapMenuUI();
-        if (gloveMenuPanel != null && gloveMenuPanel.activeSelf)
-            UpdateGloveMenuUI();
-        if (spongeMenuPanel != null && spongeMenuPanel.activeSelf)
-            UpdateSpongeMenuUI();
-        if (mp3MenuPanel != null && mp3MenuPanel.activeSelf)
-            UpdateMp3MenuUI();
-
-        // if no explicit overlay Button configured, detect clicks outside the active panel via UI raycast
-        if ((soapMenuPanel != null && soapMenuPanel.activeSelf || gloveMenuPanel != null && gloveMenuPanel.activeSelf || spongeMenuPanel != null && spongeMenuPanel.activeSelf || mp3MenuPanel != null && mp3MenuPanel.activeSelf) && backgroundOverlayButton == null)
-        {
-            // only respond to primary mouse button down / primary touch
-            if (Input.GetMouseButtonDown(0))
-            {
-                // require EventSystem present for raycasts
-                if (EventSystem.current == null || graphicRaycaster == null)
-                    return;
-
-                PointerEventData pointerData = new PointerEventData(EventSystem.current)
-                {
-                    position = Input.mousePosition
-                };
-
-                var results = new List<RaycastResult>();
-                graphicRaycaster.Raycast(pointerData, results);
-
-                bool clickedInsideAnyPanel = false;
-
-                // check soap panel
-                if (soapMenuPanel != null && soapMenuPanel.activeSelf)
-                {
-                    var rtSoap = soapMenuPanel.transform as RectTransform;
-                    foreach (var r in results)
-                    {
-                        if (r.gameObject == null) continue;
-                        if (rtSoap != null && (r.gameObject.transform as RectTransform) != null && (r.gameObject.transform as RectTransform).IsChildOf(rtSoap))
-                        {
-                            clickedInsideAnyPanel = true;
-                            break;
-                        }
-                        if (r.gameObject == soapMenuPanel)
-                        {
-                            clickedInsideAnyPanel = true;
-                            break;
-                        }
-                    }
-                }
-
-                // check glove panel if not already clicked inside soap
-                if (!clickedInsideAnyPanel && gloveMenuPanel != null && gloveMenuPanel.activeSelf)
-                {
-                    var rtGlove = gloveMenuPanel.transform as RectTransform;
-                    foreach (var r in results)
-                    {
-                        if (r.gameObject == null) continue;
-                        if (rtGlove != null && (r.gameObject.transform as RectTransform) != null && (r.gameObject.transform as RectTransform).IsChildOf(rtGlove))
-                        {
-                            clickedInsideAnyPanel = true;
-                            break;
-                        }
-                        if (r.gameObject == gloveMenuPanel)
-                        {
-                            clickedInsideAnyPanel = true;
-                            break;
-                        }
-                    }
-                }
-                // check sponge panel if not already clicked inside soap or glove
-                if (!clickedInsideAnyPanel && spongeMenuPanel != null && spongeMenuPanel.activeSelf)
-                {
-                    var rtSponge = spongeMenuPanel.transform as RectTransform;
-                    foreach (var r in results)
-                    {
-                        if (r.gameObject == null) continue;
-                        if (rtSponge != null && (r.gameObject.transform as RectTransform) != null && (r.gameObject.transform as RectTransform).IsChildOf(rtSponge))
-                        {
-                            clickedInsideAnyPanel = true;
-                            break;
-                        }
-                        if (r.gameObject == spongeMenuPanel)
-                        {
-                            clickedInsideAnyPanel = true;
-                            break;
-                        }
-                    }
-                }
-
-                // check mp3 panel if not already clicked inside others
-                if (!clickedInsideAnyPanel && mp3MenuPanel != null && mp3MenuPanel.activeSelf)
-                {
-                    var rtMp3 = mp3MenuPanel.transform as RectTransform;
-                    foreach (var r in results)
-                    {
-                        if (r.gameObject == null) continue;
-                        if (rtMp3 != null && (r.gameObject.transform as RectTransform) != null && (r.gameObject.transform as RectTransform).IsChildOf(rtMp3))
-                        {
-                            clickedInsideAnyPanel = true;
-                            break;
-                        }
-                        if (r.gameObject == mp3MenuPanel)
-                        {
-                            clickedInsideAnyPanel = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (!clickedInsideAnyPanel)
-                {
-                    CloseSoapMenu();
-                    CloseGloveMenu();
-                    CloseSpongeMenu();
-                    CloseMp3Menu();
-                }
-            }
-        }
-    }
     // --- TEST/DEV ONLY: set SOAP tier to an index (free or spend) ---
     public void SetSoapTierIndex(int targetIndex, bool spend = false)
     {
@@ -1034,7 +913,7 @@ public class Upgrades : MonoBehaviour
             cumulativeMultiplier *= soapTiers[i].multiplier;
         }
 
-        if (spend && scoreManager != null && scoreManager.GetTotalProfit() < totalCost) return;
+        if (spend && score_manager_safe() < totalCost) return;
         if (spend && scoreManager != null) scoreManager.SubtractProfit(totalCost, isPurchase: true);
 
         // apply the *net* multiplier once
@@ -1058,11 +937,11 @@ public class Upgrades : MonoBehaviour
         int addDishesDelta = gloveTiers[to].dishesAdded - gloveTiers[from].dishesAdded;
 
         // enforce required dishes only if spending (mirrors normal flow)
-        if (spend && scoreManager != null && scoreManager.GetTotalDishes() < gloveTiers[to].requiredDishes) return;
+        if (spend && score_manager_has_enough_dishes(gloveTiers[to].requiredDishes) == false) return;
 
         for (int i = from + 1; i <= to; i++) totalCost += gloveTiers[i].cost;
 
-        if (spend && scoreManager != null && scoreManager.GetTotalProfit() < totalCost) return;
+        if (spend && score_manager_safe() < totalCost) return;
         if (spend && scoreManager != null) scoreManager.SubtractProfit(totalCost, isPurchase: true);
 
         if (addDishesDelta > 0 && scoreManager != null)
@@ -1084,11 +963,11 @@ public class Upgrades : MonoBehaviour
         float totalCost = 0f;
 
         // enforce required dishes only if spending
-        if (spend && scoreManager != null && scoreManager.GetTotalDishes() < spongeTiers[to].requiredDishes) return;
+        if (spend && score_manager_has_enough_dishes(spongeTiers[to].requiredDishes) == false) return;
 
         for (int i = from + 1; i <= to; i++) totalCost += spongeTiers[i].cost;
 
-        if (spend && scoreManager != null && scoreManager.GetTotalProfit() < totalCost) return;
+        if (spend && score_manager_safe() < totalCost) return;
         if (spend && scoreManager != null) scoreManager.SubtractProfit(totalCost, isPurchase: true);
 
         currentSpongeIndex = to;
@@ -1097,8 +976,7 @@ public class Upgrades : MonoBehaviour
         // mimic OnSpongeUpgradeButton side-effects so clickers pick up the new value immediately
         try
         {
-            if (scoreManager != null && scoreManager.activeDish != null)
-                scoreManager.activeDish.upgrades = this;
+            score_manager_assign_active_dish();
 
             var allClickers = FindObjectsByType<DishClicker>(FindObjectsSortMode.None);
             for (int i = 0; i < allClickers.Length; i++)
@@ -1110,147 +988,63 @@ public class Upgrades : MonoBehaviour
         }
     }
 
-    // Modified to include MP3 index so SaveManager can persist purchase
-    public void GetSaveState(out int soap, out int glove, out int sponge, out int mp3)
+    // Modified save helpers
+    public void GetSaveState(out int soap, out int glove, out int sponge, out bool radioOwned)
     {
         soap = currentSoapIndex;
         glove = currentGloveIndex;
         sponge = currentSpongeIndex;
-        mp3 = currentMp3Index;
+        radioOwned = radioPurchased;
     }
 
-    // Apply save now restores MP3 purchase state as well.
-    public void ApplySaveState(int soap, int glove, int sponge, int mp3)
+
+    public void ApplySaveState(int soap, int glove, int sponge, bool radioOwned)
     {
-        // Make sure refs exist (bootstrapping can change init order)
         if (scoreManager == null) scoreManager = FindFirstObjectByType<ScoreManager>();
         if (employeeManager == null) employeeManager = FindFirstObjectByType<EmployeeManager>();
 
-        // Only restore indices. Do NOT apply multipliers or dishCountIncrement here,
-        // because ScoreManager already loaded those values from disk.
         currentSoapIndex = Mathf.Clamp(soap, 0, soapTiers.Count - 1);
         currentGloveIndex = Mathf.Clamp(glove, 0, gloveTiers.Count - 1);
         currentSpongeIndex = Mathf.Clamp(sponge, 0, spongeTiers.Count - 1);
 
-        // Restore mp3 index (purchase state). Clamp to valid range.
-        currentMp3Index = Mathf.Clamp(mp3, 0, mp3Tiers.Count - 1);
+        radioPurchased = radioOwned;
 
         UpdateSoapMenuUI();
         UpdateGloveMenuUI();
         UpdateSpongeMenuUI();
-        UpdateMp3MenuUI();
+        UpdateRadioMenuUI();
 
-        // Sponge needs the clickers to reference this Upgrades instance.
-        try
-        {   
-            if (scoreManager != null && scoreManager.activeDish != null)
-                scoreManager.activeDish.upgrades = this;
-
-            var allClickers = FindObjectsByType<DishClicker>(FindObjectsSortMode.None);
-            for (int i = 0; i < allClickers.Length; i++)
-                if (allClickers[i] != null) allClickers[i].upgrades = this;
-        }
-        catch (Exception ex)
+        if (radioPurchased)
         {
-            Debug.LogWarning($"[Upgrades] Failed to apply sponge refs on load: {ex.Message}");
+            // Make sure purchase UI never shows again
+            CloseRadioMenu();
+
+            // Ensure radio playback and ambient shutdown are restored after load
+            try
+            {
+                if (AudioManager.instance != null)
+                {
+                    AudioManager.instance.DisableAmbientLooping();
+                }
+
+                var radioController = FindFirstObjectByType<RadioCOntroller>();
+                if (radioController != null)
+                {
+                    radioController.StartRadio();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[Upgrades] Failed to restore radio state on load: {ex.Message}");
+            }
         }
 
-        // If MP3 was already owned on load, ensure the HUD button opens the player panel/UI.
-        RebindMp3OpenButtonForPlayer();
+        score_manager_assign_active_dish();
+
+        var allClickers = FindObjectsByType<DishClicker>(FindObjectsSortMode.None);
+        for (int i = 0; i < allClickers.Length; i++)
+            if (allClickers[i] != null)
+                allClickers[i].upgrades = this;
     }
 
-    // Auto-assign helper for MP3 UI references (called at Awake)
-    private void AutoAssignMp3UI()
-    {
-        // Try a few common GameObject names for the panel
-        if (mp3MenuPanel == null)
-        {
-            string[] panelNames = { "MP3MenuPanel" };
-            foreach (var n in panelNames)
-            {
-                var go = GameObject.Find(n);
-                if (go != null)
-                {
-                    mp3MenuPanel = go;
-                    Debug.Log($"[Upgrades] Auto-assigned MP3MenuPanel from GameObject.Find(\"{n}\")");
-                    break;
-                }
-            }
-        }
-
-        // Try to auto-find the HUD open button if not assigned
-        if (mp3OpenButton == null)
-        {
-            string[] buttonNames = { "Mp3Button", "MP3Button", "mp3Button", "mp3OpenButton", "btnMp3" };
-            foreach (var n in buttonNames)
-            {
-                var go = GameObject.Find(n);
-                if (go != null)
-                {
-                    var btn = go.GetComponent<Button>();
-                    if (btn != null)
-                    {
-                        mp3OpenButton = btn;
-                        Debug.Log($"[Upgrades] Auto-assigned mp3OpenButton from GameObject.Find(\"{n}\")");
-                        break;
-                    }
-                }
-            }
-        }
-
-        // If we found the panel but not the close button, attempt to find a close button inside the panel
-        if (mp3MenuPanel != null && mp3CloseButton == null)
-        {
-            // Direct child lookups
-            var close = mp3MenuPanel.transform.Find("CloseButton")?.GetComponent<Button>()
-                        ?? mp3MenuPanel.transform.Find("Close")?.GetComponent<Button>()
-                        ?? mp3MenuPanel.transform.Find("X")?.GetComponent<Button>();
-
-            if (close == null)
-            {
-                // fallback: search children for a Button with "close" or "x" in its name
-                var buttons = mp3MenuPanel.GetComponentsInChildren<Button>(true);
-                foreach (var b in buttons)
-                {
-                    var lower = b.name.ToLower();
-                    if (lower.Contains("close") || lower == "x")
-                    {
-                        close = b;
-                        break;
-                    }
-                }
-            }
-
-            if (close != null)
-            {
-                mp3CloseButton = close;
-                Debug.Log("[Upgrades] Auto-assigned mp3CloseButton from panel children.");
-            }
-        }
-
-        // Try to auto-assign a player panel and Mp3PlayerUI script if available
-        if (mp3PlayerPanel == null)
-        {
-            var p = GameObject.Find("MP3PlayerPanel") ?? GameObject.Find("Mp3PlayerPanel") ?? GameObject.Find("mp3PlayerPanel");
-            if (p != null)
-            {
-                mp3PlayerPanel = p;
-                Debug.Log("[Upgrades] Auto-assigned mp3PlayerPanel from GameObject.Find.");
-            }
-        }
-
-        if (mp3PlayerUI == null && mp3PlayerPanel != null)
-        {
-            mp3PlayerUI = mp3PlayerPanel.GetComponent<Mp3PlayerUI>();
-            if (mp3PlayerUI != null)
-                Debug.Log("[Upgrades] Auto-assigned Mp3PlayerUI from mp3PlayerPanel.");
-        }
-
-        // Ensure mp3 panel is hidden initially
-        if (mp3MenuPanel != null && mp3MenuPanel.activeSelf)
-            mp3MenuPanel.SetActive(false);
-
-        if (mp3PlayerPanel != null && mp3PlayerPanel.activeSelf)
-            mp3PlayerPanel.SetActive(false);
-    }
 }

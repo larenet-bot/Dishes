@@ -14,24 +14,23 @@ public class AudioManager : MonoBehaviour
     [Header("Mixer Group")]
     public AudioMixerGroup musicGroup;
 
-    [Header("Main Game Song Pool")]
-    public AudioClip[] startingSongs;   // random selection pool
-
-    [Header("Playback Settings")]
-    public bool autoPlayNext = true;    // when a track ends, automatically pick another
-    public bool avoidImmediateRepeat = true; // try to avoid playing the same song twice in a row
-
     [Header("Transition Settings")]
     public bool crossfadeEnabled = true;
     public float crossfadeDuration = 1.0f; // seconds for crossfade
 
+    // Optional ambient looping clip that plays until the radio is started
+    [Header("Ambient Loop (will be disabled when radio starts)")]
+    public AudioClip ambientLoopClip;
+    private AudioSource ambientSource;
+    private bool ambientPlaying;
+
+    // Keep a reference to the originally assigned clip so RestoreMainMusic still works
     private AudioClip mainMusic;
 
-    // Event fired when music finishes naturally (not when stopped by FadeOutMusic)
+    // Event kept for external listeners (AudioManager does not auto-invoke it anymore).
     public event Action OnMusicFinished;
 
     private bool isFading = false;
-    private Coroutine watchCoroutine;
     private Coroutine crossfadeCoroutine;
 
     // secondary source used for crossfading
@@ -43,7 +42,8 @@ public class AudioManager : MonoBehaviour
         if (instance == null) instance = this;
         else Destroy(gameObject);
 
-        musicSource.outputAudioMixerGroup = musicGroup;
+        if (musicSource != null)
+            musicSource.outputAudioMixerGroup = musicGroup;
 
         // create a secondary internal audio source for smooth crossfades
         secondaryMusicSource = gameObject.AddComponent<AudioSource>();
@@ -53,32 +53,57 @@ public class AudioManager : MonoBehaviour
         // copy loop setting from the inspector-assigned musicSource to keep behavior consistent
         secondaryMusicSource.loop = musicSource != null ? musicSource.loop : false;
 
+        // create ambient source for looping background audio
+        ambientSource = gameObject.AddComponent<AudioSource>();
+        ambientSource.playOnAwake = false;
+        ambientSource.loop = true;
+        ambientSource.spatialBlend = 0f;
+        ambientSource.outputAudioMixerGroup = musicGroup;
+
         // store default volume
         musicVolume = musicSource != null ? musicSource.volume : 1f;
 
-        // fallback: in case startingSongs is empty
-        mainMusic = musicSource.clip;
+        // fallback: store initial clip if present
+        mainMusic = musicSource != null ? musicSource.clip : null;
     }
 
     private void Start()
     {
-        // Randomize main music if songs are provided
-        if (startingSongs != null && startingSongs.Length > 0)
+        // Start ambient loop if assigned
+        if (ambientLoopClip != null && ambientSource != null)
         {
-            int index = UnityEngine.Random.Range(0, startingSongs.Length);
-            mainMusic = startingSongs[index];
+            ambientSource.clip = ambientLoopClip;
+            ambientSource.volume = musicVolume;
+            ambientSource.loop = true;
+            ambientSource.Play();
+            ambientPlaying = true;
         }
 
-        // Start music
-        if (mainMusic != null)
+        // Start main music if the musicSource already has a clip assigned
+        if (mainMusic != null && musicSource != null)
+        {
             PlayMusic(mainMusic);
+        }
     }
+
+    /// <summary>
+    /// Stop and disable the ambient looping audio (called by RadioController when radio starts).
+    /// </summary>
+    public void DisableAmbientLooping()
+    {
+        if (ambientSource == null) return;
+        if (ambientSource.isPlaying) ambientSource.Stop();
+        ambientSource.loop = false;
+        ambientPlaying = false;
+    }
+
+    /// <summary>
+    /// Returns whether ambient loop is currently playing.
+    /// </summary>
+    public bool IsAmbientPlaying => ambientPlaying;
 
     public void PlayMusic(AudioClip clip)
     {
-        // stop any watcher for previous clip
-        if (watchCoroutine != null) StopCoroutine(watchCoroutine);
-
         // stop any in-progress crossfade
         if (crossfadeCoroutine != null) StopCoroutine(crossfadeCoroutine);
 
@@ -90,13 +115,11 @@ public class AudioManager : MonoBehaviour
         }
 
         // Otherwise do instant switch
+        if (musicSource == null) return;
         musicSource.Stop();
         musicSource.clip = clip;
         musicSource.volume = musicVolume;
         musicSource.Play();
-
-        // start watcher to detect natural end
-        watchCoroutine = StartCoroutine(WatchForMusicEnd());
     }
 
     private IEnumerator CrossfadeToClip(AudioClip newClip, float duration)
@@ -138,66 +161,13 @@ public class AudioManager : MonoBehaviour
         musicSource = secondaryMusicSource;
         secondaryMusicSource = temp;
 
-        // restart watcher for the new active musicSource
-        if (watchCoroutine != null) StopCoroutine(watchCoroutine);
-        watchCoroutine = StartCoroutine(WatchForMusicEnd());
-
         crossfadeCoroutine = null;
-    }
-
-    private IEnumerator WatchForMusicEnd()
-    {
-        if (musicSource == null || musicSource.clip == null) yield break;
-
-        // Wait until clip finishes (not stopped)
-        while (musicSource.isPlaying)
-            yield return null;
-
-        // small frame delay to ensure stop wasn't due to our FadeOutMusic
-        yield return null;
-
-        if (isFading)
-            yield break;
-
-        // If configured, automatically play a new random song from the pool
-        if (autoPlayNext && startingSongs != null && startingSongs.Length > 0)
-        {
-            AudioClip next = GetRandomNextClip(musicSource.clip);
-            // If next is null fallback to mainMusic (rare)
-            if (next == null) next = mainMusic;
-            if (next != null)
-            {
-                PlayMusic(next);
-                yield break;
-            }
-        }
-
-        // Otherwise notify listeners that music finished
-        OnMusicFinished?.Invoke();
-    }
-
-    private AudioClip GetRandomNextClip(AudioClip exclude)
-    {
-        if (startingSongs == null || startingSongs.Length == 0) return null;
-        if (startingSongs.Length == 1) return startingSongs[0];
-
-        // Pick random index, optionally avoiding the excluded clip
-        int attempts = 0;
-        int idx = UnityEngine.Random.Range(0, startingSongs.Length);
-        if (avoidImmediateRepeat)
-        {
-            while (startingSongs[idx] == exclude && attempts < 10)
-            {
-                idx = UnityEngine.Random.Range(0, startingSongs.Length);
-                attempts++;
-            }
-        }
-        return startingSongs[idx];
     }
 
     public void RestoreMainMusic()
     {
-        PlayMusic(mainMusic);
+        if (mainMusic != null)
+            PlayMusic(mainMusic);
     }
 
     public void MuteMainMusic(bool mute)
@@ -205,11 +175,12 @@ public class AudioManager : MonoBehaviour
         // mute both sources for safety
         if (musicSource != null) musicSource.mute = mute;
         if (secondaryMusicSource != null) secondaryMusicSource.mute = mute;
+        if (ambientSource != null) ambientSource.mute = mute;
     }
 
     public void PlaySFX(AudioClip clip)
     {
-        if (clip != null)
+        if (clip != null && sfxSource != null)
             sfxSource.PlayOneShot(clip);
     }
 
@@ -238,4 +209,8 @@ public class AudioManager : MonoBehaviour
         isFading = false;
     }
 
+    internal void SetMusicVolume(float music)
+    {
+        throw new NotImplementedException();
+    }
 }
