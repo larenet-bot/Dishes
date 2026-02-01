@@ -35,12 +35,6 @@ public class AudioSettingsLoader : MonoBehaviour
             );
         }
 
-        // Keep AudioManager internal volume in sync so it doesn't overwrite or ignore mixer changes
-        if (AudioManager.instance != null)
-        {
-            // AudioManager will also update the mixer entry if it has an AudioMixer reference set,
-            // and it will persist the 'Music' PlayerPref.
-            AudioManager.instance.SetMusicVolume(music);
-        }
+        
     }
 }
