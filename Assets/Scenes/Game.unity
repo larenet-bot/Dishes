@@ -43380,6 +43380,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 840ac8c40c394454e8d1f16b27fe1854, type: 2}
   trackTitleText: {fileID: 379076677}
   autoPlayOnAwake: 1
+  requirePurchase: 1
 --- !u!114 &1934337362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46591,7 +46592,7 @@ PrefabInstance:
     - target: {fileID: 8628750436600265019, guid: fcf555f22d1b6b24b99494c5053111d4, type: 3}
       propertyPath: ambientLoopClip
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8300000, guid: 7f9572d21982af248a60e3a30d8b284e, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

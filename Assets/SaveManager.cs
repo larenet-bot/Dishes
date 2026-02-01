@@ -230,6 +230,20 @@ public class SaveManager : MonoBehaviour
             _loadedData = null;
             _hasLoadedFile = false;
             _hasAppliedToCurrentScene = false;
+
+            // Clear the ambient-disabled persistence so ambient will resume after wipe
+            if (PlayerPrefs.HasKey(AudioManager.AmbientDisabledKey))
+            {
+                PlayerPrefs.DeleteKey(AudioManager.AmbientDisabledKey);
+                PlayerPrefs.Save();
+            }
+
+            // If AudioManager is present, re-enable the ambient loop now
+            if (AudioManager.instance != null)
+            {
+                AudioManager.instance.EnableAmbientLooping();
+            }
+
             if (PlayerPrefs.GetInt("HasSeenIntro", 1) == 1)
             {
                 // First time playing – go to the intro cutscene

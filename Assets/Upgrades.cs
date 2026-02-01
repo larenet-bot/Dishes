@@ -134,6 +134,9 @@ public class Upgrades : MonoBehaviour
     public Canvas raycastCanvas;
     private bool radioPurchased = false;
 
+    // Public accessor so RadioCOntroller can detect ownership on Awake/Start
+    public bool RadioPurchased => radioPurchased;
+
     private void Reset()
     {
         scoreManager = FindFirstObjectByType<ScoreManager>();
@@ -462,9 +465,6 @@ public class Upgrades : MonoBehaviour
             backgroundOverlayButton.gameObject.SetActive(false);
     }
 
-
-
-
     private void UpdateSoapMenuUI()
     {
         if (soapTiers == null || soapTiers.Count == 0) return;
@@ -710,6 +710,8 @@ public class Upgrades : MonoBehaviour
             var radioController = FindFirstObjectByType<RadioCOntroller>();
             if (radioController != null)
             {
+                // Mark the Radio as purchased so it will allow playback and controls.
+                radioController.MarkPurchased();
                 radioController.StartRadio();
             }
         }
@@ -1030,6 +1032,8 @@ public class Upgrades : MonoBehaviour
                 var radioController = FindFirstObjectByType<RadioCOntroller>();
                 if (radioController != null)
                 {
+                    // ensure RadioCOntroller knows it's owned before attempting to start playback
+                    radioController.MarkPurchased();
                     radioController.StartRadio();
                 }
             }

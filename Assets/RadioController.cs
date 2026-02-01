@@ -17,6 +17,18 @@ public class RadioCOntroller : MonoBehaviour
     [Tooltip("When false the radio will not start playing on Scene Start. Call StartRadio() to begin playback (useful when radio must be purchased first).")]
     public bool autoPlayOnAwake = false;
 
+    [Header("Purchase")]
+    [Tooltip("When true the radio must be purchased via Upgrades before it can play.")]
+    [SerializeField] private bool requirePurchase = true;
+    private bool isPurchased = false;
+
+    // Allow external systems (Upgrades / save code) to mark this radio as purchased.
+    public bool IsPurchased => isPurchased;
+    public void MarkPurchased() => isPurchased = true;
+
+    // Allow external systems to query whether the radio is currently playing.
+    public bool IsPlaying => radioAudioSource != null && radioAudioSource.isPlaying;
+
     private void Start()
     {
         radioAudioSource = GetComponent<AudioSource>();
@@ -30,27 +42,45 @@ public class RadioCOntroller : MonoBehaviour
         currentTrackIndex = 0;
         updateTrack(currentTrackIndex);
 
-        // Only play automatically if explicitly allowed
-        if (autoPlayOnAwake)
+        // If purchase is required and the radio hasn't been marked purchased yet,
+        // check the Upgrades instance (if present) to see if the player already owns it.
+        if (requirePurchase && !isPurchased)
         {
-            radioAudioSource.Play();
-            StartCoroutine(PlaybackMonitor());
+            var upgrades = FindFirstObjectByType<Upgrades>();
+            if (upgrades != null && upgrades.RadioPurchased)
+            {
+                isPurchased = true;
+            }
+        }
+
+        // Only play automatically if explicitly allowed and (if required) purchased.
+        if (autoPlayOnAwake && (!requirePurchase || isPurchased))
+        {
+            // Use StartRadio so we get consistent behavior (including persistence)
+            StartRadio();
         }
     }
 
     /// <summary>
     /// Start radio playback (stops ambient via AudioManager if present).
     /// Safe to call multiple times.
+    /// Will refuse to start if purchase is required and not yet owned.
     /// </summary>
     public void StartRadio()
     {
+        if (requirePurchase && !isPurchased)
+        {
+            Debug.Log("[RadioCOntroller] StartRadio called but radio not purchased.");
+            return;
+        }
+
         if (radioAudioSource == null)
             radioAudioSource = GetComponent<AudioSource>();
 
-        // Ask AudioManager to stop ambient loop if available
+        // Ask AudioManager to stop ambient loop if available and persist that choice
         if (AudioManager.instance != null)
         {
-            AudioManager.instance.DisableAmbientLooping();
+            AudioManager.instance.DisableAmbientLooping(true);
         }
 
         if (audiotracks == null || audiotracks.Length == 0)
@@ -73,6 +103,7 @@ public class RadioCOntroller : MonoBehaviour
 
     public void skipforwardButton()
     {
+        if (requirePurchase && !isPurchased) return;
         if (audiotracks == null || audiotracks.Length == 0) return;
         int next = (currentTrackIndex + 1) % audiotracks.Length;
         StartTransitionTo(next);
@@ -80,6 +111,7 @@ public class RadioCOntroller : MonoBehaviour
 
     public void skipbackwardButton()
     {
+        if (requirePurchase && !isPurchased) return;
         if (audiotracks == null || audiotracks.Length == 0) return;
         int prev = (currentTrackIndex - 1 + audiotracks.Length) % audiotracks.Length;
         StartTransitionTo(prev);
@@ -87,9 +119,14 @@ public class RadioCOntroller : MonoBehaviour
 
     public void PlayAudio()
     {
+        if (requirePurchase && !isPurchased) return;
         if (isTransitioning) return;
         if (!radioAudioSource.isPlaying)
         {
+            // Ensure ambient loop is disabled when radio starts playing and persist (radio can only play if purchased)
+            if (AudioManager.instance != null)
+                AudioManager.instance.DisableAmbientLooping(true);
+
             radioAudioSource.Play();
         }
     }
@@ -103,17 +140,24 @@ public class RadioCOntroller : MonoBehaviour
 
     public void PauseAudio()
     {
+        if (requirePurchase && !isPurchased) return;
         radioAudioSource.Pause();
     }
 
     public void StopAudio()
     {
+        if (requirePurchase && !isPurchased) return;
         if (isTransitioning) return;
         radioAudioSource.Stop();
+
+        // Optionally re-enable ambient loop when radio stops:
+        //if (AudioManager.instance != null)
+        //    AudioManager.instance.EnableAmbientLooping();
     }
 
     public void LoopAudio()
     {
+        if (requirePurchase && !isPurchased) return;
         radioAudioSource.loop = !radioAudioSource.loop;
     }
 

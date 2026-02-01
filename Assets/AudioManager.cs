@@ -7,6 +7,8 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
 
+    public const string AmbientDisabledKey = "AudioManager_AmbientDisabled";
+
     [Header("Audio Sources")]
     public AudioSource musicSource;
     public AudioSource sfxSource;
@@ -39,7 +41,12 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null) instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            // Preserve the AudioManager across scene loads so ambient state survives reloads
+            DontDestroyOnLoad(gameObject);
+        }
         else Destroy(gameObject);
 
         if (musicSource != null)
@@ -69,15 +76,8 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        // Start ambient loop if assigned
-        if (ambientLoopClip != null && ambientSource != null)
-        {
-            ambientSource.clip = ambientLoopClip;
-            ambientSource.volume = musicVolume;
-            ambientSource.loop = true;
-            ambientSource.Play();
-            ambientPlaying = true;
-        }
+        // Defer ambient startup so other Start() methods (RadioController, SaveManager, Upgrades) run first.
+        StartCoroutine(DeferredAmbientStart());
 
         // Start main music if the musicSource already has a clip assigned
         if (mainMusic != null && musicSource != null)
@@ -86,15 +86,65 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    private IEnumerator DeferredAmbientStart()
+    {
+        // wait a frame so other objects can initialize (e.g. Upgrades, RadioController, SaveManager)
+        yield return null;
+
+        bool ambientDisabledPersisted = UnityEngine.PlayerPrefs.GetInt(AmbientDisabledKey, 0) == 1;
+
+        if (ambientDisabledPersisted)
+        {
+            // Only respect the persisted "ambient disabled" if the radio is owned.
+            // If Upgrades isn't present or radio isn't purchased, clear the flag so ambient can play.
+            var upgrades = FindFirstObjectByType<Upgrades>();
+            if (upgrades == null || !upgrades.RadioPurchased)
+            {
+                if (UnityEngine.PlayerPrefs.HasKey(AmbientDisabledKey))
+                {
+                    UnityEngine.PlayerPrefs.DeleteKey(AmbientDisabledKey);
+                    UnityEngine.PlayerPrefs.Save();
+                }
+                ambientDisabledPersisted = false;
+            }
+        }
+
+        if (!ambientDisabledPersisted && ambientLoopClip != null && ambientSource != null)
+        {
+            ambientSource.clip = ambientLoopClip;
+            ambientSource.volume = musicVolume;
+            ambientSource.loop = true;
+
+            // double-check: don't start if someone already disabled it
+            if (!ambientSource.isPlaying && !ambientPlaying)
+            {
+                ambientSource.Play();
+                ambientPlaying = true;
+            }
+        }
+        else
+        {
+            ambientPlaying = false;
+        }
+    }
+
     /// <summary>
     /// Stop and disable the ambient looping audio (called by RadioController when radio starts).
+    /// If persist == true, persist the disabled state so it survives app restarts.
     /// </summary>
-    public void DisableAmbientLooping()
+    public void DisableAmbientLooping(bool persist = false)
     {
         if (ambientSource == null) return;
         if (ambientSource.isPlaying) ambientSource.Stop();
         ambientSource.loop = false;
         ambientPlaying = false;
+
+        if (persist)
+        {
+            // persist the disabled state across application restarts
+            UnityEngine.PlayerPrefs.SetInt(AmbientDisabledKey, 1);
+            UnityEngine.PlayerPrefs.Save();
+        }
     }
 
     /// <summary>
@@ -207,6 +257,40 @@ public class AudioManager : MonoBehaviour
         if (secondaryMusicSource != null) secondaryMusicSource.volume = startVolume; // reset
 
         isFading = false;
+    }
+
+    /// <summary>
+    /// Re-enable and start the configured ambient loop clip (if one is assigned).
+    /// Safe to call even if ambient is already playing.
+    /// Clearing the persisted disabled flag so ambient will resume after app restart.
+    /// </summary>
+    public void EnableAmbientLooping()
+    {
+        if (ambientLoopClip == null || ambientSource == null) return;
+
+        // If any radio is currently playing, do not start the ambient loop to avoid overlap.
+        var radio = FindFirstObjectByType<RadioCOntroller>();
+        if (radio != null && radio.IsPlaying)
+        {
+            // keep ambientPlaying false and keep persistence cleared/unchanged;
+            // ambient will be allowed to start later when radio stops or user wipes save.
+            return;
+        }
+
+        if (ambientSource.clip != ambientLoopClip)
+            ambientSource.clip = ambientLoopClip;
+        ambientSource.volume = musicVolume;
+        ambientSource.loop = true;
+        if (!ambientSource.isPlaying)
+            ambientSource.Play();
+        ambientPlaying = true;
+
+        // clear persisted disabled state so ambient will start next app run
+        if (UnityEngine.PlayerPrefs.HasKey(AmbientDisabledKey))
+        {
+            UnityEngine.PlayerPrefs.DeleteKey(AmbientDisabledKey);
+            UnityEngine.PlayerPrefs.Save();
+        }
     }
 
     internal void SetMusicVolume(float music)
