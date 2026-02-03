@@ -11,6 +11,10 @@ public class Bubble : MonoBehaviour
     [SerializeField] float minSpawn = 10.3f; // Minimum seconds between spawns
     [SerializeField] float maxSpawn = 60.0f; // Maximum seconds between spawns
 
+    [Header("Spawn Bounds (camera-based)")]
+    [SerializeField] float horizontalPadding = 0.3f; // world units inside edges
+    [SerializeField] float spawnBelowScreen = 0.5f;   // world units below bottom
+
     [SerializeField] float minX;
     [SerializeField] float maxX;
     [SerializeField] float spawnY;
@@ -18,9 +22,12 @@ public class Bubble : MonoBehaviour
     [SerializeField] public float bubbleSpeed = 0f; // Upward movement speed
     [SerializeField] public float bubbleXAmplitude = 0f; // Distance bubble travels in x
     [SerializeField] public float bubbleXFrequency = 0f; // How often bubble completes its swing
+
+    Camera cam;
     void Start()
     {
         //WaitForSeconds wait = new WaitForSeconds(1f);
+        cam = Camera.main;
         StartCoroutine(SpawnBubble());
     }
 
@@ -29,9 +36,22 @@ public class Bubble : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(minSpawn, maxSpawn));
-            // Choose a random X position within the defined range
-            float randomX = Random.Range(minX, maxX);
-            Vector3 spawnPosition = new Vector3(randomX, spawnY, 0);
+            //// Choose a random X position within the defined range DELETE IF FIX
+            //float randomX = Random.Range(minX, maxX); DELETE IF FIX
+            if (cam == null) cam = Camera.main;
+            if (cam == null) { yield return null; continue; }
+
+            float halfH = cam.orthographicSize;
+            float halfW = halfH * cam.aspect;
+
+            float minX = cam.transform.position.x - halfW + horizontalPadding;
+            float maxX = cam.transform.position.x + halfW - horizontalPadding;
+            float bottomY = cam.transform.position.y - halfH;
+
+            float x = Random.Range(minX, maxX);
+            float y = bottomY - spawnBelowScreen;
+
+            Vector3 spawnPosition = new Vector3(x, y, 0);
 
             // Spawn a random bubble prefab at the position
             GameObject spawnedBubble = Instantiate(

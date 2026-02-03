@@ -713,11 +713,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: fdaf1ab6-a9ff-4477-b4be-6771b2b151e9
+  cloudProjectId: 0ee602b5-241c-4679-9cc4-8cde02655448
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Incremental_Dishes
-  organizationId: your_anemone
+  projectName: Dishes
+  organizationId: taylnoa580
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
