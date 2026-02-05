@@ -7,6 +7,10 @@ public class LaneKey : MonoBehaviour
 
     public AudioSource musicSource;  // assigned in inspector or by manager (optional)
 
+    // Tracks if any note was successfully hit this frame so other keys pressed the same frame
+    // won't register as "wrong" and trigger immediate conflicting feedback.
+    private static int s_lastNoteHitFrame = -1;
+
     void Update()
     {
         if (Input.GetKeyDown(hitKey))
@@ -86,26 +90,36 @@ public class LaneKey : MonoBehaviour
             // Let Note.Hit mark wasHit and handle scoring
             best.Hit(diff);
 
+            // remember that a successful hit occurred this frame
+            s_lastNoteHitFrame = Time.frameCount;
+
             Debug.Log($"[LaneKey] Lane {laneIndex} hit; diff={diff:0.000}s (bestDiff={bestDiff:0.000}s) songTime={songTime:0.000}s target={best.targetTime:0.000}s offset={NoteSpawner.globalTimingOffset:0.000}s");
         }
         else
         {
             // No hittable note in this lane.
-            // If there are notes in the hit zone in other lanes, treat this as a wrong key press and penalize.
+            // If there are notes in the hit zone, treat this as a wrong key press and penalize.
             if (anyHittable)
             {
+                // If another key already hit a note this same frame, skip marking this as a wrong press.
+                // This prevents "Perfect" feedback followed immediately by a "Wrong"/"Miss" from other keys processed later that frame.
+                if (s_lastNoteHitFrame == Time.frameCount)
+                {
+                    Debug.Log($"[LaneKey] Lane {laneIndex} pressed same frame as a successful hit; skipping wrong-press penalty.");
+                    return;
+                }
+
                 MiniScoreManager.AddWrongPress();
                 if (UI_RhythmHUD.Instance != null)
                     UI_RhythmHUD.Instance.ShowFeedback("WRONG");
 
-                // Invalidate / consume all currently hittable notes so other keys cannot still score.
+                // Mark currently hittable notes as consumed so subsequent presses won't score them.
                 foreach (var n in notes)
                 {
                     if (n == null) continue;
                     if (n.canBeHit && !n.wasHit)
                     {
                         n.wasHit = true; // prevent later scoring
-                        
                     }
                 }
 
