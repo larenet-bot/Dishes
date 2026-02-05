@@ -43601,6 +43601,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4f7a6681129bffb449a794edef47725c, type: 2}
   - {fileID: 11400000, guid: c3a51e82a0c28a043aa8b4005588e15b, type: 2}
   - {fileID: 11400000, guid: 840ac8c40c394454e8d1f16b27fe1854, type: 2}
+  - {fileID: 11400000, guid: 598e24caac8300046866a27f5d1df710, type: 2}
   trackTitleText: {fileID: 379076677}
   autoPlayOnAwake: 1
   requirePurchase: 1

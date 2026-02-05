@@ -7,6 +7,7 @@ public static class MiniScoreManager
     public static int Goods { get; private set; }
     public static int Bads { get; private set; }
     public static int Misses { get; private set; }
+    public static int WrongPresses { get; private set; }
 
     public static System.Action OnScoreUpdated;
 
@@ -16,6 +17,10 @@ public static class MiniScoreManager
     public static int badValue = 50;
     public static int missValue = 0;
 
+    // Penalty for pressing a wrong key when there is a hittable note in another lane.
+    // Set to a negative value to reduce score.
+    public static int wrongPressValue = -300;
+
     public static void ResetScore()
     {
         Score = 0;
@@ -23,6 +28,7 @@ public static class MiniScoreManager
         Goods = 0;
         Bads = 0;
         Misses = 0;
+        WrongPresses = 0;
 
         OnScoreUpdated?.Invoke();
     }
@@ -52,6 +58,13 @@ public static class MiniScoreManager
     {
         Misses++;
         Score += missValue;
+        OnScoreUpdated?.Invoke();
+    }
+
+    public static void AddWrongPress()
+    {
+        WrongPresses++;
+        Score += wrongPressValue;
         OnScoreUpdated?.Invoke();
     }
 }
