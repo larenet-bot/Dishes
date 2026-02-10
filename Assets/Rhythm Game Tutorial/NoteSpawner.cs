@@ -24,6 +24,10 @@ public class NoteSpawner : MonoBehaviour
     [Tooltip("Tweak this if your visuals/audio are consistently offset. Positive moves judgement later (use ~0.4s if logs show -0.4s).")]
     public float timingOffset = 0f;
 
+    [Header("Spawn -> Hitline mapping")]
+    [Tooltip("Transform of the hitline (HitBox). Used to compute the correct scroll speed so notes arrive on-beat.")]
+    public Transform hitLineTransform;
+
     // public global DSP start time (used by LaneKey for judgement)
     public static double globalSongStartDspTime = -1.0;
 
@@ -62,6 +66,21 @@ public class NoteSpawner : MonoBehaviour
         {
             Debug.LogWarning("[NoteSpawner] chartFile missing or empty.");
             return;
+        }
+
+        // Try to auto-locate hitline if not assigned
+        if (hitLineTransform == null)
+        {
+            var hb = GameObject.FindWithTag("HitBox");
+            if (hb != null)
+            {
+                hitLineTransform = hb.transform;
+                Debug.Log("[NoteSpawner] Auto-located HitBox transform for hitLineTransform.");
+            }
+            else
+            {
+                Debug.LogWarning("[NoteSpawner] hitLineTransform not assigned and no GameObject with tag 'HitBox' found. Notes may not reach a hitline correctly.");
+            }
         }
 
         // schedule audio using DSP for accurate timing
@@ -169,16 +188,29 @@ public class NoteSpawner : MonoBehaviour
         // iterate and spawn at appropriate DSP times relative to globalSongStartDspTime
         foreach (var nd in noteDefs)
         {
-            // desired moment (DSP) to instantiate this note so it has spawnLeadTime to travel to hit zone
-            double desiredSpawnDsp = globalSongStartDspTime + nd.targetTime - spawnLeadTime;
+            // noteBeatTime = nd.targetTime (seconds relative to song start)
+            // leadTime = spawnLeadTime (seconds)
+            // spawnTime = noteBeatTime - leadTime  (seconds relative to song start)
+            float spawnTime = nd.targetTime - spawnLeadTime;
 
-            // if desired spawn time is in future, wait using DSP-based loop for accuracy
+            // desired DSP time to instantiate this note
+            // subtract globalTimingOffset so when you tune timingOffset the visual spawn timing follows the judgement offset.
+            double desiredSpawnDsp = globalSongStartDspTime + spawnTime - globalTimingOffset;
+
+            // If the desired spawn DSP time is already in the past, spawn immediately on next frame.
+            if (AudioSettings.dspTime >= desiredSpawnDsp)
+            {
+                SpawnSingleNote(nd.timeMs, nd.lane);
+                continue;
+            }
+
+            // otherwise wait until DSP reaches the desired spawn time (accurate)
             while (AudioSettings.dspTime < desiredSpawnDsp)
             {
                 yield return null;
             }
 
-            // spawn on next frame
+            // spawn on the frame after the DSP wait completes
             SpawnSingleNote(nd.timeMs, nd.lane);
         }
 
@@ -284,15 +316,43 @@ public class NoteSpawner : MonoBehaviour
         if (n != null)
         {
             n.lane = lane;
-            n.targetTime = timeMs / 1000f; // convert ms to seconds relative to song start
+            float noteTime = timeMs / 1000f; // convert ms to seconds relative to song start
             n.musicSource = musicSource;
             n.hitWindow = hitWindow;
+            n.targetTime = noteTime;
+
+            // Provide the spawned note with the global DSP song start time so it can compute exact time-until-hit if desired.
+            n.Initialize(noteTime, globalSongStartDspTime);
         }
 
-        // ensure movement starts
+        // ensure movement starts and adjust speed so the note reaches hitline exactly after spawnLeadTime
         var scroller = noteObj.GetComponent<BeatScroller>();
         if (scroller != null)
         {
+            // If we have a hitLineTransform and a positive lead time, calculate speed required:
+            if (hitLineTransform != null && spawnLeadTime > 0f)
+            {
+                // distance from spawn to hitline on world Y axis
+                float distance = Mathf.Abs(spawnPosition.y - hitLineTransform.position.y);
+
+                // speed = distance / time -> ensures the note arrives at hitline after spawnLeadTime seconds
+                float requiredSpeed = distance / spawnLeadTime;
+
+                // assign computed speed
+                scroller.scrollSpeed = requiredSpeed;
+            }
+            else
+            {
+                if (hitLineTransform == null)
+                {
+                    Debug.LogWarning("[NoteSpawner] hitLineTransform not assigned. Using scroller's default scrollSpeed.");
+                }
+                else
+                {
+                    Debug.LogWarning("[NoteSpawner] spawnLeadTime <= 0. Notes will use scroller's default scrollSpeed.");
+                }
+            }
+
             scroller.hasStarted = true;
         }
     }

@@ -15,10 +15,41 @@ public class Note : MonoBehaviour
     public Color highlightColor = Color.yellow;
     private Color originalColor;
 
+    // Optional DSP-aware fields (set by spawner.Initialize)
+    private double songStartDspTime = -1.0;
+
     void Start()
     {
         if (noteSprite != null)
             originalColor = noteSprite.color;
+    }
+
+    /// <summary>
+    /// Lightweight initializer called by NoteSpawner so the note has access
+    /// to the song DSP start time. Non-destructive: existing behavior unchanged.
+    /// </summary>
+    public void Initialize(float noteTime, double songStartDsp)
+    {
+        this.targetTime = noteTime;
+        this.songStartDspTime = songStartDsp;
+    }
+
+    /// <summary>
+    /// Returns seconds until the target hit time according to DSP clock.
+    /// If Initialize wasn't called, falls back to Time.time-based estimate.
+    /// </summary>
+    public float GetTimeUntilHit()
+    {
+        if (songStartDspTime > 0.0)
+        {
+            double songTime = AudioSettings.dspTime - songStartDspTime;
+            return targetTime - (float)songTime;
+        }
+        else
+        {
+            // best-effort fallback (not sample-accurate)
+            return targetTime - (Time.time - 0f);
+        }
     }
 
     // Called by LaneKey, receives correct time difference
