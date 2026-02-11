@@ -25,5 +25,7 @@ Version 2.0 - a) changed font demo scene to match other store fonts  (e.g text c
 Version 2.0 - submitted(01/04/2016)
 Version 2.1 - no change
 Version 2.1 - Submitted (13/04/2016)
+version 2.2 - Updated to use Text Mesh Pro,
+Version 2.2 - Submitted(18/12/2025)
 
-JazzCreate©2015-2016.
+JazzCreate©2015-2025.
