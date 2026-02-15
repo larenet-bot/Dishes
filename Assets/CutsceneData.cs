@@ -9,7 +9,17 @@ public class CutsceneData : ScriptableObject
     public AudioClip typingSFX;
     public int typingSFXIntervalChars = 2;
     public float typeSpeed = 0.02f;
-    public string nextSceneName = "MainGameScene";
+    public string nextSceneName = "Game";
+}
+
+[System.Serializable]
+public class DialogueChoice
+{
+    [TextArea(2, 3)]
+    public string choiceText;
+
+    [Tooltip("Index in the lines array to jump to")]
+    public int nextLineIndex;
 }
 
 [System.Serializable]
@@ -26,4 +36,9 @@ public class CutsceneLine
 
     [Tooltip("Optional additional pause after the line finishes (seconds).")]
     public float postDelay = 0f;
+
+    [Header("Choices (Optional)")]
+    public bool hasChoices;
+
+    public DialogueChoice[] choices;
 }

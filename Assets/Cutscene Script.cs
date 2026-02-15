@@ -6,6 +6,11 @@ using System.Collections;
 
 public class CutsceneManager : MonoBehaviour
 {
+    [Header("Choice UI")]
+    public GameObject choicesPanel;
+    public Button[] choiceButtons;
+
+
     [Header("Data (preferred)")]
     public CutsceneData cutsceneData;
 
@@ -22,7 +27,7 @@ public class CutsceneManager : MonoBehaviour
     public int typingSFXIntervalChars = 2;
     public Sprite[] backgroundSprites;
     public int[] backgroundChangeIndices;
-    public string nextSceneName = "MainGameScene";
+    public string nextSceneName = "Game";
 
     [Header("Typewriter")]
     public float typeSpeed = 0.02f;
@@ -58,7 +63,59 @@ public class CutsceneManager : MonoBehaviour
             AudioManager.instance.PlaySFX(sfx);
 
         UpdateBackground();
+
+        SetupChoices();
     }
+    private void SetupChoices()
+    {
+        if (cutsceneData == null || cutsceneData.lines == null)
+            return;
+
+        CutsceneLine line = cutsceneData.lines[currentLine];
+
+        if (line.hasChoices && line.choices != null && line.choices.Length > 0)
+        {
+            nextButton.gameObject.SetActive(false);
+            choicesPanel.SetActive(true);
+
+            for (int i = 0; i < choiceButtons.Length; i++)
+            {
+                if (i < line.choices.Length)
+                {
+                    int choiceIndex = i;
+
+                    choiceButtons[i].gameObject.SetActive(true);
+                    choiceButtons[i].GetComponentInChildren<TMP_Text>().text =
+                        line.choices[i].choiceText;
+
+                    choiceButtons[i].onClick.RemoveAllListeners();
+                    choiceButtons[i].onClick.AddListener(() =>
+                    {
+                        OnChoiceSelected(line.choices[choiceIndex].nextLineIndex);
+                    });
+                }
+                else
+                {
+                    choiceButtons[i].gameObject.SetActive(false);
+                }
+            }
+        }
+        else
+        {
+            choicesPanel.SetActive(false);
+            nextButton.gameObject.SetActive(true);
+        }
+    }
+
+    private void OnChoiceSelected(int nextIndex)
+    {
+        choicesPanel.SetActive(false);
+        nextButton.gameObject.SetActive(true);
+
+        currentLine = nextIndex;
+        ShowLine();
+    }
+
 
     private IEnumerator TypeText(string line)
     {
@@ -90,8 +147,14 @@ public class CutsceneManager : MonoBehaviour
             isTyping = false;
             return;
         }
+        if (cutsceneData != null &&
+    cutsceneData.lines[currentLine].hasChoices)
+        {
+            return; // wait for player to choose
+        }
 
         currentLine++;
+
         if (currentLine >= GetTotalLines())
         {
             StartCoroutine(EndCutscene());
@@ -175,5 +238,7 @@ public class CutsceneManager : MonoBehaviour
         }
         return result;
     }
+
+
 }
 
