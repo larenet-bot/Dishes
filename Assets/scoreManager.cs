@@ -86,21 +86,19 @@ public class ScoreManager : MonoBehaviour
 
     // Called when a dish is clicked enough times to complete it
     // Called when a dish is clicked enough times to complete it
-    public float OnDishCleaned(DishData finishedDish)
+    // ScoreManager.cs
+    public float OnDishCleaned(DishData finishedDish, long dishesCompleted)
     {
         if (finishedDish == null) return 0f;
 
-        totalDishes += dishCountIncrement;
+        totalDishes += dishesCompleted;
 
-        // Apply global dishProfitMultiplier here so upgrades that affect
-        // "dish profit" don't have to modify ScriptableObject asset values.
-        float reward = dishCountIncrement * finishedDish.profitPerDish * dishProfitMultiplier;
+        float reward = dishesCompleted * finishedDish.profitPerDish * dishProfitMultiplier;
         totalProfit += reward;
 
         NotifyProfitChanged();
         UpdateUI();
 
-        // Pick next dish using DishSpawner
         if (dishSpawner != null && activeDish != null)
         {
             DishData nextDish = dishSpawner.GetRandomDish(totalDishes);
@@ -113,6 +111,13 @@ public class ScoreManager : MonoBehaviour
 
         return reward;
     }
+
+    // keep existing calls working
+    public float OnDishCleaned(DishData finishedDish)
+    {
+        return OnDishCleaned(finishedDish, dishCountIncrement);
+    }
+
 
     // --- Manual Add / Subtract Profit ---
     public void AddProfit(float amount)
@@ -238,6 +243,20 @@ public class ScoreManager : MonoBehaviour
         // e.g., OnDishesChanged?.Invoke(totalDishes);
 
         // Update UI immediately on significant change
+        UpdateUI();
+    }
+
+    // ScoreManager.cs
+    public void AwardBackgroundWash(DishData referenceDish, long dishesCompleted, float cashMultiplier = 1f)
+    {
+        if (referenceDish == null || dishesCompleted <= 0) return;
+
+        totalDishes += dishesCompleted;
+
+        float reward = dishesCompleted * referenceDish.profitPerDish * dishProfitMultiplier * cashMultiplier;
+        totalProfit += reward;
+
+        NotifyProfitChanged();
         UpdateUI();
     }
 
