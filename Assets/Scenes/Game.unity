@@ -5444,7 +5444,7 @@ RectTransform:
   m_Father: {fileID: 1188830881}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6767,9 +6767,9 @@ RectTransform:
   m_Father: {fileID: 380601374}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: -17}
+  m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &247060996
 MonoBehaviour:
@@ -15413,7 +15413,7 @@ RectTransform:
   m_Father: {fileID: 2088817521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -21137,9 +21137,9 @@ RectTransform:
   m_Father: {fileID: 380601374}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: -17}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &815834553
 MonoBehaviour:
@@ -25648,9 +25648,9 @@ RectTransform:
   m_Father: {fileID: 380601374}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 20}
+  m_SizeDelta: {x: 0, y: 20}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1019039322
 MonoBehaviour:
@@ -31551,8 +31551,9 @@ MonoBehaviour:
   dishVisual: {fileID: 1318212021}
   sudsOnClick: {fileID: 454462227}
   upgrades: {fileID: 0}
-  rewardTextPrefab: {fileID: 6862005837800310114, guid: e5b1e0badc27be84db05cb7af759d7ba, type: 3}
-  rewardTextOffset: {x: 3, y: 0, z: 0}
+  sinkManager: {fileID: 1433253104}
+  enablePowerWasherHold: 1
+  requirePointerOverDishImage: 1
   squeakClips:
   - {fileID: 8300000, guid: b8920a83115a07740b1469569e0cfa19, type: 3}
   - {fileID: 8300000, guid: 589e6684c6464bc4a9e79ecc5938f971, type: 3}
@@ -34676,7 +34677,275 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a050e9c8edce7a144a69216bc8537635, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  nodes: []
+  nodes:
+  - id: pw_unlock
+    branch: 1
+    tier: 1
+    displayName: The Power Wash
+    description: Unlock the power washer sink. Hold left click to wash. While held,
+      stages auto-complete at 2 stages per second.
+    loreDescription: 
+    cost: 250
+    isTechnique: 0
+    unlocksSinkType: 1
+    requires: []
+  - id: pw_rate1
+    branch: 1
+    tier: 2
+    displayName: Pressure Nozzle
+    description: Increase stage completion rate by 15% while holding click.
+    loreDescription: 
+    cost: 600
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - pw_unlock
+  - id: pw_momentum1
+    branch: 1
+    tier: 2
+    displayName: Reinforced Hose
+    description: Holding click for more than 3 seconds builds momentum, +5% per second,
+      up to +25%.
+    loreDescription: 
+    cost: 600
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - pw_unlock
+  - id: pw_technique
+    branch: 1
+    tier: 2
+    displayName: 'TECHNIQUE: Turbo Jet Mode'
+    description: Holding click for 30 seconds triggers a skill check. Success adds
+      a burn effect that cleans twice as fast for 4 seconds.
+    loreDescription: 
+    cost: 1800
+    isTechnique: 1
+    unlocksSinkType: 0
+    requires:
+    - pw_unlock
+  - id: pw_rate2
+    branch: 1
+    tier: 3
+    displayName: Fire Hose
+    description: Upgrade Pressure Nozzle. Hold wash rate becomes +20%.
+    loreDescription: 
+    cost: 1800
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - pw_rate1
+  - id: pw_momentum2
+    branch: 1
+    tier: 3
+    displayName: Kevlar Lining
+    description: Upgrade Reinforced Hose. Momentum becomes +7% per second, up to
+      +40%.
+    loreDescription: 
+    cost: 1800
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - pw_momentum1
+  - id: pw_rate3
+    branch: 1
+    tier: 4
+    displayName: Industrual Pump
+    description: Upgrade Fire Hose. Hold wash rate becomes +25%.
+    loreDescription: 
+    cost: 5000
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - pw_rate2
+  - id: pw_momentum3
+    branch: 1
+    tier: 4
+    displayName: A Tank's Barrel
+    description: Upgrade Kevlar Lining. Momentum becomes +10% per second, up to +50%.
+    loreDescription: 
+    cost: 5000
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - pw_momentum2
+  - id: wb_unlock
+    branch: 2
+    tier: 1
+    displayName: The Wash Basin
+    description: Unlock the wash basin sink. Base manual dishes and all per-click
+      dish upgrades are doubled.
+    loreDescription: 
+    cost: 250
+    isTechnique: 0
+    unlocksSinkType: 1
+    requires: []
+  - id: wb_hole1
+    branch: 2
+    tier: 2
+    displayName: Deeper Hole
+    description: Increase basin depth. After manual washes, +2 dishes.
+    loreDescription: 
+    cost: 600
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - wb_unlock
+  - id: wb_chance1
+    branch: 2
+    tier: 2
+    displayName: Ambidextrous
+    description: 'Chance to clean extra dishes: 40% for +1, 15% for +2, 5% for +3.'
+    loreDescription: 
+    cost: 600
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - wb_unlock
+  - id: wb_technique
+    branch: 2
+    tier: 2
+    displayName: 'TECHNIQUE: Overnight Soak'
+    description: Every 100 dishes cleaned, your next manual wash cleans double dishes.
+    loreDescription: 
+    cost: 1800
+    isTechnique: 1
+    unlocksSinkType: 0
+    requires:
+    - wb_unlock
+  - id: wb_hole2
+    branch: 2
+    tier: 3
+    displayName: An Even Deeper Hole
+    description: Increase depth further. +2 more dishes.
+    loreDescription: 
+    cost: 1800
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - wb_hole1
+  - id: wb_chance2
+    branch: 2
+    tier: 3
+    displayName: Hands and Feet
+    description: 'Increases extra dish odds and cap: 50% +1, 25% +2, 10% +3, 5% +4.'
+    loreDescription: 
+    cost: 1800
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - wb_chance1
+  - id: wb_hole3
+    branch: 2
+    tier: 4
+    displayName: A Quarry
+    description: Increase depth again. +2 more dishes.
+    loreDescription: 
+    cost: 5000
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - wb_hole2
+  - id: wb_chance3
+    branch: 2
+    tier: 4
+    displayName: The Perfect Soaker
+    description: 'Guarantees +1 extra dish. Improves odds for more: 25% +2, 10% +3,
+      10% +4, 5% +5.'
+    loreDescription: 
+    cost: 5000
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - wb_chance2
+  - id: dw_unlock
+    branch: 3
+    tier: 1
+    displayName: The Dishwashing Machine
+    description: Unlock the dishwasher sink. Adds a 5 minute rinse cycle. When complete,
+      it auto-washes the amount of dishes your manual wash would do.
+    loreDescription: 
+    cost: 250
+    isTechnique: 0
+    unlocksSinkType: 1
+    requires: []
+  - id: dw_amount1
+    branch: 3
+    tier: 2
+    displayName: More Racks
+    description: Increase dishes done per cycle by 50%.
+    loreDescription: 
+    cost: 600
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - dw_unlock
+  - id: dw_time1
+    branch: 3
+    tier: 2
+    displayName: Faster Cycle
+    description: Decrease rinse cycle by 1 minute.
+    loreDescription: 
+    cost: 600
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - dw_unlock
+  - id: dw_technique
+    branch: 3
+    tier: 2
+    displayName: 'TECHNIQUE: Heat Dry Boost'
+    description: Every 10th auto-wash yields double cash.
+    loreDescription: 
+    cost: 1800
+    isTechnique: 1
+    unlocksSinkType: 0
+    requires:
+    - dw_unlock
+  - id: dw_amount2
+    branch: 3
+    tier: 3
+    displayName: Efficient Placement
+    description: Increase dishes done per cycle by 100%.
+    loreDescription: 
+    cost: 1800
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - dw_amount1
+  - id: dw_time2
+    branch: 3
+    tier: 3
+    displayName: Increase Water Pressure
+    description: Decrease rinse cycle by an additional minute.
+    loreDescription: 
+    cost: 1800
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - dw_time1
+  - id: dw_amount3
+    branch: 3
+    tier: 4
+    displayName: XL Dishwasher
+    description: Increase dishes done per cycle by 150%.
+    loreDescription: 
+    cost: 5000
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - dw_amount2
+  - id: dw_time3
+    branch: 3
+    tier: 4
+    displayName: Turbo DishWasher
+    description: Decrease rinse cycle by an additional minute.
+    loreDescription: 
+    cost: 5000
+    isTechnique: 0
+    unlocksSinkType: 0
+    requires:
+    - dw_time2
   refundEfficiency: 0.9
   basicSinkSprite: {fileID: -187032287160791366, guid: 2aa320f6cec1b9f48b9ad34a83867db5, type: 3}
   powerWasherSinkSprite: {fileID: 8394152611511241524, guid: 62a2d7f1055e03740a7b2d9fd787c559, type: 3}
@@ -42645,7 +42914,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1764119592
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -61,6 +61,10 @@ public class SinkManager : MonoBehaviour
     private readonly HashSet<string> purchased = new HashSet<string>();
     private readonly Dictionary<string, SinkNode> nodeById = new Dictionary<string, SinkNode>();
 
+    // Overnight Soak tracking (wash basin technique)
+    private long washBasinSoakProgress = 0;
+    private bool washBasinSoakReady = false;
+
     public SinkType CurrentSinkType => currentSinkType;
 
     private void Awake()
@@ -111,10 +115,14 @@ public class SinkManager : MonoBehaviour
 
     public List<SinkNode> GetNodesForBranch(SinkType branch)
     {
+        if (nodes == null) return new List<SinkNode>();
+
         return nodes
-            .Where(n => n != null && n.branch == branch)
-            .OrderBy(n => n.tier)
-            .ThenBy(n => n.displayName)
+            .Select((n, idx) => new { n, idx })
+            .Where(x => x.n != null && x.n.branch == branch)
+            .OrderBy(x => x.n.tier)
+            .ThenBy(x => x.idx) // keeps your inspector order within a tier
+            .Select(x => x.n)
             .ToList();
     }
 
@@ -209,6 +217,8 @@ public class SinkManager : MonoBehaviour
         purchased.Clear();
         currentSinkType = SinkType.Basic;
 
+        washBasinSoakProgress = 0;
+        washBasinSoakReady = false;
         // Refund should be ignored by ProfitRate average
         if (refund > 0f)
             ScoreManager.Instance.AddBubbleReward(refund);
@@ -239,32 +249,31 @@ public class SinkManager : MonoBehaviour
 
     public float GetPowerWasherNozzleMultiplier()
     {
-        // Treat “upgrade” nozzle line as override.
-        if (IsPurchased("pw_industrial_pump")) return 1.25f;
-        if (IsPurchased("pw_fire_hose")) return 1.20f;
-        if (IsPurchased("pw_pressure_nozzle")) return 1.15f;
+        if (IsPurchased("pw_rate3")) return 1.25f;
+        if (IsPurchased("pw_rate2")) return 1.20f;
+        if (IsPurchased("pw_rate1")) return 1.15f;
         return 1f;
     }
 
-    public bool HasPowerWasherMomentum() => IsPurchased("pw_reinforced_hose") || IsPurchased("pw_kevlar_lining") || IsPurchased("pw_tanks_barrel");
 
+    public bool HasPowerWasherMomentum() => HasAny("pw_momentum1", "pw_momentum2", "pw_momentum3");
     public void GetPowerWasherMomentumSettings(out float startAfterSeconds, out float perSecondBonus, out float maxBonus)
     {
         startAfterSeconds = 3f;
 
-        if (IsPurchased("pw_tanks_barrel"))
+        if (IsPurchased("pw_momentum3"))
         {
             perSecondBonus = 0.10f;
             maxBonus = 0.50f;
             return;
         }
-        if (IsPurchased("pw_kevlar_lining"))
+        if (IsPurchased("pw_momentum2"))
         {
             perSecondBonus = 0.07f;
             maxBonus = 0.40f;
             return;
         }
-        if (IsPurchased("pw_reinforced_hose"))
+        if (IsPurchased("pw_momentum1"))
         {
             perSecondBonus = 0.05f;
             maxBonus = 0.25f;
@@ -275,8 +284,8 @@ public class SinkManager : MonoBehaviour
         maxBonus = 0f;
     }
 
-    public bool HasTurboJetTechnique() => IsPurchased("pw_turbo_jet");
 
+    public bool HasTurboJetTechnique() => IsPurchased("pw_technique");
     // Wash Basin
     public int GetWashBasinManualMultiplier()
     {
@@ -287,23 +296,22 @@ public class SinkManager : MonoBehaviour
     public int GetWashBasinFlatBonusDishes()
     {
         int bonus = 0;
-        if (IsPurchased("wb_deeper_hole")) bonus += 2;
-        if (IsPurchased("wb_even_deeper_hole")) bonus += 2;
-        if (IsPurchased("wb_quarry")) bonus += 2;
+        if (IsPurchased("wb_hole1")) bonus += 2;
+        if (IsPurchased("wb_hole2")) bonus += 2;
+        if (IsPurchased("wb_hole3")) bonus += 2;
         return bonus;
     }
 
-    public bool HasOvernightSoakTechnique() => IsPurchased("wb_overnight_soak");
 
+    public bool HasOvernightSoakTechnique() => IsPurchased("wb_technique");
     public bool TryRollWashBasinExtraDishes(out int extra)
     {
         extra = 0;
 
-        // Perfect soaker guarantees at least +1
-        if (IsPurchased("wb_perfect_soaker"))
+        if (IsPurchased("wb_chance3"))
         {
             extra = 1;
-            // Then roll for more using the defined table.
+
             int more = RollFromChances(new (int dishes, float chance)[]
             {
                 (2, 0.25f),
@@ -311,11 +319,12 @@ public class SinkManager : MonoBehaviour
                 (4, 0.10f),
                 (5, 0.05f)
             });
+
             extra = Mathf.Max(extra, more);
             return true;
         }
 
-        if (IsPurchased("wb_hands_and_feet"))
+        if (IsPurchased("wb_chance2"))
         {
             extra = RollFromChances(new (int dishes, float chance)[]
             {
@@ -327,7 +336,7 @@ public class SinkManager : MonoBehaviour
             return extra > 0;
         }
 
-        if (IsPurchased("wb_ambidextrous"))
+        if (IsPurchased("wb_chance1"))
         {
             extra = RollFromChances(new (int dishes, float chance)[]
             {
@@ -341,6 +350,39 @@ public class SinkManager : MonoBehaviour
         return false;
     }
 
+
+    // Overnight Soak (Wash Basin technique)
+    public bool IsOvernightSoakReady()
+    {
+        return washBasinSoakReady;
+    }
+
+    public void AddOvernightSoakProgress(long dishesCleaned)
+    {
+        if (currentSinkType != SinkType.WashBasin) return;
+        if (!HasOvernightSoakTechnique()) return;
+        if (washBasinSoakReady) return;
+
+        if (dishesCleaned < 0) dishesCleaned = 0;
+
+        washBasinSoakProgress += dishesCleaned;
+
+        if (washBasinSoakProgress >= 100)
+            washBasinSoakReady = true;
+    }
+
+    public long ApplyOvernightSoakIfReady(long dishesAwarded)
+    {
+        if (currentSinkType != SinkType.WashBasin) return dishesAwarded;
+        if (!HasOvernightSoakTechnique()) return dishesAwarded;
+        if (!washBasinSoakReady) return dishesAwarded;
+
+        washBasinSoakReady = false;
+        washBasinSoakProgress = 0;
+
+        return dishesAwarded * 2;
+    }
+
     // Dishwasher
     public bool HasDishwasher() => currentSinkType == SinkType.Dishwasher;
 
@@ -348,24 +390,24 @@ public class SinkManager : MonoBehaviour
     {
         float seconds = 300f;
 
-        if (IsPurchased("dw_faster_cycle")) seconds -= 60f;
-        if (IsPurchased("dw_increase_water_pressure")) seconds -= 60f;
-        if (IsPurchased("dw_turbo_dishwasher")) seconds -= 60f;
+        if (IsPurchased("dw_time1")) seconds -= 60f;
+        if (IsPurchased("dw_time2")) seconds -= 60f;
+        if (IsPurchased("dw_time3")) seconds -= 60f;
 
         return Mathf.Max(30f, seconds);
     }
 
+
     public float GetDishwasherDishesMultiplier()
     {
-        // Treat “upgrade” line as override.
-        if (IsPurchased("dw_xl_dishwasher")) return 2.50f;          // +150%
-        if (IsPurchased("dw_efficient_placement")) return 2.00f;    // +100%
-        if (IsPurchased("dw_more_racks")) return 1.50f;             // +50%
+        if (IsPurchased("dw_amount3")) return 2.50f;          // +150%
+        if (IsPurchased("dw_amount2")) return 2.00f;          // +100%
+        if (IsPurchased("dw_amount1")) return 1.50f;          // +50%
         return 1f;
     }
 
-    public bool HasHeatDryBoostTechnique() => IsPurchased("dw_heat_dry_boost");
 
+    public bool HasHeatDryBoostTechnique() => IsPurchased("dw_technique");
     // --------------------------
     // Save hooks (optional)
     // --------------------------
@@ -397,6 +439,16 @@ public class SinkManager : MonoBehaviour
     // --------------------------
     // Helpers
     // --------------------------
+
+    private bool HasAny(params string[] ids)
+    {
+        if (ids == null) return false;
+        for (int i = 0; i < ids.Length; i++)
+        {
+            if (IsPurchased(ids[i])) return true;
+        }
+        return false;
+    }
 
     private int RollFromChances((int dishes, float chance)[] table)
     {
@@ -437,7 +489,7 @@ public class SinkManager : MonoBehaviour
 
         nodes.Add(new SinkNode
         {
-            id = "pw_pressure_nozzle",
+            id = "pw_rate1",
             branch = SinkType.PowerWasher,
             tier = 2,
             displayName = "Pressure Nozzle",
@@ -449,7 +501,7 @@ public class SinkManager : MonoBehaviour
 
         nodes.Add(new SinkNode
         {
-            id = "pw_reinforced_hose",
+            id = "pw_momentum1",
             branch = SinkType.PowerWasher,
             tier = 2,
             displayName = "Reinforced Hose",
@@ -461,7 +513,7 @@ public class SinkManager : MonoBehaviour
 
         nodes.Add(new SinkNode
         {
-            id = "pw_turbo_jet",
+            id = "pw_technique",
             branch = SinkType.PowerWasher,
             tier = 2,
             displayName = "TECHNIQUE: Turbo Jet Mode",
@@ -474,50 +526,50 @@ public class SinkManager : MonoBehaviour
 
         nodes.Add(new SinkNode
         {
-            id = "pw_fire_hose",
+            id = "pw_rate2",
             branch = SinkType.PowerWasher,
             tier = 3,
             displayName = "Fire Hose",
             description = "Upgrade Pressure Nozzle. Hold wash rate becomes +20%.",
             loreDescription = "",
             cost = 1800f,
-            requires = new List<string> { "pw_pressure_nozzle" }
+            requires = new List<string> { "pw_rate1" }
         });
 
         nodes.Add(new SinkNode
         {
-            id = "pw_kevlar_lining",
+            id = "pw_momentum2",
             branch = SinkType.PowerWasher,
             tier = 3,
             displayName = "Kevlar Lining",
             description = "Upgrade Reinforced Hose. Momentum becomes +7% per second, up to +40%.",
             loreDescription = "",
             cost = 1800f,
-            requires = new List<string> { "pw_reinforced_hose" }
+            requires = new List<string> { "pw_momentum1" }
         });
 
         nodes.Add(new SinkNode
         {
-            id = "pw_industrial_pump",
+            id = "pw_rate3",
             branch = SinkType.PowerWasher,
             tier = 4,
             displayName = "Industrial Pump",
             description = "Upgrade Fire Hose. Hold wash rate becomes +25%.",
             loreDescription = "",
             cost = 5000f,
-            requires = new List<string> { "pw_fire_hose" }
+            requires = new List<string> { "pw_rate2" }
         });
 
         nodes.Add(new SinkNode
         {
-            id = "pw_tanks_barrel",
+            id = "pw_momentum3",
             branch = SinkType.PowerWasher,
             tier = 4,
             displayName = "A Tank's Barrel",
             description = "Upgrade Kevlar Lining. Momentum becomes +10% per second, up to +50%.",
             loreDescription = "",
             cost = 5000f,
-            requires = new List<string> { "pw_kevlar_lining" }
+            requires = new List<string> { "pw_momentum2" }
         });
 
         // -------- Wash Basin --------
@@ -535,7 +587,7 @@ public class SinkManager : MonoBehaviour
 
         nodes.Add(new SinkNode
         {
-            id = "wb_deeper_hole",
+            id = "wb_hole1",
             branch = SinkType.WashBasin,
             tier = 2,
             displayName = "Deeper Hole",
@@ -547,7 +599,7 @@ public class SinkManager : MonoBehaviour
 
         nodes.Add(new SinkNode
         {
-            id = "wb_ambidextrous",
+            id = "wb_chance1",
             branch = SinkType.WashBasin,
             tier = 2,
             displayName = "Ambidextrous",
@@ -559,7 +611,7 @@ public class SinkManager : MonoBehaviour
 
         nodes.Add(new SinkNode
         {
-            id = "wb_overnight_soak",
+            id = "wb_technique",
             branch = SinkType.WashBasin,
             tier = 2,
             displayName = "TECHNIQUE: Overnight Soak",
@@ -572,50 +624,50 @@ public class SinkManager : MonoBehaviour
 
         nodes.Add(new SinkNode
         {
-            id = "wb_even_deeper_hole",
+            id = "wb_hole2",
             branch = SinkType.WashBasin,
             tier = 3,
             displayName = "An Even Deeper Hole",
             description = "Increase depth further. +2 more dishes.",
             loreDescription = "",
             cost = 1800f,
-            requires = new List<string> { "wb_deeper_hole" }
+            requires = new List<string> { "wb_hole1" }
         });
 
         nodes.Add(new SinkNode
         {
-            id = "wb_hands_and_feet",
+            id = "wb_chance2",
             branch = SinkType.WashBasin,
             tier = 3,
             displayName = "Hands and Feet",
             description = "Increases extra dish odds and cap: 50% +1, 25% +2, 10% +3, 5% +4.",
             loreDescription = "",
             cost = 1800f,
-            requires = new List<string> { "wb_ambidextrous" }
+            requires = new List<string> { "wb_chance1" }
         });
 
         nodes.Add(new SinkNode
         {
-            id = "wb_quarry",
+            id = "wb_hole3",
             branch = SinkType.WashBasin,
             tier = 4,
             displayName = "A Quarry",
             description = "Increase depth again. +2 more dishes.",
             loreDescription = "",
             cost = 5000f,
-            requires = new List<string> { "wb_even_deeper_hole" }
+            requires = new List<string> { "wb_hole2" }
         });
 
         nodes.Add(new SinkNode
         {
-            id = "wb_perfect_soaker",
+            id = "wb_chance3",
             branch = SinkType.WashBasin,
             tier = 4,
             displayName = "The Perfect Soaker",
             description = "Guarantees +1 extra dish. Improves odds for more: 25% +2, 10% +3, 10% +4, 5% +5.",
             loreDescription = "",
             cost = 5000f,
-            requires = new List<string> { "wb_hands_and_feet" }
+            requires = new List<string> { "wb_chance2" }
         });
 
         // -------- Dishwasher --------
@@ -633,7 +685,7 @@ public class SinkManager : MonoBehaviour
 
         nodes.Add(new SinkNode
         {
-            id = "dw_more_racks",
+            id = "dw_amount1",
             branch = SinkType.Dishwasher,
             tier = 2,
             displayName = "More Racks",
@@ -645,7 +697,7 @@ public class SinkManager : MonoBehaviour
 
         nodes.Add(new SinkNode
         {
-            id = "dw_faster_cycle",
+            id = "dw_time1",
             branch = SinkType.Dishwasher,
             tier = 2,
             displayName = "Faster Cycle",
@@ -657,7 +709,7 @@ public class SinkManager : MonoBehaviour
 
         nodes.Add(new SinkNode
         {
-            id = "dw_heat_dry_boost",
+            id = "dw_technique",
             branch = SinkType.Dishwasher,
             tier = 2,
             displayName = "TECHNIQUE: Heat Dry Boost",
@@ -670,50 +722,50 @@ public class SinkManager : MonoBehaviour
 
         nodes.Add(new SinkNode
         {
-            id = "dw_efficient_placement",
+            id = "dw_amount2",
             branch = SinkType.Dishwasher,
             tier = 3,
             displayName = "Efficient Placement",
             description = "Increase dishes done per cycle by 100%.",
             loreDescription = "",
             cost = 1800f,
-            requires = new List<string> { "dw_more_racks" }
+            requires = new List<string> { "dw_amount1" }
         });
 
         nodes.Add(new SinkNode
         {
-            id = "dw_increase_water_pressure",
+            id = "dw_time2",
             branch = SinkType.Dishwasher,
             tier = 3,
             displayName = "Increase Water Pressure",
             description = "Decrease rinse cycle by an additional minute.",
             loreDescription = "",
             cost = 1800f,
-            requires = new List<string> { "dw_faster_cycle" }
+            requires = new List<string> { "dw_time1" }
         });
 
         nodes.Add(new SinkNode
         {
-            id = "dw_xl_dishwasher",
+            id = "dw_amount3",
             branch = SinkType.Dishwasher,
             tier = 4,
             displayName = "XL Dishwasher",
             description = "Increase dishes done per cycle by 150%.",
             loreDescription = "",
             cost = 5000f,
-            requires = new List<string> { "dw_efficient_placement" }
+            requires = new List<string> { "dw_amount2" }
         });
 
         nodes.Add(new SinkNode
         {
-            id = "dw_turbo_dishwasher",
+            id = "dw_time3",
             branch = SinkType.Dishwasher,
             tier = 4,
             displayName = "Turbo Dishwasher",
             description = "Decrease rinse cycle by an additional minute.",
             loreDescription = "",
             cost = 5000f,
-            requires = new List<string> { "dw_increase_water_pressure" }
+            requires = new List<string> { "dw_time2" }
         });
     }
 }

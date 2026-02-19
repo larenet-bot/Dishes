@@ -86,14 +86,21 @@ public class ScoreManager : MonoBehaviour
 
     // Called when a dish is clicked enough times to complete it
     // Called when a dish is clicked enough times to complete it
-    // ScoreManager.cs
+    // Called when a dish is completed.
+    // Overload supports sinks (ex: wash basin) that change how many dishes are awarded per completion.
+    public float OnDishCleaned(DishData finishedDish)
+    {
+        return OnDishCleaned(finishedDish, dishCountIncrement);
+    }
+
     public float OnDishCleaned(DishData finishedDish, long dishesCompleted)
     {
         if (finishedDish == null) return 0f;
+        if (dishesCompleted <= 0) return 0f;
 
         totalDishes += dishesCompleted;
 
-        float reward = dishesCompleted * finishedDish.profitPerDish * dishProfitMultiplier;
+        float reward = (float)dishesCompleted * finishedDish.profitPerDish * dishProfitMultiplier;
         totalProfit += reward;
 
         NotifyProfitChanged();
@@ -112,11 +119,6 @@ public class ScoreManager : MonoBehaviour
         return reward;
     }
 
-    // keep existing calls working
-    public float OnDishCleaned(DishData finishedDish)
-    {
-        return OnDishCleaned(finishedDish, dishCountIncrement);
-    }
 
 
     // --- Manual Add / Subtract Profit ---

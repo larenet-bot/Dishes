@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DishClicker : MonoBehaviour
 {
@@ -10,9 +11,12 @@ public class DishClicker : MonoBehaviour
     public SudsOnClick sudsOnClick; // bubbles
     public Upgrades upgrades; // assign in inspector or find at runtime
 
-    [Header("Reward Text")]
-    [SerializeField] private GameObject rewardTextPrefab;      // same prefab you used for bubbles
-    [SerializeField] private Vector3 rewardTextOffset = new Vector3(0f, 0.5f, 0f);
+    [Header("Sink System")]
+    public SinkManager sinkManager;
+
+    [Header("Power Washer Hold")]
+    public bool enablePowerWasherHold = true;
+    public bool requirePointerOverDishImage = true;
 
     [Header("Sounds")]
     public AudioClip[] squeakClips;
@@ -22,10 +26,16 @@ public class DishClicker : MonoBehaviour
     private int currentClicks = 0;
     private DishData currentDish;
 
+    // Power washer hold state
+    private bool isHolding = false;
+    private float holdSeconds = 0f;
+    private float holdStageUnits = 0f;
+
     public void Init(DishData data)
     {
         currentDish = data;
         currentClicks = 0;
+        holdStageUnits = 0f;
         dishVisual.SetDish(currentDish);
         dishVisual.SetStage(0);
     }
@@ -35,17 +45,15 @@ public class DishClicker : MonoBehaviour
         if (currentDish == null) return;
 
         int stagesPerClick = upgrades != null ? upgrades.GetCurrentStagesPerClick() : 1;
-        int finalStageIndex = currentDish.stageSprites.Length - 1; // final stage index
+        int finalStageIndex = currentDish.stageSprites.Length - 1;
 
-        // If we're not yet at the final stage, advance up to stagesPerClick but DO NOT complete on the same click
         if (currentClicks < finalStageIndex)
         {
             int nextStage = Mathf.Min(currentClicks + stagesPerClick, finalStageIndex);
             currentClicks = nextStage;
             dishVisual?.SetStage(currentClicks);
 
-            // Bubble burst visuals
-            if (sudsOnClick != null)
+            if (sudsOnClick != null && Camera.main != null)
             {
                 Vector3 mousePos = Input.mousePosition;
                 mousePos.z = Camera.main.nearClipPlane;
@@ -53,56 +61,159 @@ public class DishClicker : MonoBehaviour
                 sudsOnClick.BurstBubbles(worldPos);
             }
 
-            // If we just moved to the final stage, do not finish the dish this click.
-            // The next click (while currentClicks == finalStageIndex) will complete the dish.
             return;
         }
 
-        // If we're already on the final stage, complete the dish on click
         if (currentClicks >= finalStageIndex)
-        {
-            // complete
-            currentClicks = 0;
-            dishVisual?.SetStage(0);
-
-            // Let ScoreManager handle profit and dishes, and get the reward amount back
-            float reward = ScoreManager.Instance.OnDishCleaned(currentDish);
-
-            // Get world position under cursor once
-            Vector3 mousePos = Input.mousePosition;
-            mousePos.z = Camera.main.nearClipPlane;
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-
-            PlayRandomSqueak();
-
-            // Bubble burst visuals
-            if (sudsOnClick != null)
-            {
-                sudsOnClick.BurstBubbles(worldPos);
-            }
-            // Floating reward text
-            if (rewardTextPrefab != null && Camera.main != null && reward > 0f)
-            {
-                Vector3 textPos = worldPos;
-                textPos.z = 0f; // keep on gameplay plane (adjust if needed)
-                textPos += rewardTextOffset;
-
-                GameObject go = Instantiate(rewardTextPrefab, textPos, Quaternion.identity);
-
-                var floating = go.GetComponent<BubbleRewardText>();
-                if (floating != null)
-                {
-                    string formatted = BigNumberFormatter.FormatMoney(reward);
-                    floating.Initialize("+ " + formatted);
-                }
-            }
-        }
+            CompleteDish();
     }
 
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
+
+        if (sinkManager == null) sinkManager = SinkManager.Instance;
+    }
+
+    private void Update()
+    {
+        if (!enablePowerWasherHold) return;
+        if (currentDish == null) return;
+
+        if (sinkManager == null) sinkManager = SinkManager.Instance;
+        if (sinkManager == null || sinkManager.CurrentSinkType != SinkManager.SinkType.PowerWasher)
+        {
+            ResetHoldState();
+            return;
+        }
+
+        bool holding = Input.GetMouseButton(0);
+        if (holding && requirePointerOverDishImage && !IsPointerOverDishImage())
+            holding = false;
+
+        if (!holding)
+        {
+            ResetHoldState();
+            return;
+        }
+
+        isHolding = true;
+        holdSeconds += Time.deltaTime;
+
+        float stagesPerSecond = sinkManager.GetPowerWasherBaseStagesPerSecond();
+        stagesPerSecond *= sinkManager.GetPowerWasherNozzleMultiplier();
+
+        if (sinkManager.HasPowerWasherMomentum())
+        {
+            sinkManager.GetPowerWasherMomentumSettings(out float startAfter, out float perSecondBonus, out float maxBonus);
+            float t = Mathf.Max(0f, holdSeconds - startAfter);
+            int stacks = Mathf.FloorToInt(t);
+            float bonus = Mathf.Min(stacks * perSecondBonus, maxBonus);
+            stagesPerSecond *= (1f + bonus);
+        }
+
+        holdStageUnits += stagesPerSecond * Time.deltaTime;
+        ProcessHoldStageUnits();
+    }
+
+    private void ProcessHoldStageUnits()
+    {
+        if (currentDish == null) return;
+        int finalStageIndex = currentDish.stageSprites.Length - 1;
+
+        while (holdStageUnits >= 1f && currentDish != null)
+        {
+            holdStageUnits -= 1f;
+
+            if (currentClicks < finalStageIndex)
+            {
+                currentClicks += 1;
+                dishVisual?.SetStage(currentClicks);
+                BurstBubbles();
+                continue;
+            }
+
+            // One extra "stage unit" past the final stage completes the dish.
+            CompleteDish();
+        }
+    }
+
+    private void ResetHoldState()
+    {
+        if (!isHolding) return;
+        isHolding = false;
+        holdSeconds = 0f;
+        holdStageUnits = 0f;
+    }
+
+    private bool IsPointerOverDishImage()
+    {
+        if (dishVisual == null || dishVisual.dishImage == null) return true;
+
+        Canvas canvas = dishVisual.dishImage.canvas;
+        Camera cam = null;
+        if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
+            cam = canvas.worldCamera;
+
+        return RectTransformUtility.RectangleContainsScreenPoint(
+            dishVisual.dishImage.rectTransform,
+            Input.mousePosition,
+            cam
+        );
+    }
+
+    private void CompleteDish()
+    {
+        if (currentDish == null) return;
+        if (ScoreManager.Instance == null) return;
+
+        long dishesAwarded = CalculateManualDishesAwarded();
+
+        currentClicks = 0;
+        dishVisual?.SetStage(0);
+
+        ScoreManager.Instance.OnDishCleaned(currentDish, dishesAwarded);
+        PlayRandomSqueak();
+        BurstBubbles();
+    }
+
+    // Wash basin logic lives here for now (lowest risk): it only changes how many dishes
+    // we award when the dish completes. Stages/clicking remains unchanged.
+    private long CalculateManualDishesAwarded()
+    {
+        int baseIncrement = 1;
+        if (ScoreManager.Instance != null)
+            baseIncrement = Mathf.Max(1, ScoreManager.Instance.GetDishCountIncrement());
+
+        long awarded = baseIncrement;
+
+        if (sinkManager == null) sinkManager = SinkManager.Instance;
+        if (sinkManager != null && sinkManager.CurrentSinkType == SinkManager.SinkType.WashBasin)
+        {
+            int mult = Mathf.Max(1, sinkManager.GetWashBasinManualMultiplier()); // 2 when basin
+            awarded = (long)baseIncrement * mult;
+
+            // These will only matter once those nodes are purchasable.
+            awarded += sinkManager.GetWashBasinFlatBonusDishes();
+
+            if (sinkManager.TryRollWashBasinExtraDishes(out int extra))
+                awarded += Mathf.Max(0, extra);
+        }
+
+        if (awarded < 1) awarded = 1;
+        return awarded;
+    }
+
+    private void BurstBubbles()
+    {
+        if (sudsOnClick == null) return;
+        if (Camera.main == null) return;
+
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = Camera.main.nearClipPlane;
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        sudsOnClick.BurstBubbles(worldPos);
     }
 
     private void PlayRandomSqueak()

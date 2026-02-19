@@ -217,13 +217,13 @@ public class SinkMenuUI : MonoBehaviour
             row.offsetMin = new Vector2(0f, row.offsetMin.y);
             row.offsetMax = new Vector2(0f, row.offsetMax.y);
 
-            // Sort nodes inside tier (techniques last, then name)
-            tierNodes.Sort((a, b) =>
-            {
-                int tech = a.isTechnique.CompareTo(b.isTechnique);
-                if (tech != 0) return tech;
-                return string.Compare(a.displayName, b.displayName, StringComparison.Ordinal);
-            });
+            //// Sort nodes inside tier (techniques last, then name)
+            //tierNodes.Sort((a, b) =>
+            //{
+            //    int tech = a.isTechnique.CompareTo(b.isTechnique);
+            //    if (tech != 0) return tech;
+            //    return string.Compare(a.displayName, b.displayName, StringComparison.Ordinal);
+            //});
 
             for (int i = 0; i < tierNodes.Count; i++)
             {
