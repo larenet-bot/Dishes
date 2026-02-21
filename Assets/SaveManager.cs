@@ -17,6 +17,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private EmployeeManager employees;
     [SerializeField] private Upgrades upgrades;
 
+    [SerializeField] private SinkManager sinks;
     [Header("Autosave")]
     [SerializeField] private bool autosave = true;
     [SerializeField] private float autosaveInterval = 20f;
@@ -91,6 +92,7 @@ public class SaveManager : MonoBehaviour
         score = null;
         employees = null;
         upgrades = null;
+        sinks = null;
         loans = null;
 
         _hasAppliedToCurrentScene = false;
@@ -104,6 +106,7 @@ public class SaveManager : MonoBehaviour
         if (score == null) score = FindFirstObjectByType<ScoreManager>();
         if (employees == null) employees = FindFirstObjectByType<EmployeeManager>();
         if (upgrades == null) upgrades = FindFirstObjectByType<Upgrades>();
+        if (sinks == null) sinks = FindFirstObjectByType<SinkManager>();
         if (loans == null) loans = FindFirstObjectByType<LoanManager>();
     }
 
@@ -136,7 +139,7 @@ public class SaveManager : MonoBehaviour
 
     private bool HaveAllRefs()
     {
-        return score != null && employees != null && upgrades != null && loans != null;
+        return score != null && employees != null && upgrades != null && sinks != null && loans != null;
     }
 
     private void TryApplyLoadedDataToScene()
@@ -170,6 +173,11 @@ public class SaveManager : MonoBehaviour
         // ---- Loans ----
         loans.ApplyLoanIndexFromSave(_loadedData.currentLoanIndex);
 
+
+        // ---- Sinks ----
+        // Safe for older saves: list may be null and sink type defaults to Basic.
+        var purchasedSinkNodes = _loadedData.purchasedSinkNodeIds ?? new List<string>();
+        sinks.LoadFromSave((SinkManager.SinkType)_loadedData.currentSinkType, purchasedSinkNodes);
         _hasAppliedToCurrentScene = true;
 
         if (logSaveEvents) Debug.Log("[SaveManager] Applied loaded save data to current scene managers.");
@@ -198,6 +206,10 @@ public class SaveManager : MonoBehaviour
         // ---- Employees ----
         data.employees = employees.GetSaveState();
 
+
+        // ---- Sinks ----
+        data.currentSinkType = (int)sinks.CurrentSinkType;
+        data.purchasedSinkNodeIds = sinks.GetPurchasedNodeIds();
         // Write to disk
         try
         {
@@ -246,7 +258,7 @@ public class SaveManager : MonoBehaviour
 
             if (PlayerPrefs.GetInt("HasSeenIntro", 1) == 1)
             {
-                // First time playing – go to the intro cutscene
+                // First time playing - go to the intro cutscene
                 PlayerPrefs.SetInt("HasSeenIntro", 0);
             }
             if (logSaveEvents) Debug.Log($"[SaveManager] Wiped save file at: {SavePath}");

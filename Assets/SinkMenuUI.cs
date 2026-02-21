@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,6 +40,16 @@ public class SinkMenuUI : MonoBehaviour
     public TMP_Text nodeCostText;
     public Image nodeIconImage;
 
+    [Header("Node Lock UI (optional)")]
+    public TMP_Text nodeLockReasonText;
+    public TMP_Text nodeRequirementsText;
+
+    [Header("Node Visual States (alpha only)")]
+    [Range(0f, 1f)] public float canBuyAlpha = 1f;
+    [Range(0f, 1f)] public float ownedAlpha = 0.55f;
+    [Range(0f, 1f)] public float lockedAlpha = 0.25f;
+    [Range(0f, 1f)] public float noMoneyAlpha = 0.5f;
+
     [Header("Actions")]
     public Button purchaseButton;
     public Button resetButton;
@@ -50,6 +61,12 @@ public class SinkMenuUI : MonoBehaviour
     private string selectedNodeId = null;
 
     private readonly List<Button> spawnedButtons = new List<Button>();
+
+    private readonly List<RectTransform> spawnedTierRows = new List<RectTransform>();
+
+    private Action<SinkManager.SinkType> onSinkTypeChangedHandler;
+    private Action<string> onNodePurchasedHandler;
+    private Action onSinkResetHandler;
 
     private void Reset()
     {
@@ -94,9 +111,13 @@ public class SinkMenuUI : MonoBehaviour
 
         if (sinkManager != null)
         {
-            sinkManager.OnSinkTypeChanged += _ => RefreshAll();
-            sinkManager.OnNodePurchased += _ => RefreshAll();
-            sinkManager.OnSinkReset += RefreshAll;
+            onSinkTypeChangedHandler = _ => RefreshAll();
+            onNodePurchasedHandler = _ => RefreshAll();
+            onSinkResetHandler = RefreshAll;
+
+            sinkManager.OnSinkTypeChanged += onSinkTypeChangedHandler;
+            sinkManager.OnNodePurchased += onNodePurchasedHandler;
+            sinkManager.OnSinkReset += onSinkResetHandler;
         }
 
         CloseMenu();
@@ -106,9 +127,9 @@ public class SinkMenuUI : MonoBehaviour
     {
         if (sinkManager != null)
         {
-            sinkManager.OnSinkTypeChanged -= _ => RefreshAll();
-            sinkManager.OnNodePurchased -= _ => RefreshAll();
-            sinkManager.OnSinkReset -= RefreshAll;
+            if (onSinkTypeChangedHandler != null) sinkManager.OnSinkTypeChanged -= onSinkTypeChangedHandler;
+            if (onNodePurchasedHandler != null) sinkManager.OnNodePurchased -= onNodePurchasedHandler;
+            if (onSinkResetHandler != null) sinkManager.OnSinkReset -= onSinkResetHandler;
         }
     }
 
@@ -165,6 +186,178 @@ public class SinkMenuUI : MonoBehaviour
         return sinkManager.CurrentSinkType != branch;
     }
 
+
+    private enum NodeVisualState
+    {
+        Owned,
+        Buyable,
+        NoMoney,
+        Locked
+    }
+
+    private SinkManager.SinkNode GetBranchUnlockNode(SinkManager.SinkType branch)
+    {
+        if (sinkManager == null) return null;
+        var list = sinkManager.GetNodesForBranch(branch);
+        for (int i = 0; i < list.Count; i++)
+        {
+            var n = list[i];
+            if (n == null) continue;
+            if (n.unlocksSinkType) return n;
+        }
+        return null;
+    }
+
+    private string GetNodeDisplayName(string nodeId)
+    {
+        if (sinkManager == null) return nodeId ?? "";
+        var n = sinkManager.GetNode(nodeId);
+        if (n != null && !string.IsNullOrWhiteSpace(n.displayName)) return n.displayName;
+        return nodeId ?? "";
+    }
+
+    private List<string> GetMissingPrereqNames(SinkManager.SinkNode node)
+    {
+        var missing = new List<string>();
+        if (node == null || node.requires == null) return missing;
+
+        for (int i = 0; i < node.requires.Count; i++)
+        {
+            string reqId = node.requires[i];
+            if (string.IsNullOrWhiteSpace(reqId)) continue;
+
+            if (sinkManager != null && !sinkManager.IsPurchased(reqId))
+                missing.Add(GetNodeDisplayName(reqId));
+        }
+
+        return missing;
+    }
+
+    private void GetLockInfo(SinkManager.SinkNode node, out string lockReason, out string requirements, out NodeVisualState state)
+    {
+        lockReason = "";
+        requirements = "";
+        state = NodeVisualState.Locked;
+
+        if (sinkManager == null || node == null) return;
+
+        if (sinkManager.IsPurchased(node.id))
+        {
+            state = NodeVisualState.Owned;
+            return;
+        }
+
+        // Branch lockout (committed to another sink)
+        if (sinkManager.CurrentSinkType != SinkManager.SinkType.Basic && sinkManager.CurrentSinkType != node.branch)
+        {
+            lockReason = $"Locked. Committed to {sinkManager.CurrentSinkType}.";
+            state = NodeVisualState.Locked;
+            return;
+        }
+
+        // Still basic sink: must unlock the branch first
+        if (sinkManager.CurrentSinkType == SinkManager.SinkType.Basic && !node.unlocksSinkType)
+        {
+            var unlock = GetBranchUnlockNode(node.branch);
+            lockReason = "Locked. Choose a sink first.";
+            if (unlock != null) requirements = $"Requires: {unlock.displayName}";
+            state = NodeVisualState.Locked;
+            return;
+        }
+
+        // Missing prerequisite nodes
+        var missing = GetMissingPrereqNames(node);
+        if (missing.Count > 0)
+        {
+            lockReason = "Locked. Missing requirements.";
+            requirements = "Requires: " + string.Join(", ", missing);
+            state = NodeVisualState.Locked;
+            return;
+        }
+
+        // Rule check (should be true if we passed above, but keep it explicit)
+        bool canBuyRules = sinkManager.CanPurchase(node.id);
+        if (!canBuyRules)
+        {
+            lockReason = "Locked.";
+            state = NodeVisualState.Locked;
+            return;
+        }
+
+        float wallet = (scoreManager != null) ? scoreManager.GetTotalProfit() : 0f;
+        if (wallet < node.cost)
+        {
+            float need = Mathf.Max(0f, node.cost - wallet);
+            lockReason = "Not enough profit.";
+            requirements = $"Need {BigNumberFormatter.FormatMoney((double)need)} more.";
+            state = NodeVisualState.NoMoney;
+            return;
+        }
+
+        state = NodeVisualState.Buyable;
+    }
+
+    private string GetNodeStatusShort(SinkManager.SinkNode node)
+    {
+        if (sinkManager == null || node == null) return "";
+        if (sinkManager.IsPurchased(node.id)) return "OWNED";
+
+        GetLockInfo(node, out _, out _, out var state);
+
+        switch (state)
+        {
+            case NodeVisualState.Buyable: return "BUY";
+            case NodeVisualState.NoMoney: return "COST";
+            default: return "LOCKED";
+        }
+    }
+
+    private void ApplyNodeButtonVisual(Button btn, SinkManager.SinkNode node)
+    {
+        if (btn == null || node == null) return;
+
+        GetLockInfo(node, out _, out _, out var state);
+
+        float alpha = lockedAlpha;
+        if (state == NodeVisualState.Buyable) alpha = canBuyAlpha;
+        else if (state == NodeVisualState.NoMoney) alpha = noMoneyAlpha;
+        else if (state == NodeVisualState.Owned) alpha = ownedAlpha;
+
+        SetButtonAlpha(btn, alpha);
+    }
+
+    private void SetButtonAlpha(Button btn, float alpha)
+    {
+        if (btn == null) return;
+
+        if (btn.targetGraphic != null)
+        {
+            Color c = btn.targetGraphic.color;
+            c.a = alpha;
+            btn.targetGraphic.color = c;
+        }
+        else
+        {
+            var img = btn.GetComponent<Image>();
+            if (img != null)
+            {
+                Color c = img.color;
+                c.a = alpha;
+                img.color = c;
+            }
+        }
+
+        float textAlpha = Mathf.Clamp01(alpha * 0.9f + 0.1f);
+        var labels = btn.GetComponentsInChildren<TMP_Text>(true);
+        for (int i = 0; i < labels.Length; i++)
+        {
+            if (labels[i] == null) continue;
+            Color tc = labels[i].color;
+            tc.a = textAlpha;
+            labels[i].color = tc;
+        }
+    }
+
     // --------------------------
     // Node list
     // --------------------------
@@ -210,6 +403,7 @@ public class SinkMenuUI : MonoBehaviour
             // Make a row for this tier
             var row = Instantiate(tierRowPrefab, nodeButtonContainer);
             row.name = $"TierRow_{tier}";
+            spawnedTierRows.Add(row);
 
             // Optional: if you want row to stretch full width of content
             row.anchorMin = new Vector2(0f, row.anchorMin.y);
@@ -236,14 +430,13 @@ public class SinkMenuUI : MonoBehaviour
                 var label = btn.GetComponentInChildren<TMP_Text>();
                 if (label != null)
                 {
-                    string status =
-                        sinkManager.IsPurchased(node.id) ? "OWNED" :
-                        sinkManager.CanPurchase(node.id) ? "" :
-                        "LOCKED";
+                    string status = GetNodeStatusShort(node);
 
                     string techniqueTag = node.isTechnique ? " TECH" : "";
                     label.SetText($"T{node.tier}{techniqueTag}\n{node.displayName}\n{status}".Trim());
                 }
+
+                ApplyNodeButtonVisual(btn, node);
 
                 btn.interactable = !lockedOut;
 
@@ -256,6 +449,8 @@ public class SinkMenuUI : MonoBehaviour
                 });
             }
         }
+
+        ForceLayoutRefresh();
     }
 
     private void BuildNodeButtons_FallbackVertical()
@@ -274,14 +469,13 @@ public class SinkMenuUI : MonoBehaviour
             var label = btn.GetComponentInChildren<TMP_Text>();
             if (label != null)
             {
-                string status =
-                    sinkManager.IsPurchased(node.id) ? "OWNED" :
-                    sinkManager.CanPurchase(node.id) ? "" :
-                    "LOCKED";
+                string status = GetNodeStatusShort(node);
 
                 string techniqueTag = node.isTechnique ? " TECH" : "";
                 label.SetText($"T{node.tier}{techniqueTag}  {node.displayName}  {status}".Trim());
             }
+
+            ApplyNodeButtonVisual(btn, node);
 
             btn.interactable = !lockedOut;
 
@@ -298,12 +492,53 @@ public class SinkMenuUI : MonoBehaviour
 
     private void ClearSpawnedButtons()
     {
+        // Destroy node buttons
         for (int i = 0; i < spawnedButtons.Count; i++)
         {
-            if (spawnedButtons[i] != null)
-                Destroy(spawnedButtons[i].gameObject);
+            if (spawnedButtons[i] == null) continue;
+
+            spawnedButtons[i].gameObject.SetActive(false);
+            Destroy(spawnedButtons[i].gameObject);
         }
         spawnedButtons.Clear();
+
+        // Destroy tier rows we spawned last build
+        HashSet<int> destroyedRowIds = new HashSet<int>();
+        for (int i = 0; i < spawnedTierRows.Count; i++)
+        {
+            if (spawnedTierRows[i] == null) continue;
+
+            destroyedRowIds.Add(spawnedTierRows[i].GetInstanceID());
+            spawnedTierRows[i].gameObject.SetActive(false);
+            Destroy(spawnedTierRows[i].gameObject);
+        }
+        spawnedTierRows.Clear();
+
+        // Safety: remove any orphan TierRow_* left behind (from older versions / edge cases)
+        if (nodeButtonContainer != null)
+        {
+            for (int i = nodeButtonContainer.childCount - 1; i >= 0; i--)
+            {
+                Transform child = nodeButtonContainer.GetChild(i);
+                if (child == null) continue;
+
+                if (!child.name.StartsWith("TierRow_")) continue;
+                if (destroyedRowIds.Contains(child.GetInstanceID())) continue;
+
+                child.gameObject.SetActive(false);
+                Destroy(child.gameObject);
+            }
+        }
+    }
+
+    private void ForceLayoutRefresh()
+    {
+        if (nodeButtonContainer == null) return;
+
+        // Ensures ContentSizeFitter/LayoutGroups update immediately so scrollbars behave.
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(nodeButtonContainer as RectTransform);
+        Canvas.ForceUpdateCanvases();
     }
 
     private void AutoSelectFirstNodeIfNeeded()
@@ -372,6 +607,8 @@ public class SinkMenuUI : MonoBehaviour
             if (nodeLoreText) nodeLoreText.text = "";
             if (nodeCostText) nodeCostText.text = "";
             if (nodeIconImage) nodeIconImage.gameObject.SetActive(false);
+            if (nodeLockReasonText) nodeLockReasonText.text = "";
+            if (nodeRequirementsText) nodeRequirementsText.text = "";
             return;
         }
 
@@ -391,6 +628,35 @@ public class SinkMenuUI : MonoBehaviour
             else
                 nodeIconImage.gameObject.SetActive(false);
         }
+
+        // Lock reason / requirements
+        GetLockInfo(node, out string lockReason, out string reqText, out _);
+
+        if (nodeLockReasonText != null) nodeLockReasonText.text = lockReason;
+        if (nodeRequirementsText != null) nodeRequirementsText.text = reqText;
+
+        // Fallback: if you didn't assign the optional lock text fields, append to lore.
+        if (nodeLockReasonText == null && nodeRequirementsText == null && nodeLoreText != null)
+        {
+            var sb = new StringBuilder();
+            if (!string.IsNullOrWhiteSpace(node.loreDescription))
+                sb.Append(node.loreDescription.Trim());
+
+            if (!string.IsNullOrWhiteSpace(lockReason))
+            {
+                if (sb.Length > 0) sb.Append("\n\n");
+                sb.Append(lockReason);
+            }
+
+            if (!string.IsNullOrWhiteSpace(reqText))
+            {
+                if (sb.Length > 0) sb.Append("\n");
+                sb.Append(reqText);
+            }
+
+            nodeLoreText.text = sb.ToString();
+        }
+
     }
 
     private void RefreshActionButtons()

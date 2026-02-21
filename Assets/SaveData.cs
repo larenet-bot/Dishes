@@ -28,6 +28,10 @@ public class SaveData
 
     //Cutscene
     public bool hasWatched = false;
+
+    //Sink
+    public int currentSinkType; // 0=Basic, 1=PowerWasher, 2=WashBasin, 3=Dishwasher
+    public List<string> purchasedSinkNodeIds = new List<string>();
 }
 
 [Serializable]
