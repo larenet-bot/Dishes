@@ -40,6 +40,12 @@ public class DishClicker : MonoBehaviour
         dishVisual.SetStage(0);
     }
 
+    // --- Public accessors for other systems (Dishwasher, UI, etc.) ---
+    public DishData GetCurrentDishData() => currentDish;
+
+    // Returns how many dishes a manual completion would currently award (does not change visuals).
+    public long PreviewManualDishesAwarded() => CalculateManualDishesAwarded();
+
     public void OnDishClicked()
     {
         if (currentDish == null) return;
