@@ -18,8 +18,10 @@ MonoBehaviour:
     sfx: {fileID: 0}
     background: {fileID: 4850878120845980919, guid: 0dd04368b68655a479b4877bb54922a1, type: 3}
     postDelay: 0
+    branchId: 0
     hasChoices: 0
     choices: []
+    overrideNextLineIndex: -1
   - text: 'All this walking has made you VERY hungry. You don''t even have any change
       either.
 
@@ -27,96 +29,124 @@ MonoBehaviour:
     sfx: {fileID: 0}
     background: {fileID: -1625096493650568400, guid: 5183c70a21fbba646b61274053c44dd1, type: 3}
     postDelay: 0
+    branchId: 0
     hasChoices: 0
     choices: []
+    overrideNextLineIndex: -1
   - text: "You see out of the corner of your eye a poster. \r\n"
     sfx: {fileID: 0}
     background: {fileID: -6705866497878393880, guid: 9d4689b799782bf4a9d6cf834a8832bd, type: 3}
     postDelay: 0
+    branchId: 0
     hasChoices: 0
     choices: []
+    overrideNextLineIndex: -1
   - text: '"Take on Benny''s Burger and eat for free!"
 
 '
     sfx: {fileID: 0}
     background: {fileID: -6705866497878393880, guid: 9d4689b799782bf4a9d6cf834a8832bd, type: 3}
     postDelay: 0
+    branchId: 0
     hasChoices: 0
     choices: []
+    overrideNextLineIndex: -1
   - text: 'You go in and take on the challenge. '
     sfx: {fileID: 0}
     background: {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
     postDelay: 0
+    branchId: 0
     hasChoices: 1
     choices:
     - choiceText: test option 1
       nextLineIndex: 5
+      nextBranchId: 1
     - choiceText: test option 2
       nextLineIndex: 6
+      nextBranchId: 2
+    overrideNextLineIndex: -1
   - text: 'test option 1 path '
     sfx: {fileID: 0}
     background: {fileID: -6705866497878393880, guid: 9d4689b799782bf4a9d6cf834a8832bd, type: 3}
     postDelay: 0
+    branchId: 0
     hasChoices: 0
     choices: []
+    overrideNextLineIndex: 7
   - text: 'test option 2 path '
     sfx: {fileID: 0}
     background: {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
     postDelay: 0
+    branchId: 2
     hasChoices: 0
     choices: []
+    overrideNextLineIndex: 7
   - text: 'THAT''S A LOTTA MEAT
 
 '
     sfx: {fileID: 0}
     background: {fileID: -5654681492125983662, guid: f2b4201dc72847b46ad5fa7ade9b3d8c, type: 3}
     postDelay: 0
+    branchId: 0
     hasChoices: 0
     choices: []
+    overrideNextLineIndex: -1
   - text: '...Maybe you bit off more than you could chew...
 
 '
     sfx: {fileID: 0}
     background: {fileID: -7670856166824447854, guid: bc49aa708aaa04d428667b4569125151, type: 3}
     postDelay: 0
+    branchId: 0
     hasChoices: 0
     choices: []
+    overrideNextLineIndex: -1
   - text: '...
 
 '
     sfx: {fileID: 8300000, guid: 5fc5819c24bbc77458ad436a7c729b57, type: 3}
     background: {fileID: -7670856166824447854, guid: bc49aa708aaa04d428667b4569125151, type: 3}
     postDelay: 0
+    branchId: 0
     hasChoices: 0
     choices: []
+    overrideNextLineIndex: -1
   - text: 'You awake to see the owner before you.
 
 '
     sfx: {fileID: 0}
     background: {fileID: -2232703539582777383, guid: 9c2e1a50f6a6fa94786cac5d895324bf, type: 3}
     postDelay: 0
+    branchId: 0
     hasChoices: 0
     choices: []
+    overrideNextLineIndex: -1
   - text: "\"Ya didn't read da fine print, didya!?\" \r\n"
     sfx: {fileID: 0}
     background: {fileID: -2888777204600070448, guid: 1427537051391b84292095a9ad58225b, type: 3}
     postDelay: 0
+    branchId: 0
     hasChoices: 0
     choices: []
+    overrideNextLineIndex: -1
   - text: '"Ya owe me some labor for wastin'' muh meat!"
 
 '
     sfx: {fileID: 0}
     background: {fileID: 5349049136137013527, guid: 4013cbb0e066b7740a18bc6b23461093, type: 3}
     postDelay: 0
+    branchId: 0
     hasChoices: 0
     choices: []
+    overrideNextLineIndex: -1
   - text: ...well dang, guess you better get to work.
     sfx: {fileID: 0}
     background: {fileID: 5349049136137013527, guid: 4013cbb0e066b7740a18bc6b23461093, type: 3}
     postDelay: 0
+    branchId: 0
     hasChoices: 0
     choices: []
+    overrideNextLineIndex: -1
   typingSFX: {fileID: 0}
   typingSFXIntervalChars: 2
   typeSpeed: 0.02

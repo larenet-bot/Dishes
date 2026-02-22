@@ -147,13 +147,23 @@ public class CutsceneManager : MonoBehaviour
             isTyping = false;
             return;
         }
+
         if (cutsceneData != null &&
-    cutsceneData.lines[currentLine].hasChoices)
+            cutsceneData.lines[currentLine].hasChoices)
         {
-            return; // wait for player to choose
+            return;
         }
 
-        currentLine++;
+        CutsceneLine line = cutsceneData.lines[currentLine];
+
+        if (line.overrideNextLineIndex >= 0)
+        {
+            currentLine = line.overrideNextLineIndex;
+        }
+        else
+        {
+            currentLine++;
+        }
 
         if (currentLine >= GetTotalLines())
         {
