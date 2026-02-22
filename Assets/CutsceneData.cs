@@ -20,6 +20,9 @@ public class DialogueChoice
 
     [Tooltip("Index in the lines array to jump to")]
     public int nextLineIndex;
+
+    [Tooltip("Optional: force the branch id to switch to when this choice is selected. Set to -1 to use the branchId of the target line.")]
+    public int nextBranchId = -1;
 }
 
 [System.Serializable]
@@ -37,8 +40,18 @@ public class CutsceneLine
     [Tooltip("Optional additional pause after the line finishes (seconds).")]
     public float postDelay = 0f;
 
+    [Header("Branching")]
+    [Tooltip("Branch id for this line. Use 0 for main/default branch. Lines in other branches will not affect background/legacy branch logic unless the manager's current branch matches.")]
+    public int branchId = 0;
+
     [Header("Choices (Optional)")]
     public bool hasChoices;
-
     public DialogueChoice[] choices;
+
+
+    [Header("Flow Control")]
+    [Tooltip("If >= 0, cutscene will jump to this index instead of going to the next line.")]
+    public int overrideNextLineIndex = -1;
+
+    
 }

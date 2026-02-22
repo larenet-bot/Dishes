@@ -65,6 +65,9 @@ public class CutsceneManager : MonoBehaviour
         UpdateBackground();
 
         SetupChoices();
+
+        // Update next button label/state (will show "Finish" on last real line)
+        UpdateNextButtonState();
     }
     private void SetupChoices()
     {
@@ -105,6 +108,9 @@ public class CutsceneManager : MonoBehaviour
             choicesPanel.SetActive(false);
             nextButton.gameObject.SetActive(true);
         }
+
+        // Keep button label/state in sync after toggling choices
+        UpdateNextButtonState();
     }
 
     private void OnChoiceSelected(int nextIndex)
@@ -136,33 +142,60 @@ public class CutsceneManager : MonoBehaviour
             yield return new WaitForSeconds(typeSpeed);
         }
         isTyping = false;
+
+        // Ensure button label/state updates once typing completes
+        UpdateNextButtonState();
     }
 
     private void OnNextClicked()
     {
+        // If currently typing, stop typing and reveal the full line (still allow this even on last line).
         if (isTyping)
         {
             StopAllCoroutines();
             dialogueText.text = GetLineText(currentLine);
             isTyping = false;
+            UpdateNextButtonState();
             return;
         }
+
+        int total = GetTotalLines();
+        if (total == 0) return;
+
+        // If the current line has choices, Next should do nothing.
         if (cutsceneData != null &&
-    cutsceneData.lines[currentLine].hasChoices)
+            cutsceneData.lines != null &&
+            currentLine >= 0 &&
+            currentLine < cutsceneData.lines.Length &&
+            cutsceneData.lines[currentLine].hasChoices)
         {
-            return; // wait for player to choose
+            return;
         }
 
-        currentLine++;
+        // Resolve the next line index (respect override if provided)
+        int nextIndex;
+        CutsceneLine currentCutLine = null;
+        if (cutsceneData != null && cutsceneData.lines != null &&
+            currentLine >= 0 && currentLine < cutsceneData.lines.Length)
+        {
+            currentCutLine = cutsceneData.lines[currentLine];
+        }
 
-        if (currentLine >= GetTotalLines())
+        if (currentCutLine != null && currentCutLine.overrideNextLineIndex >= 0)
+            nextIndex = currentCutLine.overrideNextLineIndex;
+        else
+            nextIndex = currentLine + 1;
+
+        // If the resolved next index goes past the end, treat as finish.
+        if (nextIndex >= total)
         {
             StartCoroutine(EndCutscene());
+            return;
         }
-        else
-        {
-            ShowLine();
-        }
+
+        // Otherwise advance to the resolved next index.
+        currentLine = nextIndex;
+        ShowLine();
     }
 
     private void UpdateBackground()
@@ -239,6 +272,35 @@ public class CutsceneManager : MonoBehaviour
         return result;
     }
 
+    /// <summary>
+    /// Updates the Next button label and state.
+    /// - If the current line is the last line, label becomes "Finish" and clicking finishes the cutscene.
+    /// - Otherwise label is "Next".
+    /// - If choices are visible, Next is hidden so this function does not change active state.
+    /// - While the typewriter is running the button still allows the user to finish typing.
+    /// </summary>
+    private void UpdateNextButtonState()
+    {
+        if (nextButton == null) return;
 
+        // If the button is hidden (choices showing), don't change it.
+        if (!nextButton.gameObject.activeSelf) return;
+
+        int total = GetTotalLines();
+        TMP_Text btnText = nextButton.GetComponentInChildren<TMP_Text>();
+
+        if (total == 0)
+        {
+            if (btnText != null) btnText.SetText("Next");
+            nextButton.interactable = false;
+            return;
+        }
+
+        bool isLastLine = (currentLine >= total - 1);
+
+
+        // Allow clicking to finish typing; otherwise keep it interactable so user can advance or finish.
+        nextButton.interactable = true;
+    }
 }
 
