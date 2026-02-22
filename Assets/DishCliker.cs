@@ -18,6 +18,15 @@ public class DishClicker : MonoBehaviour
     public bool enablePowerWasherHold = true;
     public bool requirePointerOverDishImage = true;
 
+    [Header("Techniques")]
+    [Tooltip("Power washer Turbo Jet skill check UI (optional).")]
+    public PowerWasherSkillCheckUI powerWasherSkillCheckUI;
+    [Tooltip("If your node IDs differ, change this to match the Turbo Jet technique node.")]
+    public string powerWasherTechniqueNodeId = "pw_technique";
+
+    [Tooltip("Wash basin Overnight Soak technique state (optional).")]
+    public WashBasinSoakTechnique washBasinSoakTechnique;
+
     [Header("Sounds")]
     public AudioClip[] squeakClips;
     private AudioSource audioSource;
@@ -30,6 +39,11 @@ public class DishClicker : MonoBehaviour
     private bool isHolding = false;
     private float holdSeconds = 0f;
     private float holdStageUnits = 0f;
+
+    // Power washer technique state
+    private bool turboJetResolvedThisHold = false;
+    private bool isTurboJetSkillCheckActive = false;
+    private float burnEndTime = -1f;
 
     public void Init(DishData data)
     {
@@ -104,11 +118,33 @@ public class DishClicker : MonoBehaviour
             return;
         }
 
+        // If the skill check is open, pause washing until it resolves.
+        if (isTurboJetSkillCheckActive)
+            return;
+
         isHolding = true;
         holdSeconds += Time.deltaTime;
 
+        // Turbo Jet Mode: after 30 seconds of holding, prompt a skill check.
+        if (!turboJetResolvedThisHold && ShouldTriggerTurboJetSkillCheck())
+        {
+            if (powerWasherSkillCheckUI != null)
+            {
+                isTurboJetSkillCheckActive = true;
+                powerWasherSkillCheckUI.Begin(OnTurboJetSkillCheckResolved);
+                return;
+            }
+
+            // No UI assigned. Mark it resolved so we don't spam.
+            turboJetResolvedThisHold = true;
+        }
+
         float stagesPerSecond = sinkManager.GetPowerWasherBaseStagesPerSecond();
         stagesPerSecond *= sinkManager.GetPowerWasherNozzleMultiplier();
+
+        // Burn effect from Turbo Jet Mode
+        if (Time.time < burnEndTime)
+            stagesPerSecond *= 2f;
 
         if (sinkManager.HasPowerWasherMomentum())
         {
@@ -151,6 +187,15 @@ public class DishClicker : MonoBehaviour
         isHolding = false;
         holdSeconds = 0f;
         holdStageUnits = 0f;
+
+        turboJetResolvedThisHold = false;
+
+        if (isTurboJetSkillCheckActive)
+        {
+            isTurboJetSkillCheckActive = false;
+            if (powerWasherSkillCheckUI != null)
+                powerWasherSkillCheckUI.Cancel();
+        }
     }
 
     private bool IsPointerOverDishImage()
@@ -180,6 +225,11 @@ public class DishClicker : MonoBehaviour
         dishVisual?.SetStage(0);
 
         ScoreManager.Instance.OnDishCleaned(currentDish, dishesAwarded);
+
+        // After a manual completion, let wash basin technique state advance.
+        if (washBasinSoakTechnique != null)
+            washBasinSoakTechnique.OnManualWashCompleted(dishesAwarded);
+
         PlayRandomSqueak();
         BurstBubbles();
     }
@@ -205,10 +255,36 @@ public class DishClicker : MonoBehaviour
 
             if (sinkManager.TryRollWashBasinExtraDishes(out int extra))
                 awarded += Mathf.Max(0, extra);
+
+            // Overnight Soak doubles the next manual wash (preview-only here).
+            if (washBasinSoakTechnique != null)
+                awarded = washBasinSoakTechnique.PreviewApplySoak(awarded);
         }
 
         if (awarded < 1) awarded = 1;
         return awarded;
+    }
+
+    private bool ShouldTriggerTurboJetSkillCheck()
+    {
+        if (sinkManager == null) return false;
+        if (string.IsNullOrWhiteSpace(powerWasherTechniqueNodeId)) return false;
+
+        // Must own the technique node.
+        if (!sinkManager.IsPurchased(powerWasherTechniqueNodeId))
+            return false;
+
+        // Trigger at 30 seconds of holding.
+        return holdSeconds >= 30f;
+    }
+
+    private void OnTurboJetSkillCheckResolved(bool success)
+    {
+        isTurboJetSkillCheckActive = false;
+        turboJetResolvedThisHold = true;
+
+        if (success)
+            burnEndTime = Time.time + 4f;
     }
 
     private void BurstBubbles()
