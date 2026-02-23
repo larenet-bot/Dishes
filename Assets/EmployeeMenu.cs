@@ -99,7 +99,7 @@ public class EmployeeManager : MonoBehaviour
     [SerializeField] private GameObject helpWantedButton;   // Help Wanted button
     [SerializeField] private GameObject closeButton;        // X close button
 
-   // [Header("UI: Description Text")]
+    // [Header("UI: Description Text")]
     //[SerializeField] private TMP_Text descriptionText;      // Shared description display
 
     [Header("Profit Multipliers")]
@@ -347,8 +347,10 @@ public class EmployeeManager : MonoBehaviour
 
         // Current profit per dish, including soap multiplier
         float baseDishProfit = scoreManager.GetProfitPerDish();
-        float dishMultiplier = scoreManager.dishProfitMultiplier;
+        float dishMultiplier = scoreManager.GetEffectiveDishProfitMultiplier();
         float effectivePerDish = baseDishProfit * dishMultiplier;
+
+        float speedMultiplier = scoreManager.EmployeeSpeedMultiplier;
 
         if (effectivePerDish <= 0f)
             return;
@@ -360,7 +362,7 @@ public class EmployeeManager : MonoBehaviour
             var emp = employees[i];
             if (emp.count <= 0) continue;
 
-            float dps = emp.GetTotalDishesPerSecond();
+            float dps = emp.GetTotalDishesPerSecond() * speedMultiplier;
             float debuff = Mathf.Max(emp.currentDebuff, 0f);
 
             float profitPerSecond =
@@ -381,14 +383,16 @@ public class EmployeeManager : MonoBehaviour
 
         float wallet = scoreManager.GetTotalProfit();
         float baseDishProfit = scoreManager.GetProfitPerDish();
-        float dishMultiplier = scoreManager.dishProfitMultiplier;
+        float dishMultiplier = scoreManager.GetEffectiveDishProfitMultiplier();
         float effectivePerDish = baseDishProfit * dishMultiplier;
 
+        float speedMultiplier = scoreManager.EmployeeSpeedMultiplier;
+
         for (int i = 0; i < employees.Count; i++)
-            RefreshEmployeeUI(employees[i], wallet, effectivePerDish);
+            RefreshEmployeeUI(employees[i], wallet, effectivePerDish, speedMultiplier);
     }
 
-    private void RefreshEmployeeUI(EmployeeDefinition emp, float wallet, float effectivePerDish)
+    private void RefreshEmployeeUI(EmployeeDefinition emp, float wallet, float effectivePerDish, float speedMultiplier)
     {
         if (emp.panelRoot == null)
             return;
@@ -402,7 +406,7 @@ public class EmployeeManager : MonoBehaviour
         if (emp.costText != null)
             emp.costText.text = $"Cost: {BigNumberFormatter.FormatMoney(emp.currentCost)}";
 
-        float totalDps = emp.GetTotalDishesPerSecond();
+        float totalDps = emp.GetTotalDishesPerSecond() * speedMultiplier;
         if (emp.dishesPerSecondText != null)
         {
             emp.dishesPerSecondText.text =

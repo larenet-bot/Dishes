@@ -1,6 +1,7 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using static ConvertDecimal;
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
@@ -58,6 +59,25 @@ public class ScoreManager : MonoBehaviour
     public delegate void ProfitChanged();
     public static event ProfitChanged OnProfitChanged;
 
+    [Header("Bubble Buffs")]
+    [SerializeField] private Image happyEmployeesTimerFill;
+    [SerializeField] private GameObject happyEmployeesTimerRoot;
+    [SerializeField] private TMP_Text happyEmployeesTitleText;
+    [SerializeField] private TMP_Text happyEmployeesInfoText;
+
+    [SerializeField] private Image wellMotivatedTimerFill;
+    [SerializeField] private TMP_Text wellMotivatedTitleText;
+    [SerializeField] private TMP_Text wellMotivatedInfoText;
+    [SerializeField] private GameObject wellMotivatedTimerRoot;
+
+    private float happyEmployeesMultiplier = 1f;
+    private float happyEmployeesEndTime = -1f;
+    private float happyEmployeesDuration = 0f;
+
+    private float wellMotivatedMultiplier = 1f;
+    private float wellMotivatedEndTime = -1f;
+    private float wellMotivatedDuration = 0f;
+
     private void Awake()
     {
         Application.runInBackground = true;
@@ -79,10 +99,34 @@ public class ScoreManager : MonoBehaviour
         if (enableEmployeeDishTick && employeeManager != null)
             StartCoroutine(EmployeeDishTicker());
 
+        SetBuffUIActive(happyEmployeesTimerRoot, happyEmployeesTimerFill, false);
+        SetBuffUIActive(wellMotivatedTimerRoot, wellMotivatedTimerFill, false);
+
+        if (happyEmployeesTitleText != null) happyEmployeesTitleText.text = string.Empty;
+        if (happyEmployeesInfoText != null) happyEmployeesInfoText.text = string.Empty;
+        if (wellMotivatedTitleText != null) wellMotivatedTitleText.text = string.Empty;
+        if (wellMotivatedInfoText != null) wellMotivatedInfoText.text = string.Empty;
+
         UpdateUI();
     }
 
+    private void Update()
+    {
+        UpdateBuffs();
+    }
+
     public void NotifyProfitChanged() => OnProfitChanged?.Invoke();
+
+    public bool IsHappyEmployeesActive => Time.time < happyEmployeesEndTime;
+    public bool IsWellMotivatedActive => Time.time < wellMotivatedEndTime;
+
+    public float EmployeeSpeedMultiplier => IsHappyEmployeesActive ? happyEmployeesMultiplier : 1f;
+    public float WellMotivatedMultiplier => IsWellMotivatedActive ? wellMotivatedMultiplier : 1f;
+
+    public float GetEffectiveDishProfitMultiplier()
+    {
+        return dishProfitMultiplier * WellMotivatedMultiplier;
+    }
 
     // Called when a dish is clicked enough times to complete it
     // Called when a dish is clicked enough times to complete it
@@ -100,7 +144,7 @@ public class ScoreManager : MonoBehaviour
 
         totalDishes += dishesCompleted;
 
-        float reward = (float)dishesCompleted * finishedDish.profitPerDish * dishProfitMultiplier;
+        float reward = (float)dishesCompleted * finishedDish.profitPerDish * GetEffectiveDishProfitMultiplier();
         totalProfit += reward;
 
         NotifyProfitChanged();
@@ -208,8 +252,8 @@ public class ScoreManager : MonoBehaviour
 
             if (!enableEmployeeDishTick || employeeManager == null) continue;
 
-            // Dishes per second from all employees (static dish intervals × live counts)
-            double dps = employeeManager.GetTotalDishesPerSecond();
+            // Dishes per second from all employees (static dish intervals Ã— live counts)
+            double dps = employeeManager.GetTotalDishesPerSecond() * EmployeeSpeedMultiplier;
 
             // Accumulate fractional dishes with frame time
             employeeDishAccumulator += dps * Time.deltaTime;
@@ -255,7 +299,7 @@ public class ScoreManager : MonoBehaviour
 
         totalDishes += dishesCompleted;
 
-        float reward = dishesCompleted * referenceDish.profitPerDish * dishProfitMultiplier * cashMultiplier;
+        float reward = dishesCompleted * referenceDish.profitPerDish * GetEffectiveDishProfitMultiplier() * cashMultiplier;
         totalProfit += reward;
 
         NotifyProfitChanged();
@@ -298,6 +342,133 @@ public class ScoreManager : MonoBehaviour
         NotifyProfitChanged();
         UpdateUI();
     }
+
+    // ---------------- Bubble buffs API ----------------
+
+    // Backwards-compatible overloads (in case other scripts call these without a title).
+    public void ApplyHappyEmployeesBoost(float multiplier, float seconds)
+    {
+        ApplyHappyEmployeesBoost("Happy Employees", multiplier, seconds);
+    }
+
+    public void ApplyWellMotivatedBoost(float multiplier, float seconds)
+    {
+        ApplyWellMotivatedBoost("Well Motivated", multiplier, seconds);
+    }
+
+    public void ApplyHappyEmployeesBoost(string title, float multiplier, float seconds)
+    {
+        multiplier = Mathf.Max(1f, multiplier);
+        seconds = Mathf.Max(0.1f, seconds);
+
+        happyEmployeesMultiplier = Mathf.Max(happyEmployeesMultiplier, multiplier);
+        happyEmployeesDuration = seconds;
+        happyEmployeesEndTime = Time.time + seconds;
+
+        if (happyEmployeesTitleText != null)
+            happyEmployeesTitleText.text = string.IsNullOrWhiteSpace(title) ? "Happy Employees" : title;
+
+        if (happyEmployeesInfoText != null)
+            happyEmployeesInfoText.text = $"x{happyEmployeesMultiplier:0.#} employee speed";
+
+        SetBuffUIActive(happyEmployeesTimerRoot, happyEmployeesTimerFill, true);
+        NotifyProfitChanged();
+    }
+
+    public void ApplyWellMotivatedBoost(string title, float multiplier, float seconds)
+    {
+        multiplier = Mathf.Max(1f, multiplier);
+        seconds = Mathf.Max(0.1f, seconds);
+
+        wellMotivatedMultiplier = Mathf.Max(wellMotivatedMultiplier, multiplier);
+        wellMotivatedDuration = seconds;
+        wellMotivatedEndTime = Time.time + seconds;
+
+        if (wellMotivatedTitleText != null)
+            wellMotivatedTitleText.text = string.IsNullOrWhiteSpace(title) ? "Well Motivated" : title;
+
+        if (wellMotivatedInfoText != null)
+        {
+            // Example: "x20 per dish"
+            wellMotivatedInfoText.text = $"x{wellMotivatedMultiplier:0.#} per dish";
+        }
+
+        SetBuffUIActive(wellMotivatedTimerRoot, wellMotivatedTimerFill, true);
+        NotifyProfitChanged();
+    }
+
+    private void UpdateBuffs()
+    {
+        // Happy Employees UI
+        if (IsHappyEmployeesActive)
+        {
+            UpdateTimerFill(happyEmployeesTimerFill, happyEmployeesEndTime, happyEmployeesDuration);
+            SetBuffUIActive(happyEmployeesTimerRoot, happyEmployeesTimerFill, true);
+        }
+        else
+        {
+            if (happyEmployeesEndTime > 0f)
+            {
+                happyEmployeesEndTime = -1f;
+                happyEmployeesDuration = 0f;
+                happyEmployeesMultiplier = 1f;
+                if (happyEmployeesTitleText != null) happyEmployeesTitleText.text = string.Empty;
+                if (happyEmployeesInfoText != null) happyEmployeesInfoText.text = string.Empty;
+                NotifyProfitChanged();
+            }
+            SetBuffUIActive(happyEmployeesTimerRoot, happyEmployeesTimerFill, false);
+        }
+
+        // Well Motivated UI
+        if (IsWellMotivatedActive)
+        {
+            UpdateTimerFill(wellMotivatedTimerFill, wellMotivatedEndTime, wellMotivatedDuration);
+            SetBuffUIActive(wellMotivatedTimerRoot, wellMotivatedTimerFill, true);
+        }
+        else
+        {
+            if (wellMotivatedEndTime > 0f)
+            {
+                wellMotivatedEndTime = -1f;
+                wellMotivatedDuration = 0f;
+                wellMotivatedMultiplier = 1f;
+                if (wellMotivatedTitleText != null) wellMotivatedTitleText.text = string.Empty;
+                if (wellMotivatedInfoText != null) wellMotivatedInfoText.text = string.Empty;
+                NotifyProfitChanged();
+            }
+            SetBuffUIActive(wellMotivatedTimerRoot, wellMotivatedTimerFill, false);
+        }
+    }
+
+    private void UpdateTimerFill(Image img, float endTime, float duration)
+    {
+        if (img == null) return;
+        if (duration <= 0.0001f)
+        {
+            img.fillAmount = 0f;
+            return;
+        }
+
+        float remaining = Mathf.Max(0f, endTime - Time.time);
+        float t = Mathf.Clamp01(remaining / duration);
+        img.fillAmount = t;
+    }
+
+    private void SetBuffUIActive(GameObject root, Image fallbackImage, bool active)
+    {
+        if (root != null)
+        {
+            if (root.activeSelf != active)
+                root.SetActive(active);
+            return;
+        }
+
+        if (fallbackImage != null)
+        {
+            if (fallbackImage.gameObject.activeSelf != active)
+                fallbackImage.gameObject.SetActive(active);
+        }
+    }
     // --- TEST/DEV ONLY: add dishes directly (free) ---
     public void AddDishes_ForTesting(long amount)
     {
@@ -306,9 +477,9 @@ public class ScoreManager : MonoBehaviour
         // and keep UI consistent.
         var newTotal = GetTotalDishes() + amount;
 
-        // private field is 'totalDishes' – set via backing logic
+        // private field is 'totalDishes' â€“ set via backing logic
         // since it's private, we reuse the UI method after changing.
-        // (We’re inside the class, so we can set directly.)
+        // (Weâ€™re inside the class, so we can set directly.)
         totalDishes = newTotal;
         UpdateUI();
     }

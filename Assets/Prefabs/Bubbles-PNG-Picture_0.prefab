@@ -39,6 +39,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3568217900964406129
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -57,6 +58,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -78,9 +81,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -5403158004749362412, guid: 7b2ed3185693f9f4d9d4b85375b92294, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -90,7 +95,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!50 &3837378264586198050
 Rigidbody2D:
@@ -285,7 +289,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fbb8b23998d0c04981fbb0e5d2b63f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseReward: 25
-  multiplier: 25
-  rewardTextPrefab: {fileID: 6862005837800310114, guid: e5b1e0badc27be84db05cb7af759d7ba, type: 3}
-  rewardTextOffset: {x: 3, y: 0, z: 0}
+  awardType: 0
+  randomizeAwardOnSpawn: 1
+  awardRolls:
+  - type: 0
+    title: Instant Cash
+    weight: 1
+  - type: 1
+    title: Instant Wash
+    weight: 1
+  - type: 2
+    title: Happy Employees
+    weight: 1
+  - type: 3
+    title: Well Motivated
+    weight: 1
+  awardTitle: Instant Cash
+  awardTextPrefab: {fileID: 6862005837800310114, guid: e5b1e0badc27be84db05cb7af759d7ba, type: 3}
+  awardTextOffset: {x: 3.2, y: 0.4, z: 0}
+  awardTextPlaneZ: 0
+  secondsWorth: 25
+  flatBonus: 25
+  washTicksPerSecond: 5
+  secondsPerStage: 4
+  instantWashStageCountOverride: 0
+  happyEmployeesMultiplier: 10
+  happyEmployeesSeconds: 20
+  wellMotivatedMultiplier: 20
+  wellMotivatedSeconds: 10

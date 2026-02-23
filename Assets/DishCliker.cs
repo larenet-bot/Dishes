@@ -38,8 +38,13 @@ public class DishClicker : MonoBehaviour
     [SerializeField] private Vector3 rewardTextOffset = new Vector3(0f, 0.5f, 0f);
     [SerializeField] private float rewardTextPlaneZ = 0f;
 
+    [Header("Instant Wash Award Text")]
+    [SerializeField] private Vector3 instantWashAwardTextOffset = new Vector3(0f, 0.75f, 0f);
+
     private int currentClicks = 0;
     private DishData currentDish;
+
+    private Coroutine instantWashCoroutine;
 
     // Power washer hold state
     private bool isHolding = false;
@@ -268,6 +273,11 @@ public class DishClicker : MonoBehaviour
 
     private void CompleteDish()
     {
+        CompleteDishInternal(isManual: true, spawnRewardAtDish: false);
+    }
+
+    private void CompleteDishInternal(bool isManual, bool spawnRewardAtDish)
+    {
         if (currentDish == null) return;
         if (ScoreManager.Instance == null) return;
 
@@ -278,13 +288,85 @@ public class DishClicker : MonoBehaviour
 
         float reward = ScoreManager.Instance.OnDishCleaned(currentDish, dishesAwarded);
 
-        if (washBasinSoakTechnique != null)
+        if (isManual && washBasinSoakTechnique != null)
             washBasinSoakTechnique.OnManualWashCompleted(dishesAwarded);
 
         PlayRandomSqueak();
-        BurstBubbles();
 
-        SpawnRewardText(reward);
+        if (spawnRewardAtDish)
+        {
+            if (TryGetDishWorldPosition(out Vector3 dishWorld))
+                SpawnRewardTextAtWorld(reward, dishWorld);
+            else
+                SpawnRewardText(reward);
+        }
+        else
+        {
+            SpawnRewardText(reward);
+        }
+    }
+
+    /// <summary>
+    /// Bubble award: rapidly applies "wash ticks" to the current dish.
+    /// - ticksPerSecond: how many ticks happen each second
+    /// - secondsPerStage: duration scales with current dish stage count
+    /// </summary>
+    public void StartInstantWash(float ticksPerSecond, float secondsPerStage, string awardTitle = "Instant Wash", int stageCountOverride = 0)
+    {
+        if (currentDish == null) return;
+
+        if (instantWashCoroutine != null)
+            StopCoroutine(instantWashCoroutine);
+
+        ticksPerSecond = Mathf.Max(0.1f, ticksPerSecond);
+        secondsPerStage = Mathf.Max(0.1f, secondsPerStage);
+
+        int stageCount = stageCountOverride > 0
+            ? stageCountOverride
+            : ((currentDish.stageSprites != null) ? currentDish.stageSprites.Length : 1);
+        stageCount = Mathf.Max(1, stageCount);
+        float totalDuration = secondsPerStage * stageCount;
+
+        instantWashCoroutine = StartCoroutine(InstantWashCoroutine(ticksPerSecond, totalDuration, awardTitle));
+    }
+
+    private System.Collections.IEnumerator InstantWashCoroutine(float ticksPerSecond, float totalDuration, string awardTitle)
+    {
+        float interval = 1f / Mathf.Max(0.1f, ticksPerSecond);
+        float endAt = Time.time + Mathf.Max(0.05f, totalDuration);
+
+        while (Time.time < endAt)
+        {
+            if (currentDish == null) yield break;
+
+            ApplyInstantWashTick(awardTitle);
+            yield return new WaitForSeconds(interval);
+        }
+
+        instantWashCoroutine = null;
+    }
+
+    private void ApplyInstantWashTick(string awardTitle)
+    {
+        if (currentDish == null) return;
+
+        // Award title above the dish each wash.
+        SpawnInstantWashAwardText(awardTitle);
+
+        int stagesPerClick = upgrades != null ? upgrades.GetCurrentStagesPerClick() : 1;
+        stagesPerClick = Mathf.Max(1, stagesPerClick);
+
+        int finalStageIndex = currentDish.stageSprites.Length - 1;
+
+        if (currentClicks < finalStageIndex)
+        {
+            currentClicks = Mathf.Min(currentClicks + stagesPerClick, finalStageIndex);
+            dishVisual?.SetStage(currentClicks);
+            return;
+        }
+
+        // One more tick past the final stage completes the dish.
+        CompleteDishInternal(isManual: false, spawnRewardAtDish: true);
     }
 
     private void SpawnRewardText(float rewardAmount)
@@ -308,6 +390,40 @@ public class DishClicker : MonoBehaviour
         }
     }
 
+    private void SpawnRewardTextAtWorld(float rewardAmount, Vector3 worldPos)
+    {
+        if (rewardTextPrefab == null) return;
+        if (rewardAmount <= 0f) return;
+
+        worldPos.z = rewardTextPlaneZ;
+        worldPos += rewardTextOffset;
+
+        GameObject go = Instantiate(rewardTextPrefab, worldPos, Quaternion.identity);
+        var floating = go.GetComponent<BubbleRewardText>();
+        if (floating != null)
+        {
+            string formatted = BigNumberFormatter.FormatMoney((double)rewardAmount);
+            floating.Initialize("+ " + formatted);
+        }
+    }
+
+    private void SpawnInstantWashAwardText(string awardTitle)
+    {
+        if (rewardTextPrefab == null) return;
+        if (string.IsNullOrWhiteSpace(awardTitle)) return;
+
+        if (!TryGetDishWorldPosition(out Vector3 dishWorld))
+            return;
+
+        dishWorld.z = rewardTextPlaneZ;
+        dishWorld += instantWashAwardTextOffset;
+
+        GameObject go = Instantiate(rewardTextPrefab, dishWorld, Quaternion.identity);
+        var floating = go.GetComponent<BubbleRewardText>();
+        if (floating != null)
+            floating.Initialize(awardTitle);
+    }
+
     private bool TryGetMouseWorldPosition(out Vector3 worldPos)
     {
         worldPos = default;
@@ -322,6 +438,38 @@ public class DishClicker : MonoBehaviour
         }
 
         worldPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane));
+        worldPos.z = rewardTextPlaneZ;
+        return true;
+    }
+
+    private bool TryGetDishWorldPosition(out Vector3 worldPos)
+    {
+        worldPos = default;
+        if (dishVisual == null || dishVisual.dishImage == null) return false;
+        if (Camera.main == null) return false;
+
+        // Convert the dish UI rect center to a screen point, then to world on the same plane.
+        RectTransform rt = dishVisual.dishImage.rectTransform;
+        Vector3[] corners = new Vector3[4];
+        rt.GetWorldCorners(corners);
+        Vector3 worldCenter = (corners[0] + corners[2]) * 0.5f;
+
+        Canvas canvas = dishVisual.dishImage.canvas;
+        Camera uiCam = null;
+        if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
+            uiCam = canvas.worldCamera;
+
+        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(uiCam, worldCenter);
+
+        Ray ray = Camera.main.ScreenPointToRay(screenPoint);
+        Plane plane = new Plane(Vector3.forward, new Vector3(0f, 0f, rewardTextPlaneZ));
+        if (plane.Raycast(ray, out float enter))
+        {
+            worldPos = ray.GetPoint(enter);
+            return true;
+        }
+
+        worldPos = Camera.main.ScreenToWorldPoint(new Vector3(screenPoint.x, screenPoint.y, Camera.main.nearClipPlane));
         worldPos.z = rewardTextPlaneZ;
         return true;
     }
