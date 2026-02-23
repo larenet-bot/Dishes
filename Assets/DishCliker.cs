@@ -1,3 +1,4 @@
+// DishCliker.cs
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,6 +33,11 @@ public class DishClicker : MonoBehaviour
     private AudioSource audioSource;
     private int lastSqueakIndex = -1;
 
+    [Header("Reward Text")]
+    [SerializeField] private GameObject rewardTextPrefab; // BubbleRewardText prefab
+    [SerializeField] private Vector3 rewardTextOffset = new Vector3(0f, 0.5f, 0f);
+    [SerializeField] private float rewardTextPlaneZ = 0f;
+
     private int currentClicks = 0;
     private DishData currentDish;
 
@@ -41,9 +47,12 @@ public class DishClicker : MonoBehaviour
     private float holdStageUnits = 0f;
 
     // Power washer technique state
-    private bool turboJetResolvedThisHold = false;
     private bool isTurboJetSkillCheckActive = false;
     private float burnEndTime = -1f;
+
+    // Turbo Jet repeats every 30 seconds while holding.
+    private float nextTurboJetSkillCheckAt = 30f;
+    private float turboJetSkillCheckStartTime = -1f;
 
     public void Init(DishData data)
     {
@@ -119,24 +128,62 @@ public class DishClicker : MonoBehaviour
         }
 
         // If the skill check is open, pause washing until it resolves.
+        // Add a failsafe so we don't get stuck if the UI is inactive/disabled.
         if (isTurboJetSkillCheckActive)
-            return;
+        {
+            if (powerWasherSkillCheckUI == null)
+            {
+                isTurboJetSkillCheckActive = false;
+            }
+            else
+            {
+                float timeout = Mathf.Max(0.1f, powerWasherSkillCheckUI.durationSeconds) + 0.35f;
+
+                // If the UI stopped being active without invoking the callback, resume washing.
+                if (!powerWasherSkillCheckUI.IsActive)
+                {
+                    isTurboJetSkillCheckActive = false;
+                }
+                else if (turboJetSkillCheckStartTime > 0f && (Time.time - turboJetSkillCheckStartTime) > timeout)
+                {
+                    // UI is active but not progressing (Update not running) - cancel and treat as a miss.
+                    powerWasherSkillCheckUI.Cancel();
+                    OnTurboJetSkillCheckResolved(false);
+                    return;
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
 
         isHolding = true;
         holdSeconds += Time.deltaTime;
 
-        // Turbo Jet Mode: after 30 seconds of holding, prompt a skill check.
-        if (!turboJetResolvedThisHold && ShouldTriggerTurboJetSkillCheck())
+        // Turbo Jet Mode: every 30 seconds of holding, prompt a skill check.
+        if (ShouldTriggerTurboJetSkillCheck())
         {
             if (powerWasherSkillCheckUI != null)
             {
                 isTurboJetSkillCheckActive = true;
-                powerWasherSkillCheckUI.Begin(OnTurboJetSkillCheckResolved);
+                turboJetSkillCheckStartTime = Time.time;
+                nextTurboJetSkillCheckAt += 30f;
+
+                try
+                {
+                    powerWasherSkillCheckUI.Begin(OnTurboJetSkillCheckResolved);
+                }
+                catch
+                {
+                    // If anything goes wrong, don't soft-lock washing.
+                    isTurboJetSkillCheckActive = false;
+                }
                 return;
             }
 
-            // No UI assigned. Mark it resolved so we don't spam.
-            turboJetResolvedThisHold = true;
+            // No UI assigned. Just schedule the next check and keep going.
+            nextTurboJetSkillCheckAt += 30f;
         }
 
         float stagesPerSecond = sinkManager.GetPowerWasherBaseStagesPerSecond();
@@ -164,13 +211,17 @@ public class DishClicker : MonoBehaviour
         if (currentDish == null) return;
         int finalStageIndex = currentDish.stageSprites.Length - 1;
 
+        int stagesPerClick = 1;
+        if (upgrades != null)
+            stagesPerClick = Mathf.Max(1, upgrades.GetCurrentStagesPerClick());
+
         while (holdStageUnits >= 1f && currentDish != null)
         {
             holdStageUnits -= 1f;
 
             if (currentClicks < finalStageIndex)
             {
-                currentClicks += 1;
+                currentClicks = Mathf.Min(currentClicks + stagesPerClick, finalStageIndex);
                 dishVisual?.SetStage(currentClicks);
                 BurstBubbles();
                 continue;
@@ -188,7 +239,8 @@ public class DishClicker : MonoBehaviour
         holdSeconds = 0f;
         holdStageUnits = 0f;
 
-        turboJetResolvedThisHold = false;
+        nextTurboJetSkillCheckAt = 30f;
+        turboJetSkillCheckStartTime = -1f;
 
         if (isTurboJetSkillCheckActive)
         {
@@ -224,14 +276,54 @@ public class DishClicker : MonoBehaviour
         currentClicks = 0;
         dishVisual?.SetStage(0);
 
-        ScoreManager.Instance.OnDishCleaned(currentDish, dishesAwarded);
+        float reward = ScoreManager.Instance.OnDishCleaned(currentDish, dishesAwarded);
 
-        // After a manual completion, let wash basin technique state advance.
         if (washBasinSoakTechnique != null)
             washBasinSoakTechnique.OnManualWashCompleted(dishesAwarded);
 
         PlayRandomSqueak();
         BurstBubbles();
+
+        SpawnRewardText(reward);
+    }
+
+    private void SpawnRewardText(float rewardAmount)
+    {
+        if (rewardTextPrefab == null) return;
+        if (Camera.main == null) return;
+        if (rewardAmount <= 0f) return;
+
+        if (!TryGetMouseWorldPosition(out Vector3 worldPos))
+            return;
+
+        worldPos.z = rewardTextPlaneZ;
+        worldPos += rewardTextOffset;
+
+        GameObject go = Instantiate(rewardTextPrefab, worldPos, Quaternion.identity);
+        var floating = go.GetComponent<BubbleRewardText>();
+        if (floating != null)
+        {
+            string formatted = BigNumberFormatter.FormatMoney((double)rewardAmount);
+            floating.Initialize("+ " + formatted);
+        }
+    }
+
+    private bool TryGetMouseWorldPosition(out Vector3 worldPos)
+    {
+        worldPos = default;
+        if (Camera.main == null) return false;
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Plane plane = new Plane(Vector3.forward, new Vector3(0f, 0f, rewardTextPlaneZ));
+        if (plane.Raycast(ray, out float enter))
+        {
+            worldPos = ray.GetPoint(enter);
+            return true;
+        }
+
+        worldPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane));
+        worldPos.z = rewardTextPlaneZ;
+        return true;
     }
 
     // Wash basin logic lives here for now (lowest risk): it only changes how many dishes
@@ -274,14 +366,14 @@ public class DishClicker : MonoBehaviour
         if (!sinkManager.IsPurchased(powerWasherTechniqueNodeId))
             return false;
 
-        // Trigger at 30 seconds of holding.
-        return holdSeconds >= 30f;
+        // Trigger every 30 seconds of holding.
+        return holdSeconds >= nextTurboJetSkillCheckAt;
     }
 
     private void OnTurboJetSkillCheckResolved(bool success)
     {
         isTurboJetSkillCheckActive = false;
-        turboJetResolvedThisHold = true;
+        turboJetSkillCheckStartTime = -1f;
 
         if (success)
             burnEndTime = Time.time + 4f;

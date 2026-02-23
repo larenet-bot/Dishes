@@ -1,3 +1,4 @@
+// PowerWasherSkillCheckUI.cs
 using System;
 using TMPro;
 using UnityEngine;
@@ -51,6 +52,12 @@ public class PowerWasherSkillCheckUI : MonoBehaviour
 
     public void Begin(Action<bool> onCompleteCallback)
     {
+        // If this component was referenced while inactive in the hierarchy,
+        // Begin() can be called but Update() will never run, leaving callers stuck.
+        // Make sure our GameObject is active so the timer/input work.
+        if (!gameObject.activeSelf)
+            gameObject.SetActive(true);
+
         onComplete = onCompleteCallback;
         isActive = true;
         timer = 0f;
@@ -60,11 +67,20 @@ public class PowerWasherSkillCheckUI : MonoBehaviour
         if (promptText != null)
             promptText.text = $"Turbo Jet Skill Check  (Press {inputKey})";
 
-        SetupSuccessWindow();
-        ApplyVisuals();
-
+        // Activate the root before measuring RectTransforms so bar.rect.width is valid on first use.
         if (root != null)
             root.SetActive(true);
+
+        // Force layout so the bar has a real width on the first activation.
+        Canvas.ForceUpdateCanvases();
+        if (bar != null)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(bar);
+        if (root != null && root.transform is RectTransform rt)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
+        Canvas.ForceUpdateCanvases();
+
+        SetupSuccessWindow();
+        ApplyVisuals();
     }
 
     public void Cancel()
