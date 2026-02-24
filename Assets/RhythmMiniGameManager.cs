@@ -33,9 +33,19 @@ public class RhythmMiniGameToggle : MonoBehaviour
     }
 
     // New API: Open the minigame UI. If waitForSpace==false you expect to start audio/spawning immediately from caller.
-    public void OpenMiniGame(bool waitForSpace = true)
+    // showDifficulty controls whether the BeatmapSelector panel (difficulty picker) should be shown when opening.
+    // Default true preserves the new behaviour; callers that already manage the selector should pass false.
+    public void OpenMiniGame(bool waitForSpace = true, bool showDifficulty = true)
     {
         if (isActive) return;
+
+        // Optionally show the difficulty/beatmap selector if present in scene.
+        if (showDifficulty)
+        {
+            var selector = FindObjectOfType<BeatmapSelector>();
+            if (selector != null && selector.beatmapPanel != null)
+                selector.beatmapPanel.SetActive(true);
+        }
 
         isActive = true;
         if (rhythmMiniGame != null) rhythmMiniGame.SetActive(true);

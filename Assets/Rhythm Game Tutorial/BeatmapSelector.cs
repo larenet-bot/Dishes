@@ -75,7 +75,8 @@ public partial class BeatmapSelector : MonoBehaviour
         // Open the mini-game UI
         if (miniToggle != null)
         {
-            miniToggle.OpenMiniGame(waitForSpace: !immediate);
+            // We hid the selector ourselves, so tell the miniToggle not to re-show it.
+            miniToggle.OpenMiniGame(waitForSpace: !immediate, showDifficulty: false);
         }
 
         // If immediate start requested, schedule spawning now.
