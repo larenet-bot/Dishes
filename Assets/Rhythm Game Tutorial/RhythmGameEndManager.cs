@@ -98,9 +98,9 @@ public class RhythmGameEndManager : MonoBehaviour
         else if (ScoreManager.Instance != null)
             baseValue = ScoreManager.Instance.GetProfitPerDish() * ScoreManager.Instance.GetDishCountIncrement();
 
-        
+
         // reward = baseValue * totalNotes * rankMultiplier * accuracy * rewardScale
-        
+
         float accuracy = Mathf.Clamp01(fraction);
         float safeAccuracy = Mathf.Max(accuracy, 0f); // accuracy already clamped; keep explicit
         float reward = baseValue * (float)totalNotes * multiplier * safeAccuracy * rewardScale;
@@ -151,6 +151,43 @@ public class RhythmGameEndManager : MonoBehaviour
         // Re-enable main game
         if (mainGameUI != null)
             mainGameUI.SetActive(true);
+
+        // Restore audio and UI state for the minigame properly:
+        // Prefer using a provided RhythmMiniGameToggle (it handles stopping minigame audio and restoring AudioManager).
+        if (toggleRef != null)
+        {
+            try
+            {
+                toggleRef.CloseMiniGame();
+            }
+            catch
+            {
+                // If toggleRef.CloseMiniGame fails for any reason, fall back to restoring audio directly.
+                if (AudioManager.instance != null)
+                {
+                    AudioManager.instance.MuteMainMusic(false);
+                    AudioManager.instance.RestoreMainMusic();
+                }
+            }
+        }
+        else
+        {
+            // No toggleRef provided: restore main music through AudioManager if available.
+            if (AudioManager.instance != null)
+            {
+                AudioManager.instance.MuteMainMusic(false);
+                AudioManager.instance.RestoreMainMusic();
+            }
+        }
+
+        // Start radio playback after minigame if a RadioCOntroller exists and is allowed to play.
+        var radio = FindFirstObjectByType<RadioCOntroller>();
+        if (radio != null)
+        {
+            // RadioCOntroller.StartRadio enforces purchase/require rules internally,
+            // so it's safe to call directly here.
+            radio.StartRadio();
+        }
 
         // Trigger cooldown
         StartCoroutine(MinigameCooldownRoutine());
