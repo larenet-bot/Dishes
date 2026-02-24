@@ -29754,6 +29754,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreManager: {fileID: 1535544642}
+  audioManagerPrefab: {fileID: 1221889600}
+  sfxMixerGroup: {fileID: 8994725383216735636, guid: e30935e55bf325e448023fdd8451a615, type: 2}
   sfxSource: {fileID: 2072260067}
   employees:
   - employeeName: Helpful Critter
@@ -31301,6 +31303,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1219374619}
   m_CullTransparentMesh: 1
+--- !u!1 &1221889600 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1141288091413117190, guid: fcf555f22d1b6b24b99494c5053111d4, type: 3}
+  m_PrefabInstance: {fileID: 2003839028133735483}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1223298858
 GameObject:
   m_ObjectHideFlags: 0

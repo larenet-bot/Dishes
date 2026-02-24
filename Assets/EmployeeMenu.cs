@@ -84,6 +84,12 @@ public class EmployeeManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private ScoreManager scoreManager;
+
+    [Header("Audio")]
+    [Tooltip("Optional: assign an AudioManager prefab (or scene object) that contains the SFX AudioSource. If provided and no AudioManager exists in scene, it will be instantiated.")]
+    [SerializeField] private GameObject audioManagerPrefab;
+    [Tooltip("Optional: explicitly assign the mixer group that should be used for employee SFX.")]
+    [SerializeField] private AudioMixerGroup sfxMixerGroup;
     [SerializeField] private AudioSource sfxSource;
 
     [Header("Employees")]
@@ -122,9 +128,37 @@ public class EmployeeManager : MonoBehaviour
         if (scoreManager == null)
             scoreManager = FindFirstObjectByType<ScoreManager>();
 
-        // Keep a local sfxSource as a fallback in case AudioManager isn't present.
+        // If there's no AudioManager singleton but the inspector has an AudioManager prefab assigned,
+        // instantiate it so AudioManager.instance and its sfxSource become available.
+        if (AudioManager.instance == null && audioManagerPrefab != null)
+        {
+            // Instantiate the prefab (it should contain an AudioManager component that sets the singleton in Awake).
+            Instantiate(audioManagerPrefab);
+        }
+
+        // Resolve sfxSource:
+        // - Prefer an explicitly assigned sfxSource on this component.
+        // - Otherwise prefer the AudioManager.instance.sfxSource (centralized routing).
+        // - Otherwise create a local AudioSource fallback.
         if (sfxSource == null)
-            sfxSource = gameObject.AddComponent<AudioSource>();
+        {
+            if (AudioManager.instance != null && AudioManager.instance.sfxSource != null)
+            {
+                sfxSource = AudioManager.instance.sfxSource;
+            }
+            else
+            {
+                sfxSource = gameObject.AddComponent<AudioSource>();
+            }
+        }
+
+        // Ensure the chosen sfxSource is routed to the intended mixer group when one is provided.
+        // Assigning this here allows you to explicitly point employee SFX to the SFX mixer group
+        // even if the AudioManager prefab has its AudioSource mis-routed.
+        if (sfxSource != null && sfxMixerGroup != null)
+        {
+            sfxSource.outputAudioMixerGroup = sfxMixerGroup;
+        }
 
         foreach (var emp in employees)
             emp.InitializeRuntime();
@@ -299,6 +333,7 @@ public class EmployeeManager : MonoBehaviour
         // Prefer centralized AudioManager if available so all SFX go through the same mixer / routing.
         if (AudioManager.instance != null)
         {
+            // AudioManager.PlaySFX uses its sfxSource.PlayOneShot internally.
             AudioManager.instance.PlaySFX(clip);
             return;
         }
