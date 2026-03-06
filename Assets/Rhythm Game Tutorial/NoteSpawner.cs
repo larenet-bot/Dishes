@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class NoteSpawner : MonoBehaviour
 {
@@ -27,6 +28,10 @@ public class NoteSpawner : MonoBehaviour
     [Header("Spawn -> Hitline mapping")]
     [Tooltip("Transform of the hitline (HitBox). Used to compute the correct scroll speed so notes arrive on-beat.")]
     public Transform hitLineTransform;
+
+    [Header("Countdown")]
+    public TextMeshProUGUI countdownText;
+    public float countdownTime = 3f;
 
     // public global DSP start time (used by LaneKey for judgement)
     public static double globalSongStartDspTime = -1.0;
@@ -68,7 +73,7 @@ public class NoteSpawner : MonoBehaviour
             return;
         }
 
-        // Try to auto-locate hitline if not assigned
+        // If a hitLine wasn't assigned try to auto-locate so we can compute speeds later.
         if (hitLineTransform == null)
         {
             var hb = GameObject.FindWithTag("HitBox");
@@ -83,27 +88,116 @@ public class NoteSpawner : MonoBehaviour
             }
         }
 
-        // schedule audio using DSP for accurate timing
+        // If countdownTime is positive, run the countdown coroutine which handles scheduling.
+        // Otherwise schedule immediately (legacy behavior).
+        if (countdownTime > 0f)
+        {
+            StartCoroutine(StartSongWithCountdown());
+        }
+        else
+        {
+            // schedule audio using DSP for accurate timing
+            double dspStart = AudioSettings.dspTime + Math.Max(0.0, scheduleStartDelay);
+            if (musicSource != null)
+            {
+                // Stop any previous playback then schedule
+                musicSource.Stop();
+                musicSource.PlayScheduled(dspStart);
+            }
+
+            // expose global DSP start time for judgement code
+            globalSongStartDspTime = dspStart;
+
+            // set global timing offset from inspector value
+            globalTimingOffset = timingOffset;
+
+            // still store Time.time-based start for any fallback diagnostics
+            songStartTime = Time.time;
+
+            StartCoroutine(SpawnNotesFromChartCoroutine());
+
+            Debug.Log($"[NoteSpawner] Audio scheduled at DSP {dspStart:0.000}. spawnLeadTime={spawnLeadTime:0.00}s timingOffset={timingOffset:0.000}s");
+        }
+    }
+    private IEnumerator StartSongWithCountdown()
+    {
+        // validation (moved from StartSpawning)
+        if (notePrefab == null)
+        {
+            Debug.LogWarning("[NoteSpawner] notePrefab not assigned. No notes will be spawned.");
+            yield break;
+        }
+
+        if (laneSpawnPoints == null || laneSpawnPoints.Length == 0)
+        {
+            Debug.LogWarning("[NoteSpawner] laneSpawnPoints not configured or empty.");
+            yield break;
+        }
+
+        if (chartFile == null || string.IsNullOrWhiteSpace(chartFile.text))
+        {
+            Debug.LogWarning("[NoteSpawner] chartFile missing or empty.");
+            yield break;
+        }
+
+        // Try to auto-locate hitline if not assigned
+        if (hitLineTransform == null)
+        {
+            var hb = GameObject.FindWithTag("HitBox");
+            if (hb != null)
+            {
+                hitLineTransform = hb.transform;
+                Debug.Log("[NoteSpawner] Auto-located HitBox transform for hitLineTransform.");
+            }
+            else
+            {
+                Debug.LogWarning("[NoteSpawner] hitLineTransform not assigned and no GameObject with tag 'HitBox' found.");
+            }
+        }
+
+        // --------------------
+        // COUNTDOWN
+        // --------------------
+
+        float timer = countdownTime;
+
+        while (timer > 0)
+        {
+            if (countdownText != null)
+                countdownText.text = Mathf.Ceil(timer).ToString();
+
+            yield return new WaitForSeconds(1f);
+            timer--;
+        }
+
+        if (countdownText != null)
+            countdownText.text = "GO!";
+
+        yield return new WaitForSeconds(0.5f);
+
+        if (countdownText != null)
+            countdownText.text = "";
+
+        // --------------------
+        // SCHEDULE SONG
+        // --------------------
+
         double dspStart = AudioSettings.dspTime + Math.Max(0.0, scheduleStartDelay);
+
         if (musicSource != null)
         {
-            // Stop any previous playback then schedule
             musicSource.Stop();
             musicSource.PlayScheduled(dspStart);
         }
 
-        // expose global DSP start time for judgement code
         globalSongStartDspTime = dspStart;
-
-        // set global timing offset from inspector value
         globalTimingOffset = timingOffset;
 
-        // still store Time.time-based start for any fallback diagnostics
         songStartTime = Time.time;
 
         StartCoroutine(SpawnNotesFromChartCoroutine());
 
-        Debug.Log($"[NoteSpawner] Audio scheduled at DSP {dspStart:0.000}. spawnLeadTime={spawnLeadTime:0.00}s timingOffset={timingOffset:0.000}s");
+        Debug.Log($"[NoteSpawner] Countdown finished. Song scheduled at DSP {dspStart:0.000}. spawnLeadTime={spawnLeadTime:0.00}s timingOffset={timingOffset:0.000}s");
     }
 
     private class NoteDef
@@ -329,31 +423,19 @@ public class NoteSpawner : MonoBehaviour
         var scroller = noteObj.GetComponent<BeatScroller>();
         if (scroller != null)
         {
-            // If we have a hitLineTransform and a positive lead time, calculate speed required:
             if (hitLineTransform != null && spawnLeadTime > 0f)
             {
-                // distance from spawn to hitline on world Y axis
-                float distance = Mathf.Abs(spawnPosition.y - hitLineTransform.position.y);
-
-                // speed = distance / time -> ensures the note arrives at hitline after spawnLeadTime seconds
+                float distance = spawnPosition.y - hitLineTransform.position.y;
                 float requiredSpeed = distance / spawnLeadTime;
 
-                // assign computed speed
                 scroller.scrollSpeed = requiredSpeed;
-            }
-            else
-            {
-                if (hitLineTransform == null)
-                {
-                    Debug.LogWarning("[NoteSpawner] hitLineTransform not assigned. Using scroller's default scrollSpeed.");
-                }
-                else
-                {
-                    Debug.LogWarning("[NoteSpawner] spawnLeadTime <= 0. Notes will use scroller's default scrollSpeed.");
-                }
-            }
 
-            scroller.hasStarted = true;
+                scroller.Initialize(
+                    timeMs / 1000f,
+                    globalSongStartDspTime,
+                    hitLineTransform
+                );
+            }
         }
     }
 }

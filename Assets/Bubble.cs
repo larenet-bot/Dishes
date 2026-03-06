@@ -24,11 +24,27 @@ public class Bubble : MonoBehaviour
     [SerializeField] public float bubbleXFrequency = 0f; // How often bubble completes its swing
 
     Camera cam;
+
+    // Keep a reference to the spawn coroutine so we can restart/stop it safely
+    private Coroutine spawnCoroutine;
+
     void Start()
     {
-        //WaitForSeconds wait = new WaitForSeconds(1f);
         cam = Camera.main;
-        StartCoroutine(SpawnBubble());
+        StartSpawning();
+    }
+
+    void OnEnable()
+    {
+        // Ensure spawning resumes when component/gameobject is enabled
+        if (spawnCoroutine == null)
+            StartSpawning();
+    }
+
+    void OnDisable()
+    {
+        // Stop spawn coroutine when disabled to avoid orphaned coroutines
+        StopSpawning();
     }
 
     IEnumerator SpawnBubble()
@@ -36,8 +52,6 @@ public class Bubble : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(minSpawn, maxSpawn));
-            //// Choose a random X position within the defined range DELETE IF FIX
-            //float randomX = Random.Range(minX, maxX); DELETE IF FIX
             if (cam == null) cam = Camera.main;
             if (cam == null) { yield return null; continue; }
 
@@ -70,17 +84,23 @@ public class Bubble : MonoBehaviour
 
             // Destroy automatically after 5 seconds for cleanup
             Destroy(spawnedBubble, 5f);
+        }
+    }
 
-            // Wait for a random time between minSpawn and maxSpawn before spawning next bubble
-            // ------------------------------------------------------
-            // HOW TO CHANGE SPAWN SPEED:
-            // - Lower minSpawn and maxSpawn => faster spawn rate
-            //   e.g., minSpawn = 0.1, maxSpawn = 0.5
-            // - Higher minSpawn and maxSpawn => slower spawn rate
-            //   e.g., minSpawn = 1.0, maxSpawn = 2.0
-            // Change these in the Inspector or directly above.
-            // ------------------------------------------------------
-            
+    // Public API to start spawning bubbles (idempotent)
+    public void StartSpawning()
+    {
+        if (spawnCoroutine == null && this.isActiveAndEnabled)
+            spawnCoroutine = StartCoroutine(SpawnBubble());
+    }
+
+    // Public API to stop spawning bubbles (idempotent)
+    public void StopSpawning()
+    {
+        if (spawnCoroutine != null)
+        {
+            StopCoroutine(spawnCoroutine);
+            spawnCoroutine = null;
         }
     }
 }
