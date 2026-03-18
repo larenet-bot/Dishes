@@ -2,12 +2,32 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class NoteSpawner : MonoBehaviour
 {
     public GameObject notePrefab;
     public Transform[] laneSpawnPoints;
+
+    [Header("Per-lane visuals")]
+    [Tooltip("Optional: one sprite per lane used to override the spawned note's SpriteRenderer or UI Image.")]
+    public Sprite[] laneSprites;
+
+    [Header("Note scale")]
+    [Tooltip("Uniform scale applied to spawned note sprites (x and y).")]
+    public float noteScale = 0.15f;
+
+    [Header("Random rotation")]
+    [Tooltip("Enable random rotation on spawn.")]
+    public bool enableRandomRotation = true;
+    [Tooltip("Chance (0..1) that a spawned note will get a random rotation.")]
+    [Range(0f, 1f)]
+    public float rotationChance = 0.5f;
+    [Tooltip("Minimum rotation angle (degrees).")]
+    public float minRotationDegrees = -30f;
+    [Tooltip("Maximum rotation angle (degrees).")]
+    public float maxRotationDegrees = 30f;
 
     public AudioSource musicSource;    // assign your rhythm track AudioSource
     public HitWindow hitWindow;        // assign in inspector
@@ -351,7 +371,8 @@ public class NoteSpawner : MonoBehaviour
             return;
         }
 
-        Transform spawnPoint = laneSpawnPoints[Mathf.Clamp(lane, 0, laneSpawnPoints.Length - 1)];
+        int safeLane = Mathf.Clamp(lane, 0, laneSpawnPoints.Length - 1);
+        Transform spawnPoint = laneSpawnPoints[safeLane];
         Vector3 spawnPosition = spawnPoint.position + new Vector3(0, spawnYOffset, 0);
 
         // normalize z for common 2D camera setups so sprite is in front of camera
@@ -381,6 +402,10 @@ public class NoteSpawner : MonoBehaviour
 
         // - find any SpriteRenderer (child or root) and force alpha = 1 and high sorting order for visibility
         var sr = noteObj.GetComponentInChildren<SpriteRenderer>();
+        Image uiImage = null;
+        if (sr == null)
+            uiImage = noteObj.GetComponentInChildren<Image>();
+
         if (sr != null)
         {
             sr.enabled = true;
@@ -392,17 +417,43 @@ public class NoteSpawner : MonoBehaviour
                 sr.sortingOrder = 1000;
             }
             catch { /* ignore if sorting layer not found */ }
+
+            // Apply per-lane sprite if provided
+            if (laneSprites != null && laneSprites.Length > 0)
+            {
+                int spriteIndex = Mathf.Clamp(safeLane, 0, laneSprites.Length - 1);
+                Sprite laneSprite = laneSprites[spriteIndex];
+                if (laneSprite != null)
+                    sr.sprite = laneSprite;
+            }
+
+            // Apply random rotation (to the sprite transform) and fixed uniform scale
+            ApplyRandomRotation(sr.transform, uiImage?.rectTransform);
+            TryApplyFixedScale(sr);
         }
         else
         {
             // If prefab is a UI element it will have a RectTransform instead of a SpriteRenderer
-            if (noteObj.GetComponent<RectTransform>() != null)
+            if (uiImage != null)
             {
                 Debug.LogWarning("[NoteSpawner] Spawned prefab uses a RectTransform (UI). If you intended a world-space sprite, convert the prefab or use a World Space Canvas.");
+
+                // Apply per-lane sprite if provided
+                if (laneSprites != null && laneSprites.Length > 0)
+                {
+                    int spriteIndex = Mathf.Clamp(safeLane, 0, laneSprites.Length - 1);
+                    Sprite laneSprite = laneSprites[spriteIndex];
+                    if (laneSprite != null)
+                        uiImage.sprite = laneSprite;
+                }
+
+                // Apply random rotation (to the RectTransform) and fixed uniform scale
+                ApplyRandomRotation(null, uiImage.rectTransform);
+                TryApplyFixedScale(uiImage);
             }
             else
             {
-                Debug.LogWarning("[NoteSpawner] No SpriteRenderer found on spawned note prefab. The prefab may not be visible.");
+                Debug.LogWarning("[NoteSpawner] No SpriteRenderer or UI Image found on spawned note prefab. The prefab may not be visible.");
             }
         }
 
@@ -417,6 +468,18 @@ public class NoteSpawner : MonoBehaviour
 
             // Provide the spawned note with the global DSP song start time so it can compute exact time-until-hit if desired.
             n.Initialize(noteTime, globalSongStartDspTime);
+
+            // If Note exposes a noteSprite reference, set its sprite as well so Note's visual matches lane sprite
+            if (n.noteSprite != null && laneSprites != null && laneSprites.Length > 0)
+            {
+                int spriteIndex = Mathf.Clamp(safeLane, 0, laneSprites.Length - 1);
+                Sprite laneSprite = laneSprites[spriteIndex];
+                if (laneSprite != null)
+                    n.noteSprite.sprite = laneSprite;
+
+                // Also apply fixed scale to the reference sprite (in case it's a different object)
+                TryApplyFixedScale(n.noteSprite);
+            }
         }
 
         // ensure movement starts and adjust speed so the note reaches hitline exactly after spawnLeadTime
@@ -437,5 +500,65 @@ public class NoteSpawner : MonoBehaviour
                 );
             }
         }
+    }
+
+    /// <summary>
+    /// Apply a fixed uniform scale to a SpriteRenderer (x and y = noteScale).
+    /// </summary>
+    private void TryApplyFixedScale(SpriteRenderer sr)
+    {
+        if (sr == null) return;
+        sr.transform.localScale = new Vector3(noteScale, noteScale, 1f);
+    }
+
+    /// <summary>
+    /// Apply a fixed uniform scale to a UI Image's RectTransform (x and y = noteScale).
+    /// </summary>
+    private void TryApplyFixedScale(Image uiImage)
+    {
+        if (uiImage == null) return;
+        var rt = uiImage.GetComponent<RectTransform>();
+        if (rt == null) return;
+        rt.localScale = new Vector3(noteScale, noteScale, 1f);
+    }
+
+    /// <summary>
+    /// Apply a fixed uniform scale to a Sprite (Note.noteSprite).
+    /// </summary>
+    private void TryApplyFixedScale(Note noteSpriteHolder)
+    {
+        if (noteSpriteHolder == null) return;
+        if (noteSpriteHolder.noteSprite == null) return;
+        noteSpriteHolder.noteSprite.transform.localScale = new Vector3(noteScale, noteScale, 1f);
+    }
+
+    /// <summary>
+    /// Applies a random Z rotation to either a sprite transform or a RectTransform (UI).
+    /// If both provided, spriteTransform is used.
+    /// </summary>
+    private void ApplyRandomRotation(Transform spriteTransform, RectTransform uiRect)
+    {
+        if (!enableRandomRotation)
+            return;
+
+        if (UnityEngine.Random.value > rotationChance)
+            return;
+
+        float angle = UnityEngine.Random.Range(minRotationDegrees, maxRotationDegrees);
+
+        if (spriteTransform != null)
+        {
+            spriteTransform.localRotation = Quaternion.Euler(0f, 0f, angle);
+            return;
+        }
+
+        if (uiRect != null)
+        {
+            uiRect.localEulerAngles = new Vector3(0f, 0f, angle);
+            return;
+        }
+
+        // If no specific child found, rotate the spawner-created GameObject's root (best-effort)
+        // (Note: we don't have the root here - caller handled child transforms; kept for completeness)
     }
 }
