@@ -83,7 +83,7 @@ public class LeadTimeCalibrator : MonoBehaviour
             var sc = inst.GetComponent<BeatScroller>();
             if (sc != null)
             {
-                sc.hasStarted = true;
+               // sc.hasStarted = true;
             }
 
             // wait until hit or timeout

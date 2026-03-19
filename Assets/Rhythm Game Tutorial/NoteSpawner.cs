@@ -2,11 +2,32 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class NoteSpawner : MonoBehaviour
 {
     public GameObject notePrefab;
     public Transform[] laneSpawnPoints;
+
+    [Header("Per-lane visuals")]
+    [Tooltip("Optional: one sprite per lane used to override the spawned note's SpriteRenderer or UI Image.")]
+    public Sprite[] laneSprites;
+
+    [Header("Note scale")]
+    [Tooltip("Uniform scale applied to spawned note sprites (x and y).")]
+    public float noteScale = 0.15f;
+
+    [Header("Random rotation")]
+    [Tooltip("Enable random rotation on spawn.")]
+    public bool enableRandomRotation = true;
+    [Tooltip("Chance (0..1) that a spawned note will get a random rotation.")]
+    [Range(0f, 1f)]
+    public float rotationChance = 0.5f;
+    [Tooltip("Minimum rotation angle (degrees).")]
+    public float minRotationDegrees = -30f;
+    [Tooltip("Maximum rotation angle (degrees).")]
+    public float maxRotationDegrees = 30f;
 
     public AudioSource musicSource;    // assign your rhythm track AudioSource
     public HitWindow hitWindow;        // assign in inspector
@@ -27,6 +48,10 @@ public class NoteSpawner : MonoBehaviour
     [Header("Spawn -> Hitline mapping")]
     [Tooltip("Transform of the hitline (HitBox). Used to compute the correct scroll speed so notes arrive on-beat.")]
     public Transform hitLineTransform;
+
+    [Header("Countdown")]
+    public TextMeshProUGUI countdownText;
+    public float countdownTime = 3f;
 
     // public global DSP start time (used by LaneKey for judgement)
     public static double globalSongStartDspTime = -1.0;
@@ -68,7 +93,7 @@ public class NoteSpawner : MonoBehaviour
             return;
         }
 
-        // Try to auto-locate hitline if not assigned
+        // If a hitLine wasn't assigned try to auto-locate so we can compute speeds later.
         if (hitLineTransform == null)
         {
             var hb = GameObject.FindWithTag("HitBox");
@@ -83,27 +108,116 @@ public class NoteSpawner : MonoBehaviour
             }
         }
 
-        // schedule audio using DSP for accurate timing
+        // If countdownTime is positive, run the countdown coroutine which handles scheduling.
+        // Otherwise schedule immediately (legacy behavior).
+        if (countdownTime > 0f)
+        {
+            StartCoroutine(StartSongWithCountdown());
+        }
+        else
+        {
+            // schedule audio using DSP for accurate timing
+            double dspStart = AudioSettings.dspTime + Math.Max(0.0, scheduleStartDelay);
+            if (musicSource != null)
+            {
+                // Stop any previous playback then schedule
+                musicSource.Stop();
+                musicSource.PlayScheduled(dspStart);
+            }
+
+            // expose global DSP start time for judgement code
+            globalSongStartDspTime = dspStart;
+
+            // set global timing offset from inspector value
+            globalTimingOffset = timingOffset;
+
+            // still store Time.time-based start for any fallback diagnostics
+            songStartTime = Time.time;
+
+            StartCoroutine(SpawnNotesFromChartCoroutine());
+
+            Debug.Log($"[NoteSpawner] Audio scheduled at DSP {dspStart:0.000}. spawnLeadTime={spawnLeadTime:0.00}s timingOffset={timingOffset:0.000}s");
+        }
+    }
+    private IEnumerator StartSongWithCountdown()
+    {
+        // validation (moved from StartSpawning)
+        if (notePrefab == null)
+        {
+            Debug.LogWarning("[NoteSpawner] notePrefab not assigned. No notes will be spawned.");
+            yield break;
+        }
+
+        if (laneSpawnPoints == null || laneSpawnPoints.Length == 0)
+        {
+            Debug.LogWarning("[NoteSpawner] laneSpawnPoints not configured or empty.");
+            yield break;
+        }
+
+        if (chartFile == null || string.IsNullOrWhiteSpace(chartFile.text))
+        {
+            Debug.LogWarning("[NoteSpawner] chartFile missing or empty.");
+            yield break;
+        }
+
+        // Try to auto-locate hitline if not assigned
+        if (hitLineTransform == null)
+        {
+            var hb = GameObject.FindWithTag("HitBox");
+            if (hb != null)
+            {
+                hitLineTransform = hb.transform;
+                Debug.Log("[NoteSpawner] Auto-located HitBox transform for hitLineTransform.");
+            }
+            else
+            {
+                Debug.LogWarning("[NoteSpawner] hitLineTransform not assigned and no GameObject with tag 'HitBox' found.");
+            }
+        }
+
+        // --------------------
+        // COUNTDOWN
+        // --------------------
+
+        float timer = countdownTime;
+
+        while (timer > 0)
+        {
+            if (countdownText != null)
+                countdownText.text = Mathf.Ceil(timer).ToString();
+
+            yield return new WaitForSeconds(1f);
+            timer--;
+        }
+
+        if (countdownText != null)
+            countdownText.text = "GO!";
+
+        yield return new WaitForSeconds(0.5f);
+
+        if (countdownText != null)
+            countdownText.text = "";
+
+        // --------------------
+        // SCHEDULE SONG
+        // --------------------
+
         double dspStart = AudioSettings.dspTime + Math.Max(0.0, scheduleStartDelay);
+
         if (musicSource != null)
         {
-            // Stop any previous playback then schedule
             musicSource.Stop();
             musicSource.PlayScheduled(dspStart);
         }
 
-        // expose global DSP start time for judgement code
         globalSongStartDspTime = dspStart;
-
-        // set global timing offset from inspector value
         globalTimingOffset = timingOffset;
 
-        // still store Time.time-based start for any fallback diagnostics
         songStartTime = Time.time;
 
         StartCoroutine(SpawnNotesFromChartCoroutine());
 
-        Debug.Log($"[NoteSpawner] Audio scheduled at DSP {dspStart:0.000}. spawnLeadTime={spawnLeadTime:0.00}s timingOffset={timingOffset:0.000}s");
+        Debug.Log($"[NoteSpawner] Countdown finished. Song scheduled at DSP {dspStart:0.000}. spawnLeadTime={spawnLeadTime:0.00}s timingOffset={timingOffset:0.000}s");
     }
 
     private class NoteDef
@@ -257,7 +371,8 @@ public class NoteSpawner : MonoBehaviour
             return;
         }
 
-        Transform spawnPoint = laneSpawnPoints[Mathf.Clamp(lane, 0, laneSpawnPoints.Length - 1)];
+        int safeLane = Mathf.Clamp(lane, 0, laneSpawnPoints.Length - 1);
+        Transform spawnPoint = laneSpawnPoints[safeLane];
         Vector3 spawnPosition = spawnPoint.position + new Vector3(0, spawnYOffset, 0);
 
         // normalize z for common 2D camera setups so sprite is in front of camera
@@ -287,6 +402,10 @@ public class NoteSpawner : MonoBehaviour
 
         // - find any SpriteRenderer (child or root) and force alpha = 1 and high sorting order for visibility
         var sr = noteObj.GetComponentInChildren<SpriteRenderer>();
+        Image uiImage = null;
+        if (sr == null)
+            uiImage = noteObj.GetComponentInChildren<Image>();
+
         if (sr != null)
         {
             sr.enabled = true;
@@ -298,17 +417,43 @@ public class NoteSpawner : MonoBehaviour
                 sr.sortingOrder = 1000;
             }
             catch { /* ignore if sorting layer not found */ }
+
+            // Apply per-lane sprite if provided
+            if (laneSprites != null && laneSprites.Length > 0)
+            {
+                int spriteIndex = Mathf.Clamp(safeLane, 0, laneSprites.Length - 1);
+                Sprite laneSprite = laneSprites[spriteIndex];
+                if (laneSprite != null)
+                    sr.sprite = laneSprite;
+            }
+
+            // Apply random rotation (to the sprite transform) and fixed uniform scale
+            ApplyRandomRotation(sr.transform, uiImage?.rectTransform);
+            TryApplyFixedScale(sr);
         }
         else
         {
             // If prefab is a UI element it will have a RectTransform instead of a SpriteRenderer
-            if (noteObj.GetComponent<RectTransform>() != null)
+            if (uiImage != null)
             {
                 Debug.LogWarning("[NoteSpawner] Spawned prefab uses a RectTransform (UI). If you intended a world-space sprite, convert the prefab or use a World Space Canvas.");
+
+                // Apply per-lane sprite if provided
+                if (laneSprites != null && laneSprites.Length > 0)
+                {
+                    int spriteIndex = Mathf.Clamp(safeLane, 0, laneSprites.Length - 1);
+                    Sprite laneSprite = laneSprites[spriteIndex];
+                    if (laneSprite != null)
+                        uiImage.sprite = laneSprite;
+                }
+
+                // Apply random rotation (to the RectTransform) and fixed uniform scale
+                ApplyRandomRotation(null, uiImage.rectTransform);
+                TryApplyFixedScale(uiImage);
             }
             else
             {
-                Debug.LogWarning("[NoteSpawner] No SpriteRenderer found on spawned note prefab. The prefab may not be visible.");
+                Debug.LogWarning("[NoteSpawner] No SpriteRenderer or UI Image found on spawned note prefab. The prefab may not be visible.");
             }
         }
 
@@ -323,37 +468,97 @@ public class NoteSpawner : MonoBehaviour
 
             // Provide the spawned note with the global DSP song start time so it can compute exact time-until-hit if desired.
             n.Initialize(noteTime, globalSongStartDspTime);
+
+            // If Note exposes a noteSprite reference, set its sprite as well so Note's visual matches lane sprite
+            if (n.noteSprite != null && laneSprites != null && laneSprites.Length > 0)
+            {
+                int spriteIndex = Mathf.Clamp(safeLane, 0, laneSprites.Length - 1);
+                Sprite laneSprite = laneSprites[spriteIndex];
+                if (laneSprite != null)
+                    n.noteSprite.sprite = laneSprite;
+
+                // Also apply fixed scale to the reference sprite (in case it's a different object)
+                TryApplyFixedScale(n.noteSprite);
+            }
         }
 
         // ensure movement starts and adjust speed so the note reaches hitline exactly after spawnLeadTime
         var scroller = noteObj.GetComponent<BeatScroller>();
         if (scroller != null)
         {
-            // If we have a hitLineTransform and a positive lead time, calculate speed required:
             if (hitLineTransform != null && spawnLeadTime > 0f)
             {
-                // distance from spawn to hitline on world Y axis
-                float distance = Mathf.Abs(spawnPosition.y - hitLineTransform.position.y);
-
-                // speed = distance / time -> ensures the note arrives at hitline after spawnLeadTime seconds
+                float distance = spawnPosition.y - hitLineTransform.position.y;
                 float requiredSpeed = distance / spawnLeadTime;
 
-                // assign computed speed
                 scroller.scrollSpeed = requiredSpeed;
-            }
-            else
-            {
-                if (hitLineTransform == null)
-                {
-                    Debug.LogWarning("[NoteSpawner] hitLineTransform not assigned. Using scroller's default scrollSpeed.");
-                }
-                else
-                {
-                    Debug.LogWarning("[NoteSpawner] spawnLeadTime <= 0. Notes will use scroller's default scrollSpeed.");
-                }
-            }
 
-            scroller.hasStarted = true;
+                scroller.Initialize(
+                    timeMs / 1000f,
+                    globalSongStartDspTime,
+                    hitLineTransform
+                );
+            }
         }
+    }
+
+    /// <summary>
+    /// Apply a fixed uniform scale to a SpriteRenderer (x and y = noteScale).
+    /// </summary>
+    private void TryApplyFixedScale(SpriteRenderer sr)
+    {
+        if (sr == null) return;
+        sr.transform.localScale = new Vector3(noteScale, noteScale, 1f);
+    }
+
+    /// <summary>
+    /// Apply a fixed uniform scale to a UI Image's RectTransform (x and y = noteScale).
+    /// </summary>
+    private void TryApplyFixedScale(Image uiImage)
+    {
+        if (uiImage == null) return;
+        var rt = uiImage.GetComponent<RectTransform>();
+        if (rt == null) return;
+        rt.localScale = new Vector3(noteScale, noteScale, 1f);
+    }
+
+    /// <summary>
+    /// Apply a fixed uniform scale to a Sprite (Note.noteSprite).
+    /// </summary>
+    private void TryApplyFixedScale(Note noteSpriteHolder)
+    {
+        if (noteSpriteHolder == null) return;
+        if (noteSpriteHolder.noteSprite == null) return;
+        noteSpriteHolder.noteSprite.transform.localScale = new Vector3(noteScale, noteScale, 1f);
+    }
+
+    /// <summary>
+    /// Applies a random Z rotation to either a sprite transform or a RectTransform (UI).
+    /// If both provided, spriteTransform is used.
+    /// </summary>
+    private void ApplyRandomRotation(Transform spriteTransform, RectTransform uiRect)
+    {
+        if (!enableRandomRotation)
+            return;
+
+        if (UnityEngine.Random.value > rotationChance)
+            return;
+
+        float angle = UnityEngine.Random.Range(minRotationDegrees, maxRotationDegrees);
+
+        if (spriteTransform != null)
+        {
+            spriteTransform.localRotation = Quaternion.Euler(0f, 0f, angle);
+            return;
+        }
+
+        if (uiRect != null)
+        {
+            uiRect.localEulerAngles = new Vector3(0f, 0f, angle);
+            return;
+        }
+
+        // If no specific child found, rotate the spawner-created GameObject's root (best-effort)
+        // (Note: we don't have the root here - caller handled child transforms; kept for completeness)
     }
 }

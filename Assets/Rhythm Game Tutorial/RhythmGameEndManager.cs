@@ -189,6 +189,28 @@ public class RhythmGameEndManager : MonoBehaviour
             radio.StartRadio();
         }
 
+        // Re-enable any bubble spawners that may have been paused/disabled while the minigame ran.
+        try
+        {
+            var bubbleSpawners = FindObjectsOfType<Bubble>();
+            for (int i = 0; i < bubbleSpawners.Length; i++)
+            {
+                var sp = bubbleSpawners[i];
+                if (sp == null) continue;
+
+                // If the GameObject was deactivated while minigame ran, ensure it's active
+                if (!sp.gameObject.activeInHierarchy)
+                    sp.gameObject.SetActive(true);
+
+                // Restart spawning coroutine safely
+                sp.StartSpawning();
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning($"[RhythmGameEndManager] Failed to re-enable bubble spawners: {ex.Message}");
+        }
+
         // Trigger cooldown
         StartCoroutine(MinigameCooldownRoutine());
     }
