@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: dc2a30b30ded4f143b6b22eeb8c42cc6
+guid: 8f5046630686f784fbbc2835cc958b0d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7811207639958380552
-    second: ForkTrash_Mini_Game_Pixel_Assets-05_Easy-Resize.com (1)_0
+      213: 3747896704358466330
+    second: Trash_Mini_Game-greyed-09_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ForkTrash_Mini_Game_Pixel_Assets-05_Easy-Resize.com (1)_0
+      name: Trash_Mini_Game-greyed-09_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1280
-        height: 1280
+        x: 729
+        y: 86
+        width: 1059
+        height: 2161
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8ff96797904099390800000000000000
-      internalID: -7811207639958380552
+      spriteID: a13c4260234330430800000000000000
+      internalID: 3747896704358466330
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ForkTrash_Mini_Game_Pixel_Assets-05_Easy-Resize.com (1)_0: -7811207639958380552
+      Trash_Mini_Game-greyed-09_0: 3747896704358466330
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

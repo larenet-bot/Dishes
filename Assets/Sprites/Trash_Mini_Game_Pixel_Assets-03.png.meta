@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c5e8c67efdf3c5d4b9a7e6fe98d1521b
+guid: bd46f4f894e264c4789f7dd31ec4b09f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2312740782956471688
-    second: PlateTrash_Mini_Game_Pixel_Assets-02_0
+      213: -7421371408522639849
+    second: Trash_Mini_Game_Pixel_Assets-03_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PlateTrash_Mini_Game_Pixel_Assets-02_0
+      name: Trash_Mini_Game_Pixel_Assets-03_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 2333
-        height: 2333
+        x: 86
+        y: 683
+        width: 2115
+        height: 1243
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 885eda91d71881020800000000000000
-      internalID: 2312740782956471688
+      spriteID: 71684c8260ef10990800000000000000
+      internalID: -7421371408522639849
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      PlateTrash_Mini_Game_Pixel_Assets-02_0: 2312740782956471688
+      Trash_Mini_Game_Pixel_Assets-03_0: -7421371408522639849
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

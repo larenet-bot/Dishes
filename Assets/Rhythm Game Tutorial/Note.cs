@@ -15,13 +15,28 @@ public class Note : MonoBehaviour
     public Color highlightColor = Color.yellow;
     private Color originalColor;
 
+    // Optional sprite to use while the note is hittable
+    [Tooltip("Optional: sprite to display while the note is inside the HitBox (hittable).")]
+    public Sprite hitSprite;
+
+    // store the original sprite so we can restore it on exit
+    private Sprite originalSprite;
+
     // Optional DSP-aware fields (set by spawner.Initialize)
     private double songStartDspTime = -1.0;
 
     void Start()
     {
         if (noteSprite != null)
+        {
             originalColor = noteSprite.color;
+
+            // capture original sprite here if available.
+            // NoteSpawner may set the sprite immediately after Instantiate,
+            // so capturing in Start is usually correct. We also guard
+            // and capture lazily in OnTriggerEnter if needed.
+            originalSprite = noteSprite.sprite;
+        }
     }
 
     /// <summary>
@@ -77,7 +92,17 @@ public class Note : MonoBehaviour
             canBeHit = true;
 
             if (noteSprite != null)
+            {
+                // Ensure we captured the original sprite (in case Start ran before spawner set it)
+                if (originalSprite == null)
+                    originalSprite = noteSprite.sprite;
+
+                // swap to hitSprite if provided
+                if (hitSprite != null)
+                    noteSprite.sprite = hitSprite;
+
                 noteSprite.color = highlightColor;
+            }
         }
     }
 
@@ -94,7 +119,12 @@ public class Note : MonoBehaviour
             }
 
             if (noteSprite != null)
+            {
+                // restore original color and sprite
                 noteSprite.color = originalColor;
+                if (originalSprite != null)
+                    noteSprite.sprite = originalSprite;
+            }
 
             Destroy(gameObject);
         }

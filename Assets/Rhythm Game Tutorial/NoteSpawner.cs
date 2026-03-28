@@ -14,6 +14,9 @@ public class NoteSpawner : MonoBehaviour
     [Tooltip("Optional: one sprite per lane used to override the spawned note's SpriteRenderer or UI Image.")]
     public Sprite[] laneSprites;
 
+    [Tooltip("Optional: one sprite per lane used while the note is inside the hit area (hittable).")]
+    public Sprite[] laneHitSprites;
+
     [Header("Note scale")]
     [Tooltip("Uniform scale applied to spawned note sprites (x and y).")]
     public float noteScale = 0.15f;
@@ -479,6 +482,15 @@ public class NoteSpawner : MonoBehaviour
 
                 // Also apply fixed scale to the reference sprite (in case it's a different object)
                 TryApplyFixedScale(n.noteSprite);
+            }
+
+            // Assign lane-specific hit sprite to the spawned Note so it swaps to the correct lane's hit graphic
+            if (laneHitSprites != null && laneHitSprites.Length > 0)
+            {
+                int hitIndex = Mathf.Clamp(safeLane, 0, laneHitSprites.Length - 1);
+                Sprite laneHitSprite = laneHitSprites[hitIndex];
+                if (laneHitSprite != null)
+                    n.hitSprite = laneHitSprite;
             }
         }
 

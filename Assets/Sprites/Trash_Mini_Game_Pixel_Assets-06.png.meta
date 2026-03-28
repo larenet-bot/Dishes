@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9b18461044a3afa4db779972cc88c20f
+guid: 1657eda47bdf0cb45bff3f75ca286b06
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 789028321342860983
-    second: CupTrash_Mini_Game_Pixel_Assets-04_Easy-Resize.com (1)_0
+      213: 7168572935942547690
+    second: Trash_Mini_Game_Pixel_Assets-06_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CupTrash_Mini_Game_Pixel_Assets-04_Easy-Resize.com (1)_0
+      name: Trash_Mini_Game_Pixel_Assets-06_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1280
-        height: 1280
+        x: 545
+        y: 132
+        width: 1335
+        height: 2115
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7be2d5be31133fa00800000000000000
-      internalID: 789028321342860983
+      spriteID: ae8a551ca13eb7360800000000000000
+      internalID: 7168572935942547690
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      CupTrash_Mini_Game_Pixel_Assets-04_Easy-Resize.com (1)_0: 789028321342860983
+      Trash_Mini_Game_Pixel_Assets-06_0: 7168572935942547690
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

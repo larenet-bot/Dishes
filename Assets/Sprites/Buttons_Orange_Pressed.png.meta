@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: aea5d9e7bdf56ed439d2a897ef549719
+guid: da3c6cbe27e8af2428b2df7d0aa23431
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1221777136762211882
-    second: PlateTrash_Mini_Game_Pixel_Assets-02_Easy-Resize.com (1)_0
+      213: -1742632327298276250
+    second: Buttons_Orange_Pressed_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PlateTrash_Mini_Game_Pixel_Assets-02_Easy-Resize.com (1)_0
+      name: Buttons_Orange_Pressed_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1280
-        height: 1280
+        x: 3
+        y: 3
+        width: 244
+        height: 244
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6d13898da206b0fe0800000000000000
-      internalID: -1221777136762211882
+      spriteID: 6642645912de0d7e0800000000000000
+      internalID: -1742632327298276250
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      PlateTrash_Mini_Game_Pixel_Assets-02_Easy-Resize.com (1)_0: -1221777136762211882
+      Buttons_Orange_Pressed_0: -1742632327298276250
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

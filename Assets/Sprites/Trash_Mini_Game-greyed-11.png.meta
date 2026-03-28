@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 40f63386745c0ba47a8f202c9c3fe955
+guid: 90d6c9d11d31c6049824487e773a011f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2088216905705294900
-    second: CupTrash_Mini_Game_Pixel_Assets-04_0
+      213: -1588197487481443817
+    second: Trash_Mini_Game-greyed-11_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CupTrash_Mini_Game_Pixel_Assets-04_0
+      name: Trash_Mini_Game-greyed-11_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 2333
-        height: 2333
+        x: 580
+        y: 85
+        width: 1335
+        height: 2115
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 43c878e3636dafc10800000000000000
-      internalID: 2088216905705294900
+      spriteID: 71a208dbcc695f9e0800000000000000
+      internalID: -1588197487481443817
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      CupTrash_Mini_Game_Pixel_Assets-04_0: 2088216905705294900
+      Trash_Mini_Game-greyed-11_0: -1588197487481443817
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

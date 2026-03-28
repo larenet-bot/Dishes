@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a4cd1aa4edf7d3b499d30f3ffb66a009
+guid: eb574015aa4ba844a9b9159d16b2c44d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6407069508650565468
-    second: ForkTrash_Mini_Game_Pixel_Assets-05_0
+      213: -7861848159210052796
+    second: Buttons_Orange_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ForkTrash_Mini_Game_Pixel_Assets-05_0
+      name: Buttons_Orange_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 2333
-        height: 2333
+        x: 3
+        y: 3
+        width: 244
+        height: 244
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c5f7a52a5cb7ae850800000000000000
-      internalID: 6407069508650565468
+      spriteID: 443e938c0ca15e290800000000000000
+      internalID: -7861848159210052796
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ForkTrash_Mini_Game_Pixel_Assets-05_0: 6407069508650565468
+      Buttons_Orange_0: -7861848159210052796
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

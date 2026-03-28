@@ -92,7 +92,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.71, y: 0.38}
+    oldSize: {x: 21.150002, y: 12.430001}
     newSize: {x: 0.74, y: 0.4}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -146,7 +146,8 @@ MonoBehaviour:
   hitWindow: {fileID: 0}
   musicSource: {fileID: 0}
   noteSprite: {fileID: -2514113468151183510}
-  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
+  hitSprite: {fileID: 0}
 --- !u!114 &1452953662178065906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,7 +210,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 2373183141213679312, guid: c935b66786caeda4a8ac46a716414ff2, type: 3}
+  m_Sprite: {fileID: -7421371408522639849, guid: bd46f4f894e264c4789f7dd31ec4b09f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
