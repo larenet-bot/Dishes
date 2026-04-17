@@ -13,7 +13,7 @@ public class WashBasinSoakHUD : MonoBehaviour
 
     private void Reset()
     {
-        technique = FindFirstObjectByType<WashBasinSoakTechnique>();
+        technique = FindAnyObjectByType<WashBasinSoakTechnique>();
     }
 
     private void Update()

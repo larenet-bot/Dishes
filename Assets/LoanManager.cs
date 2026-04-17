@@ -48,13 +48,13 @@ public class LoanManager : MonoBehaviour
 
     private void Reset()
     {
-        scoreManager = FindFirstObjectByType<ScoreManager>();
+        scoreManager = FindAnyObjectByType<ScoreManager>();
     }
 
     private void Awake()
     {
         if (scoreManager == null)
-            scoreManager = FindFirstObjectByType<ScoreManager>();
+            scoreManager = FindAnyObjectByType<ScoreManager>();
 
         // Seed a couple tiers so the component works out-of-the-box
         if (loanTiers.Count == 0)

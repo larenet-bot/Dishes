@@ -39,16 +39,16 @@ public class DishwasherCycleController : MonoBehaviour
 
     private void Reset()
     {
-        sinkManager = FindFirstObjectByType<SinkManager>();
-        scoreManager = FindFirstObjectByType<ScoreManager>();
-        dishClicker = FindFirstObjectByType<DishClicker>();
+        sinkManager = FindAnyObjectByType<SinkManager>();
+        scoreManager = FindAnyObjectByType<ScoreManager>();
+        dishClicker = FindAnyObjectByType<DishClicker>();
     }
 
     private void Awake()
     {
-        if (sinkManager == null) sinkManager = FindFirstObjectByType<SinkManager>();
-        if (scoreManager == null) scoreManager = FindFirstObjectByType<ScoreManager>();
-        if (dishClicker == null) dishClicker = FindFirstObjectByType<DishClicker>();
+        if (sinkManager == null) sinkManager = FindAnyObjectByType<SinkManager>();
+        if (scoreManager == null) scoreManager = FindAnyObjectByType<ScoreManager>();
+        if (dishClicker == null) dishClicker = FindAnyObjectByType<DishClicker>();
 
         sinkTypeHandler = _ => OnSinkStateChanged();
         nodePurchasedHandler = _ => OnUpgradesChanged();
@@ -250,7 +250,7 @@ public class DishwasherCycleController : MonoBehaviour
     {
         autoWashCount = Mathf.Max(0, loadedAutoWashCount);
 
-        if (sinkManager == null) sinkManager = FindFirstObjectByType<SinkManager>();
+        if (sinkManager == null) sinkManager = FindAnyObjectByType<SinkManager>();
         cycleDuration = sinkManager != null ? sinkManager.GetDishwasherCycleSeconds() : 300f;
         cycleRemaining = Mathf.Clamp(remainingSeconds, 0f, Mathf.Max(1f, cycleDuration));
 

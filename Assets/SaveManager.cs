@@ -103,11 +103,11 @@ public class SaveManager : MonoBehaviour
 
     private void TryBindRefs()
     {
-        if (score == null) score = FindFirstObjectByType<ScoreManager>();
-        if (employees == null) employees = FindFirstObjectByType<EmployeeManager>();
-        if (upgrades == null) upgrades = FindFirstObjectByType<Upgrades>();
-        if (sinks == null) sinks = FindFirstObjectByType<SinkManager>();
-        if (loans == null) loans = FindFirstObjectByType<LoanManager>();
+        if (score == null) score = FindAnyObjectByType<ScoreManager>();
+        if (employees == null) employees = FindAnyObjectByType<EmployeeManager>();
+        if (upgrades == null) upgrades = FindAnyObjectByType<Upgrades>();
+        if (sinks == null) sinks = FindAnyObjectByType<SinkManager>();
+        if (loans == null) loans = FindAnyObjectByType<LoanManager>();
     }
 
     private void ReadSaveFileToMemory()

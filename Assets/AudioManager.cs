@@ -97,7 +97,7 @@ public class AudioManager : MonoBehaviour
         {
             // Only respect the persisted "ambient disabled" if the radio is owned.
             // If Upgrades isn't present or radio isn't purchased, clear the flag so ambient can play.
-            var upgrades = FindFirstObjectByType<Upgrades>();
+            var upgrades = FindAnyObjectByType<Upgrades>();
             if (upgrades == null || !upgrades.RadioPurchased)
             {
                 if (UnityEngine.PlayerPrefs.HasKey(AmbientDisabledKey))
@@ -269,7 +269,7 @@ public class AudioManager : MonoBehaviour
         if (ambientLoopClip == null || ambientSource == null) return;
 
         // If any radio is currently playing, do not start the ambient loop to avoid overlap.
-        var radio = FindFirstObjectByType<RadioCOntroller>();
+        var radio = FindAnyObjectByType<RadioCOntroller>();
         if (radio != null && radio.IsPlaying)
         {
             // keep ambientPlaying false and keep persistence cleared/unchanged;

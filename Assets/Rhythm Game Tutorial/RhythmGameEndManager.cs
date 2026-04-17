@@ -181,7 +181,7 @@ public class RhythmGameEndManager : MonoBehaviour
         }
 
         // Start radio playback after minigame if a RadioCOntroller exists and is allowed to play.
-        var radio = FindFirstObjectByType<RadioCOntroller>();
+        var radio = FindAnyObjectByType<RadioCOntroller>();
         if (radio != null)
         {
             // RadioCOntroller.StartRadio enforces purchase/require rules internally,

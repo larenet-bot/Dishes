@@ -32,9 +32,9 @@ public class DevConsole : MonoBehaviour
 
     void Awake()
     {
-        if (score == null) score = FindFirstObjectByType<ScoreManager>();
-        if (employees == null) employees = FindFirstObjectByType<EmployeeManager>();
-        if (upgrades == null) upgrades = FindFirstObjectByType<Upgrades>();
+        if (score == null) score = FindAnyObjectByType<ScoreManager>();
+        if (employees == null) employees = FindAnyObjectByType<EmployeeManager>();
+        if (upgrades == null) upgrades = FindAnyObjectByType<Upgrades>();
 
         if (rootCanvas == null || panel == null || inputField == null || logText == null)
             BuildMinimalUI();

@@ -46,7 +46,7 @@ public class RadioCOntroller : MonoBehaviour
         // check the Upgrades instance (if present) to see if the player already owns it.
         if (requirePurchase && !isPurchased)
         {
-            var upgrades = FindFirstObjectByType<Upgrades>();
+            var upgrades = FindAnyObjectByType<Upgrades>();
             if (upgrades != null && upgrades.RadioPurchased)
             {
                 isPurchased = true;

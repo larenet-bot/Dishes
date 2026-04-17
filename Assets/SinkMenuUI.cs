@@ -70,14 +70,14 @@ public class SinkMenuUI : MonoBehaviour
 
     private void Reset()
     {
-        sinkManager = FindFirstObjectByType<SinkManager>();
-        scoreManager = FindFirstObjectByType<ScoreManager>();
+        sinkManager = FindAnyObjectByType<SinkManager>();
+        scoreManager = FindAnyObjectByType<ScoreManager>();
     }
 
     private void Awake()
     {
-        if (sinkManager == null) sinkManager = FindFirstObjectByType<SinkManager>();
-        if (scoreManager == null) scoreManager = FindFirstObjectByType<ScoreManager>();
+        if (sinkManager == null) sinkManager = FindAnyObjectByType<SinkManager>();
+        if (scoreManager == null) scoreManager = FindAnyObjectByType<ScoreManager>();
 
         if (closeButton != null)
         {

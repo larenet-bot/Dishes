@@ -139,18 +139,18 @@ public class Upgrades : MonoBehaviour
 
     private void Reset()
     {
-        scoreManager = FindFirstObjectByType<ScoreManager>();
-        employeeManager = FindFirstObjectByType<EmployeeManager>();
+        scoreManager = FindAnyObjectByType<ScoreManager>();
+        employeeManager = FindAnyObjectByType<EmployeeManager>();
     }
 
     private void Awake()
     {
-        if (scoreManager == null) scoreManager = FindFirstObjectByType<ScoreManager>();
-        if (employeeManager == null) employeeManager = FindFirstObjectByType<EmployeeManager>();
+        if (scoreManager == null) scoreManager = FindAnyObjectByType<ScoreManager>();
+        if (employeeManager == null) employeeManager = FindAnyObjectByType<EmployeeManager>();
 
         // find canvas / graphic raycaster for raycast fallback
         if (raycastCanvas == null)
-            raycastCanvas = FindFirstObjectByType<Canvas>();
+            raycastCanvas = FindAnyObjectByType<Canvas>();
 
         if (raycastCanvas != null)
             graphicRaycaster = raycastCanvas.GetComponent<GraphicRaycaster>();
@@ -546,7 +546,7 @@ public class Upgrades : MonoBehaviour
         }
         else
         {
-            employeeManager = FindFirstObjectByType<EmployeeManager>();
+            employeeManager = FindAnyObjectByType<EmployeeManager>();
             if (employeeManager != null) employee_manager_safe_multiply(next.multiplier);
         }
 
@@ -707,7 +707,7 @@ public class Upgrades : MonoBehaviour
                 AudioManager.instance.DisableAmbientLooping();
             }
 
-            var radioController = FindFirstObjectByType<RadioCOntroller>();
+            var radioController = FindAnyObjectByType<RadioCOntroller>();
             if (radioController != null)
             {
                 // Mark the Radio as purchased so it will allow playback and controls.
@@ -1002,8 +1002,8 @@ public class Upgrades : MonoBehaviour
 
     public void ApplySaveState(int soap, int glove, int sponge, bool radioOwned)
     {
-        if (scoreManager == null) scoreManager = FindFirstObjectByType<ScoreManager>();
-        if (employeeManager == null) employeeManager = FindFirstObjectByType<EmployeeManager>();
+        if (scoreManager == null) scoreManager = FindAnyObjectByType<ScoreManager>();
+        if (employeeManager == null) employeeManager = FindAnyObjectByType<EmployeeManager>();
 
         currentSoapIndex = Mathf.Clamp(soap, 0, soapTiers.Count - 1);
         currentGloveIndex = Mathf.Clamp(glove, 0, gloveTiers.Count - 1);
@@ -1029,7 +1029,7 @@ public class Upgrades : MonoBehaviour
                     AudioManager.instance.DisableAmbientLooping();
                 }
 
-                var radioController = FindFirstObjectByType<RadioCOntroller>();
+                var radioController = FindAnyObjectByType<RadioCOntroller>();
                 if (radioController != null)
                 {
                     // ensure RadioCOntroller knows it's owned before attempting to start playback

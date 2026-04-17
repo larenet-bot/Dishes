@@ -42,7 +42,7 @@ public class RhythmMiniGameToggle : MonoBehaviour
         // Optionally show the difficulty/beatmap selector if present in scene.
         if (showDifficulty)
         {
-            var selector = FindObjectOfType<BeatmapSelector>();
+            var selector = FindAnyObjectByType<BeatmapSelector>();
             if (selector != null && selector.beatmapPanel != null)
                 selector.beatmapPanel.SetActive(true);
         }

@@ -120,13 +120,13 @@ public class EmployeeManager : MonoBehaviour
 
     private void Reset()
     {
-        scoreManager = FindFirstObjectByType<ScoreManager>();
+        scoreManager = FindAnyObjectByType<ScoreManager>();
     }
 
     private void Awake()
     {
         if (scoreManager == null)
-            scoreManager = FindFirstObjectByType<ScoreManager>();
+            scoreManager = FindAnyObjectByType<ScoreManager>();
 
         // If there's no AudioManager singleton but the inspector has an AudioManager prefab assigned,
         // instantiate it so AudioManager.instance and its sfxSource become available.
