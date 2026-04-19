@@ -192,7 +192,7 @@ public class RhythmGameEndManager : MonoBehaviour
         // Re-enable any bubble spawners that may have been paused/disabled while the minigame ran.
         try
         {
-            var bubbleSpawners = FindObjectsOfType<Bubble>();
+            var bubbleSpawners = Object.FindObjectsByType<Bubble>();
             for (int i = 0; i < bubbleSpawners.Length; i++)
             {
                 var sp = bubbleSpawners[i];

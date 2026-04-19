@@ -21,7 +21,7 @@ public class LaneKey : MonoBehaviour
 
     private void TryHit()
     {
-        Note[] notes = Object.FindObjectsByType<Note>(FindObjectsSortMode.None);
+        Note[] notes = Object.FindObjectsByType<Note>(); // FIX: Remove obsolete FindObjectsSortMode parameter
         Note best = null;
         float bestDiff = float.MaxValue;
         bool anyHittable = false; // any note in any lane currently hittable

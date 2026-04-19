@@ -865,7 +865,7 @@ public class Upgrades : MonoBehaviour
             }
 
             // assign to all DishClicker instances in scene so UI/auto-clickers behave consistently
-            var allClickers = FindObjectsByType<DishClicker>(FindObjectsSortMode.None);
+            var allClickers = FindObjectsByType<DishClicker>();
             for (int i = 0; i < allClickers.Length; i++)
             {
                 if (allClickers[i] != null)
@@ -980,7 +980,7 @@ public class Upgrades : MonoBehaviour
         {
             score_manager_assign_active_dish();
 
-            var allClickers = FindObjectsByType<DishClicker>(FindObjectsSortMode.None);
+            var allClickers = FindObjectsByType<DishClicker>();
             for (int i = 0; i < allClickers.Length; i++)
                 if (allClickers[i] != null) allClickers[i].upgrades = this;
         }
@@ -1045,7 +1045,7 @@ public class Upgrades : MonoBehaviour
 
         score_manager_assign_active_dish();
 
-        var allClickers = FindObjectsByType<DishClicker>(FindObjectsSortMode.None);
+        var allClickers = FindObjectsByType<DishClicker>();
         for (int i = 0; i < allClickers.Length; i++)
             if (allClickers[i] != null)
                 allClickers[i].upgrades = this;

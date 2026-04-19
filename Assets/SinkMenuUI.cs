@@ -502,19 +502,16 @@ public class SinkMenuUI : MonoBehaviour
         }
         spawnedButtons.Clear();
 
-        // Destroy tier rows we spawned last build
-        HashSet<int> destroyedRowIds = new HashSet<int>();
+        // Destroy tier rows we spawned
         for (int i = 0; i < spawnedTierRows.Count; i++)
         {
             if (spawnedTierRows[i] == null) continue;
 
-            destroyedRowIds.Add(spawnedTierRows[i].GetInstanceID());
             spawnedTierRows[i].gameObject.SetActive(false);
             Destroy(spawnedTierRows[i].gameObject);
         }
-        spawnedTierRows.Clear();
 
-        // Safety: remove any orphan TierRow_* left behind (from older versions / edge cases)
+        // Safety: remove any orphan TierRow_* left behind
         if (nodeButtonContainer != null)
         {
             for (int i = nodeButtonContainer.childCount - 1; i >= 0; i--)
@@ -523,12 +520,16 @@ public class SinkMenuUI : MonoBehaviour
                 if (child == null) continue;
 
                 if (!child.name.StartsWith("TierRow_")) continue;
-                if (destroyedRowIds.Contains(child.GetInstanceID())) continue;
+
+                // Skip ones we already destroyed (reference check instead of ID)
+                if (spawnedTierRows.Contains(child as RectTransform)) continue;
 
                 child.gameObject.SetActive(false);
                 Destroy(child.gameObject);
             }
         }
+
+        spawnedTierRows.Clear();
     }
 
     private void ForceLayoutRefresh()
