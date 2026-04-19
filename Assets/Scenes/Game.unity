@@ -32899,6 +32899,7 @@ GameObject:
   - component: {fileID: 1318212023}
   - component: {fileID: 1318212025}
   - component: {fileID: 1318212024}
+  - component: {fileID: 1318212026}
   m_Layer: 0
   m_Name: DishClicker
   m_TagString: Untagged
@@ -32951,13 +32952,10 @@ MonoBehaviour:
   dishVisual: {fileID: 1318212021}
   upgrades: {fileID: 0}
   sinkManager: {fileID: 1433253104}
-  enablePowerWasherHold: 1
-  requirePointerOverDishImage: 1
-  powerWasherSkillCheckUI: {fileID: 640209402}
-  powerWasherTechniqueNodeId: pw_technique
-  washBasinSoakTechnique: {fileID: 1433253105}
   rewardTextSpawner: {fileID: 1318212025}
   audioEffects: {fileID: 1318212024}
+  powerWasherController: {fileID: 1318212026}
+  washBasinSoakTechnique: {fileID: 1433253105}
 --- !u!82 &1318212023
 AudioSource:
   m_ObjectHideFlags: 0
@@ -33088,6 +33086,24 @@ MonoBehaviour:
   rewardTextOffset: {x: 0, y: 0.5, z: 0}
   rewardTextPlaneZ: 0
   instantWashAwardTextOffset: {x: 0, y: 0.75, z: 0}
+--- !u!114 &1318212026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318212019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3686a0514308ffe4686f569b26be37bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PowerWasherController
+  dishClicker: {fileID: 1318212022}
+  sinkManager: {fileID: 1433253104}
+  enablePowerWasherHold: 1
+  requirePointerOverDishImage: 1
+  powerWasherSkillCheckUI: {fileID: 640209402}
+  powerWasherTechniqueNodeId: pw_technique
 --- !u!1 &1330396860
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,23 +24,6 @@ public class DishClicker : MonoBehaviour
     [Tooltip("Optional direct reference. Falls back to SinkManager.Instance at runtime.")]
     public SinkManager sinkManager;
 
-    [Header("Power Washer Hold")]
-    [Tooltip("Enables hold-to-clean behavior when the active sink is a power washer.")]
-    public bool enablePowerWasherHold = true;
-
-    [Tooltip("When enabled, hold input only counts while the pointer is over the dish image.")]
-    public bool requirePointerOverDishImage = true;
-
-    [Header("Technique References")]
-    [Tooltip("Optional Turbo Jet skill check UI used by the power washer.")]
-    public PowerWasherSkillCheckUI powerWasherSkillCheckUI;
-
-    [Tooltip("Node ID used to check whether the Turbo Jet technique has been purchased.")]
-    public string powerWasherTechniqueNodeId = "pw_technique";
-
-    [Tooltip("Optional wash-basin technique that modifies the next manual wash reward.")]
-    public WashBasinSoakTechnique washBasinSoakTechnique;
-
     [Header("Delegated Components")]
     [Tooltip("Component that spawns floating reward text. If null, will be fetched from same GameObject.")]
     public RewardTextSpawner rewardTextSpawner;
@@ -48,24 +31,19 @@ public class DishClicker : MonoBehaviour
     [Tooltip("Component that handles audio and bubble effects. If null, will be fetched from same GameObject.")]
     public AudioEffects audioEffects;
 
+    [Header("Power Washer")]
+    [Tooltip("Optional component that handles the power-washer hold flow. If null, will be fetched from same GameObject.")]
+    public PowerWasherController powerWasherController;
+
+    [Header("Techniques")]
+    [Tooltip("Optional wash-basin technique that modifies the next manual wash reward.")]
+    public WashBasinSoakTechnique washBasinSoakTechnique;
+
     private Coroutine instantWashCoroutine;
     private DishData currentDish;
 
     private int currentClicks;
     private int lastSqueakIndex = -1;
-
-    // Power washer hold state.
-    private bool isHolding;
-    private float holdSeconds;
-    private float holdStageUnits;
-
-    // Turbo Jet state.
-    private bool isTurboJetSkillCheckActive;
-    private float burnEndTime = -1f;
-    private float nextTurboJetSkillCheckAt = 30f;
-    private float turboJetSkillCheckStartTime = -1f;
-
-    #region Unity Lifecycle
 
     private void Start()
     {
@@ -83,62 +61,16 @@ public class DishClicker : MonoBehaviour
         {
             audioEffects = GetComponent<AudioEffects>();
         }
-    }
 
-    private void Update()
-    {
-        if (!enablePowerWasherHold || currentDish == null)
+        if (powerWasherController == null)
         {
-            return;
-        }
-
-        if (sinkManager == null)
-        {
-            sinkManager = SinkManager.Instance;
-        }
-
-        if (sinkManager == null || sinkManager.CurrentSinkType != SinkManager.SinkType.PowerWasher)
-        {
-            ResetHoldState();
-            return;
-        }
-
-        bool holding = Input.GetMouseButton(0);
-        if (holding && requirePointerOverDishImage && !IsPointerOverDishImage())
-        {
-            holding = false;
-        }
-
-        if (!holding)
-        {
-            ResetHoldState();
-            return;
-        }
-
-        if (HandleActiveTurboJetSkillCheck())
-        {
-            return;
-        }
-
-        isHolding = true;
-        holdSeconds += Time.deltaTime;
-
-        if (ShouldTriggerTurboJetSkillCheck())
-        {
-            TryBeginTurboJetSkillCheck();
-            if (isTurboJetSkillCheckActive)
+            powerWasherController = GetComponent<PowerWasherController>();
+            if (powerWasherController != null)
             {
-                return;
+                powerWasherController.Initialize(this);
             }
         }
-
-        float stagesPerSecond = GetPowerWasherStagesPerSecond();
-        holdStageUnits += stagesPerSecond * Time.deltaTime;
-
-        ProcessHoldStageUnits();
     }
-
-    #endregion
 
     #region Initialization and Public API
 
@@ -149,7 +81,11 @@ public class DishClicker : MonoBehaviour
     {
         currentDish = data;
         currentClicks = 0;
-        holdStageUnits = 0f;
+
+        if (powerWasherController != null)
+        {
+            powerWasherController.OnDishAssigned(data);
+        }
 
         dishVisual.SetDish(currentDish);
         dishVisual.SetStage(0);
@@ -223,97 +159,24 @@ public class DishClicker : MonoBehaviour
 
     #endregion
 
-    #region Power Washer Flow
+    #region Power Washer API (called from PowerWasherController)
 
-    private bool HandleActiveTurboJetSkillCheck()
+    /// <summary>
+    /// Advance the dish by a number of stage-units produced by the power washer.
+    /// Each unit behaves like one wash "tick" (matching previous while-loop behavior).
+    /// This method consumes integer stage-units and applies visual/audio changes and completion.
+    /// </summary>
+    public void ApplyStageUnitsFromPowerWasher(int stageUnits)
     {
-        if (!isTurboJetSkillCheckActive)
-        {
-            return false;
-        }
-
-        if (powerWasherSkillCheckUI == null)
-        {
-            isTurboJetSkillCheckActive = false;
-            return false;
-        }
-
-        float timeout = Mathf.Max(0.1f, powerWasherSkillCheckUI.durationSeconds) + 0.35f;
-
-        if (!powerWasherSkillCheckUI.IsActive)
-        {
-            isTurboJetSkillCheckActive = false;
-            return false;
-        }
-
-        if (turboJetSkillCheckStartTime > 0f && (Time.time - turboJetSkillCheckStartTime) > timeout)
-        {
-            powerWasherSkillCheckUI.Cancel();
-            OnTurboJetSkillCheckResolved(false);
-        }
-
-        return true;
-    }
-
-    private void TryBeginTurboJetSkillCheck()
-    {
-        if (powerWasherSkillCheckUI == null)
-        {
-            nextTurboJetSkillCheckAt += 30f;
+        if (currentDish == null || stageUnits <= 0)
             return;
-        }
-
-        isTurboJetSkillCheckActive = true;
-        turboJetSkillCheckStartTime = Time.time;
-        nextTurboJetSkillCheckAt += 30f;
-
-        try
-        {
-            powerWasherSkillCheckUI.Begin(OnTurboJetSkillCheckResolved);
-        }
-        catch
-        {
-            isTurboJetSkillCheckActive = false;
-        }
-    }
-
-    private float GetPowerWasherStagesPerSecond()
-    {
-        float stagesPerSecond = sinkManager.GetPowerWasherBaseStagesPerSecond();
-        stagesPerSecond *= sinkManager.GetPowerWasherNozzleMultiplier();
-
-        if (Time.time < burnEndTime)
-        {
-            stagesPerSecond *= 2f;
-        }
-
-        if (sinkManager.HasPowerWasherMomentum())
-        {
-            sinkManager.GetPowerWasherMomentumSettings(out float startAfter, out float perSecondBonus, out float maxBonus);
-
-            float elapsedAfterThreshold = Mathf.Max(0f, holdSeconds - startAfter);
-            int stacks = Mathf.FloorToInt(elapsedAfterThreshold);
-            float bonus = Mathf.Min(stacks * perSecondBonus, maxBonus);
-
-            stagesPerSecond *= 1f + bonus;
-        }
-
-        return stagesPerSecond;
-    }
-
-    private void ProcessHoldStageUnits()
-    {
-        if (currentDish == null)
-        {
-            return;
-        }
 
         int finalStageIndex = currentDish.stageSprites.Length - 1;
         int stagesPerClick = upgrades != null ? Mathf.Max(1, upgrades.GetCurrentStagesPerClick()) : 1;
 
-        while (holdStageUnits >= 1f && currentDish != null)
+        while (stageUnits > 0 && currentDish != null)
         {
-            holdStageUnits -= 1f;
+            stageUnits--;
 
             if (currentClicks < finalStageIndex)
             {
@@ -326,77 +189,6 @@ public class DishClicker : MonoBehaviour
             // One additional unit beyond the last visible stage completes the dish.
             CompleteDish();
         }
-    }
-
-    private void ResetHoldState()
-    {
-        if (!isHolding)
-        {
-            return;
-        }
-
-        isHolding = false;
-        holdSeconds = 0f;
-        holdStageUnits = 0f;
-        nextTurboJetSkillCheckAt = 30f;
-        turboJetSkillCheckStartTime = -1f;
-
-        if (!isTurboJetSkillCheckActive)
-        {
-            return;
-        }
-
-        isTurboJetSkillCheckActive = false;
-        if (powerWasherSkillCheckUI != null)
-        {
-            powerWasherSkillCheckUI.Cancel();
-        }
-    }
-
-    private bool ShouldTriggerTurboJetSkillCheck()
-    {
-        if (sinkManager == null || string.IsNullOrWhiteSpace(powerWasherTechniqueNodeId))
-        {
-            return false;
-        }
-
-        if (!sinkManager.IsPurchased(powerWasherTechniqueNodeId))
-        {
-            return false;
-        }
-
-        return holdSeconds >= nextTurboJetSkillCheckAt;
-    }
-
-    private void OnTurboJetSkillCheckResolved(bool success)
-    {
-        isTurboJetSkillCheckActive = false;
-        turboJetSkillCheckStartTime = -1f;
-
-        if (success)
-        {
-            burnEndTime = Time.time + 4f;
-        }
-    }
-
-    private bool IsPointerOverDishImage()
-    {
-        if (dishVisual == null || dishVisual.dishImage == null)
-        {
-            return true;
-        }
-
-        Canvas canvas = dishVisual.dishImage.canvas;
-        Camera canvasCamera = null;
-        if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
-        {
-            canvasCamera = canvas.worldCamera;
-        }
-
-        return RectTransformUtility.RectangleContainsScreenPoint(
-            dishVisual.dishImage.rectTransform,
-            Input.mousePosition,
-            canvasCamera);
     }
 
     #endregion
