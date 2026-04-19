@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -52,7 +53,6 @@ public class DishClicker : MonoBehaviour
     private DishData currentDish;
 
     private int currentClicks;
-    private int lastSqueakIndex = -1;
 
     // Power washer hold state.
     private bool isHolding;
@@ -104,7 +104,7 @@ public class DishClicker : MonoBehaviour
         }
 
         bool holding = Input.GetMouseButton(0);
-        if (holding && requirePointerOverDishImage && !IsPointerOverDishImage())
+        if (holding && requirePointerOverDishImage && (dishVisual == null || !IsPointerOverDishImage()))
         {
             holding = false;
         }
@@ -379,26 +379,6 @@ public class DishClicker : MonoBehaviour
         }
     }
 
-    private bool IsPointerOverDishImage()
-    {
-        if (dishVisual == null || dishVisual.dishImage == null)
-        {
-            return true;
-        }
-
-        Canvas canvas = dishVisual.dishImage.canvas;
-        Camera canvasCamera = null;
-        if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
-        {
-            canvasCamera = canvas.worldCamera;
-        }
-
-        return RectTransformUtility.RectangleContainsScreenPoint(
-            dishVisual.dishImage.rectTransform,
-            Input.mousePosition,
-            canvasCamera);
-    }
-
     #endregion
 
     #region Dish Completion and Reward Calculation
@@ -429,54 +409,17 @@ public class DishClicker : MonoBehaviour
 
         audioEffects?.PlayRandomSqueak();
 
-        if (spawnRewardAtDish && rewardTextSpawner != null && TryGetDishWorldPosition(out Vector3 dishWorld))
+        if (spawnRewardAtDish && dishVisual != null && rewardTextSpawner != null)
         {
-            rewardTextSpawner.SpawnRewardTextAtWorld(reward, dishWorld);
-            return;
+            // Use RewardTextSpawner's TryGetDishWorldPosition instead
+            if (rewardTextSpawner.TryGetDishWorldPosition(dishVisual, 0f, out Vector3 dishWorld))
+            {
+                rewardTextSpawner.SpawnRewardTextAtWorld(reward, dishWorld);
+                return;
+            }
         }
 
         rewardTextSpawner?.SpawnRewardText(reward);
-    }
-
-    private long CalculateManualDishesAwarded()
-    {
-        int baseIncrement = 1;
-        if (ScoreManager.Instance != null)
-        {
-            baseIncrement = Mathf.Max(1, ScoreManager.Instance.GetDishCountIncrement());
-        }
-
-        long awarded = baseIncrement;
-
-        if (sinkManager == null)
-        {
-            sinkManager = SinkManager.Instance;
-        }
-
-        if (sinkManager != null && sinkManager.CurrentSinkType == SinkManager.SinkType.WashBasin)
-        {
-            int multiplier = Mathf.Max(1, sinkManager.GetWashBasinManualMultiplier());
-            awarded = (long)baseIncrement * multiplier;
-
-            awarded += sinkManager.GetWashBasinFlatBonusDishes();
-
-            if (sinkManager.TryRollWashBasinExtraDishes(out int extra))
-            {
-                awarded += Mathf.Max(0, extra);
-            }
-
-            if (washBasinSoakTechnique != null)
-            {
-                awarded = washBasinSoakTechnique.PreviewApplySoak(awarded);
-            }
-        }
-
-        if (awarded < 1)
-        {
-            awarded = 1;
-        }
-
-        return awarded;
     }
 
     #endregion
@@ -529,40 +472,67 @@ public class DishClicker : MonoBehaviour
 
     #region Helpers
 
-    private bool TryGetDishWorldPosition(out Vector3 worldPos)
+    private long CalculateManualDishesAwarded()
     {
-        worldPos = default;
-        if (dishVisual == null || dishVisual.dishImage == null || Camera.main == null)
+        int baseIncrement = 1;
+        if (ScoreManager.Instance != null)
+        {
+            baseIncrement = Mathf.Max(1, ScoreManager.Instance.GetDishCountIncrement());
+        }
+
+        // Prefer BasinManager when available so wash-basin logic lives in one place.
+        if (BasinManager.Instance != null)
+        {
+            return BasinManager.Instance.CalculateManualDishesAwarded(baseIncrement, washBasinSoakTechnique);
+        }
+
+        // Fallback to SinkManager-only behavior if BasinManager isn't present.
+        if (sinkManager == null)
+        {
+            sinkManager = SinkManager.Instance;
+        }
+
+        long awarded = baseIncrement;
+
+        if (sinkManager != null && sinkManager.CurrentSinkType == SinkManager.SinkType.WashBasin)
+        {
+            int multiplier = Mathf.Max(1, sinkManager.GetWashBasinManualMultiplier());
+            awarded = (long)baseIncrement * multiplier;
+
+            awarded += sinkManager.GetWashBasinFlatBonusDishes();
+
+            if (sinkManager.TryRollWashBasinExtraDishes(out int extra))
+            {
+                awarded += Mathf.Max(0, extra);
+            }
+
+            if (washBasinSoakTechnique != null)
+            {
+                awarded = washBasinSoakTechnique.PreviewApplySoak(awarded);
+            }
+        }
+
+        if (awarded < 1) awarded = 1;
+        return awarded;
+    }
+
+    #endregion
+
+    private bool IsPointerOverDishImage()
+    {
+        if (dishVisual == null || dishVisual.dishImage == null)
         {
             return false;
         }
 
-        RectTransform rectTransform = dishVisual.dishImage.rectTransform;
-        Vector3[] corners = new Vector3[4];
-        rectTransform.GetWorldCorners(corners);
-        Vector3 worldCenter = (corners[0] + corners[2]) * 0.5f;
-
-        Canvas canvas = dishVisual.dishImage.canvas;
-        Camera uiCamera = null;
-        if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
+        // Use Unity's EventSystem to check if the pointer is over the dish image
+        if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
-            uiCamera = canvas.worldCamera;
+            return false;
         }
 
-        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(uiCamera, worldCenter);
-
-        Ray ray = Camera.main.ScreenPointToRay(screenPoint);
-        Plane plane = new Plane(Vector3.forward, new Vector3(0f, 0f, 0f));
-        if (plane.Raycast(ray, out float enter))
-        {
-            worldPos = ray.GetPoint(enter);
-            return true;
-        }
-
-        worldPos = Camera.main.ScreenToWorldPoint(new Vector3(screenPoint.x, screenPoint.y, Camera.main.nearClipPlane));
-        worldPos.z = 0f;
+        // Optionally, you can add more logic here to check if the pointer is specifically over the dishImage rect
+        // For now, this returns true if the pointer is over any UI element
         return true;
     }
-
-    #endregion
 }
