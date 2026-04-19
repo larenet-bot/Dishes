@@ -33084,7 +33084,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad6e971062550904da93fd057c77a34f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RewardTextSpawner
-  rewardTextPrefab: {fileID: 478604381}
+  rewardTextPrefab: {fileID: 6862005837800310114, guid: e5b1e0badc27be84db05cb7af759d7ba, type: 3}
   rewardTextOffset: {x: 0, y: 0.5, z: 0}
   rewardTextPlaneZ: 0
   instantWashAwardTextOffset: {x: 0, y: 0.75, z: 0}
