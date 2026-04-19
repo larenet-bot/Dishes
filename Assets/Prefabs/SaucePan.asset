@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9bdb99a9c8c51d408242a5ec1b693ed, type: 3}
   m_Name: SaucePan
   m_EditorClassIdentifier: 
-  dishPrefab: {fileID: 0}
+  displayName: 
   stageSprites:
   - {fileID: -7602668290662570163, guid: d182ee99f501fdc43bbbc7909648f208, type: 3}
+  - {fileID: -9007711151780820675, guid: 51fd0a9027cec0b4193fdd28f773c288, type: 3}
   - {fileID: -5061926496918866857, guid: 0f2d91667a08c9d458760ba05c5cd9af, type: 3}
   - {fileID: 6829703572050286450, guid: 54ce419fb67d2ad4399a6ccb046964ba, type: 3}
+  uiScale: 0.5
   profitPerDish: 4
-  clicksRequired: 3
   unlockAtDishCount: 150
   spawnChance: 0.4
-  uiScale: 0.5

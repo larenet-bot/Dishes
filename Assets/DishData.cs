@@ -1,27 +1,26 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewDishData", menuName = "Dish/Dish Data")]
+[CreateAssetMenu(fileName = "DishData", menuName = "Dishes/Dish Data", order = 1)]
 public class DishData : ScriptableObject
 {
-    [Header("Prefab Reference")]
-    public GameObject dishPrefab;
+    [Header("Identification")]
+    public string displayName;
 
-    [Header("Visuals")]
-    public Sprite[] stageSprites; // Clean stages
-
-    [Header("Economy")]
-    public float profitPerDish = 1f;
-
-    [Header("Gameplay")]
-    public int clicksRequired = 3; // clicks needed to clean
-
-    [Header("Progression")]
-    public int unlockAtDishCount = 0; // When this dish is unlocked
-
-    [Header("Spawn Settings")]
-    [Range(0f, 1f)] public float spawnChance = 1f; // chance among unlocked dishes
+    [Header("Visual Stages")]
+    [Tooltip("Ordered sprites for dish stages. Index 0 = dirtiest, last index = clean.")]
+    public Sprite[] stageSprites = new Sprite[0];
 
     [Header("UI")]
-    [Tooltip("Scale factor for the main dish button. 1 = baseline plate size, >1 = bigger, <1 = smaller.")]
+    [Tooltip("Per-dish UI scale applied in DishVisual.SetDish")]
     public float uiScale = 1f;
+
+    [Header("Gameplay")]
+    [Tooltip("Profit awarded per dish cleaned")]
+    public float profitPerDish = 1f;
+
+    [Tooltip("Number of dishes cleaned (total) required to unlock this dish")]
+    public int unlockAtDishCount = 0;
+
+    [Tooltip("Relative spawn chance used by DishSpawner")]
+    public float spawnChance = 1f;
 }

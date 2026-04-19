@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9bdb99a9c8c51d408242a5ec1b693ed, type: 3}
   m_Name: Pot
   m_EditorClassIdentifier: 
-  dishPrefab: {fileID: 0}
+  displayName: 
   stageSprites:
   - {fileID: 3070326459385301284, guid: c13c0d42172f19c4b8fb58cbd8c97b3a, type: 3}
+  - {fileID: -5563625151822641813, guid: 3c96f667083b2fa40acc7fd775d1bddb, type: 3}
   - {fileID: -3286540152097781196, guid: fb2c3567e892c3e42b4cbb0652a02aab, type: 3}
   - {fileID: -972021759591255991, guid: 1c2216f211046834687085203bc46035, type: 3}
+  uiScale: 0.375
   profitPerDish: 16
-  clicksRequired: 3
   unlockAtDishCount: 750
   spawnChance: 0.4
-  uiScale: 0.375
