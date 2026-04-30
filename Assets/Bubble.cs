@@ -18,6 +18,7 @@ public class Bubble : MonoBehaviour
     [SerializeField] float minX;
     [SerializeField] float maxX;
     [SerializeField] float spawnY;
+    [SerializeField] float spawnZ;
 
     [SerializeField] public float bubbleSpeed = 0f; // Upward movement speed
     [SerializeField] public float bubbleXAmplitude = 0f; // Distance bubble travels in x
@@ -64,8 +65,9 @@ public class Bubble : MonoBehaviour
 
             float x = Random.Range(minX, maxX);
             float y = bottomY - spawnBelowScreen;
+            float z = spawnZ;
 
-            Vector3 spawnPosition = new Vector3(x, y, 0);
+            Vector3 spawnPosition = new Vector3(x, y, z);
 
             // Spawn a random bubble prefab at the position
             GameObject spawnedBubble = Instantiate(
