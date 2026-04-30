@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -14,6 +13,7 @@ public class EmployeeManager : MonoBehaviour
         public string upgradeName;
         [TextArea] public string description;
         public Sprite icon;
+
         [Tooltip("Cost of this upgrade tier.")]
         public float cost = 100f;
     }
@@ -31,7 +31,7 @@ public class EmployeeManager : MonoBehaviour
         [Tooltip("Cost multiplier applied every time you buy one.")]
         public float costMultiplier = 1.15f;
 
-        [Tooltip("Dishes this employee completes per second (per one employee).")]
+        [Tooltip("Dishes this employee completes per second per one employee.")]
         public float dishesPerSecond = 0.5f;
 
         [Tooltip("Starting debuff applied to profit. 0.1 = 10% of dish value.")]
@@ -40,29 +40,32 @@ public class EmployeeManager : MonoBehaviour
         [Tooltip("How much the debuff increases per upgrade. Default 0.1 = +10%.")]
         public float debuffPerUpgrade = 0.1f;
 
+        [Header("First Purchase Animation")]
+        [Tooltip("Objects that appear when this employee type is bought for the first time.")]
+        public GameObject[] firstPurchaseAnimationObjects;
+
         [Header("Audio")]
         public AudioClip[] purchaseSfx;
 
-        [Header("Upgrade Tiers (per-employee debuff upgrades)")]
+        [Header("Upgrade Tiers")]
         public List<EmployeeUpgradeTier> upgrades = new List<EmployeeUpgradeTier>();
 
         [Header("UI References")]
-        public GameObject panelRoot;           // The whole employee panel in the scroll area
-        public Button buyButton;               // Buy employee button
-        public Button upgradeButton;           // Upgrade button for this employee
+        public GameObject panelRoot;
+        public Button buyButton;
+        public Button upgradeButton;
 
         public TMP_Text nameText;
         public TMP_Text costText;
         public TMP_Text countText;
-        public TMP_Text dishesPerSecondText;   // Shows total dishes/sec for this employee type
-        public TMP_Text profitPerSecondText;   // Shows total profit/sec for this employee type
-        public TMP_Text upgradeStatusText;     // Shows cost or "MAX"
+        public TMP_Text dishesPerSecondText;
+        public TMP_Text profitPerSecondText;
+        public TMP_Text upgradeStatusText;
 
-        public Image employeeImage;            // Normal employee image
-        public Image employeeBlackoutImage;    // Black overlay (active when unaffordable)
-        public Image upgradeImage;             // Current upgrade icon
+        public Image employeeImage;
+        public Image employeeBlackoutImage;
+        public Image upgradeImage;
 
-        // Runtime state
         [HideInInspector] public int count;
         [HideInInspector] public float currentCost;
         [HideInInspector] public int currentUpgradeIndex;
@@ -84,84 +87,50 @@ public class EmployeeManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private ScoreManager scoreManager;
-
-    [Header("Audio")]
-    [Tooltip("Optional: assign an AudioManager prefab (or scene object) that contains the SFX AudioSource. If provided and no AudioManager exists in scene, it will be instantiated.")]
-    [SerializeField] private GameObject audioManagerPrefab;
-    [Tooltip("Optional: explicitly assign the mixer group that should be used for employee SFX.")]
-    [SerializeField] private AudioMixerGroup sfxMixerGroup;
     [SerializeField] private AudioSource sfxSource;
 
     [Header("Employees")]
     [SerializeField] private List<EmployeeDefinition> employees = new List<EmployeeDefinition>();
 
     [Header("Employee Profit Tick")]
-    [Tooltip("How often employee profit is added (seconds).")]
+    [Tooltip("How often employee profit is added in seconds.")]
     [SerializeField] private float employeeProfitInterval = 1f;
+
     private float employeeProfitTimer = 0f;
 
     [Header("UI: Employees Menu")]
-    [SerializeField] private GameObject employeesPanel;      // Scrollable panel
-    [SerializeField] private GameObject helpWantedButton;   // Help Wanted button
-    [SerializeField] private GameObject closeButton;        // X close button
-
-    // [Header("UI: Description Text")]
-    //[SerializeField] private TMP_Text descriptionText;      // Shared description display
+    [SerializeField] private GameObject employeesPanel;
+    [SerializeField] private GameObject helpWantedButton;
+    [SerializeField] private GameObject closeButton;
 
     [Header("Profit Multipliers")]
-    [Tooltip("Extra global multiplier applied only to employee profit (soap upgrades call this).")]
+    [Tooltip("Extra global multiplier applied only to employee profit.")]
     [SerializeField] private float globalEmployeeProfitMultiplier = 1f;
 
     [Header("UI: Tooltip")]
-    [SerializeField] private Canvas canvas;           // parent canvas
+    [SerializeField] private Canvas canvas;
     [SerializeField] private RectTransform tooltipRoot;
     [SerializeField] private TMP_Text tooltipText;
     [SerializeField] private Vector2 tooltipOffset = new Vector2(16f, -16f);
 
     private void Reset()
     {
-        scoreManager = FindAnyObjectByType<ScoreManager>();
+        scoreManager = FindFirstObjectByType<ScoreManager>();
     }
 
     private void Awake()
     {
         if (scoreManager == null)
-            scoreManager = FindAnyObjectByType<ScoreManager>();
+            scoreManager = FindFirstObjectByType<ScoreManager>();
 
-        // If there's no AudioManager singleton but the inspector has an AudioManager prefab assigned,
-        // instantiate it so AudioManager.instance and its sfxSource become available.
-        if (AudioManager.instance == null && audioManagerPrefab != null)
-        {
-            // Instantiate the prefab (it should contain an AudioManager component that sets the singleton in Awake).
-            Instantiate(audioManagerPrefab);
-        }
-
-        // Resolve sfxSource:
-        // - Prefer an explicitly assigned sfxSource on this component.
-        // - Otherwise prefer the AudioManager.instance.sfxSource (centralized routing).
-        // - Otherwise create a local AudioSource fallback.
         if (sfxSource == null)
-        {
-            if (AudioManager.instance != null && AudioManager.instance.sfxSource != null)
-            {
-                sfxSource = AudioManager.instance.sfxSource;
-            }
-            else
-            {
-                sfxSource = gameObject.AddComponent<AudioSource>();
-            }
-        }
-
-        // Ensure the chosen sfxSource is routed to the intended mixer group when one is provided.
-        // Assigning this here allows you to explicitly point employee SFX to the SFX mixer group
-        // even if the AudioManager prefab has its AudioSource mis-routed.
-        if (sfxSource != null && sfxMixerGroup != null)
-        {
-            sfxSource.outputAudioMixerGroup = sfxMixerGroup;
-        }
+            sfxSource = gameObject.AddComponent<AudioSource>();
 
         foreach (var emp in employees)
+        {
             emp.InitializeRuntime();
+            HideEmployeeAnimationObjects(emp);
+        }
 
         WireButtons();
         InitMenuVisibility();
@@ -183,15 +152,14 @@ public class EmployeeManager : MonoBehaviour
 
     private void Update()
     {
-        // Employee profit tick
         employeeProfitTimer += Time.deltaTime;
+
         if (employeeProfitTimer >= employeeProfitInterval)
         {
             employeeProfitTimer = 0f;
             AddEmployeeProfits();
         }
 
-        // Close menu on outside click
         if (employeesPanel != null && employeesPanel.activeSelf && Input.GetMouseButtonDown(0))
         {
             if (EventSystem.current == null)
@@ -206,9 +174,11 @@ public class EmployeeManager : MonoBehaviour
             EventSystem.current.RaycastAll(pointerData, results);
 
             bool clickedInsidePanel = false;
+
             foreach (var r in results)
             {
                 if (r.gameObject == null) continue;
+
                 if (r.gameObject.transform.IsChildOf(employeesPanel.transform))
                 {
                     clickedInsidePanel = true;
@@ -219,7 +189,7 @@ public class EmployeeManager : MonoBehaviour
             if (!clickedInsidePanel)
                 CloseEmployeesPanel();
         }
-        // Tooltip follow
+
         if (tooltipRoot != null && tooltipRoot.gameObject.activeSelf)
         {
             UpdateTooltipPosition();
@@ -252,13 +222,21 @@ public class EmployeeManager : MonoBehaviour
         RefreshAllEmployeeUI();
     }
 
-    // ---------------- Menu controls ----------------
+    private void InitMenuVisibility()
+    {
+        if (!employeesPanel || !helpWantedButton || !closeButton) return;
+
+        employeesPanel.SetActive(false);
+        helpWantedButton.SetActive(true);
+        closeButton.SetActive(false);
+    }
 
     public void OpenEmployeesPanel()
     {
         if (employeesPanel) employeesPanel.SetActive(true);
         if (helpWantedButton) helpWantedButton.SetActive(false);
         if (closeButton) closeButton.SetActive(true);
+
         RefreshAllEmployeeUI();
     }
 
@@ -267,6 +245,7 @@ public class EmployeeManager : MonoBehaviour
         if (employeesPanel) employeesPanel.SetActive(false);
         if (helpWantedButton) helpWantedButton.SetActive(true);
         if (closeButton) closeButton.SetActive(false);
+
         ClearDescription();
     }
 
@@ -286,16 +265,6 @@ public class EmployeeManager : MonoBehaviour
             ClearDescription();
     }
 
-    private void InitMenuVisibility()
-    {
-        if (!employeesPanel || !helpWantedButton || !closeButton) return;
-        employeesPanel.SetActive(false);
-        helpWantedButton.SetActive(true);
-        closeButton.SetActive(false);
-    }
-
-    // ---------------- Buying employees ----------------
-
     public void BuyEmployee(int index)
     {
         if (scoreManager == null) return;
@@ -308,17 +277,71 @@ public class EmployeeManager : MonoBehaviour
         if (wallet < cost)
             return;
 
-        // Pay
+        bool thisEmployeeWasUnownedBeforePurchase = emp.count == 0;
+
         scoreManager.SubtractProfit(cost, isPurchase: true);
 
-        // Increment owned count
         emp.count++;
 
-        // Scale cost
+        if (thisEmployeeWasUnownedBeforePurchase)
+        {
+            PlayEmployeeFirstPurchaseAnimations(emp);
+        }
+
         emp.currentCost = Mathf.Max(0.01f, emp.currentCost * emp.costMultiplier);
 
         PlayPurchaseSfx(emp);
         RefreshAllEmployeeUI();
+    }
+
+    private void HideEmployeeAnimationObjects(EmployeeDefinition emp)
+    {
+        if (emp == null || emp.firstPurchaseAnimationObjects == null) return;
+
+        for (int i = 0; i < emp.firstPurchaseAnimationObjects.Length; i++)
+        {
+            GameObject obj = emp.firstPurchaseAnimationObjects[i];
+
+            if (obj != null)
+                obj.SetActive(false);
+        }
+    }
+
+    private void ShowEmployeeAnimationObjectsWithoutRestart(EmployeeDefinition emp)
+    {
+        if (emp == null || emp.firstPurchaseAnimationObjects == null) return;
+
+        for (int i = 0; i < emp.firstPurchaseAnimationObjects.Length; i++)
+        {
+            GameObject obj = emp.firstPurchaseAnimationObjects[i];
+
+            if (obj != null)
+                obj.SetActive(true);
+        }
+    }
+
+    private void PlayEmployeeFirstPurchaseAnimations(EmployeeDefinition emp)
+    {
+        if (emp == null || emp.firstPurchaseAnimationObjects == null) return;
+
+        for (int i = 0; i < emp.firstPurchaseAnimationObjects.Length; i++)
+        {
+            GameObject obj = emp.firstPurchaseAnimationObjects[i];
+
+            if (obj == null)
+                continue;
+
+            obj.SetActive(true);
+
+            Animator animator = obj.GetComponent<Animator>();
+
+            if (animator != null)
+            {
+                animator.enabled = true;
+                animator.Rebind();
+                animator.Update(0f);
+            }
+        }
     }
 
     private void PlayPurchaseSfx(EmployeeDefinition emp)
@@ -327,25 +350,22 @@ public class EmployeeManager : MonoBehaviour
             return;
 
         int idx = UnityEngine.Random.Range(0, emp.purchaseSfx.Length);
-        var clip = emp.purchaseSfx[idx];
-        if (clip == null) return;
+        AudioClip clip = emp.purchaseSfx[idx];
 
-        // Prefer centralized AudioManager if available so all SFX go through the same mixer / routing.
+        if (clip == null)
+            return;
+
         if (AudioManager.instance != null)
         {
-            // AudioManager.PlaySFX uses its sfxSource.PlayOneShot internally.
             AudioManager.instance.PlaySFX(clip);
             return;
         }
 
-        // Fallback to local AudioSource if AudioManager isn't present in the scene.
         if (sfxSource != null)
         {
             sfxSource.PlayOneShot(clip);
         }
     }
-
-    // ---------------- Upgrading employees (debuff tiers) ----------------
 
     public void BuyEmployeeUpgrade(int index)
     {
@@ -353,34 +373,32 @@ public class EmployeeManager : MonoBehaviour
         if (index < 0 || index >= employees.Count) return;
 
         var emp = employees[index];
-        if (emp.upgrades == null || emp.upgrades.Count == 0) return;
+
+        if (emp.upgrades == null || emp.upgrades.Count == 0)
+            return;
 
         if (emp.currentUpgradeIndex >= emp.upgrades.Count)
-            return; // already max
+            return;
 
         var tier = emp.upgrades[emp.currentUpgradeIndex];
 
         float wallet = scoreManager.GetTotalProfit();
+
         if (wallet < tier.cost)
             return;
 
-        // Pay
         scoreManager.SubtractProfit(tier.cost, isPurchase: true);
 
-        // Increase debuff for this employee
         emp.currentDebuff += emp.debuffPerUpgrade;
-
         emp.currentUpgradeIndex++;
+
         RefreshAllEmployeeUI();
     }
-
-    // ---------------- Profit tick ----------------
 
     private void AddEmployeeProfits()
     {
         if (scoreManager == null) return;
 
-        // Current profit per dish, including soap multiplier
         float baseDishProfit = scoreManager.GetProfitPerDish();
         float dishMultiplier = scoreManager.GetEffectiveDishProfitMultiplier();
         float effectivePerDish = baseDishProfit * dishMultiplier;
@@ -395,7 +413,9 @@ public class EmployeeManager : MonoBehaviour
         for (int i = 0; i < employees.Count; i++)
         {
             var emp = employees[i];
-            if (emp.count <= 0) continue;
+
+            if (emp.count <= 0)
+                continue;
 
             float dps = emp.GetTotalDishesPerSecond() * speedMultiplier;
             float debuff = Mathf.Max(emp.currentDebuff, 0f);
@@ -410,8 +430,6 @@ public class EmployeeManager : MonoBehaviour
             scoreManager.AddProfit(totalProfitDelta);
     }
 
-    // ---------------- UI refresh ----------------
-
     private void RefreshAllEmployeeUI()
     {
         if (scoreManager == null) return;
@@ -420,11 +438,12 @@ public class EmployeeManager : MonoBehaviour
         float baseDishProfit = scoreManager.GetProfitPerDish();
         float dishMultiplier = scoreManager.GetEffectiveDishProfitMultiplier();
         float effectivePerDish = baseDishProfit * dishMultiplier;
-
         float speedMultiplier = scoreManager.EmployeeSpeedMultiplier;
 
         for (int i = 0; i < employees.Count; i++)
+        {
             RefreshEmployeeUI(employees[i], wallet, effectivePerDish, speedMultiplier);
+        }
     }
 
     private void RefreshEmployeeUI(EmployeeDefinition emp, float wallet, float effectivePerDish, float speedMultiplier)
@@ -442,6 +461,7 @@ public class EmployeeManager : MonoBehaviour
             emp.costText.text = $"Cost: {BigNumberFormatter.FormatMoney(emp.currentCost)}";
 
         float totalDps = emp.GetTotalDishesPerSecond() * speedMultiplier;
+
         if (emp.dishesPerSecondText != null)
         {
             emp.dishesPerSecondText.text =
@@ -449,6 +469,7 @@ public class EmployeeManager : MonoBehaviour
         }
 
         float profitPerSecond = 0f;
+
         if (effectivePerDish > 0f && emp.count > 0)
         {
             float debuff = Mathf.Max(emp.currentDebuff, 0f);
@@ -466,19 +487,17 @@ public class EmployeeManager : MonoBehaviour
         if (emp.buyButton != null)
             emp.buyButton.interactable = canAffordEmployee;
 
-        // Grey out whole panel on unaffordable
-        var cg = emp.panelRoot.GetComponent<CanvasGroup>();
+        CanvasGroup cg = emp.panelRoot.GetComponent<CanvasGroup>();
+
         if (cg != null)
         {
             cg.alpha = canAffordEmployee ? 1f : 0.5f;
-            cg.interactable = true; // still allow hover
+            cg.interactable = true;
         }
 
-        // Blackout image when unaffordable
         if (emp.employeeBlackoutImage != null)
             emp.employeeBlackoutImage.gameObject.SetActive(!canAffordEmployee);
 
-        // Upgrade UI
         if (emp.upgradeButton != null || emp.upgradeStatusText != null || emp.upgradeImage != null)
         {
             if (emp.upgrades != null && emp.upgrades.Count > 0 && emp.currentUpgradeIndex < emp.upgrades.Count)
@@ -505,19 +524,16 @@ public class EmployeeManager : MonoBehaviour
         }
     }
 
-    // ---------------- Description hover API ----------------
-    // Hook these to EventTrigger.PointerEnter/Exit for each employee panel
-    // and upgrade image (pass the employee index).
-
     public void ShowEmployeeDescription(int index)
     {
         if (tooltipRoot == null || tooltipText == null) return;
         if (index < 0 || index >= employees.Count) return;
 
         var emp = employees[index];
-        tooltipText.text = emp.description;
 
+        tooltipText.text = emp.description;
         tooltipRoot.gameObject.SetActive(true);
+
         UpdateTooltipPosition();
     }
 
@@ -545,6 +561,7 @@ public class EmployeeManager : MonoBehaviour
 
         tooltipText.text = text;
         tooltipRoot.gameObject.SetActive(true);
+
         UpdateTooltipPosition();
     }
 
@@ -562,7 +579,6 @@ public class EmployeeManager : MonoBehaviour
         Vector2 screenPos = Input.mousePosition;
         Vector2 localPos;
 
-        // For Screen Space Overlay or Camera, this handles position conversion
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             canvas.transform as RectTransform,
             screenPos,
@@ -573,38 +589,34 @@ public class EmployeeManager : MonoBehaviour
         tooltipRoot.anchoredPosition = localPos + tooltipOffset;
     }
 
-
-
-    // ---------------- Public API for ScoreManager / Upgrades ----------------
-
-    /// <summary>
-    /// Sum of dishes per second from all employees.
-    /// ScoreManager uses this to feed the employee dish ticker.
-    /// </summary>
     public float GetTotalDishesPerSecond()
     {
         float total = 0f;
+
         for (int i = 0; i < employees.Count; i++)
+        {
             total += employees[i].GetTotalDishesPerSecond();
+        }
+
         return total;
     }
 
-    /// <summary>
-    /// Called by Upgrades to increase employee profit globally
-    /// in addition to dish profit multipliers.
-    /// </summary>
     public void MultiplyEmployeeProfit(float multiplier)
     {
         if (multiplier <= 0f) return;
+
         globalEmployeeProfitMultiplier *= multiplier;
         RefreshAllEmployeeUI();
     }
+
     public List<EmployeeSave> GetSaveState()
     {
         var list = new List<EmployeeSave>(employees.Count);
+
         for (int i = 0; i < employees.Count; i++)
         {
             var e = employees[i];
+
             list.Add(new EmployeeSave
             {
                 count = e.count,
@@ -613,6 +625,7 @@ public class EmployeeManager : MonoBehaviour
                 currentDebuff = e.currentDebuff
             });
         }
+
         return list;
     }
 
@@ -621,6 +634,7 @@ public class EmployeeManager : MonoBehaviour
         if (saved == null) return;
 
         int n = Mathf.Min(saved.Count, employees.Count);
+
         for (int i = 0; i < n; i++)
         {
             var s = saved[i];
@@ -630,6 +644,15 @@ public class EmployeeManager : MonoBehaviour
             e.currentCost = Mathf.Max(0.01f, s.currentCost);
             e.currentUpgradeIndex = Mathf.Max(0, s.currentUpgradeIndex);
             e.currentDebuff = Mathf.Max(0f, s.currentDebuff);
+
+            if (e.count > 0)
+            {
+                ShowEmployeeAnimationObjectsWithoutRestart(e);
+            }
+            else
+            {
+                HideEmployeeAnimationObjects(e);
+            }
         }
 
         RefreshAllEmployeeUI();
