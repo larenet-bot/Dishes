@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbc09c222f747df4fa0dff673d4d6ec5, type: 3}
+  m_Name: PERF_Singer_VeraSaint
+  m_EditorClassIdentifier: Assembly-CSharp::PerformerData
+  performerName: Vera Saint
+  role: 2
+  portrait: {fileID: 0}
+  cost: 720
+  talentScore: 94
+  temperamentText: Vera knows what she is worth and expects the band to know it too.
+    Give her a strong room and she can own the night.
+  worksWellWithText: She works best with confident players who make her sound untouchable
+    without fighting her for attention.
+  watchOutForText: She has no patience for rookies, weak timing, or anyone who needs
+    reassurance between songs.
+  personalityTags: 040000000800000007000000
+  likesTags: 080000000200000012000000
+  dislikesTags: 00000000010000000e000000

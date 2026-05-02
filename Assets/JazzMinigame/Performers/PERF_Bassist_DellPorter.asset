@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbc09c222f747df4fa0dff673d4d6ec5, type: 3}
+  m_Name: PERF_Bassist_DellPorter
+  m_EditorClassIdentifier: Assembly-CSharp::PerformerData
+  performerName: Dell Porter
+  role: 1
+  portrait: {fileID: 0}
+  cost: 260
+  talentScore: 58
+  temperamentText: Dell shows up early, tunes twice, and keeps the floor under everybody
+    else. He will not steal the night, but he will keep it from falling apart.
+  worksWellWithText: He works best with singers and soloists who respect the rhythm
+    section.
+  watchOutForText: He has little patience for divas, showboats, or players who treat
+    timing like a suggestion.
+  personalityTags: 020000001200000009000000
+  likesTags: 020000000b0000000d000000
+  dislikesTags: 040000000f0000000e000000

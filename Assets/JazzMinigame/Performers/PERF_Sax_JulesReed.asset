@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbc09c222f747df4fa0dff673d4d6ec5, type: 3}
+  m_Name: PERF_Sax_JulesReed
+  m_EditorClassIdentifier: Assembly-CSharp::PerformerData
+  performerName: Jules Reed
+  role: 3
+  portrait: {fileID: 0}
+  cost: 205
+  talentScore: 49
+  temperamentText: Jules is looking for someone to give her a shot, but she does
+    not know if she belongs with the stars.
+  worksWellWithText: She steadies herself around patient players who give her room
+    to find the tune.
+  watchOutForText: She gets rattled by loud performers who treat every set like a
+    battle.
+  personalityTags: 0000000001000000
+  likesTags: 030000000b00000002000000
+  dislikesTags: 05000000040000000f000000
