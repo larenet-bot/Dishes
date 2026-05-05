@@ -262,9 +262,15 @@ MonoBehaviour:
   temperamentText: {fileID: 171056684809491530}
   worksWellWithText: {fileID: 311959098212743088}
   watchOutForText: {fileID: 5399739462982020180}
+  backgroundImage: {fileID: 6128615680317851379}
   portraitImage: {fileID: 3251681778157421663}
   selectedMarker: {fileID: 6112631809809516190}
   unaffordableOverlay: {fileID: 6625689314138119483}
+  drummerColor: {r: 0.55, g: 0.18, b: 0.18, a: 1}
+  bassistColor: {r: 0.18, g: 0.32, b: 0.55, a: 1}
+  singerColor: {r: 0.45, g: 0.22, b: 0.55, a: 1}
+  saxPlayerColor: {r: 0.55, g: 0.42, b: 0.16, a: 1}
+  fallbackColor: {r: 0.25, g: 0.25, b: 0.25, a: 1}
   selectButton: {fileID: 7843571860776515087}
   selectButtonText: {fileID: 5674364954436715309}
   cardCanvasGroup: {fileID: 2665857608295306190}

@@ -10,6 +10,17 @@ public class JazzSelectedBandSlotUI : MonoBehaviour
     [Header("References")]
     [SerializeField] private JazzBandBookingManager bookingManager;
 
+    [Header("Background")]
+    [Tooltip("The Image component used as this slot's background.")]
+    [SerializeField] private Image backgroundImage;
+
+    [Header("Role Colors")]
+    [SerializeField] private Color drummerColor = new Color(0.55f, 0.18f, 0.18f);
+    [SerializeField] private Color bassistColor = new Color(0.18f, 0.32f, 0.55f);
+    [SerializeField] private Color singerColor = new Color(0.45f, 0.22f, 0.55f);
+    [SerializeField] private Color saxPlayerColor = new Color(0.55f, 0.42f, 0.16f);
+    [SerializeField] private Color fallbackColor = new Color(0.25f, 0.25f, 0.25f);
+
     [Header("Text")]
     [SerializeField] private TMP_Text roleText;
     [SerializeField] private TMP_Text performerNameText;
@@ -31,6 +42,9 @@ public class JazzSelectedBandSlotUI : MonoBehaviour
 
     private void Awake()
     {
+        if (backgroundImage == null)
+            backgroundImage = GetComponent<Image>();
+
         if (removeButton != null)
         {
             removeButton.onClick.RemoveAllListeners();
@@ -69,6 +83,8 @@ public class JazzSelectedBandSlotUI : MonoBehaviour
         if (bookingManager == null)
             bookingManager = JazzBandBookingManager.Instance;
 
+        RefreshRoleColor();
+
         if (roleText != null)
             roleText.text = GetRoleDisplayName(role);
 
@@ -87,6 +103,35 @@ public class JazzSelectedBandSlotUI : MonoBehaviour
         }
 
         ShowFilled(selected);
+    }
+
+    private void RefreshRoleColor()
+    {
+        if (backgroundImage == null)
+            return;
+
+        backgroundImage.color = GetColorForRole(role);
+    }
+
+    private Color GetColorForRole(PerformerRole roleToColor)
+    {
+        switch (roleToColor)
+        {
+            case PerformerRole.Drummer:
+                return drummerColor;
+
+            case PerformerRole.Bassist:
+                return bassistColor;
+
+            case PerformerRole.Singer:
+                return singerColor;
+
+            case PerformerRole.SaxPlayer:
+                return saxPlayerColor;
+
+            default:
+                return fallbackColor;
+        }
     }
 
     private void ShowEmpty()

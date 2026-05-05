@@ -20,6 +20,9 @@ public class JazzPerformerCardUI : MonoBehaviour
     [SerializeField] private TMP_Text watchOutForText;
 
     [Header("Images")]
+    [Tooltip("The Image component used as the card background.")]
+    [SerializeField] private Image backgroundImage;
+
     [SerializeField] private Image portraitImage;
 
     [Tooltip("Optional image or object used to show that this card is selected.")]
@@ -27,6 +30,13 @@ public class JazzPerformerCardUI : MonoBehaviour
 
     [Tooltip("Optional dark overlay shown when the performer cannot be afforded.")]
     [SerializeField] private GameObject unaffordableOverlay;
+
+    [Header("Role Colors")]
+    [SerializeField] private Color drummerColor = new Color(0.55f, 0.18f, 0.18f);
+    [SerializeField] private Color bassistColor = new Color(0.18f, 0.32f, 0.55f);
+    [SerializeField] private Color singerColor = new Color(0.45f, 0.22f, 0.55f);
+    [SerializeField] private Color saxPlayerColor = new Color(0.55f, 0.42f, 0.16f);
+    [SerializeField] private Color fallbackColor = new Color(0.25f, 0.25f, 0.25f);
 
     [Header("Button")]
     [SerializeField] private Button selectButton;
@@ -40,7 +50,13 @@ public class JazzPerformerCardUI : MonoBehaviour
     [Range(0.1f, 1f)]
     [SerializeField] private float unaffordableAlpha = 0.55f;
 
-    private bool isInitialized;
+    private void Awake()
+    {
+        if (backgroundImage == null)
+            backgroundImage = GetComponent<Image>();
+
+        WireButton();
+    }
 
     private void OnEnable()
     {
@@ -57,8 +73,6 @@ public class JazzPerformerCardUI : MonoBehaviour
     {
         performerData = data;
         bookingManager = manager;
-
-        isInitialized = true;
 
         WireButton();
         SubscribeToManagerEvent();
@@ -124,6 +138,7 @@ public class JazzPerformerCardUI : MonoBehaviour
 
         RefreshText();
         RefreshPortrait();
+        RefreshRoleColor();
         RefreshSelectionState();
     }
 
@@ -167,6 +182,35 @@ public class JazzPerformerCardUI : MonoBehaviour
         }
     }
 
+    private void RefreshRoleColor()
+    {
+        if (backgroundImage == null || performerData == null)
+            return;
+
+        backgroundImage.color = GetColorForRole(performerData.role);
+    }
+
+    private Color GetColorForRole(PerformerRole role)
+    {
+        switch (role)
+        {
+            case PerformerRole.Drummer:
+                return drummerColor;
+
+            case PerformerRole.Bassist:
+                return bassistColor;
+
+            case PerformerRole.Singer:
+                return singerColor;
+
+            case PerformerRole.SaxPlayer:
+                return saxPlayerColor;
+
+            default:
+                return fallbackColor;
+        }
+    }
+
     private void RefreshSelectionState()
     {
         bool hasManager = bookingManager != null;
@@ -192,33 +236,26 @@ public class JazzPerformerCardUI : MonoBehaviour
             cardCanvasGroup.alpha = (!isSelected && !canAfford) ? unaffordableAlpha : 1f;
 
         if (selectButton != null)
-        {
             selectButton.interactable = !isSelected && canAfford;
-        }
 
         if (selectButtonText != null)
         {
             if (isSelected)
-            {
                 selectButtonText.text = "Selected";
-            }
             else if (!canAfford)
-            {
                 selectButtonText.text = "Too Expensive";
-            }
             else if (roleAlreadyFilledBySomeoneElse)
-            {
                 selectButtonText.text = "Replace";
-            }
             else
-            {
                 selectButtonText.text = "Select";
-            }
         }
     }
 
     private void ClearCard()
     {
+        if (backgroundImage != null)
+            backgroundImage.color = fallbackColor;
+
         if (nameText != null)
             nameText.text = "No Performer";
 
