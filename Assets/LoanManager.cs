@@ -12,19 +12,22 @@ public class LoanManager : MonoBehaviour
     {
         [Header("Loan")]
         public string loanName = "Starter Loan";
-        [Tooltip("Amount due to clear this loan tier (single payment).")]
+        [Tooltip("Amount due to clear this loan tier as a single payment.")]
         public float amount = 100f;
 
         [Header("Optional Scene Jump")]
         [Tooltip("If true, paying this loan will load the scene below.")]
         public bool loadSceneOnPay = false;
 
-        [Tooltip("Scene to load after paying this loan (e.g., a cutscene or shop).")]
+        [Tooltip("Scene to load after paying this loan, such as a cutscene.")]
         public string sceneName = "";
     }
 
+    public static event Action<string, bool> OnKitchenLoanStateChanged;
+    public static event Action<string> OnKitchenAllLoansPaid;
+
     [Header("References")]
-    [Tooltip("Reference to ScoreManager (auto-finds if left empty).")]
+    [Tooltip("Reference to ScoreManager. Auto-finds if left empty.")]
     [SerializeField] private ScoreManager scoreManager;
 
     [Tooltip("Button the player clicks to pay off the current loan.")]
@@ -33,30 +36,50 @@ public class LoanManager : MonoBehaviour
     [Tooltip("Text component shown on the pay button.")]
     [SerializeField] private TMP_Text payButtonText;
 
-    [Header("Loan Tiers (like Upgrades)")]
+    [Header("Loan Tiers")]
     [Tooltip("Add as many loan tiers as you want, in order.")]
     public List<LoanTier> loanTiers = new List<LoanTier>();
 
-    [Header("State / Persistence (optional)")]
-    [Tooltip("Save and load current loan index in PlayerPrefs.")]
+    [Header("Kitchen Scope")]
+    [Tooltip("Use a different loan progress key for each kitchen scene.")]
+    [SerializeField] private bool useKitchenScopedLoanProgress = true;
+
+    [Tooltip("Unique id for this kitchen. Use the same id in KitchenBusinessMenu.")]
+    [SerializeField] private string kitchenId = "kitchen_1";
+
+    [Tooltip("Only turn this on in Kitchen 1 if you need to import the old global loan save once.")]
+    [SerializeField] private bool allowGlobalSaveMigrationForThisKitchen = false;
+
+    [Tooltip("Turn this on for Kitchen 1. When all its loans are paid, the Other Businesses button becomes available.")]
+    [SerializeField] private bool unlockOtherBusinessesWhenAllLoansPaid = false;
+
+    [Header("Legacy / Optional Persistence")]
+    [Tooltip("Older fallback. Kitchen-scoped progress is preferred for multiple kitchens.")]
     public bool usePersistence = false;
 
-    [Tooltip("PlayerPrefs key used if persistence is enabled.")]
+    [Tooltip("Base PlayerPrefs key used if persistence is enabled.")]
     public string prefsKey_CurrentLoanIndex = "LOAN_CURRENT_INDEX";
 
     private int currentLoanIndex = 0;
+    private bool lastAllLoansPaidState = false;
+
+    private string KitchenScopedLoanPrefsKey
+    {
+        get { return $"{prefsKey_CurrentLoanIndex}_{kitchenId}"; }
+    }
 
     private void Reset()
     {
-        scoreManager = FindAnyObjectByType<ScoreManager>();
+        scoreManager = FindFirstObjectByType<ScoreManager>();
     }
 
     private void Awake()
     {
         if (scoreManager == null)
-            scoreManager = FindAnyObjectByType<ScoreManager>();
+        {
+            scoreManager = FindFirstObjectByType<ScoreManager>();
+        }
 
-        // Seed a couple tiers so the component works out-of-the-box
         if (loanTiers.Count == 0)
         {
             loanTiers.Add(new LoanTier { loanName = "Starter Loan", amount = 100f, loadSceneOnPay = false });
@@ -64,26 +87,69 @@ public class LoanManager : MonoBehaviour
             loanTiers.Add(new LoanTier { loanName = "Mega Loan", amount = 10000f, loadSceneOnPay = false });
         }
 
-        if (usePersistence)
-            currentLoanIndex = PlayerPrefs.GetInt(prefsKey_CurrentLoanIndex, 0);
+        LoadLoanProgressFromPrefs();
 
         if (payLoanButton != null)
         {
             payLoanButton.onClick.RemoveAllListeners();
             payLoanButton.onClick.AddListener(OnPayLoanClicked);
         }
+
+        ApplyProgressionFlags();
     }
 
     private void OnEnable()
     {
-        // Keep button text/interactable synced with player funds
-        ScoreManager.OnProfitChanged += RefreshUI; // uses the same event pattern as EmployeeManager. 
+        ScoreManager.OnProfitChanged += RefreshUI;
         RefreshUI();
     }
 
     private void OnDisable()
     {
         ScoreManager.OnProfitChanged -= RefreshUI;
+    }
+
+    private void LoadLoanProgressFromPrefs()
+    {
+        if (useKitchenScopedLoanProgress)
+        {
+            if (PlayerPrefs.HasKey(KitchenScopedLoanPrefsKey))
+            {
+                currentLoanIndex = PlayerPrefs.GetInt(KitchenScopedLoanPrefsKey, 0);
+            }
+            else
+            {
+                currentLoanIndex = 0;
+            }
+
+            currentLoanIndex = ClampLoanIndex(currentLoanIndex);
+            return;
+        }
+
+        if (usePersistence)
+        {
+            currentLoanIndex = ClampLoanIndex(PlayerPrefs.GetInt(prefsKey_CurrentLoanIndex, 0));
+        }
+    }
+
+    private void SaveLoanProgressToPrefs()
+    {
+        if (useKitchenScopedLoanProgress)
+        {
+            PlayerPrefs.SetInt(KitchenScopedLoanPrefsKey, currentLoanIndex);
+        }
+        else if (usePersistence)
+        {
+            PlayerPrefs.SetInt(prefsKey_CurrentLoanIndex, currentLoanIndex);
+        }
+
+        PlayerPrefs.Save();
+    }
+
+    private int ClampLoanIndex(int index)
+    {
+        int max = loanTiers != null ? loanTiers.Count : 0;
+        return Mathf.Clamp(index, 0, max);
     }
 
     private bool HasActiveLoan()
@@ -93,79 +159,140 @@ public class LoanManager : MonoBehaviour
 
     private void RefreshUI()
     {
+        ApplyProgressionFlags();
+
         if (!HasActiveLoan())
         {
-            // Hide or disable UI once all loans are done
-            if (payLoanButton) payLoanButton.interactable = false;
-            if (payButtonText) payButtonText.text = "All loans paid";
+            if (payLoanButton != null) payLoanButton.interactable = false;
+            if (payButtonText != null) payButtonText.text = "All loans paid";
             return;
         }
 
-        var tier = loanTiers[currentLoanIndex];
-        float wallet = scoreManager ? scoreManager.GetTotalProfit() : 0f;
+        LoanTier tier = loanTiers[currentLoanIndex];
+        float wallet = scoreManager != null ? scoreManager.GetTotalProfit() : 0f;
         bool canAfford = wallet >= tier.amount;
 
-        if (payLoanButton) payLoanButton.interactable = canAfford; // greys out automatically when false
-
-        // Always use BigNumberFormatter (money) for the amount
-        if (payButtonText)
+        if (payLoanButton != null)
         {
-            string amountStr = BigNumberFormatter.FormatMoney(tier.amount);
-            // Example: "Pay off loan: $100" and scales as amounts grow
-            payButtonText.text = $"Pay off loan: {amountStr}";
+            payLoanButton.interactable = canAfford;
+        }
+
+        if (payButtonText != null)
+        {
+            string amountText = BigNumberFormatter.FormatMoney((double)tier.amount);
+            payButtonText.text = $"Pay off loan: {amountText}";
         }
     }
 
     public void OnPayLoanClicked()
     {
-        if (!HasActiveLoan() || scoreManager == null) return;
+        if (!HasActiveLoan() || scoreManager == null)
+        {
+            return;
+        }
 
-        var tier = loanTiers[currentLoanIndex];
+        LoanTier tier = loanTiers[currentLoanIndex];
         float wallet = scoreManager.GetTotalProfit();
 
         if (wallet < tier.amount)
-            return; // should already be greyed out, but double-guard
-
-        // Subtract from wallet as a purchase so your profit rate calc stays accurate
-        scoreManager.SubtractProfit(tier.amount, isPurchase: true); // mirrors your other purchases
-
-        // Advance to the next loan tier
-        currentLoanIndex++;
-
-        // Force-save immediately so a scene change can't "skip" the new index
-        if (SaveManager.Instance != null)
-            SaveManager.Instance.Save();
-
-        if (usePersistence)
         {
-            PlayerPrefs.SetInt(prefsKey_CurrentLoanIndex, currentLoanIndex);
-            PlayerPrefs.Save();
+            return;
         }
 
-        // Optional scene load for this tier
+        // Loans are purchases. This keeps ProfitRate from treating the payment as negative income.
+        scoreManager.SubtractProfit(tier.amount, isPurchase: true);
+
+        currentLoanIndex = ClampLoanIndex(currentLoanIndex + 1);
+        SaveLoanProgressToPrefs();
+        ApplyProgressionFlags();
+
+        if (SaveManager.Instance != null)
+        {
+            SaveManager.Instance.Save();
+        }
+
         if (tier.loadSceneOnPay && !string.IsNullOrEmpty(tier.sceneName))
         {
             SceneManager.LoadScene(tier.sceneName);
-            return; // scene is changing; no need to refresh here
+            return;
         }
 
         RefreshUI();
     }
-    // SaveManager needs the raw value (can equal loanTiers.Count meaning "all loans paid")
+
+    private void ApplyProgressionFlags()
+    {
+        bool allLoansPaid = AllLoansPaid();
+
+        KitchenBusinessProgress.SetKitchenLoansPaid(kitchenId, allLoansPaid);
+
+        if (allLoansPaid && unlockOtherBusinessesWhenAllLoansPaid)
+        {
+            KitchenBusinessProgress.SetOtherBusinessesUnlocked(true);
+        }
+
+        if (allLoansPaid != lastAllLoansPaidState)
+        {
+            OnKitchenLoanStateChanged?.Invoke(kitchenId, allLoansPaid);
+
+            if (allLoansPaid)
+            {
+                OnKitchenAllLoansPaid?.Invoke(kitchenId);
+            }
+
+            lastAllLoansPaidState = allLoansPaid;
+        }
+    }
+
+    public bool AllLoansPaid()
+    {
+        return !HasActiveLoan();
+    }
+
+    public int GetCurrentLoanIndex()
+    {
+        if (loanTiers == null || loanTiers.Count == 0)
+        {
+            return 0;
+        }
+
+        return Mathf.Clamp(currentLoanIndex, 0, loanTiers.Count - 1);
+    }
+
     public int GetLoanIndexForSave()
     {
         return currentLoanIndex;
     }
 
-    // Allow restoring "all loans paid" state too
     public void ApplyLoanIndexFromSave(int index)
     {
-        int max = (loanTiers != null) ? loanTiers.Count : 0;   // allow == Count
-        currentLoanIndex = Mathf.Clamp(index, 0, max);
+        if (useKitchenScopedLoanProgress)
+        {
+            if (PlayerPrefs.HasKey(KitchenScopedLoanPrefsKey))
+            {
+                currentLoanIndex = ClampLoanIndex(PlayerPrefs.GetInt(KitchenScopedLoanPrefsKey, 0));
+            }
+            else if (allowGlobalSaveMigrationForThisKitchen)
+            {
+                currentLoanIndex = ClampLoanIndex(index);
+                SaveLoanProgressToPrefs();
+            }
+            else
+            {
+                currentLoanIndex = 0;
+            }
+        }
+        else
+        {
+            currentLoanIndex = ClampLoanIndex(index);
+        }
+
+        ApplyProgressionFlags();
         RefreshUI();
     }
 
-    // Optional helpers if you want to manipulate loans from other scripts
-    public bool AllLoansPaid() => !HasActiveLoan();
-    public int GetCurrentLoanIndex() => Mathf.Clamp(currentLoanIndex, 0, loanTiers.Count - 1);
+    public string GetKitchenId()
+    {
+        return kitchenId;
+    }
 }
