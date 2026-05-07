@@ -64,6 +64,8 @@ public static class MiniScoreManager
     public static void AddWrongPress()
     {
         WrongPresses++;
+        // Also count wrong presses as misses
+        Misses++;
         Score += wrongPressValue;
         OnScoreUpdated?.Invoke();
     }

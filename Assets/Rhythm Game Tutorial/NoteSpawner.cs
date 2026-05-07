@@ -378,6 +378,20 @@ public class NoteSpawner : MonoBehaviour
         Transform spawnPoint = laneSpawnPoints[safeLane];
         Vector3 spawnPosition = spawnPoint.position + new Vector3(0, spawnYOffset, 0);
 
+        // Defensive check: ensure spawn is not at the same Y as the hit line.
+        if (hitLineTransform != null)
+        {
+            float distance = spawnPosition.y - hitLineTransform.position.y;
+            const float minDistance = 0.05f; // small safe minimum distance in world units
+
+            if (Mathf.Abs(distance) < minDistance)
+            {
+                // nudge spawn position above the hit line so the note can scroll
+                spawnPosition.y = hitLineTransform.position.y + minDistance;
+                Debug.LogWarning($"[NoteSpawner] Spawn point {spawnPoint.name} is too close to HitLine. Nudging spawn Y by {minDistance:0.00} to avoid zero scrollSpeed.");
+            }
+        }
+
         // normalize z for common 2D camera setups so sprite is in front of camera
         if (Camera.main != null)
             spawnPosition.z = 0f;

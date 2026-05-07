@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Note : MonoBehaviour
@@ -21,6 +22,21 @@ public class Note : MonoBehaviour
 
     // store the original sprite so we can restore it on exit
     private Sprite originalSprite;
+
+    // Glow settings
+    [Header("Glow")]
+    [Tooltip("Enable a simple pulsing glow when the note is in the hit area.")]
+    public bool enableGlow = true;
+    [Tooltip("Glow color (alpha controls max glow intensity).")]
+    public Color glowColor = new Color(1f, 0.9f, 0.4f, 0.6f);
+    [Tooltip("How much larger the glow sprite is compared to the note.")]
+    public float glowScaleMultiplier = 1.4f;
+    [Tooltip("Pulse speed of the glow.")]
+    public float glowPulseSpeed = 2f;
+
+    private GameObject glowObj;
+    private SpriteRenderer glowSpriteRenderer;
+    private Coroutine glowPulseCoroutine;
 
     // Optional DSP-aware fields (set by spawner.Initialize)
     private double songStartDspTime = -1.0;
@@ -81,7 +97,8 @@ public class Note : MonoBehaviour
         if (hitWindow != null)
             hitWindow.JudgeNoteHit(timeDifference);
 
-        // Destroy immediately to avoid MISS on trigger exit
+        // cleanup any glow and then destroy immediately to avoid MISS on trigger exit
+        DestroyGlow();
         Destroy(gameObject);
     }
 
@@ -102,6 +119,9 @@ public class Note : MonoBehaviour
                     noteSprite.sprite = hitSprite;
 
                 noteSprite.color = highlightColor;
+
+                // create glow halo
+                CreateGlow();
             }
         }
     }
@@ -126,7 +146,79 @@ public class Note : MonoBehaviour
                     noteSprite.sprite = originalSprite;
             }
 
+            // remove glow and destroy
+            DestroyGlow();
             Destroy(gameObject);
+        }
+    }
+
+    private void CreateGlow()
+    {
+        if (!enableGlow) return;
+        if (noteSprite == null) return;
+        if (noteSprite.sprite == null) return;
+        if (glowObj != null) return;
+
+        glowObj = new GameObject("Glow");
+        glowObj.transform.SetParent(noteSprite.transform, false);
+        glowObj.transform.localPosition = Vector3.zero;
+        glowObj.transform.localRotation = Quaternion.identity;
+        glowObj.transform.localScale = Vector3.one * glowScaleMultiplier;
+
+        glowSpriteRenderer = glowObj.AddComponent<SpriteRenderer>();
+        glowSpriteRenderer.sprite = noteSprite.sprite;
+
+        // try to match sorting layer and put glow behind the note
+        try
+        {
+            glowSpriteRenderer.sortingLayerName = noteSprite.sortingLayerName;
+            glowSpriteRenderer.sortingOrder = noteSprite.sortingOrder - 1;
+        }
+        catch { /* ignore if sorting layer not found */ }
+
+        Color c = glowColor;
+        // ensure base alpha is preserved as max intensity
+        glowSpriteRenderer.color = c;
+
+        // use same material if available, otherwise default sprite shader
+        glowSpriteRenderer.sharedMaterial = noteSprite.sharedMaterial != null
+            ? noteSprite.sharedMaterial
+            : new Material(Shader.Find("Sprites/Default"));
+
+        glowPulseCoroutine = StartCoroutine(GlowPulse());
+    }
+
+    private IEnumerator GlowPulse()
+    {
+        if (glowSpriteRenderer == null) yield break;
+
+        float t = 0f;
+        Color baseColor = glowSpriteRenderer.color;
+        float baseAlpha = baseColor.a;
+        while (true)
+        {
+            t += Time.deltaTime * glowPulseSpeed;
+            float pulse = (Mathf.Sin(t) * 0.5f + 0.5f); // 0..1
+            baseColor.a = Mathf.Clamp01(pulse * baseAlpha);
+            if (glowSpriteRenderer != null)
+                glowSpriteRenderer.color = baseColor;
+            yield return null;
+        }
+    }
+
+    private void DestroyGlow()
+    {
+        if (glowPulseCoroutine != null)
+        {
+            try { StopCoroutine(glowPulseCoroutine); } catch { }
+            glowPulseCoroutine = null;
+        }
+
+        if (glowObj != null)
+        {
+            try { Destroy(glowObj); } catch { }
+            glowObj = null;
+            glowSpriteRenderer = null;
         }
     }
 }
