@@ -28348,7 +28348,7 @@ Canvas:
   m_GameObject: {fileID: 1037320923}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -29564,6 +29564,7 @@ GameObject:
   - component: {fileID: 1097547886}
   - component: {fileID: 1097547885}
   - component: {fileID: 1097547887}
+  - component: {fileID: 1097547888}
   m_Layer: 0
   m_Name: ImmortalGameObject
   m_TagString: Untagged
@@ -29622,6 +29623,19 @@ MonoBehaviour:
   showPerKitchenBreakdown: 1
   showDishEarnings: 1
   titleLine: Offline Earnings
+--- !u!114 &1097547888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097547884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb4f6fe562835164b915c226fc11a669, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  debugKey: 290
 --- !u!1 &1102598875
 GameObject:
   m_ObjectHideFlags: 0
@@ -49637,7 +49651,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -53939,7 +53953,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1996267550
 Transform:
   m_ObjectHideFlags: 0
