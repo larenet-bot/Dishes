@@ -53,9 +53,6 @@ public class LoanManager : MonoBehaviour
     [Tooltip("Turn this on for Kitchen 1. When all its loans are paid, the Other Businesses button becomes available.")]
     [SerializeField] private bool unlockOtherBusinessesWhenAllLoansPaid = false;
 
-    [Tooltip("When SaveManager applies a kitchen save, use the JSON loan index as the authority and mirror it to PlayerPrefs.")]
-    [SerializeField] private bool preferSaveManagerLoanIndex = true;
-
     [Header("Legacy / Optional Persistence")]
     [Tooltip("Older fallback. Kitchen-scoped progress is preferred for multiple kitchens.")]
     public bool usePersistence = false;
@@ -269,12 +266,7 @@ public class LoanManager : MonoBehaviour
 
     public void ApplyLoanIndexFromSave(int index)
     {
-        if (preferSaveManagerLoanIndex)
-        {
-            currentLoanIndex = ClampLoanIndex(index);
-            SaveLoanProgressToPrefs();
-        }
-        else if (useKitchenScopedLoanProgress)
+        if (useKitchenScopedLoanProgress)
         {
             if (PlayerPrefs.HasKey(KitchenScopedLoanPrefsKey))
             {

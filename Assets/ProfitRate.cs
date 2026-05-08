@@ -29,7 +29,11 @@ public class ProfitRate : MonoBehaviour
 
     void Start()
     {
-        ResetBaseline();
+        if (ScoreManager.Instance != null)
+        {
+            currentProfit = ScoreManager.Instance.GetTotalProfit();
+            previousProfit = currentProfit;
+        }
     }
 
     private void Update()
@@ -62,32 +66,8 @@ public class ProfitRate : MonoBehaviour
 
     private void UpdateUI()
     {
-        if (profitRateText != null)
-        {
-            profitRateText.text = $"{BigNumberFormatter.FormatMoney((double)averageProfit)}/second";
-        }
-    }
-
-    public void ResetBaseline()
-    {
-        timer = 0f;
-        averageProfit = 0f;
-
-        if (ScoreManager.Instance != null)
-        {
-            currentProfit = ScoreManager.Instance.GetTotalProfit();
-            previousProfit = currentProfit;
-        }
-        else
-        {
-            currentProfit = 0f;
-            previousProfit = 0f;
-        }
-
-        ScoreManager.PendingProfitAdjustment = 0f;
-        ScoreManager.PendingRewardAdjustment = 0f;
-
-        UpdateUI();
+        //profitRateText.text = $"${averageProfit:0.00/second}";
+        profitRateText.text = $"{BigNumberFormatter.FormatMoney(averageProfit)}/second";
     }
 
     public float AverageProfit => averageProfit;

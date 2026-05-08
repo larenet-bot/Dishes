@@ -609,31 +609,6 @@ public class EmployeeManager : MonoBehaviour
         RefreshAllEmployeeUI();
     }
 
-    public float GetGlobalEmployeeProfitMultiplierForSave()
-    {
-        return globalEmployeeProfitMultiplier > 0f ? globalEmployeeProfitMultiplier : 1f;
-    }
-
-    public void SetGlobalEmployeeProfitMultiplierFromSave(float multiplier)
-    {
-        globalEmployeeProfitMultiplier = multiplier > 0f ? multiplier : 1f;
-        RefreshAllEmployeeUI();
-    }
-
-    public void ResetEmployeesToDefaults()
-    {
-        employeeProfitTimer = 0f;
-        globalEmployeeProfitMultiplier = 1f;
-
-        for (int i = 0; i < employees.Count; i++)
-        {
-            employees[i].InitializeRuntime();
-            HideEmployeeAnimationObjects(employees[i]);
-        }
-
-        RefreshAllEmployeeUI();
-    }
-
     public List<EmployeeSave> GetSaveState()
     {
         var list = new List<EmployeeSave>(employees.Count);
@@ -656,39 +631,27 @@ public class EmployeeManager : MonoBehaviour
 
     public void ApplySaveState(List<EmployeeSave> saved)
     {
-        ApplySaveState(saved, 1f);
-    }
+        if (saved == null) return;
 
-    public void ApplySaveState(List<EmployeeSave> saved, float savedGlobalEmployeeProfitMultiplier)
-    {
-        ResetEmployeesToDefaults();
+        int n = Mathf.Min(saved.Count, employees.Count);
 
-        globalEmployeeProfitMultiplier = savedGlobalEmployeeProfitMultiplier > 0f
-            ? savedGlobalEmployeeProfitMultiplier
-            : 1f;
-
-        if (saved != null)
+        for (int i = 0; i < n; i++)
         {
-            int n = Mathf.Min(saved.Count, employees.Count);
+            var s = saved[i];
+            var e = employees[i];
 
-            for (int i = 0; i < n; i++)
+            e.count = Mathf.Max(0, s.count);
+            e.currentCost = Mathf.Max(0.01f, s.currentCost);
+            e.currentUpgradeIndex = Mathf.Max(0, s.currentUpgradeIndex);
+            e.currentDebuff = Mathf.Max(0f, s.currentDebuff);
+
+            if (e.count > 0)
             {
-                var s = saved[i];
-                var e = employees[i];
-
-                e.count = Mathf.Max(0, s.count);
-                e.currentCost = Mathf.Max(0.01f, s.currentCost);
-                e.currentUpgradeIndex = Mathf.Max(0, s.currentUpgradeIndex);
-                e.currentDebuff = Mathf.Max(0f, s.currentDebuff);
-
-                if (e.count > 0)
-                {
-                    ShowEmployeeAnimationObjectsWithoutRestart(e);
-                }
-                else
-                {
-                    HideEmployeeAnimationObjects(e);
-                }
+                ShowEmployeeAnimationObjectsWithoutRestart(e);
+            }
+            else
+            {
+                HideEmployeeAnimationObjects(e);
             }
         }
 
