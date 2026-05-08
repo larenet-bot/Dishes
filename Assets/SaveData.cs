@@ -4,30 +4,36 @@ using System.Collections.Generic;
 [Serializable]
 public class SaveData
 {
-    public int saveVersion = 2;
+    public int saveVersion = 4;
 
-    // New multi-kitchen save container.
-    public List<KitchenSaveData> kitchens = new List<KitchenSaveData>();
-
-    // ---- Legacy single-kitchen fields ----
-    // These are kept so old save.json files can be migrated into kitchen_1.
-    public long totalDishes;
-    public float totalProfit;
+    // Legacy single-kitchen fields. These are still mirrored from kitchen_1 so old debugging
+    // tools or old fallback paths do not immediately break.
+    public long totalDishes = 0;
+    public float totalProfit = 0f;
     public int dishCountIncrement = 1;
+    public float profitPerDish = 1f;
     public float dishProfitMultiplier = 1f;
 
-    public int currentSoapIndex;
-    public int currentGloveIndex;
-    public int currentSpongeIndex;
-    public bool radioOwned;
+    public int currentSoapIndex = 0;
+    public int currentGloveIndex = 0;
+    public int currentSpongeIndex = 0;
+    public bool radioOwned = false;
 
     public List<EmployeeSave> employees = new List<EmployeeSave>();
     public float employeeProfitMultiplier = 1f;
 
-    public int currentSinkType;
+    public int currentSinkType = 0;
     public List<string> purchasedSinkNodeIds = new List<string>();
 
-    public int currentLoanIndex;
+    public int currentLoanIndex = 0;
+
+    // Legacy mirror of background earnings fields for kitchen_1.
+    public float cachedMoneyPerSecond = 0f;
+    public float cachedDishesPerSecond = 0f;
+    public long lastBackgroundEarningsUnixSeconds = 0;
+    public float backgroundDishFraction = 0f;
+
+    public List<KitchenSaveData> kitchens = new List<KitchenSaveData>();
 }
 
 [Serializable]
@@ -35,36 +41,42 @@ public class KitchenSaveData
 {
     public string kitchenId = "kitchen_1";
 
-    // MoneyUI / score state.
-    public long totalDishes;
-    public float totalProfit;
+    public long totalDishes = 0;
+    public float totalProfit = 0f;
     public int dishCountIncrement = 1;
+    public float profitPerDish = 1f;
     public float dishProfitMultiplier = 1f;
 
-    // Shelf upgrades.
-    public int currentSoapIndex;
-    public int currentGloveIndex;
-    public int currentSpongeIndex;
-    public bool radioOwned;
+    public int currentSoapIndex = 0;
+    public int currentGloveIndex = 0;
+    public int currentSpongeIndex = 0;
+    public bool radioOwned = false;
 
-    // Employees.
     public List<EmployeeSave> employees = new List<EmployeeSave>();
     public float employeeProfitMultiplier = 1f;
 
-    // Sink upgrades / selected sink.
-    public int currentSinkType;
+    public int currentSinkType = 0;
     public List<string> purchasedSinkNodeIds = new List<string>();
 
-    // Loans are also recorded here so the JSON file knows the kitchen's debt state.
-    // The LoanManager still mirrors this to PlayerPrefs for the existing business-menu flow.
-    public int currentLoanIndex;
+    public int currentLoanIndex = 0;
+
+    // These are the rates shown in the Other Businesses menu.
+    // Offline and unloaded kitchens earn from this stored money/sec rate.
+    public float cachedMoneyPerSecond = 0f;
+    public float cachedDishesPerSecond = 0f;
+
+    // Last time this kitchen's unloaded/offline production was applied.
+    public long lastBackgroundEarningsUnixSeconds = 0;
+
+    // Keeps fractional dish production between unloaded/offline earning ticks.
+    public float backgroundDishFraction = 0f;
 }
 
 [Serializable]
 public class EmployeeSave
 {
-    public int count;
-    public float currentCost;
-    public int currentUpgradeIndex;
-    public float currentDebuff;
+    public int count = 0;
+    public float currentCost = 0f;
+    public int currentUpgradeIndex = 0;
+    public float currentDebuff = 0f;
 }

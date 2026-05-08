@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Controls the Other Businesses button and the kitchen list menu.
-/// This version manually positions cards instead of relying on Vertical Layout Group.
+/// This version manually positions cards and updates only their stat text while open.
 /// </summary>
 public class KitchenBusinessMenu : MonoBehaviour
 {
@@ -32,13 +32,6 @@ public class KitchenBusinessMenu : MonoBehaviour
         public bool startsDiscovered = false;
     }
 
-    private struct RuntimeKitchenStats
-    {
-        public bool hasStats;
-        public float money;
-        public float moneyPerSecond;
-    }
-
     [Header("Current Kitchen")]
     [SerializeField] private string currentKitchenId = "kitchen_1";
     [SerializeField] private LoanManager currentLoanManager;
@@ -61,12 +54,15 @@ public class KitchenBusinessMenu : MonoBehaviour
     [SerializeField] private float bottomPadding = 25f;
     [SerializeField] private float sidePadding = 10f;
 
-    [Header("Runtime Stats")]
-    [Tooltip("This only remembers visited-kitchen stats during the current play session. It does not save separate kitchen money yet.")]
-    [SerializeField] private bool rememberVisitedKitchenStatsThisSession = true;
+    [Header("Open Menu Text Refresh")]
+    [Tooltip("How often the open menu updates only money and money-per-second text.")]
+    [SerializeField] private float openMenuRefreshSeconds = 0.5f;
 
-    private static readonly Dictionary<string, RuntimeKitchenStats> runtimeStatsByKitchenId =
-        new Dictionary<string, RuntimeKitchenStats>();
+    private readonly Dictionary<string, KitchenBusinessCardUI> discoveredCardsByKitchenId =
+        new Dictionary<string, KitchenBusinessCardUI>();
+
+    private KitchenBusinessCardUI ventureForthCard;
+    private float openMenuRefreshTimer;
 
     private void Reset()
     {
@@ -111,20 +107,27 @@ public class KitchenBusinessMenu : MonoBehaviour
     private void OnEnable()
     {
         LoanManager.OnKitchenLoanStateChanged += HandleKitchenLoanStateChanged;
-        SceneManager.sceneLoaded += HandleSceneLoaded;
     }
 
     private void OnDisable()
     {
         LoanManager.OnKitchenLoanStateChanged -= HandleKitchenLoanStateChanged;
-        SceneManager.sceneLoaded -= HandleSceneLoaded;
-
-        SaveCurrentKitchenStatsToRuntimeMemory();
     }
 
-    private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void Update()
     {
-        SaveCurrentKitchenStatsToRuntimeMemory();
+        if (panelRoot == null || !panelRoot.activeSelf)
+        {
+            return;
+        }
+
+        openMenuRefreshTimer += Time.unscaledDeltaTime;
+
+        if (openMenuRefreshTimer >= openMenuRefreshSeconds)
+        {
+            openMenuRefreshTimer = 0f;
+            RefreshVisibleStatsOnly();
+        }
     }
 
     private void HandleKitchenLoanStateChanged(string kitchenId, bool allLoansPaid)
@@ -138,6 +141,7 @@ public class KitchenBusinessMenu : MonoBehaviour
 
         if (panelRoot != null && panelRoot.activeSelf)
         {
+            // Loan state can add the Venture Forth card, so this still rebuilds the structure.
             BuildMenu();
         }
     }
@@ -199,14 +203,19 @@ public class KitchenBusinessMenu : MonoBehaviour
             return;
         }
 
-        SaveCurrentKitchenStatsToRuntimeMemory();
+        if (SaveManager.Instance != null)
+        {
+            SaveManager.Instance.Save();
+        }
 
         if (panelRoot != null)
         {
             panelRoot.SetActive(true);
         }
 
+        openMenuRefreshTimer = 0f;
         BuildMenu();
+        RefreshVisibleStatsOnly();
     }
 
     public void CloseMenu()
@@ -260,6 +269,9 @@ public class KitchenBusinessMenu : MonoBehaviour
 
     private void ClearCards()
     {
+        discoveredCardsByKitchenId.Clear();
+        ventureForthCard = null;
+
         if (cardParent == null)
         {
             return;
@@ -327,11 +339,8 @@ public class KitchenBusinessMenu : MonoBehaviour
         KitchenBusinessCardUI card = Instantiate(cardPrefab, cardParent, false);
         PrepareSpawnedCard(card, cardIndex);
 
-        bool isCurrentKitchen = kitchen.kitchenId == currentKitchenId;
-
         bool statsAvailable = TryGetKitchenStats(
             kitchen.kitchenId,
-            isCurrentKitchen,
             out float money,
             out float moneyPerSecond
         );
@@ -346,6 +355,8 @@ public class KitchenBusinessMenu : MonoBehaviour
             moneyPerSecond,
             () => OnDiscoveredKitchenPressed(kitchen)
         );
+
+        discoveredCardsByKitchenId[kitchen.kitchenId] = card;
     }
 
     private void CreateVentureForthCard(KitchenDefinition kitchen, int cardIndex)
@@ -363,6 +374,8 @@ public class KitchenBusinessMenu : MonoBehaviour
             0f,
             () => OnVentureForthPressed(kitchen)
         );
+
+        ventureForthCard = card;
     }
 
     private void PrepareSpawnedCard(KitchenBusinessCardUI card, int cardIndex)
@@ -437,57 +450,61 @@ public class KitchenBusinessMenu : MonoBehaviour
         Canvas.ForceUpdateCanvases();
     }
 
-    private bool TryGetKitchenStats(
-        string kitchenId,
-        bool isCurrentKitchen,
-        out float money,
-        out float moneyPerSecond)
+    private void RefreshVisibleStatsOnly()
+    {
+        foreach (KeyValuePair<string, KitchenBusinessCardUI> pair in discoveredCardsByKitchenId)
+        {
+            KitchenBusinessCardUI card = pair.Value;
+
+            if (card == null)
+            {
+                continue;
+            }
+
+            bool statsAvailable = TryGetKitchenStats(
+                pair.Key,
+                out float money,
+                out float moneyPerSecond
+            );
+
+            card.RefreshStats(false, statsAvailable, money, moneyPerSecond);
+        }
+
+        if (ventureForthCard != null)
+        {
+            ventureForthCard.RefreshStats(true, false, 0f, 0f);
+        }
+    }
+
+    private bool TryGetKitchenStats(string kitchenId, out float money, out float moneyPerSecond)
     {
         money = 0f;
         moneyPerSecond = 0f;
 
-        if (isCurrentKitchen)
+        if (SaveManager.Instance != null &&
+            SaveManager.Instance.TryGetKitchenBusinessStats(
+                kitchenId,
+                out float savedMoney,
+                out float savedMoneyPerSecond,
+                out long unusedDishes,
+                out float unusedDishesPerSecond))
+        {
+            money = savedMoney;
+            moneyPerSecond = savedMoneyPerSecond;
+            return true;
+        }
+
+        if (kitchenId == currentKitchenId)
         {
             if (ScoreManager.Instance != null)
             {
                 money = ScoreManager.Instance.GetTotalProfit();
+                moneyPerSecond = ScoreManager.Instance.GetDisplayedProfitPerSecond();
+                return true;
             }
-
-            if (ProfitRate.Instance != null)
-            {
-                moneyPerSecond = ProfitRate.Instance.AverageProfit;
-            }
-
-            return true;
-        }
-
-        if (rememberVisitedKitchenStatsThisSession &&
-            runtimeStatsByKitchenId.TryGetValue(kitchenId, out RuntimeKitchenStats stats) &&
-            stats.hasStats)
-        {
-            money = stats.money;
-            moneyPerSecond = stats.moneyPerSecond;
-            return true;
         }
 
         return false;
-    }
-
-    private void SaveCurrentKitchenStatsToRuntimeMemory()
-    {
-        if (!rememberVisitedKitchenStatsThisSession || string.IsNullOrEmpty(currentKitchenId))
-        {
-            return;
-        }
-
-        RuntimeKitchenStats stats = new RuntimeKitchenStats
-        {
-            hasStats = true,
-            money = ScoreManager.Instance != null ? ScoreManager.Instance.GetTotalProfit() : 0f,
-            moneyPerSecond = ProfitRate.Instance != null ? ProfitRate.Instance.AverageProfit : 0f
-        };
-
-        runtimeStatsByKitchenId[currentKitchenId] = stats;
     }
 
     private void OnDiscoveredKitchenPressed(KitchenDefinition kitchen)
@@ -497,17 +514,15 @@ public class KitchenBusinessMenu : MonoBehaviour
             return;
         }
 
-        SaveCurrentKitchenStatsToRuntimeMemory();
+        if (SaveManager.Instance != null)
+        {
+            SaveManager.Instance.Save();
+        }
 
         if (kitchen.kitchenId == currentKitchenId)
         {
             CloseMenu();
             return;
-        }
-
-        if (SaveManager.Instance != null)
-        {
-            SaveManager.Instance.Save();
         }
 
         if (!string.IsNullOrEmpty(kitchen.kitchenSceneName))
@@ -522,8 +537,6 @@ public class KitchenBusinessMenu : MonoBehaviour
         {
             return;
         }
-
-        SaveCurrentKitchenStatsToRuntimeMemory();
 
         if (SaveManager.Instance != null)
         {

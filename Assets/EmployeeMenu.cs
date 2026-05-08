@@ -399,32 +399,7 @@ public class EmployeeManager : MonoBehaviour
     {
         if (scoreManager == null) return;
 
-        float baseDishProfit = scoreManager.GetProfitPerDish();
-        float dishMultiplier = scoreManager.GetEffectiveDishProfitMultiplier();
-        float effectivePerDish = baseDishProfit * dishMultiplier;
-
-        float speedMultiplier = scoreManager.EmployeeSpeedMultiplier;
-
-        if (effectivePerDish <= 0f)
-            return;
-
-        float totalProfitDelta = 0f;
-
-        for (int i = 0; i < employees.Count; i++)
-        {
-            var emp = employees[i];
-
-            if (emp.count <= 0)
-                continue;
-
-            float dps = emp.GetTotalDishesPerSecond() * speedMultiplier;
-            float debuff = Mathf.Max(emp.currentDebuff, 0f);
-
-            float profitPerSecond =
-                dps * effectivePerDish * debuff * globalEmployeeProfitMultiplier;
-
-            totalProfitDelta += profitPerSecond * employeeProfitInterval;
-        }
+        float totalProfitDelta = GetCurrentTotalEmployeeProfitPerSecond() * employeeProfitInterval;
 
         if (totalProfitDelta > 0f)
             scoreManager.AddProfit(totalProfitDelta);
@@ -599,6 +574,49 @@ public class EmployeeManager : MonoBehaviour
         }
 
         return total;
+    }
+
+    public float GetTotalEmployeeProfitPerSecond(float effectivePerDish, float speedMultiplier)
+    {
+        if (effectivePerDish <= 0f)
+        {
+            return 0f;
+        }
+
+        float total = 0f;
+
+        for (int i = 0; i < employees.Count; i++)
+        {
+            var emp = employees[i];
+
+            if (emp.count <= 0)
+            {
+                continue;
+            }
+
+            float dps = emp.GetTotalDishesPerSecond() * speedMultiplier;
+            float debuff = Mathf.Max(emp.currentDebuff, 0f);
+            float profitPerSecond = dps * effectivePerDish * debuff * globalEmployeeProfitMultiplier;
+            total += profitPerSecond;
+        }
+
+        return Mathf.Max(0f, total);
+    }
+
+    public float GetCurrentTotalEmployeeProfitPerSecond()
+    {
+        if (scoreManager == null)
+        {
+            scoreManager = FindFirstObjectByType<ScoreManager>();
+        }
+
+        if (scoreManager == null)
+        {
+            return 0f;
+        }
+
+        float effectivePerDish = scoreManager.GetProfitPerDish() * scoreManager.GetEffectiveDishProfitMultiplier();
+        return GetTotalEmployeeProfitPerSecond(effectivePerDish, scoreManager.EmployeeSpeedMultiplier);
     }
 
     public void MultiplyEmployeeProfit(float multiplier)

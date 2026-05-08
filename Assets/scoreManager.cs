@@ -315,6 +315,37 @@ public class ScoreManager : MonoBehaviour
     public float GetProfitPerDish() => profitPerDish;
     public int GetDishCountIncrement() => dishCountIncrement;
 
+    public float GetDisplayedDishesPerSecond()
+    {
+        if (employeeManager == null)
+        {
+            employeeManager = FindFirstObjectByType<EmployeeManager>();
+        }
+
+        if (employeeManager == null)
+        {
+            return 0f;
+        }
+
+        return Mathf.Max(0f, employeeManager.GetTotalDishesPerSecond() * EmployeeSpeedMultiplier);
+    }
+
+    public float GetDisplayedProfitPerSecond()
+    {
+        if (employeeManager == null)
+        {
+            employeeManager = FindFirstObjectByType<EmployeeManager>();
+        }
+
+        if (employeeManager == null)
+        {
+            return 0f;
+        }
+
+        float effectivePerDish = GetProfitPerDish() * GetEffectiveDishProfitMultiplier();
+        return Mathf.Max(0f, employeeManager.GetTotalEmployeeProfitPerSecond(effectivePerDish, EmployeeSpeedMultiplier));
+    }
+
     private void UpdateUI()
     {
         if (employeeManager == null)
@@ -334,22 +365,22 @@ public class ScoreManager : MonoBehaviour
 
         if (dishesPerSecondText != null)
         {
-            double dishesPerSecond = 0d;
-
-            if (employeeManager != null)
-            {
-                dishesPerSecond = employeeManager.GetTotalDishesPerSecond() * EmployeeSpeedMultiplier;
-            }
-
+            double dishesPerSecond = GetDisplayedDishesPerSecond();
             dishesPerSecondText.text = $"Dishes/sec: {BigNumberFormatter.FormatNumber(dishesPerSecond)}";
         }
     }
 
     public void LoadFromSave(long dishes, float profit, int countInc, float dishProfitMult)
     {
+        LoadFromSave(dishes, profit, countInc, profitPerDish, dishProfitMult);
+    }
+
+    public void LoadFromSave(long dishes, float profit, int countInc, float savedProfitPerDish, float dishProfitMult)
+    {
         totalDishes = System.Math.Max(0L, dishes);
         totalProfit = Mathf.Max(0f, profit);
         dishCountIncrement = Mathf.Max(1, countInc);
+        profitPerDish = savedProfitPerDish > 0f ? savedProfitPerDish : 1f;
         dishProfitMultiplier = dishProfitMult > 0f ? dishProfitMult : 1f;
 
         employeeDishAccumulator = 0d;

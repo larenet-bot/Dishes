@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -5,7 +6,8 @@ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Persistent save manager with one independent save bucket per kitchen id.
-/// Drop this in the first-loaded scene. It persists and re-binds when scenes load.
+/// Also applies background earnings to unloaded kitchens using the rate shown
+/// in the Other Businesses menu.
 /// </summary>
 public class SaveManager : MonoBehaviour
 {
@@ -26,13 +28,38 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private bool autosave = true;
     [SerializeField] private float autosaveInterval = 20f;
 
+    [Header("Background Earnings")]
+    [Tooltip("How often unloaded kitchens are advanced in memory while the game is running.")]
+    [SerializeField] private float backgroundEarningsUpdateInterval = 1f;
+
+    [Tooltip("If true, total dishes also rise for unloaded kitchens using their saved dishes/sec rate.")]
+    [SerializeField] private bool backgroundEarningsAddDishes = true;
+
+    [Tooltip("Safety cap so a corrupted clock or long absence does not instantly create impossible amounts. 0 means no cap.")]
+    [SerializeField] private int maxBackgroundEarningSecondsPerTick = 0;
+
+    [Header("Offline Earnings")]
+    [Tooltip("When true, the first kitchen scene loaded after reopening the game grants saved offline earnings for every kitchen.")]
+    [SerializeField] private bool enableOfflineEarnings = true;
+
+    [Tooltip("When true, a panel is shown after offline earnings are granted.")]
+    [SerializeField] private bool showOfflineEarningsPanel = true;
+
+    [Tooltip("Optional safety cap for offline earnings. 0 means no cap.")]
+    [SerializeField] private int maxOfflineEarningSeconds = 0;
+
+    [Tooltip("Do not show the offline panel unless total earnings are at least this much.")]
+    [SerializeField] private float minimumOfflineEarningsToShow = 0.01f;
+
     [Header("Debug")]
     [SerializeField] private bool logSaveEvents = false;
 
     private float timer;
+    private float backgroundTimer;
     private SaveData loadedData;
     private bool hasLoadedFile;
     private bool hasAppliedToCurrentScene;
+    private bool offlineEarningsAppliedThisSession;
 
     private string SavePath => Path.Combine(Application.persistentDataPath, "save.json");
 
@@ -68,6 +95,13 @@ public class SaveManager : MonoBehaviour
 
     private void Update()
     {
+        backgroundTimer += Time.unscaledDeltaTime;
+        if (backgroundTimer >= backgroundEarningsUpdateInterval)
+        {
+            backgroundTimer = 0f;
+            UpdateBackgroundEarningsInMemory();
+        }
+
         if (!autosave)
         {
             return;
@@ -141,6 +175,11 @@ public class SaveManager : MonoBehaviour
         return string.IsNullOrWhiteSpace(fallbackKitchenId) ? "kitchen_1" : fallbackKitchenId;
     }
 
+    private long NowUnixSeconds()
+    {
+        return DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+    }
+
     private void ReadSaveFileToMemory()
     {
         hasLoadedFile = false;
@@ -175,6 +214,7 @@ public class SaveManager : MonoBehaviour
             }
 
             MigrateLegacySingleKitchenSaveIfNeeded();
+            NormalizeAllKitchenData();
             hasLoadedFile = true;
 
             if (logSaveEvents)
@@ -182,7 +222,7 @@ public class SaveManager : MonoBehaviour
                 Debug.Log($"[SaveManager] Loaded save file from: {SavePath}");
             }
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
             Debug.LogWarning($"[SaveManager] Failed to read save file. {e.Message}");
             loadedData = new SaveData();
@@ -217,6 +257,8 @@ public class SaveManager : MonoBehaviour
             loadedData.dishCountIncrement > 1 ||
             loadedData.dishProfitMultiplier > 1f ||
             loadedData.radioOwned ||
+            loadedData.cachedMoneyPerSecond > 0f ||
+            loadedData.cachedDishesPerSecond > 0f ||
             (loadedData.employees != null && loadedData.employees.Count > 0) ||
             (loadedData.purchasedSinkNodeIds != null && loadedData.purchasedSinkNodeIds.Count > 0);
 
@@ -231,6 +273,7 @@ public class SaveManager : MonoBehaviour
             totalDishes = loadedData.totalDishes,
             totalProfit = loadedData.totalProfit,
             dishCountIncrement = Mathf.Max(1, loadedData.dishCountIncrement),
+            profitPerDish = loadedData.profitPerDish > 0f ? loadedData.profitPerDish : 1f,
             dishProfitMultiplier = loadedData.dishProfitMultiplier > 0f ? loadedData.dishProfitMultiplier : 1f,
             currentSoapIndex = Mathf.Max(0, loadedData.currentSoapIndex),
             currentGloveIndex = Mathf.Max(0, loadedData.currentGloveIndex),
@@ -240,15 +283,32 @@ public class SaveManager : MonoBehaviour
             employeeProfitMultiplier = loadedData.employeeProfitMultiplier > 0f ? loadedData.employeeProfitMultiplier : 1f,
             currentSinkType = loadedData.currentSinkType,
             purchasedSinkNodeIds = loadedData.purchasedSinkNodeIds ?? new List<string>(),
-            currentLoanIndex = loadedData.currentLoanIndex
+            currentLoanIndex = loadedData.currentLoanIndex,
+            cachedMoneyPerSecond = Mathf.Max(0f, loadedData.cachedMoneyPerSecond),
+            cachedDishesPerSecond = Mathf.Max(0f, loadedData.cachedDishesPerSecond),
+            lastBackgroundEarningsUnixSeconds = loadedData.lastBackgroundEarningsUnixSeconds,
+            backgroundDishFraction = Mathf.Clamp01(loadedData.backgroundDishFraction)
         };
 
         loadedData.kitchens.Add(kitchenOne);
-        loadedData.saveVersion = 2;
+        loadedData.saveVersion = 4;
 
         if (logSaveEvents)
         {
             Debug.Log("[SaveManager] Migrated old single-kitchen save into kitchen_1.");
+        }
+    }
+
+    private void NormalizeAllKitchenData()
+    {
+        if (loadedData == null || loadedData.kitchens == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < loadedData.kitchens.Count; i++)
+        {
+            NormalizeKitchenData(loadedData.kitchens[i]);
         }
     }
 
@@ -288,6 +348,7 @@ public class SaveManager : MonoBehaviour
             totalDishes = 0,
             totalProfit = 0f,
             dishCountIncrement = 1,
+            profitPerDish = 1f,
             dishProfitMultiplier = 1f,
             currentSoapIndex = 0,
             currentGloveIndex = 0,
@@ -297,7 +358,11 @@ public class SaveManager : MonoBehaviour
             employeeProfitMultiplier = 1f,
             currentSinkType = 0,
             purchasedSinkNodeIds = new List<string>(),
-            currentLoanIndex = 0
+            currentLoanIndex = 0,
+            cachedMoneyPerSecond = 0f,
+            cachedDishesPerSecond = 0f,
+            lastBackgroundEarningsUnixSeconds = NowUnixSeconds(),
+            backgroundDishFraction = 0f
         };
 
         return kitchen;
@@ -320,6 +385,11 @@ public class SaveManager : MonoBehaviour
             kitchen.dishCountIncrement = 1;
         }
 
+        if (kitchen.profitPerDish <= 0f)
+        {
+            kitchen.profitPerDish = 1f;
+        }
+
         if (kitchen.dishProfitMultiplier <= 0f)
         {
             kitchen.dishProfitMultiplier = 1f;
@@ -338,6 +408,26 @@ public class SaveManager : MonoBehaviour
         if (kitchen.purchasedSinkNodeIds == null)
         {
             kitchen.purchasedSinkNodeIds = new List<string>();
+        }
+
+        if (kitchen.cachedMoneyPerSecond < 0f)
+        {
+            kitchen.cachedMoneyPerSecond = 0f;
+        }
+
+        if (kitchen.cachedDishesPerSecond < 0f)
+        {
+            kitchen.cachedDishesPerSecond = 0f;
+        }
+
+        if (kitchen.backgroundDishFraction < 0f || kitchen.backgroundDishFraction >= 1f)
+        {
+            kitchen.backgroundDishFraction = Mathf.Repeat(kitchen.backgroundDishFraction, 1f);
+        }
+
+        if (kitchen.lastBackgroundEarningsUnixSeconds <= 0)
+        {
+            kitchen.lastBackgroundEarningsUnixSeconds = NowUnixSeconds();
         }
     }
 
@@ -361,12 +451,19 @@ public class SaveManager : MonoBehaviour
         }
 
         string kitchenId = ResolveCurrentKitchenId();
+
+        OfflineEarningsReport offlineReport = ApplyOfflineEarningsOnceForAllKitchens();
+
         KitchenSaveData kitchen = GetOrCreateKitchenData(kitchenId);
+
+        // The offline pass catches up every kitchen once. This call is harmless if nothing changed.
+        ApplyBackgroundEarningsToKitchen(kitchen, NowUnixSeconds());
 
         score.LoadFromSave(
             kitchen.totalDishes,
             kitchen.totalProfit,
             kitchen.dishCountIncrement,
+            kitchen.profitPerDish,
             kitchen.dishProfitMultiplier
         );
 
@@ -390,6 +487,8 @@ public class SaveManager : MonoBehaviour
             sinks.LoadFromSave((SinkManager.SinkType)kitchen.currentSinkType, purchasedSinkNodes);
         }
 
+        RefreshCurrentKitchenRatesInMemory(kitchenId);
+
         if (ProfitRate.Instance != null)
         {
             ProfitRate.Instance.ResetBaseline();
@@ -397,34 +496,239 @@ public class SaveManager : MonoBehaviour
 
         hasAppliedToCurrentScene = true;
 
+        TryShowOfflineEarningsReport(offlineReport);
+
         if (logSaveEvents)
         {
             Debug.Log($"[SaveManager] Applied save data for {kitchenId}.");
         }
     }
 
-    public void Save()
+    private void UpdateBackgroundEarningsInMemory()
     {
-        TryBindRefs();
-
-        if (!HaveGameplayRefs())
+        if (loadedData == null || loadedData.kitchens == null)
         {
             return;
         }
 
-        if (loadedData == null)
+        TryBindRefs();
+
+        bool hasGameplayRefs = HaveGameplayRefs();
+        string currentKitchenId = hasGameplayRefs ? ResolveCurrentKitchenId() : string.Empty;
+        long now = NowUnixSeconds();
+
+        ApplyBackgroundEarningsToAllKitchensExcept(currentKitchenId, now);
+
+        if (hasGameplayRefs)
         {
-            loadedData = new SaveData();
+            RefreshCurrentKitchenRatesInMemory(currentKitchenId, now);
+        }
+    }
+
+    private OfflineEarningsReport ApplyOfflineEarningsOnceForAllKitchens()
+    {
+        if (!enableOfflineEarnings || offlineEarningsAppliedThisSession)
+        {
+            return null;
         }
 
-        loadedData.saveVersion = 2;
+        offlineEarningsAppliedThisSession = true;
 
-        string kitchenId = ResolveCurrentKitchenId();
+        if (loadedData == null || loadedData.kitchens == null || loadedData.kitchens.Count == 0)
+        {
+            return null;
+        }
+
+        long now = NowUnixSeconds();
+        OfflineEarningsReport report = new OfflineEarningsReport();
+
+        for (int i = 0; i < loadedData.kitchens.Count; i++)
+        {
+            OfflineKitchenEarnings kitchenResult = ApplyEarningsToKitchen(
+                loadedData.kitchens[i],
+                now,
+                maxOfflineEarningSeconds,
+                includeInReport: true
+            );
+
+            if (kitchenResult == null)
+            {
+                continue;
+            }
+
+            report.kitchens.Add(kitchenResult);
+            report.totalMoneyEarned += kitchenResult.moneyEarned;
+            report.totalDishesEarned += kitchenResult.dishesEarned;
+
+            if (kitchenResult.elapsedSeconds > report.elapsedSeconds)
+            {
+                report.elapsedSeconds = kitchenResult.elapsedSeconds;
+            }
+
+            if (kitchenResult.secondsApplied > report.secondsApplied)
+            {
+                report.secondsApplied = kitchenResult.secondsApplied;
+            }
+        }
+
+        if (!report.HasAnyEarnings)
+        {
+            return null;
+        }
+
+        WriteSaveFile();
+        return report;
+    }
+
+    private void TryShowOfflineEarningsReport(OfflineEarningsReport report)
+    {
+        if (!showOfflineEarningsPanel || report == null)
+        {
+            return;
+        }
+
+        if (report.totalMoneyEarned < minimumOfflineEarningsToShow && report.totalDishesEarned <= 0)
+        {
+            return;
+        }
+
+        OfflineEarningsUI.ShowReport(report);
+    }
+
+    private void ApplyBackgroundEarningsToAllKitchensExcept(string skipKitchenId, long now)
+    {
+        if (loadedData == null || loadedData.kitchens == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < loadedData.kitchens.Count; i++)
+        {
+            KitchenSaveData kitchen = loadedData.kitchens[i];
+
+            if (kitchen == null)
+            {
+                continue;
+            }
+
+            if (!string.IsNullOrWhiteSpace(skipKitchenId) && kitchen.kitchenId == skipKitchenId)
+            {
+                continue;
+            }
+
+            ApplyBackgroundEarningsToKitchen(kitchen, now);
+        }
+    }
+
+    private void ApplyBackgroundEarningsToKitchen(KitchenSaveData kitchen, long now)
+    {
+        ApplyEarningsToKitchen(kitchen, now, maxBackgroundEarningSecondsPerTick, includeInReport: false);
+    }
+
+    private OfflineKitchenEarnings ApplyEarningsToKitchen(
+        KitchenSaveData kitchen,
+        long now,
+        int maxSeconds,
+        bool includeInReport)
+    {
+        if (kitchen == null)
+        {
+            return null;
+        }
+
+        NormalizeKitchenData(kitchen);
+
+        long last = kitchen.lastBackgroundEarningsUnixSeconds;
+        if (last <= 0 || now <= last)
+        {
+            kitchen.lastBackgroundEarningsUnixSeconds = now;
+            return null;
+        }
+
+        long elapsedSeconds = now - last;
+        long secondsApplied = elapsedSeconds;
+
+        if (maxSeconds > 0)
+        {
+            secondsApplied = Math.Min(secondsApplied, maxSeconds);
+        }
+
+        if (secondsApplied <= 0)
+        {
+            kitchen.lastBackgroundEarningsUnixSeconds = now;
+            return null;
+        }
+
+        float moneyEarned = 0f;
+        long dishesEarned = 0L;
+
+        if (kitchen.cachedMoneyPerSecond > 0f)
+        {
+            moneyEarned = kitchen.cachedMoneyPerSecond * secondsApplied;
+            kitchen.totalProfit += moneyEarned;
+        }
+
+        if (backgroundEarningsAddDishes && kitchen.cachedDishesPerSecond > 0f)
+        {
+            double dishProgress = kitchen.backgroundDishFraction + ((double)kitchen.cachedDishesPerSecond * secondsApplied);
+            dishesEarned = (long)Math.Floor(dishProgress);
+
+            if (dishesEarned > 0)
+            {
+                kitchen.totalDishes += dishesEarned;
+            }
+
+            kitchen.backgroundDishFraction = (float)(dishProgress - dishesEarned);
+        }
+
+        kitchen.lastBackgroundEarningsUnixSeconds = now;
+
+        if (!includeInReport || (moneyEarned <= 0f && dishesEarned <= 0L))
+        {
+            return null;
+        }
+
+        return new OfflineKitchenEarnings
+        {
+            kitchenId = kitchen.kitchenId,
+            elapsedSeconds = elapsedSeconds,
+            secondsApplied = secondsApplied,
+            moneyPerSecond = kitchen.cachedMoneyPerSecond,
+            dishesPerSecond = kitchen.cachedDishesPerSecond,
+            moneyEarned = moneyEarned,
+            dishesEarned = dishesEarned
+        };
+    }
+
+    private void RefreshCurrentKitchenRatesInMemory(string kitchenId)
+    {
+        RefreshCurrentKitchenRatesInMemory(kitchenId, NowUnixSeconds());
+    }
+
+    private void RefreshCurrentKitchenRatesInMemory(string kitchenId, long now)
+    {
+        if (string.IsNullOrWhiteSpace(kitchenId) || !HaveGameplayRefs())
+        {
+            return;
+        }
+
         KitchenSaveData kitchen = GetOrCreateKitchenData(kitchenId);
+        kitchen.cachedMoneyPerSecond = score != null ? Mathf.Max(0f, score.GetDisplayedProfitPerSecond()) : 0f;
+        kitchen.cachedDishesPerSecond = score != null ? Mathf.Max(0f, score.GetDisplayedDishesPerSecond()) : 0f;
+        kitchen.lastBackgroundEarningsUnixSeconds = now;
+    }
+
+    private void CaptureCurrentKitchenToData(KitchenSaveData kitchen, long now)
+    {
+        if (kitchen == null || !HaveGameplayRefs())
+        {
+            return;
+        }
 
         kitchen.totalDishes = score.GetTotalDishes();
         kitchen.totalProfit = score.GetTotalProfit();
         kitchen.dishCountIncrement = score.GetDishCountIncrement();
+        kitchen.profitPerDish = score.GetProfitPerDish();
         kitchen.dishProfitMultiplier = score.dishProfitMultiplier;
 
         upgrades.GetSaveState(
@@ -448,12 +752,70 @@ public class SaveManager : MonoBehaviour
             kitchen.purchasedSinkNodeIds = sinks.GetPurchasedNodeIds();
         }
 
-        // Keep legacy fields mirroring kitchen_1 for older debugging tools and one-time fallback.
-        if (kitchenId == "kitchen_1")
+        kitchen.cachedMoneyPerSecond = Mathf.Max(0f, score.GetDisplayedProfitPerSecond());
+        kitchen.cachedDishesPerSecond = Mathf.Max(0f, score.GetDisplayedDishesPerSecond());
+        kitchen.lastBackgroundEarningsUnixSeconds = now;
+    }
+
+    public void Save()
+    {
+        TryBindRefs();
+
+        if (loadedData == null)
         {
-            CopyKitchenOneToLegacyFields(kitchen);
+            loadedData = new SaveData();
         }
 
+        loadedData.saveVersion = 4;
+
+        bool hasGameplayRefs = HaveGameplayRefs();
+        string kitchenId = hasGameplayRefs ? ResolveCurrentKitchenId() : string.Empty;
+        long now = NowUnixSeconds();
+
+        ApplyBackgroundEarningsToAllKitchensExcept(kitchenId, now);
+
+        KitchenSaveData currentKitchen = null;
+        if (hasGameplayRefs)
+        {
+            currentKitchen = GetOrCreateKitchenData(kitchenId);
+            CaptureCurrentKitchenToData(currentKitchen, now);
+        }
+
+        // Keep legacy fields mirroring kitchen_1 for older debugging tools and one-time fallback.
+        KitchenSaveData kitchenOne = FindKitchenData("kitchen_1");
+        if (kitchenOne != null)
+        {
+            CopyKitchenOneToLegacyFields(kitchenOne);
+        }
+        else if (currentKitchen != null && kitchenId == "kitchen_1")
+        {
+            CopyKitchenOneToLegacyFields(currentKitchen);
+        }
+
+        WriteSaveFile();
+    }
+
+    private KitchenSaveData FindKitchenData(string kitchenId)
+    {
+        if (loadedData == null || loadedData.kitchens == null)
+        {
+            return null;
+        }
+
+        for (int i = 0; i < loadedData.kitchens.Count; i++)
+        {
+            KitchenSaveData kitchen = loadedData.kitchens[i];
+            if (kitchen != null && kitchen.kitchenId == kitchenId)
+            {
+                return kitchen;
+            }
+        }
+
+        return null;
+    }
+
+    private void WriteSaveFile()
+    {
         try
         {
             string json = JsonUtility.ToJson(loadedData, true);
@@ -462,10 +824,10 @@ public class SaveManager : MonoBehaviour
 
             if (logSaveEvents)
             {
-                Debug.Log($"[SaveManager] Saved {kitchenId} to: {SavePath}");
+                Debug.Log($"[SaveManager] Saved to: {SavePath}");
             }
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
             Debug.LogWarning($"[SaveManager] Failed to write save file. {e.Message}");
         }
@@ -481,6 +843,7 @@ public class SaveManager : MonoBehaviour
         loadedData.totalDishes = kitchen.totalDishes;
         loadedData.totalProfit = kitchen.totalProfit;
         loadedData.dishCountIncrement = kitchen.dishCountIncrement;
+        loadedData.profitPerDish = kitchen.profitPerDish;
         loadedData.dishProfitMultiplier = kitchen.dishProfitMultiplier;
         loadedData.currentSoapIndex = kitchen.currentSoapIndex;
         loadedData.currentGloveIndex = kitchen.currentGloveIndex;
@@ -491,6 +854,10 @@ public class SaveManager : MonoBehaviour
         loadedData.currentSinkType = kitchen.currentSinkType;
         loadedData.purchasedSinkNodeIds = kitchen.purchasedSinkNodeIds;
         loadedData.currentLoanIndex = kitchen.currentLoanIndex;
+        loadedData.cachedMoneyPerSecond = kitchen.cachedMoneyPerSecond;
+        loadedData.cachedDishesPerSecond = kitchen.cachedDishesPerSecond;
+        loadedData.lastBackgroundEarningsUnixSeconds = kitchen.lastBackgroundEarningsUnixSeconds;
+        loadedData.backgroundDishFraction = kitchen.backgroundDishFraction;
     }
 
     public void Load()
@@ -499,6 +866,53 @@ public class SaveManager : MonoBehaviour
         hasAppliedToCurrentScene = false;
         TryBindRefs();
         TryApplyLoadedDataToScene();
+    }
+
+    public bool TryGetKitchenBusinessStats(
+        string kitchenId,
+        out float totalProfit,
+        out float moneyPerSecond,
+        out long totalDishes,
+        out float dishesPerSecond)
+    {
+        totalProfit = 0f;
+        moneyPerSecond = 0f;
+        totalDishes = 0L;
+        dishesPerSecond = 0f;
+
+        if (string.IsNullOrWhiteSpace(kitchenId))
+        {
+            return false;
+        }
+
+        if (loadedData == null)
+        {
+            loadedData = new SaveData();
+        }
+
+        TryBindRefs();
+
+        bool hasGameplayRefs = HaveGameplayRefs();
+        string currentKitchenId = hasGameplayRefs ? ResolveCurrentKitchenId() : string.Empty;
+
+        if (hasGameplayRefs && kitchenId == currentKitchenId)
+        {
+            totalProfit = score != null ? score.GetTotalProfit() : 0f;
+            moneyPerSecond = score != null ? Mathf.Max(0f, score.GetDisplayedProfitPerSecond()) : 0f;
+            totalDishes = score != null ? score.GetTotalDishes() : 0L;
+            dishesPerSecond = score != null ? Mathf.Max(0f, score.GetDisplayedDishesPerSecond()) : 0f;
+            RefreshCurrentKitchenRatesInMemory(kitchenId);
+            return true;
+        }
+
+        KitchenSaveData kitchen = GetOrCreateKitchenData(kitchenId);
+        ApplyBackgroundEarningsToKitchen(kitchen, NowUnixSeconds());
+
+        totalProfit = kitchen.totalProfit;
+        moneyPerSecond = kitchen.cachedMoneyPerSecond;
+        totalDishes = kitchen.totalDishes;
+        dishesPerSecond = kitchen.cachedDishesPerSecond;
+        return true;
     }
 
     public void WipeSave()
@@ -513,6 +927,7 @@ public class SaveManager : MonoBehaviour
             loadedData = new SaveData();
             hasLoadedFile = true;
             hasAppliedToCurrentScene = false;
+            offlineEarningsAppliedThisSession = false;
 
             KitchenBusinessProgress.ClearAllBusinessProgress();
 
@@ -535,7 +950,7 @@ public class SaveManager : MonoBehaviour
                 Debug.Log($"[SaveManager] Wiped save file at: {SavePath}");
             }
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
             Debug.LogWarning($"[SaveManager] Failed to delete save file. {e.Message}");
         }

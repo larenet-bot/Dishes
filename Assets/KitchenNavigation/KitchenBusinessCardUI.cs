@@ -75,47 +75,7 @@ public class KitchenBusinessCardUI : MonoBehaviour
             nameText.text = kitchenName;
         }
 
-        if (questionMarkRoot != null)
-        {
-            questionMarkRoot.SetActive(mysteryMode);
-        }
-
-        if (mysteryMode)
-        {
-            if (moneyText != null)
-            {
-                moneyText.text = "Money: ???";
-            }
-
-            if (moneyPerSecondText != null)
-            {
-                moneyPerSecondText.text = "Per Second: ???";
-            }
-        }
-        else if (statsAvailable)
-        {
-            if (moneyText != null)
-            {
-                moneyText.text = "Money: " + BigNumberFormatter.FormatMoney((double)money);
-            }
-
-            if (moneyPerSecondText != null)
-            {
-                moneyPerSecondText.text = "Per Second: " + BigNumberFormatter.FormatMoney((double)moneyPerSecond);
-            }
-        }
-        else
-        {
-            if (moneyText != null)
-            {
-                moneyText.text = "Money: ???";
-            }
-
-            if (moneyPerSecondText != null)
-            {
-                moneyPerSecondText.text = "Per Second: ???";
-            }
-        }
+        RefreshStats(mysteryMode, statsAvailable, money, moneyPerSecond);
 
         if (button != null)
         {
@@ -127,6 +87,43 @@ public class KitchenBusinessCardUI : MonoBehaviour
             }
 
             button.interactable = true;
+        }
+    }
+
+    /// <summary>
+    /// Updates only the changing stat text. This prevents the business menu from
+    /// destroying and recreating cards every refresh.
+    /// </summary>
+    public void RefreshStats(bool mysteryMode, bool statsAvailable, float money, float moneyPerSecond)
+    {
+        if (questionMarkRoot != null)
+        {
+            questionMarkRoot.SetActive(mysteryMode);
+        }
+
+        if (mysteryMode || !statsAvailable)
+        {
+            if (moneyText != null)
+            {
+                moneyText.text = "Money: ???";
+            }
+
+            if (moneyPerSecondText != null)
+            {
+                moneyPerSecondText.text = "Per Second: ???";
+            }
+
+            return;
+        }
+
+        if (moneyText != null)
+        {
+            moneyText.text = "Money: " + BigNumberFormatter.FormatMoney((double)money);
+        }
+
+        if (moneyPerSecondText != null)
+        {
+            moneyPerSecondText.text = "Per Second: " + BigNumberFormatter.FormatMoney((double)moneyPerSecond) + "/sec";
         }
     }
 
