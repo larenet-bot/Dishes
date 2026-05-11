@@ -33519,6 +33519,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1230188610}
   m_CullTransparentMesh: 1
+--- !u!114 &1243360683 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7002356872137242559, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
+  m_PrefabInstance: {fileID: 1407865668}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1246566164
 GameObject:
   m_ObjectHideFlags: 0
@@ -37221,6 +37232,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 1929303750459934912, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
+      propertyPath: duckAlternateToggle
+      value: 
+      objectReference: {fileID: 1243360683}
     - target: {fileID: 2038036023327635419, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
@@ -37292,6 +37307,10 @@ PrefabInstance:
     - target: {fileID: 3532548320463070419, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685976159224591671, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
+      propertyPath: m_IsOn
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3786830035611419655, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_Layer
@@ -37488,6 +37507,10 @@ PrefabInstance:
     - target: {fileID: 6951256571174467889, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7002356872137242559, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
+      propertyPath: m_IsOn
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7109344009235111344, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_Layer
@@ -43777,6 +43800,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f71bcc974a3a5d54dae6f75f29d1c3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  defaultClips:
+  - {fileID: 8300000, guid: bff4ee25939d7e44ca3b25b10effa4dd, type: 3}
+  altClips:
+  - {fileID: 8300000, guid: 641d7add74cd8b345a927868cb4f4786, type: 3}
+  - {fileID: 8300000, guid: 2b5710257150e3c4f9eb8c8bcc65ecda, type: 3}
+  - {fileID: 8300000, guid: fc502e28b7a9d854dabbbfc1fa1dfb98, type: 3}
+  - {fileID: 8300000, guid: f38e65c188c7e2c43950a866f0a5fb30, type: 3}
 --- !u!82 &1616949948
 AudioSource:
   m_ObjectHideFlags: 0
@@ -43788,7 +43818,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 8994725383216735636, guid: e30935e55bf325e448023fdd8451a615, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: bff4ee25939d7e44ca3b25b10effa4dd, type: 3}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

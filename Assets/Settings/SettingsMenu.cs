@@ -18,6 +18,9 @@ public class SettingsMenu : MonoBehaviour
 
     public AudioMixer audioMixer; // Reference to the AudioMixer for volume control
 
+    // New: toggle to choose alternate duck audio list
+    public Toggle duckAlternateToggle;
+
     // Removed the dynamic resolution list and dropdown population.
     private void Start()
     {
@@ -41,6 +44,14 @@ public class SettingsMenu : MonoBehaviour
             resolutionDropdown.gameObject.SetActive(false);
             // Or just make it non-interactable:
             // resolutionDropdown.interactable = false;
+        }
+
+        // Initialize duck alternate toggle from PlayerPrefs and wire listener
+        if (duckAlternateToggle != null)
+        {
+            bool useAlt = PlayerPrefs.GetInt("DuckAlternate", 0) == 1;
+            duckAlternateToggle.isOn = useAlt;
+            duckAlternateToggle.onValueChanged.AddListener(SetDuckAlternate);
         }
 
         // Load saved values or default to 0.5
@@ -87,6 +98,14 @@ public class SettingsMenu : MonoBehaviour
     {
         audioMixer.SetFloat("SFX", volume <= 0.0001f ? -80f : Mathf.Log10(volume) * 20);
         PlayerPrefs.SetFloat("SFX", volume);
+    }
+
+    // New: store the duck audio preference
+    public void SetDuckAlternate(bool isAlternate)
+    {
+        PlayerPrefs.SetInt("DuckAlternate", isAlternate ? 1 : 0);
+        PlayerPrefs.Save();
+        Debug.Log("Duck alternate audio set to: " + isAlternate);
     }
 
     public void SetFullScreen(bool isFullScreen)
