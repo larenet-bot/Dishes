@@ -5928,7 +5928,7 @@ GameObject:
   - component: {fileID: 194063459}
   - component: {fileID: 194063461}
   - component: {fileID: 194063460}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12336,7 +12336,7 @@ GameObject:
   - component: {fileID: 422735450}
   - component: {fileID: 422735449}
   - component: {fileID: 422735448}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Settings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16063,7 +16063,7 @@ GameObject:
   - component: {fileID: 549219904}
   - component: {fileID: 549219903}
   - component: {fileID: 549219906}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: PauseCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16107,6 +16107,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenu
   settingsButton: {fileID: 1282494857}
   pauseMenuUI: {fileID: 549219901}
+  objectsToDisableDuringPause: []
+  bubbleLayer: 6
+  pausedColliderRefreshInterval: 0.1
   menuSceneName: Menu
 --- !u!114 &549219904
 MonoBehaviour:
@@ -18342,7 +18345,7 @@ GameObject:
   - component: {fileID: 628854809}
   - component: {fileID: 628854811}
   - component: {fileID: 628854810}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20642,7 +20645,7 @@ GameObject:
   - component: {fileID: 731349479}
   - component: {fileID: 731349478}
   - component: {fileID: 731349477}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: ResumeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27035,7 +27038,7 @@ GameObject:
   - component: {fileID: 968869079}
   - component: {fileID: 968869081}
   - component: {fileID: 968869080}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28288,8 +28291,8 @@ RectTransform:
   m_Children:
   - {fileID: 38489430}
   - {fileID: 863348883}
-  - {fileID: 549219902}
   - {fileID: 1804134756}
+  - {fileID: 549219902}
   - {fileID: 1764119594}
   m_Father: {fileID: 125825044}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -28776,6 +28779,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenu
   settingsButton: {fileID: 1282494857}
   pauseMenuUI: {fileID: 549219901}
+  objectsToDisableDuringPause:
+  - {fileID: 1616949942}
+  bubbleLayer: 6
+  pausedColliderRefreshInterval: 0.1
   menuSceneName: Menu
 --- !u!1 &1055967765
 GameObject:
@@ -35750,7 +35757,7 @@ GameObject:
   - component: {fileID: 1360947860}
   - component: {fileID: 1360947862}
   - component: {fileID: 1360947861}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41589,7 +41596,7 @@ GameObject:
   - component: {fileID: 1526394556}
   - component: {fileID: 1526394555}
   - component: {fileID: 1526394554}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Quit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52179,7 +52186,7 @@ GameObject:
   - component: {fileID: 1930213536}
   - component: {fileID: 1930213535}
   - component: {fileID: 1930213534}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
