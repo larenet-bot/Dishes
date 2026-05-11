@@ -1946,6 +1946,7 @@ MonoBehaviour:
   kitchenId: kitchen_2
   allowGlobalSaveMigrationForThisKitchen: 0
   unlockOtherBusinessesWhenAllLoansPaid: 0
+  preferSaveManagerLoanIndex: 1
   usePersistence: 0
   prefsKey_CurrentLoanIndex: LOAN_CURRENT_INDEX
 --- !u!1 &68355194
@@ -17245,6 +17246,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenu
   settingsButton: {fileID: 1282494857}
   pauseMenuUI: {fileID: 549219901}
+  objectsToDisableDuringPause: []
+  bubbleLayer: 6
+  pausedColliderRefreshInterval: 0.1
   menuSceneName: Menu
 --- !u!114 &549219904
 MonoBehaviour:
@@ -31072,6 +31076,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenu
   settingsButton: {fileID: 1282494857}
   pauseMenuUI: {fileID: 549219901}
+  objectsToDisableDuringPause:
+  - {fileID: 1616949942}
+  bubbleLayer: 6
+  pausedColliderRefreshInterval: 0.1
   menuSceneName: Menu
 --- !u!1 &1058766518
 GameObject:
@@ -45142,6 +45150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dishCountText: {fileID: 75080918}
   profitText: {fileID: 701191846}
+  dishesPerSecondText: {fileID: 0}
   dishCountIncrement: 1
   profitPerDish: 1
   dishProfitMultiplier: 1
@@ -45160,10 +45169,7 @@ MonoBehaviour:
   employeeDishUIRefresh: 0.25
   happyEmployeesTimerFill: {fileID: 1204321880}
   happyEmployeesTimerRoot: {fileID: 1729222592}
-  happyEmployeesTitleText: {fileID: 2002381944}
-  happyEmployeesInfoText: {fileID: 1335004654}
   wellMotivatedTimerFill: {fileID: 1664034601}
-  wellMotivatedTitleText: {fileID: 1760891488}
   wellMotivatedInfoText: {fileID: 55630520}
   wellMotivatedTimerRoot: {fileID: 1028373147}
 --- !u!4 &1535544643
@@ -47081,6 +47087,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f71bcc974a3a5d54dae6f75f29d1c3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  defaultClips: []
+  altClips: []
 --- !u!82 &1616949948
 AudioSource:
   m_ObjectHideFlags: 0
@@ -50605,7 +50613,7 @@ MonoBehaviour:
   topPadding: 25
   bottomPadding: 25
   sidePadding: 10
-  rememberVisitedKitchenStatsThisSession: 1
+  openMenuRefreshSeconds: 0.5
 --- !u!1 &1732626540
 GameObject:
   m_ObjectHideFlags: 0
@@ -57593,10 +57601,10 @@ RectTransform:
   - {fileID: 2127587722}
   m_Father: {fileID: 2032591383}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 3, y: -2.880005}
-  m_SizeDelta: {x: -1142.55, y: 5.7700195}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 737, y: -2.880005}
+  m_SizeDelta: {x: 777.4501, y: 5.7700195}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1951393110
 MonoBehaviour:
@@ -59354,6 +59362,7 @@ MonoBehaviour:
   radioUpgradeButton: {fileID: 1976268439}
   radioCloseButton: {fileID: 2011986973}
   RadioButtonImage: {fileID: 1934337363}
+  radioControlPanel: {fileID: 51345309}
   soapTiers:
   - tierName: Bar Soap
     description: Affects ALL DPS. Currently has no affect
@@ -59434,7 +59443,6 @@ MonoBehaviour:
   spongeButtonImage: {fileID: 26829586}
   backgroundOverlayButton: {fileID: 0}
   raycastCanvas: {fileID: 0}
-  radioControlPanel: {fileID: 51345309}
 --- !u!4 &2032377219
 Transform:
   m_ObjectHideFlags: 0
