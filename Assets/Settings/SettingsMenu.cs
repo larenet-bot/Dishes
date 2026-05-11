@@ -21,9 +21,18 @@ public class SettingsMenu : MonoBehaviour
     // Removed the dynamic resolution list and dropdown population.
     private void Start()
     {
-        // Force the game into the locked resolution immediately
-        Screen.SetResolution(1920, 1080, Screen.fullScreen);
-        Debug.Log("Resolution locked to: 1920 x 1080");
+        // Do NOT force the window size every time the menu starts.
+        // Previously this call caused the window to snap back to 1920x1080 when the menu opened.
+        // If you want to lock resolution only on first run, use a PlayerPrefs flag (example below).
+        // Example single-run lock (optional):
+        // if (!PlayerPrefs.HasKey("ResolutionInitialized"))
+        // {
+        //     Screen.SetResolution(1920, 1080, Screen.fullScreen);
+        //     PlayerPrefs.SetInt("ResolutionInitialized", 1);
+        //     Debug.Log("Initial resolution locked to: 1920 x 1080");
+        // }
+
+        Debug.Log("SettingsMenu started. Current resolution: " + Screen.currentResolution.width + "x" + Screen.currentResolution.height + " fullscreen=" + Screen.fullScreen);
 
         // Hide or disable the resolution dropdown if assigned so user cannot change it from UI
         if (resolutionDropdown != null)
@@ -82,12 +91,22 @@ public class SettingsMenu : MonoBehaviour
 
     public void SetFullScreen(bool isFullScreen)
     {
-        // Set the game's fullscreen mode
-        Screen.fullScreen = isFullScreen;
-        Debug.Log("Fullscreen mode set to: " + isFullScreen);
+        // Use fullScreenMode to explicitly select mode, then set fullscreen on/off.
+        // This avoids reapplying a fixed resolution and preserves windowed/maximized behavior.
+        if (isFullScreen)
+        {
+            // You can choose FullScreenWindow (borderless window) or ExclusiveFullScreen
+            Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+            Screen.fullScreen = true;
+        }
+        else
+        {
+            Screen.fullScreenMode = FullScreenMode.Windowed;
+            Screen.fullScreen = false;
+            // Do NOT call Screen.SetResolution here — leave the window manager to keep the current size (e.g. maximized).
+        }
 
-        // Re-apply locked resolution when fullscreen mode changes
-        Screen.SetResolution(1920, 1080, Screen.fullScreen);
+        Debug.Log("Fullscreen mode set to: " + isFullScreen + " (mode: " + Screen.fullScreenMode + ")");
     }
 
     void Awake()
