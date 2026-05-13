@@ -3962,6 +3962,7 @@ Transform:
   - {fileID: 1312267499}
   - {fileID: 471143837042943271}
   - {fileID: 1732151100}
+  - {fileID: 1593987459}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &132126254
@@ -7602,7 +7603,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &222056638
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7618,9 +7619,9 @@ RectTransform:
   - {fileID: 1966045395}
   m_Father: {fileID: 1804134756}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 230.92807, y: -37.87198}
   m_SizeDelta: {x: 75.75, y: 75.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &222056639
@@ -30451,9 +30452,9 @@ RectTransform:
   m_Children:
   - {fileID: 38489430}
   - {fileID: 863348883}
-  - {fileID: 549219902}
   - {fileID: 1804134756}
   - {fileID: 1764119594}
+  - {fileID: 549219902}
   m_Father: {fileID: 125825044}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -46119,7 +46120,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1815677127}
-  - {fileID: 1616949943}
   m_Father: {fileID: 1819217423}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -46221,6 +46221,76 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1580966302}
   m_CullTransparentMesh: 1
+--- !u!1 &1593987458
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1593987459}
+  - component: {fileID: 1593987460}
+  m_Layer: 0
+  m_Name: TooltipManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1593987459
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593987458}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 7.4878044, y: 2.3146114, z: 10.004891}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 125825044}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1593987460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593987458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b88bcfa2f9cdbb3408f3a14a3dd8d50d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  tooltipEntries:
+  - targetObject: {fileID: 1934337358}
+    tooltipText: 'Radio: Adjust the cuurrent song.'
+  - targetObject: {fileID: 137410829}
+    tooltipText: 'Shelf Upgrades: Upgrading each item gives different benefits.'
+  - targetObject: {fileID: 1580966302}
+    tooltipText: 'Sink Upgrades: Purchase and upgrade a unique sink type.'
+  - targetObject: {fileID: 1616949942}
+    tooltipText: Quack.
+  - targetObject: {fileID: 1749801437}
+    tooltipText: Wash dishes for cash. Trickier dishes give more money.
+  - targetObject: {fileID: 1473331928}
+    tooltipText: Hire Employees and buy their unique upgrades.
+  - targetObject: {fileID: 1069080868}
+    tooltipText: Take out the trash on rhythm for a big payday.
+  - targetObject: {fileID: 1217270753}
+    tooltipText: 'Pay off your loan, and progress through the story. '
+  - targetObject: {fileID: 988481563}
+    tooltipText: Check on your other business ventures.
+  tooltipCanvas: {fileID: 1037320927}
+  tooltipRoot: {fileID: 0}
+  tooltipText: {fileID: 0}
+  tooltipOffset: {x: 1000, y: -500}
+  clampToCanvas: 0
+  check2DColliders: 1
+  check3DColliders: 1
 --- !u!1 &1594520765
 GameObject:
   m_ObjectHideFlags: 0
@@ -46942,11 +47012,11 @@ Transform:
   m_GameObject: {fileID: 1616949942}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 347, y: -43, z: 0}
-  m_LocalScale: {x: 44.28, y: 49.68, z: 108}
+  m_LocalPosition: {x: 597, y: 26, z: 0}
+  m_LocalScale: {x: 44.279995, y: 49.679996, z: 108}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1580966303}
+  m_Father: {fileID: 1819217423}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1616949944
 Animator:
@@ -53695,6 +53765,7 @@ RectTransform:
   - {fileID: 94115234}
   - {fileID: 137410830}
   - {fileID: 1580966303}
+  - {fileID: 1616949943}
   - {fileID: 1814730498}
   - {fileID: 1043575371}
   m_Father: {fileID: 967766790}
