@@ -30,6 +30,16 @@ public class KitchenBusinessMenu : MonoBehaviour
 
         [Header("Starting State")]
         public bool startsDiscovered = false;
+
+        [Header("Minigame Cooldown")]
+        [Tooltip("Must match the minigameId in CooldownManager for this kitchen. Leave empty if this kitchen has no cooldown shown on its card.")]
+        public string minigameId = "minigame_1";
+
+        [Tooltip("Used to seed the initial app-start cooldown for unloaded kitchens. Match this to the CooldownManager timer for this minigame.")]
+        public float minigameCooldownSeconds = 300f;
+
+        [Tooltip("Starts this kitchen's minigame cooldown once per app session, even if this kitchen scene has not been loaded yet.")]
+        public bool startMinigameCooldownOnInitialAppStartup = true;
     }
 
     [Header("Current Kitchen")]
@@ -55,8 +65,14 @@ public class KitchenBusinessMenu : MonoBehaviour
     [SerializeField] private float sidePadding = 10f;
 
     [Header("Open Menu Text Refresh")]
-    [Tooltip("How often the open menu updates only money and money-per-second text.")]
+    [Tooltip("How often the open menu updates money, money-per-second text, and minigame cooldown fills.")]
     [SerializeField] private float openMenuRefreshSeconds = 0.5f;
+
+    [Header("Minigame Cooldown Card Fill")]
+    [SerializeField] private bool showMinigameCooldownOnCards = true;
+
+    [Tooltip("If true, the business-card cooldown image hides when that kitchen's minigame is ready.")]
+    [SerializeField] private bool hideReadyCooldownFill = false;
 
     private readonly Dictionary<string, KitchenBusinessCardUI> discoveredCardsByKitchenId =
         new Dictionary<string, KitchenBusinessCardUI>();
@@ -101,6 +117,7 @@ public class KitchenBusinessMenu : MonoBehaviour
         }
 
         EnsureStartingKitchensAreMarked();
+        EnsureInitialMinigameCooldownsAreStarted();
         RefreshOtherBusinessesButtonVisibility();
     }
 
@@ -182,6 +199,30 @@ public class KitchenBusinessMenu : MonoBehaviour
             {
                 KitchenBusinessProgress.MarkKitchenDiscovered(kitchen.kitchenId);
             }
+        }
+    }
+
+    private void EnsureInitialMinigameCooldownsAreStarted()
+    {
+        for (int i = 0; i < kitchens.Count; i++)
+        {
+            KitchenDefinition kitchen = kitchens[i];
+
+            if (kitchen == null || !kitchen.startMinigameCooldownOnInitialAppStartup)
+            {
+                continue;
+            }
+
+            if (string.IsNullOrWhiteSpace(kitchen.kitchenId) || string.IsNullOrWhiteSpace(kitchen.minigameId))
+            {
+                continue;
+            }
+
+            KitchenBusinessProgress.EnsureInitialMinigameCooldownStartedThisSession(
+                kitchen.kitchenId,
+                kitchen.minigameId,
+                kitchen.minigameCooldownSeconds
+            );
         }
     }
 
@@ -356,6 +397,8 @@ public class KitchenBusinessMenu : MonoBehaviour
             () => OnDiscoveredKitchenPressed(kitchen)
         );
 
+        RefreshCardCooldown(kitchen, card, mysteryMode: false);
+
         discoveredCardsByKitchenId[kitchen.kitchenId] = card;
     }
 
@@ -374,6 +417,8 @@ public class KitchenBusinessMenu : MonoBehaviour
             0f,
             () => OnVentureForthPressed(kitchen)
         );
+
+        RefreshCardCooldown(kitchen, card, mysteryMode: true);
 
         ventureForthCard = card;
     }
@@ -468,12 +513,65 @@ public class KitchenBusinessMenu : MonoBehaviour
             );
 
             card.RefreshStats(false, statsAvailable, money, moneyPerSecond);
+
+            if (TryGetKitchenDefinition(pair.Key, out KitchenDefinition kitchen))
+            {
+                RefreshCardCooldown(kitchen, card, mysteryMode: false);
+            }
         }
 
         if (ventureForthCard != null)
         {
             ventureForthCard.RefreshStats(true, false, 0f, 0f);
+            ventureForthCard.RefreshMinigameCooldown(true, false, 0f, hideWhenReady: true);
         }
+    }
+
+    private bool TryGetKitchenDefinition(string kitchenId, out KitchenDefinition foundKitchen)
+    {
+        foundKitchen = null;
+
+        if (string.IsNullOrWhiteSpace(kitchenId))
+        {
+            return false;
+        }
+
+        for (int i = 0; i < kitchens.Count; i++)
+        {
+            KitchenDefinition kitchen = kitchens[i];
+
+            if (kitchen == null)
+            {
+                continue;
+            }
+
+            if (kitchen.kitchenId == kitchenId)
+            {
+                foundKitchen = kitchen;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void RefreshCardCooldown(KitchenDefinition kitchen, KitchenBusinessCardUI card, bool mysteryMode)
+    {
+        if (card == null)
+        {
+            return;
+        }
+
+        if (!showMinigameCooldownOnCards || mysteryMode || kitchen == null || string.IsNullOrWhiteSpace(kitchen.minigameId))
+        {
+            card.RefreshMinigameCooldown(mysteryMode, false, 0f, hideWhenReady: true);
+            return;
+        }
+
+        bool cooldownActive = KitchenBusinessProgress.IsMinigameOnCooldown(kitchen.kitchenId, kitchen.minigameId);
+        float progress01 = KitchenBusinessProgress.GetMinigameCooldownProgress01(kitchen.kitchenId, kitchen.minigameId);
+
+        card.RefreshMinigameCooldown(false, cooldownActive, progress01, hideReadyCooldownFill);
     }
 
     private bool TryGetKitchenStats(string kitchenId, out float money, out float moneyPerSecond)

@@ -3,19 +3,25 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Generic minigame cooldown UI binder.
+/// Attach this to an empty GameObject named CooldownManager.
+/// It stores cooldown end times in KitchenBusinessProgress, so cooldowns keep counting while scenes are unloaded.
+/// </summary>
 public class CooldownManager : MonoBehaviour
 {
     [Serializable]
     public class MinigameCooldownEntry
     {
-        [Header("Label")]
-        public string minigameName = "Minigame";
+        [Header("Identity")]
+        [Tooltip("Unique id for this minigame inside this kitchen. Use the same id in KitchenBusinessMenu cards.")]
+        public string minigameId = "minigame_1";
 
         [Header("Button UI")]
         public Button minigameButton;
         public TMP_Text buttonText;
 
-        [Tooltip("Optional. This should be an Image on or inside the button. Set its Image Type to Filled.")]
+        [Tooltip("Optional. Drag the radial fill Image from the button here.")]
         public Image fillImage;
 
         [Header("Optional Timer Override")]
@@ -23,23 +29,26 @@ public class CooldownManager : MonoBehaviour
         public float customCooldownSeconds = 300f;
 
         [Header("Ready Text")]
-        [Tooltip("If empty, this script restores whatever text the button had at startup.")]
+        [Tooltip("If empty, the script restores whatever text the button had at startup.")]
         public string readyTextOverride = "";
 
         [HideInInspector] public string originalButtonText;
-        [HideInInspector] public float remainingSeconds;
-        [HideInInspector] public bool isCoolingDown;
     }
+
+    [Header("Kitchen Identity")]
+    [Tooltip("Used if autoResolveKitchenId cannot find LoanManager or KitchenIdentity.")]
+    [SerializeField] private string kitchenId = "kitchen_1";
+
+    [SerializeField] private bool autoResolveKitchenId = true;
+    [SerializeField] private LoanManager loanManager;
+    [SerializeField] private KitchenIdentity kitchenIdentity;
 
     [Header("Global Cooldown Settings")]
     [Tooltip("Default cooldown length for every minigame, unless an entry uses customCooldownSeconds.")]
     [SerializeField] private float defaultCooldownSeconds = 300f;
 
-    [Tooltip("When true, all minigame buttons begin on cooldown when the scene starts.")]
-    [SerializeField] private bool startOnCooldown = true;
-
-    [Tooltip("Use this if cooldowns should keep counting while the game is paused with Time.timeScale = 0.")]
-    [SerializeField] private bool useUnscaledTime = true;
+    [Tooltip("Starts each configured minigame cooldown once per app session. It will not restart just because this scene reloads.")]
+    [SerializeField] private bool startOnCooldownOnInitialAppStartup = true;
 
     [Header("Button Display")]
     [SerializeField] private bool disableButtonDuringCooldown = true;
@@ -51,6 +60,9 @@ public class CooldownManager : MonoBehaviour
     [SerializeField] private bool showMinutesAndSeconds = true;
 
     [Header("Fill Image")]
+    [Tooltip("If true, the script forces the image to radial filled mode.")]
+    [SerializeField] private bool forceRadialFill = true;
+
     [Tooltip("True means the fill starts empty and fills up as the cooldown finishes.")]
     [SerializeField] private bool fillFromEmptyToFull = true;
 
@@ -62,103 +74,77 @@ public class CooldownManager : MonoBehaviour
 
     private void Awake()
     {
-        for (int i = 0; i < minigames.Length; i++)
-        {
-            MinigameCooldownEntry entry = minigames[i];
-
-            if (entry == null)
-                continue;
-
-            if (entry.buttonText != null)
-                entry.originalButtonText = entry.buttonText.text;
-
-            SetupFillImage(entry);
-        }
+        ResolveKitchenId();
+        CacheOriginalButtonText();
+        SetupFillImages();
     }
 
     private void Start()
     {
-        if (startOnCooldown)
+        ResolveKitchenId();
+
+        if (startOnCooldownOnInitialAppStartup)
         {
-            StartCooldownAll();
+            SeedInitialCooldownsOnceThisSession();
         }
-        else
-        {
-            for (int i = 0; i < minigames.Length; i++)
-                FinishCooldown(i, instant: true);
-        }
+
+        RefreshAllUI();
     }
 
     private void Update()
     {
-        float deltaTime = useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
-
-        for (int i = 0; i < minigames.Length; i++)
-        {
-            MinigameCooldownEntry entry = minigames[i];
-
-            if (entry == null || !entry.isCoolingDown)
-                continue;
-
-            entry.remainingSeconds -= deltaTime;
-
-            if (entry.remainingSeconds <= 0f)
-            {
-                FinishCooldown(i);
-                continue;
-            }
-
-            UpdateCooldownUI(entry);
-        }
+        RefreshAllUI();
     }
 
-    // Use this from a close/reward button OnClick.
-    // In the Button OnClick inspector, choose CooldownManager -> StartCooldown(int).
+    /// <summary>
+    /// Use this from the reward screen close button OnClick.
+    /// First minigame entry is 0, second is 1, etc.
+    /// </summary>
     public void StartCooldown(int minigameIndex)
     {
         if (!IsValidIndex(minigameIndex))
+        {
             return;
+        }
+
+        ResolveKitchenId();
 
         MinigameCooldownEntry entry = minigames[minigameIndex];
+        KitchenBusinessProgress.StartMinigameCooldown(
+            kitchenId,
+            entry.minigameId,
+            GetCooldownDuration(entry)
+        );
 
-        float duration = GetCooldownDuration(entry);
-        entry.remainingSeconds = duration;
-        entry.isCoolingDown = true;
-
-        if (entry.minigameButton != null && disableButtonDuringCooldown)
-            entry.minigameButton.interactable = false;
-
-        if (entry.fillImage != null)
-            entry.fillImage.gameObject.SetActive(true);
-
-        UpdateCooldownUI(entry);
+        RefreshEntryUI(entry);
     }
 
-    // Handy if you only have one minigame for now.
+    /// <summary>
+    /// Convenience method for a scene with one minigame.
+    /// </summary>
     public void StartCooldownFirst()
     {
         StartCooldown(0);
     }
 
-    // Handy for testing, or if every minigame should go on cooldown together.
-    public void StartCooldownAll()
+    /// <summary>
+    /// Optional method if you prefer passing a minigame id from Unity events.
+    /// </summary>
+    public void StartCooldownById(string minigameId)
     {
-        for (int i = 0; i < minigames.Length; i++)
-            StartCooldown(i);
-    }
-
-    // Optional: lets you call cooldowns by name from Unity events.
-    public void StartCooldownByName(string minigameName)
-    {
-        if (string.IsNullOrWhiteSpace(minigameName))
+        if (string.IsNullOrWhiteSpace(minigameId) || minigames == null)
+        {
             return;
+        }
 
         for (int i = 0; i < minigames.Length; i++)
         {
             if (minigames[i] == null)
+            {
                 continue;
+            }
 
-            if (string.Equals(minigames[i].minigameName, minigameName, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(minigames[i].minigameId, minigameId, StringComparison.OrdinalIgnoreCase))
             {
                 StartCooldown(i);
                 return;
@@ -166,87 +152,202 @@ public class CooldownManager : MonoBehaviour
         }
     }
 
+    public void StartCooldownAll()
+    {
+        if (minigames == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < minigames.Length; i++)
+        {
+            StartCooldown(i);
+        }
+    }
+
     public bool IsOnCooldown(int minigameIndex)
     {
         if (!IsValidIndex(minigameIndex))
+        {
             return false;
+        }
 
-        return minigames[minigameIndex].isCoolingDown;
+        ResolveKitchenId();
+        return KitchenBusinessProgress.IsMinigameOnCooldown(kitchenId, minigames[minigameIndex].minigameId);
     }
 
-    private void FinishCooldown(int minigameIndex, bool instant = false)
+    private void ResolveKitchenId()
     {
-        if (!IsValidIndex(minigameIndex))
+        if (!autoResolveKitchenId)
+        {
             return;
+        }
 
-        MinigameCooldownEntry entry = minigames[minigameIndex];
+        if (loanManager == null)
+        {
+            loanManager = FindFirstObjectByType<LoanManager>();
+        }
 
-        entry.remainingSeconds = 0f;
-        entry.isCoolingDown = false;
+        if (loanManager != null && !string.IsNullOrWhiteSpace(loanManager.GetKitchenId()))
+        {
+            kitchenId = loanManager.GetKitchenId();
+            return;
+        }
+
+        if (kitchenIdentity == null)
+        {
+            kitchenIdentity = FindFirstObjectByType<KitchenIdentity>();
+        }
+
+        if (kitchenIdentity != null && !string.IsNullOrWhiteSpace(kitchenIdentity.KitchenId))
+        {
+            kitchenId = kitchenIdentity.KitchenId;
+        }
+    }
+
+    private void CacheOriginalButtonText()
+    {
+        if (minigames == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < minigames.Length; i++)
+        {
+            MinigameCooldownEntry entry = minigames[i];
+
+            if (entry == null || entry.buttonText == null)
+            {
+                continue;
+            }
+
+            entry.originalButtonText = entry.buttonText.text;
+        }
+    }
+
+    private void SetupFillImages()
+    {
+        if (minigames == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < minigames.Length; i++)
+        {
+            MinigameCooldownEntry entry = minigames[i];
+
+            if (entry == null || entry.fillImage == null)
+            {
+                continue;
+            }
+
+            if (forceRadialFill)
+            {
+                entry.fillImage.type = Image.Type.Filled;
+                entry.fillImage.fillMethod = Image.FillMethod.Radial360;
+            }
+        }
+    }
+
+    private void SeedInitialCooldownsOnceThisSession()
+    {
+        if (minigames == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < minigames.Length; i++)
+        {
+            MinigameCooldownEntry entry = minigames[i];
+
+            if (entry == null || string.IsNullOrWhiteSpace(entry.minigameId))
+            {
+                continue;
+            }
+
+            KitchenBusinessProgress.EnsureInitialMinigameCooldownStartedThisSession(
+                kitchenId,
+                entry.minigameId,
+                GetCooldownDuration(entry)
+            );
+        }
+    }
+
+    private void RefreshAllUI()
+    {
+        if (minigames == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < minigames.Length; i++)
+        {
+            RefreshEntryUI(minigames[i]);
+        }
+    }
+
+    private void RefreshEntryUI(MinigameCooldownEntry entry)
+    {
+        if (entry == null || string.IsNullOrWhiteSpace(entry.minigameId))
+        {
+            return;
+        }
+
+        bool isCoolingDown = KitchenBusinessProgress.IsMinigameOnCooldown(kitchenId, entry.minigameId);
+        float remainingSeconds = KitchenBusinessProgress.GetMinigameCooldownRemainingSeconds(kitchenId, entry.minigameId);
+        float progress01 = KitchenBusinessProgress.GetMinigameCooldownProgress01(kitchenId, entry.minigameId);
 
         if (entry.minigameButton != null)
-            entry.minigameButton.interactable = true;
+        {
+            entry.minigameButton.interactable = !isCoolingDown || !disableButtonDuringCooldown;
+        }
 
         if (entry.buttonText != null)
         {
-            if (!string.IsNullOrWhiteSpace(entry.readyTextOverride))
-                entry.buttonText.text = entry.readyTextOverride;
-            else
-                entry.buttonText.text = entry.originalButtonText;
+            entry.buttonText.text = isCoolingDown
+                ? cooldownTextPrefix + FormatTime(remainingSeconds)
+                : GetReadyText(entry);
         }
 
         if (entry.fillImage != null)
         {
-            entry.fillImage.fillAmount = fillFromEmptyToFull ? 1f : 0f;
+            if (forceRadialFill)
+            {
+                entry.fillImage.type = Image.Type.Filled;
+                entry.fillImage.fillMethod = Image.FillMethod.Radial360;
+            }
+
+            entry.fillImage.fillAmount = fillFromEmptyToFull ? progress01 : 1f - progress01;
 
             if (hideFillWhenReady)
-                entry.fillImage.gameObject.SetActive(false);
+            {
+                entry.fillImage.gameObject.SetActive(isCoolingDown);
+            }
+            else
+            {
+                entry.fillImage.gameObject.SetActive(true);
+            }
         }
-
-        if (!instant)
-            Debug.Log($"[CooldownManager] {entry.minigameName} cooldown finished.");
-    }
-
-    private void UpdateCooldownUI(MinigameCooldownEntry entry)
-    {
-        float duration = GetCooldownDuration(entry);
-        float remaining = Mathf.Max(0f, entry.remainingSeconds);
-
-        if (entry.buttonText != null)
-            entry.buttonText.text = cooldownTextPrefix + FormatTime(remaining);
-
-        if (entry.fillImage != null)
-        {
-            float progress = duration <= 0f ? 1f : 1f - Mathf.Clamp01(remaining / duration);
-            entry.fillImage.fillAmount = fillFromEmptyToFull ? progress : 1f - progress;
-        }
-    }
-
-    private void SetupFillImage(MinigameCooldownEntry entry)
-    {
-        if (entry.fillImage == null)
-            return;
-
-        entry.fillImage.type = Image.Type.Filled;
-
-        if (entry.isCoolingDown)
-            return;
-
-        entry.fillImage.fillAmount = fillFromEmptyToFull ? 1f : 0f;
-
-        if (hideFillWhenReady)
-            entry.fillImage.gameObject.SetActive(false);
     }
 
     private float GetCooldownDuration(MinigameCooldownEntry entry)
     {
-        if (entry == null)
-            return Mathf.Max(0.1f, defaultCooldownSeconds);
-
-        if (entry.useCustomCooldownTime)
+        if (entry != null && entry.useCustomCooldownTime)
+        {
             return Mathf.Max(0.1f, entry.customCooldownSeconds);
+        }
 
         return Mathf.Max(0.1f, defaultCooldownSeconds);
+    }
+
+    private string GetReadyText(MinigameCooldownEntry entry)
+    {
+        if (!string.IsNullOrWhiteSpace(entry.readyTextOverride))
+        {
+            return entry.readyTextOverride;
+        }
+
+        return entry.originalButtonText;
     }
 
     private string FormatTime(float seconds)
@@ -254,7 +355,9 @@ public class CooldownManager : MonoBehaviour
         seconds = Mathf.Ceil(seconds);
 
         if (!showMinutesAndSeconds)
+        {
             return $"{seconds:0}s";
+        }
 
         int totalSeconds = Mathf.CeilToInt(seconds);
         int minutes = totalSeconds / 60;
@@ -266,7 +369,9 @@ public class CooldownManager : MonoBehaviour
     private bool IsValidIndex(int index)
     {
         if (minigames == null)
+        {
             return false;
+        }
 
         if (index < 0 || index >= minigames.Length)
         {
@@ -274,6 +379,12 @@ public class CooldownManager : MonoBehaviour
             return false;
         }
 
-        return minigames[index] != null;
+        if (minigames[index] == null)
+        {
+            Debug.LogWarning($"[CooldownManager] Minigame entry {index} is null.");
+            return false;
+        }
+
+        return true;
     }
 }

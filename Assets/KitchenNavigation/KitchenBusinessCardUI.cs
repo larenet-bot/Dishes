@@ -32,6 +32,13 @@ public class KitchenBusinessCardUI : MonoBehaviour
     [SerializeField] private TMP_Text moneyText;
     [SerializeField] private TMP_Text moneyPerSecondText;
 
+    [Header("Minigame Cooldown")]
+    [Tooltip("Optional radial Image on the business card prefab. This mirrors the minigame button cooldown progress.")]
+    [SerializeField] private Image minigameCooldownFillImage;
+
+    [Tooltip("If true, the script forces this image to radial filled mode.")]
+    [SerializeField] private bool forceRadialCooldownFill = true;
+
     [Header("Locked / Mystery State")]
     [Tooltip("Optional object containing question marks or mystery overlay visuals.")]
     [SerializeField] private GameObject questionMarkRoot;
@@ -63,6 +70,7 @@ public class KitchenBusinessCardUI : MonoBehaviour
         }
 
         ApplyButtonColors(cardColor);
+        SetupCooldownFillImage();
 
         if (kitchenPictureImage != null)
         {
@@ -125,6 +133,49 @@ public class KitchenBusinessCardUI : MonoBehaviour
         {
             moneyPerSecondText.text = "Per Second: " + BigNumberFormatter.FormatMoney((double)moneyPerSecond) + "/sec";
         }
+    }
+
+    public void RefreshMinigameCooldown(
+        bool mysteryMode,
+        bool cooldownActive,
+        float progress01,
+        bool hideWhenReady)
+    {
+        if (minigameCooldownFillImage == null)
+        {
+            return;
+        }
+
+        SetupCooldownFillImage();
+
+        if (mysteryMode)
+        {
+            minigameCooldownFillImage.gameObject.SetActive(false);
+            return;
+        }
+
+        progress01 = Mathf.Clamp01(progress01);
+        minigameCooldownFillImage.fillAmount = progress01;
+
+        if (hideWhenReady)
+        {
+            minigameCooldownFillImage.gameObject.SetActive(cooldownActive);
+        }
+        else
+        {
+            minigameCooldownFillImage.gameObject.SetActive(true);
+        }
+    }
+
+    private void SetupCooldownFillImage()
+    {
+        if (minigameCooldownFillImage == null || !forceRadialCooldownFill)
+        {
+            return;
+        }
+
+        minigameCooldownFillImage.type = Image.Type.Filled;
+        minigameCooldownFillImage.fillMethod = Image.FillMethod.Radial360;
     }
 
     private void ApplyButtonColors(Color baseColor)
