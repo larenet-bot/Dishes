@@ -78,6 +78,10 @@ public class ScoreManager : MonoBehaviour
     private float wellMotivatedEndTime = -1f;
     private float wellMotivatedDuration = 0f;
 
+    public long GetTotalDishesCount()
+    {
+        return totalDishes;
+    }
     private void Awake()
     {
         Application.runInBackground = true;
