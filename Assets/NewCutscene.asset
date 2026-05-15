@@ -13,11 +13,37 @@ MonoBehaviour:
   m_Name: NewCutscene
   m_EditorClassIdentifier: 
   lines:
-  - text: 
-    sfx: {fileID: 0}
+  - text: 'Wow, you paid off what you owe me already. You got talent, kid! What say
+      we go into business together? '
+    sfx: {fileID: 8300000, guid: 4b1805353656a3f48a636ca4f04b4bbb, type: 3}
     background: {fileID: 0}
     postDelay: 0
+    branchId: 0
+    hasChoices: 1
+    choices:
+    - choiceText: '"Uhh"'
+      nextLineIndex: 1
+      nextBranchId: 0
+    - choiceText: '"...wait huh?"'
+      nextLineIndex: 1
+      nextBranchId: 0
+    overrideNextLineIndex: -1
+  - text: Great! I'll let the bank know you'll finance this mess. You and I are going
+      places, kid.
+    sfx: {fileID: 8300000, guid: 913e0828438242743af71e0e5cc70b31, type: 3}
+    background: {fileID: 0}
+    postDelay: 0
+    branchId: 1
+    hasChoices: 0
+    choices:
+    - choiceText: '"Uhh"'
+      nextLineIndex: 0
+      nextBranchId: 0
+    - choiceText: '"...wait huh?"'
+      nextLineIndex: 0
+      nextBranchId: 0
+    overrideNextLineIndex: -1
   typingSFX: {fileID: 0}
   typingSFXIntervalChars: 2
   typeSpeed: 0.02
-  nextSceneName: MainGameScene
+  nextSceneName: Kitchen2
