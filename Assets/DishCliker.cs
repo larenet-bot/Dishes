@@ -111,18 +111,8 @@ public class DishClicker : MonoBehaviour
             return;
         }
 
-        int stagesPerClick = upgrades != null ? upgrades.GetCurrentStagesPerClick() : 1;
-        int finalStageIndex = currentDish.stageSprites.Length - 1;
-
-        if (currentClicks < finalStageIndex)
-        {
-            currentClicks = Mathf.Min(currentClicks + stagesPerClick, finalStageIndex);
-            dishVisual?.SetStage(currentClicks);
-            audioEffects?.BurstBubblesAtMouse();
-            return;
-        }
-
-        CompleteDish();
+        int stagesPerClick = upgrades != null ? Mathf.Max(1, upgrades.GetCurrentStagesPerClick()) : 1;
+        AdvanceDishProgress(stagesPerClick, burstBubbles: true, isManualCompletion: true, spawnRewardAtDish: false);
     }
 
     /// <summary>
@@ -171,29 +161,53 @@ public class DishClicker : MonoBehaviour
         if (currentDish == null || stageUnits <= 0)
             return;
 
-        int finalStageIndex = currentDish.stageSprites.Length - 1;
         int stagesPerClick = upgrades != null ? Mathf.Max(1, upgrades.GetCurrentStagesPerClick()) : 1;
 
         while (stageUnits > 0 && currentDish != null)
         {
             stageUnits--;
-
-            if (currentClicks < finalStageIndex)
-            {
-                currentClicks = Mathf.Min(currentClicks + stagesPerClick, finalStageIndex);
-                dishVisual?.SetStage(currentClicks);
-                audioEffects?.BurstBubblesAtMouse();
-                continue;
-            }
-
-            // One additional unit beyond the last visible stage completes the dish.
-            CompleteDish();
+            AdvanceDishProgress(stagesPerClick, burstBubbles: true, isManualCompletion: true, spawnRewardAtDish: false);
         }
     }
 
     #endregion
 
     #region Dish Completion and Reward Calculation
+
+    private void AdvanceDishProgress(int stagesToAdd, bool burstBubbles, bool isManualCompletion, bool spawnRewardAtDish)
+    {
+        if (currentDish == null)
+        {
+            return;
+        }
+
+        int finalStageIndex = 0;
+
+        if (currentDish.stageSprites != null && currentDish.stageSprites.Length > 0)
+        {
+            finalStageIndex = currentDish.stageSprites.Length - 1;
+        }
+
+        if (finalStageIndex <= 0)
+        {
+            dishVisual?.SetStage(0);
+            CompleteDishInternal(isManualCompletion, spawnRewardAtDish);
+            return;
+        }
+
+        currentClicks = Mathf.Min(currentClicks + Mathf.Max(1, stagesToAdd), finalStageIndex);
+        dishVisual?.SetStage(currentClicks);
+
+        if (burstBubbles)
+        {
+            audioEffects?.BurstBubblesAtMouse();
+        }
+
+        if (currentClicks >= finalStageIndex)
+        {
+            CompleteDishInternal(isManualCompletion, spawnRewardAtDish);
+        }
+    }
 
     private void CompleteDish()
     {
@@ -209,8 +223,9 @@ public class DishClicker : MonoBehaviour
 
         long dishesAwarded = CalculateManualDishesAwarded();
 
+        DishPileManager.Instance?.AnimateCompletedDish(dishVisual);
+
         currentClicks = 0;
-        dishVisual?.SetStage(0);
 
         float reward = ScoreManager.Instance.OnDishCleaned(currentDish, dishesAwarded);
 
@@ -304,17 +319,7 @@ public class DishClicker : MonoBehaviour
         rewardTextSpawner?.SpawnInstantWashAwardText(awardTitle, dishVisual);
 
         int stagesPerClick = upgrades != null ? Mathf.Max(1, upgrades.GetCurrentStagesPerClick()) : 1;
-        int finalStageIndex = currentDish.stageSprites.Length - 1;
-
-        if (currentClicks < finalStageIndex)
-        {
-            currentClicks = Mathf.Min(currentClicks + stagesPerClick, finalStageIndex);
-            dishVisual?.SetStage(currentClicks);
-            return;
-        }
-
-        // One additional tick beyond the last visible stage completes the dish.
-        CompleteDishInternal(isManual: false, spawnRewardAtDish: true);
+        AdvanceDishProgress(stagesPerClick, burstBubbles: false, isManualCompletion: false, spawnRewardAtDish: true);
     }
 
     #endregion
