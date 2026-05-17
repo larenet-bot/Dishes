@@ -10831,6 +10831,7 @@ GameObject:
   - component: {fileID: 436591009}
   - component: {fileID: 436591008}
   - component: {fileID: 436591007}
+  - component: {fileID: 436591010}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -10975,6 +10976,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &436591010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436591006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52beca5aa7af334b8da618bd5c5be32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AchievementManager
+  allAchievements:
+  - {fileID: 11400000, guid: 55823a22c6316ce41a686e09b4d0ef58, type: 2}
+  - {fileID: 11400000, guid: f605171ded4529844a354cfd10f0d329, type: 2}
+  - {fileID: 11400000, guid: 42017e4bb74d6694a963aaec0858e380, type: 2}
+  popupPrefab: {fileID: 1329498468687481290, guid: ebce8f07e04f3004ab6944ac6aba795b, type: 3}
 --- !u!1 &448278897
 GameObject:
   m_ObjectHideFlags: 0

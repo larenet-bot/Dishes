@@ -712,4 +712,31 @@ public class EmployeeManager : MonoBehaviour
 
         RefreshAllEmployeeUI();
     }
+    public int GetTotalEmployeeCount()
+    {
+        int total = 0;
+
+        for (int i = 0; i < employees.Count; i++)
+        {
+            total += employees[i].count;
+        }
+
+        return total;
+    }
+
+    // New: get the count of employees matching a given employee name (case-insensitive).
+    public int GetEmployeeCountByName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name)) return 0;
+
+        int total = 0;
+        for (int i = 0; i < employees.Count; i++)
+        {
+            var e = employees[i];
+            if (string.Equals(e.employeeName, name, StringComparison.OrdinalIgnoreCase))
+                total += e.count;
+        }
+
+        return total;
+    }
 }

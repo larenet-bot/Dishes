@@ -70,6 +70,9 @@ public class KitchenSaveData
 
     // Keeps fractional dish production between unloaded/offline earning ticks.
     public float backgroundDishFraction = 0f;
+
+    // Achievements unlocked for this kitchen (persisted)
+    public List<string> achievedAchievementIds = new List<string>();
 }
 
 [Serializable]

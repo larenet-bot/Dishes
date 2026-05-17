@@ -362,7 +362,8 @@ public class SaveManager : MonoBehaviour
             cachedMoneyPerSecond = 0f,
             cachedDishesPerSecond = 0f,
             lastBackgroundEarningsUnixSeconds = NowUnixSeconds(),
-            backgroundDishFraction = 0f
+            backgroundDishFraction = 0f,
+            achievedAchievementIds = new List<string>()
         };
 
         return kitchen;
@@ -408,6 +409,11 @@ public class SaveManager : MonoBehaviour
         if (kitchen.purchasedSinkNodeIds == null)
         {
             kitchen.purchasedSinkNodeIds = new List<string>();
+        }
+
+        if (kitchen.achievedAchievementIds == null)
+        {
+            kitchen.achievedAchievementIds = new List<string>();
         }
 
         if (kitchen.cachedMoneyPerSecond < 0f)
@@ -485,6 +491,11 @@ public class SaveManager : MonoBehaviour
         {
             List<string> purchasedSinkNodes = kitchen.purchasedSinkNodeIds ?? new List<string>();
             sinks.LoadFromSave((SinkManager.SinkType)kitchen.currentSinkType, purchasedSinkNodes);
+        }
+
+        if (AchievementManager.Instance != null)
+        {
+            kitchen.achievedAchievementIds = AchievementManager.Instance.GetUnlockedAchievementIds() ?? new List<string>();
         }
 
         RefreshCurrentKitchenRatesInMemory(kitchenId);
@@ -750,6 +761,12 @@ public class SaveManager : MonoBehaviour
         {
             kitchen.currentSinkType = (int)sinks.CurrentSinkType;
             kitchen.purchasedSinkNodeIds = sinks.GetPurchasedNodeIds();
+        }
+
+        // Persist achievements from runtime manager into save data
+        if (AchievementManager.Instance != null)
+        {
+            kitchen.achievedAchievementIds = AchievementManager.Instance.GetUnlockedAchievementIds() ?? new List<string>();
         }
 
         kitchen.cachedMoneyPerSecond = Mathf.Max(0f, score.GetDisplayedProfitPerSecond());
