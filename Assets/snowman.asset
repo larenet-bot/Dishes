@@ -18,4 +18,4 @@ MonoBehaviour:
   trigger: 2
   threshold: 10
   hidden: 0
-  employeeTypeName: 
+  employeeTypeName: Snowman
