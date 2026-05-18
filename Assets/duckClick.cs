@@ -19,6 +19,9 @@ public class DuckClick : MonoBehaviour
 
     void OnMouseDown()
     {
+        // Toggle achievements menu when the duck is clicked.
+        AchievementViewer.ToggleMenuStatic();
+
         StartCoroutine(PressRoutine());
     }
 
