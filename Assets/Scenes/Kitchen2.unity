@@ -34177,7 +34177,7 @@ MonoBehaviour:
     baseCost: 15
     costMultiplier: 1.15
     dishesPerSecond: 0.2
-    startingDebuff: 0.5
+    startingDebuff: 0.8
     debuffPerUpgrade: 0.25
     firstPurchaseAnimationObjects:
     - {fileID: 1043575368}
@@ -34209,7 +34209,7 @@ MonoBehaviour:
     baseCost: 100
     costMultiplier: 1.15
     dishesPerSecond: 0.4
-    startingDebuff: 0.5
+    startingDebuff: 0.8
     debuffPerUpgrade: 0.25
     firstPurchaseAnimationObjects:
     - {fileID: 1814730495}
@@ -34241,7 +34241,7 @@ MonoBehaviour:
     baseCost: 800
     costMultiplier: 1.15
     dishesPerSecond: 0.8
-    startingDebuff: 0.5
+    startingDebuff: 0.8
     debuffPerUpgrade: 0.25
     firstPurchaseAnimationObjects: []
     purchaseSfx:
@@ -34272,7 +34272,7 @@ MonoBehaviour:
     baseCost: 3000
     costMultiplier: 1.15
     dishesPerSecond: 1.6
-    startingDebuff: 0.5
+    startingDebuff: 0.8
     debuffPerUpgrade: 0.25
     firstPurchaseAnimationObjects: []
     purchaseSfx:
@@ -34303,7 +34303,7 @@ MonoBehaviour:
     baseCost: 12000
     costMultiplier: 1.15
     dishesPerSecond: 3.2
-    startingDebuff: 0.5
+    startingDebuff: 0.8
     debuffPerUpgrade: 0.25
     firstPurchaseAnimationObjects: []
     purchaseSfx:
@@ -34334,7 +34334,7 @@ MonoBehaviour:
     baseCost: 50000
     costMultiplier: 1.15
     dishesPerSecond: 6.4
-    startingDebuff: 0.5
+    startingDebuff: 0.8
     debuffPerUpgrade: 0.25
     firstPurchaseAnimationObjects: []
     purchaseSfx:
@@ -34365,7 +34365,7 @@ MonoBehaviour:
     baseCost: 150000
     costMultiplier: 1.15
     dishesPerSecond: 12.8
-    startingDebuff: 0.5
+    startingDebuff: 0.8
     debuffPerUpgrade: 0.25
     firstPurchaseAnimationObjects: []
     purchaseSfx:
@@ -34396,7 +34396,7 @@ MonoBehaviour:
     baseCost: 400000
     costMultiplier: 1.15
     dishesPerSecond: 25.6
-    startingDebuff: 0.5
+    startingDebuff: 0.8
     debuffPerUpgrade: 0.25
     firstPurchaseAnimationObjects: []
     purchaseSfx:
@@ -34427,7 +34427,7 @@ MonoBehaviour:
     baseCost: 900000
     costMultiplier: 1.15
     dishesPerSecond: 51.2
-    startingDebuff: 0.5
+    startingDebuff: 0.8
     debuffPerUpgrade: 0.25
     firstPurchaseAnimationObjects: []
     purchaseSfx:
@@ -38270,7 +38270,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BonusInfo
+  m_text: 10x Employee Production
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
