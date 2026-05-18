@@ -150,9 +150,6 @@ public class AchievementManager : MonoBehaviour
         {
             ShowPopup(a);
         }
-
-        // If the achievement viewer is present (and possibly open), refresh it so it shows the updated state.
-        AchievementViewer.Instance?.RefreshContents();
     }
 
     private void ShowPopup(AchievementData a)

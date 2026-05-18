@@ -493,16 +493,9 @@ public class SaveManager : MonoBehaviour
             sinks.LoadFromSave((SinkManager.SinkType)kitchen.currentSinkType, purchasedSinkNodes);
         }
 
-        // Apply persisted achievements to the runtime manager (use FindFirstObjectByType so we don't miss it due to start-order)
-        var achMgr = FindFirstObjectByType<AchievementManager>();
-        if (achMgr != null)
+        if (AchievementManager.Instance != null)
         {
-            var savedIds = kitchen.achievedAchievementIds ?? new List<string>();
-            achMgr.LoadFromSave(savedIds);
-        }
-        else
-        {
-            Debug.Log($"[SaveManager] AchievementManager not found when applying saved achievements for {kitchenId}.");
+            kitchen.achievedAchievementIds = AchievementManager.Instance.GetUnlockedAchievementIds() ?? new List<string>();
         }
 
         RefreshCurrentKitchenRatesInMemory(kitchenId);
