@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -199,4 +198,10 @@ public class AchievementManager : MonoBehaviour
 
     // Utility to check unlocked status
     public bool IsUnlocked(string id) => unlockedIds.Contains(id);
+
+    // New: expose all achievement definitions (readonly list reference)
+    public List<AchievementData> GetAllAchievements()
+    {
+        return allAchievements;
+    }
 }

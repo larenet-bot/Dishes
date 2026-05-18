@@ -15,7 +15,8 @@ MonoBehaviour:
   id: 2
   title: snowman fan
   description: own 10 snowman employees
+  icon: {fileID: 7567063417251660712, guid: c021d7b3db9cefb4b833ed1cd567c8d0, type: 3}
   trigger: 2
   threshold: 10
   hidden: 0
-  employeeTypeName: 
+  employeeTypeName: snowman

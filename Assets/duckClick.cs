@@ -11,6 +11,10 @@ public class DuckClick : MonoBehaviour
     public AudioClip[] defaultClips;
     public AudioClip[] altClips;
 
+    // Optional: inspector hook for the new prefab-based viewer.
+    // If assigned, duck click will toggle the DuckAchievementViewer.
+    public DuckAchievementViewer achievementViewer;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -19,8 +23,16 @@ public class DuckClick : MonoBehaviour
 
     void OnMouseDown()
     {
-        // Toggle achievements menu when the duck is clicked.
-        AchievementViewer.ToggleMenuStatic();
+        // If a DuckAchievementViewer is assigned, use it (prefab-driven UI).
+        // Otherwise fall back to the existing AchievementViewer dynamic menu.
+        if (achievementViewer != null)
+        {
+            achievementViewer.ToggleAchievements();
+        }
+        else
+        {
+            AchievementViewer.ToggleMenuStatic();
+        }
 
         StartCoroutine(PressRoutine());
     }

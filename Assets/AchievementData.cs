@@ -8,6 +8,9 @@ public class AchievementData : ScriptableObject
     public string title;
     [TextArea] public string description;
 
+    // New: icon for UI display
+    public Sprite icon;
+
     public enum TriggerType { TotalDishes, TotalProfit, EmployeeCount, ProfitPerDish, Custom, EmployeeTypeCount }
     public TriggerType trigger = TriggerType.TotalDishes;
 

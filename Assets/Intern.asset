@@ -15,6 +15,7 @@ MonoBehaviour:
   id: intern10
   title: Intern Owner
   description: own 10 iterns
+  icon: {fileID: -4716527499069047165, guid: ae0567b045a128a4e8760f22b4478c42, type: 3}
   trigger: 5
   threshold: 10
   hidden: 0
