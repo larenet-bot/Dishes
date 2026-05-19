@@ -36211,6 +36211,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2b5710257150e3c4f9eb8c8bcc65ecda, type: 3}
   - {fileID: 8300000, guid: fc502e28b7a9d854dabbbfc1fa1dfb98, type: 3}
   - {fileID: 8300000, guid: f38e65c188c7e2c43950a866f0a5fb30, type: 3}
+  - {fileID: 8300000, guid: 920d77b8c0ea39f428e027e39bb1e567, type: 3}
+  - {fileID: 8300000, guid: e25a2a905fadce8419eee939fdf72405, type: 3}
   achievementViewer: {fileID: 0}
 --- !u!82 &1616949948
 AudioSource:
