@@ -1146,7 +1146,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1352675961
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1967,11 +1967,11 @@ PrefabInstance:
       objectReference: {fileID: 1352675960}
     - target: {fileID: 2835161308627553643, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3280833898625609813, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3685976159224591671, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_IsOn
@@ -1995,7 +1995,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4311589501951461181, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4977637629110029844, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_Pivot.x
@@ -2079,19 +2079,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5025393678474166124, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5955006579762173290, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6565531454469185186, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6929396297716874777, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7002356872137242559, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_IsOn
