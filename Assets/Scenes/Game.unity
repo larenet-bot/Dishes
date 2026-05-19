@@ -11938,7 +11938,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 475393006}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -37265,6 +37265,21 @@ MonoBehaviour:
     tooltipText: 'Pay off your loan, and progress through the story. '
   - targetObject: {fileID: 217780734}
     tooltipText: Check on your other business ventures.
+  - targetObject: {fileID: 837573789}
+    tooltipText: "Your Dish Pile: \n\nPlate: %100"
+  - targetObject: {fileID: 1641849826}
+    tooltipText: "Your Dish Pile: \n\nPlate: 52.6%\n\nBowl: 47.4% "
+  - targetObject: {fileID: 39925232}
+    tooltipText: "Your Dish Pile: \n\nPlate: 37%\n\nBowl: 33%\n\nSauce Pan: 29.6% "
+  - targetObject: {fileID: 1987800571}
+    tooltipText: "Your Dish Pile: \n\nPlate: 28.6%\n\nBowl: 25.7%\n\nSauce Pan: 22.9%\n\nPot:
+      22.9%"
+  - targetObject: {fileID: 633256903}
+    tooltipText: "Your Dish Pile: \n\nPlate: 23.8%\n\nBowl: 21.4%\n\nSauce Pan: 19%\n\nPot:
+      19%\n\nSheet Pan: 16.7%"
+  - targetObject: {fileID: 278816774}
+    tooltipText: "Your Dish Pile: \n\nPlate: 20.8%\n\nBowl: 18.8%\n\nSauce Pan: 16.7%\n\nPot:
+      16.7%\n\nSheet Pan: 14.6%\n\nBread Pan: 12.5%"
   tooltipCanvas: {fileID: 1037320927}
   tooltipRoot: {fileID: 0}
   tooltipText: {fileID: 0}
