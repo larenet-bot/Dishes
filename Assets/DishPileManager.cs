@@ -3,25 +3,48 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Manages dish pile visuals and the completed-dish movement animation.
+/// Manages dirty dish pile visuals, clean dish pile visuals,
+/// and the completed-dish movement animation.
+///
 /// Put this on an empty GameObject named DishPileManager.
 ///
-/// Dirty pile images are assigned in the same order as DishSpawner.allDishes.
-/// Each element is one complete combined pile image, not a separate additive pile piece.
-/// Element 0 = plate pile only.
-/// Element 1 = bowl + plate pile.
-/// Element 2 = sauce pan + bowl + plate pile.
-/// The manager automatically shows only the pile image for the highest unlocked dish
-/// and disables every previous/later pile image.
+/// Dirty pile images:
+/// Element 0 = plate pile only
+/// Element 1 = bowl + plate pile
+/// Element 2 = sauce pan + bowl + plate pile
+///
+/// Clean pile images:
+/// Same order, but the next image does not appear when the dish unlocks.
+/// It appears only after that newly unlocked dish type has been cleaned.
 /// </summary>
 public class DishPileManager : MonoBehaviour
 {
     public static DishPileManager Instance { get; private set; }
 
     [Header("Dirty Dish Pile Images")]
-    [Tooltip("Assign combined pile Images in the same order as DishSpawner.allDishes. Element 0 = plate pile only, Element 1 = bowl + plate pile, Element 2 = sauce pan + bowl + plate pile, etc.")]
+    [Tooltip("Assign combined dirty pile Images in the same order as DishSpawner.allDishes.")]
     [SerializeField] private Image[] dirtyPileImagesByUnlockOrder;
 
+    [Header("Clean Dish Pile Images")]
+    [Tooltip("Assign combined clean pile Images in the same order as DishSpawner.allDishes.")]
+    [SerializeField] private Image[] cleanPileImagesByCleanOrder;
+
+    [Tooltip("If true, clean pile element 0 is visible at game start. If false, no clean pile appears until the first dish is cleaned.")]
+    [SerializeField] private bool showFirstCleanPileBeforeAnyDishCleaned = true;
+
+    [Tooltip("Saves the clean pile's highest cleaned dish index separately from the main save.")]
+    [SerializeField] private bool saveCleanPileProgressWithPlayerPrefs = true;
+
+    [Tooltip("Used for PlayerPrefs clean pile save. Keep this different per kitchen if needed.")]
+    [SerializeField] private string kitchenId = "kitchen_1";
+
+    [Tooltip("If true, tries to pull the kitchen id from LoanManager when one exists.")]
+    [SerializeField] private bool autoUseLoanManagerKitchenId = true;
+
+    [Tooltip("Base PlayerPrefs key for clean pile progress.")]
+    [SerializeField] private string cleanPileProgressPrefsKey = "CLEAN_DISH_PILE_INDEX";
+
+    [Header("References")]
     [Tooltip("Optional. If left empty, this manager uses ScoreManager.Instance.dishSpawner.")]
     [SerializeField] private DishSpawner dishSpawner;
 
@@ -40,7 +63,10 @@ public class DishPileManager : MonoBehaviour
     [SerializeField] private float shrinkMultiplier = 0.35f;
 
     private long lastCheckedTotalDishes = long.MinValue;
-    private int lastActivePileIndex = -2;
+    private int lastActiveDirtyPileIndex = -2;
+
+    private int highestCleanedDishIndex = -1;
+    private int lastActiveCleanPileIndex = -2;
 
     private void Awake()
     {
@@ -56,7 +82,10 @@ public class DishPileManager : MonoBehaviour
     private void Start()
     {
         ResolveReferences();
+        LoadCleanPileProgress();
+
         RefreshDirtyPileImages(force: true);
+        RefreshCleanPileImages(force: true);
     }
 
     private void Update()
@@ -70,6 +99,8 @@ public class DishPileManager : MonoBehaviour
         {
             return;
         }
+
+        int completedDishIndex = GetDishIndex(completedDishVisual.GetDishData());
 
         Image sourceImage = completedDishVisual.dishImage;
 
@@ -116,12 +147,31 @@ public class DishPileManager : MonoBehaviour
         // The real dish image can immediately become the next dirty dish and stay clickable.
         copyRect.SetSiblingIndex(sourceRect.GetSiblingIndex());
 
-        StartCoroutine(AnimateToCleanPile(copyRect));
+        StartCoroutine(AnimateToCleanPile(copyRect, completedDishIndex));
     }
 
     public void RefreshDirtyPileImagesNow()
     {
         RefreshDirtyPileImages(force: true);
+    }
+
+    public void RefreshCleanPileImagesNow()
+    {
+        RefreshCleanPileImages(force: true);
+    }
+
+    public void ResetCleanPileProgress()
+    {
+        highestCleanedDishIndex = showFirstCleanPileBeforeAnyDishCleaned ? 0 : -1;
+        lastActiveCleanPileIndex = -2;
+
+        if (saveCleanPileProgressWithPlayerPrefs)
+        {
+            PlayerPrefs.DeleteKey(GetCleanPilePrefsKey());
+            PlayerPrefs.Save();
+        }
+
+        RefreshCleanPileImages(force: true);
     }
 
     private void ResolveReferences()
@@ -167,16 +217,50 @@ public class DishPileManager : MonoBehaviour
 
         int activePileIndex = GetHighestUnlockedDishIndex(totalDishes);
 
-        if (!force && activePileIndex == lastActivePileIndex)
+        if (!force && activePileIndex == lastActiveDirtyPileIndex)
         {
             return;
         }
 
-        lastActivePileIndex = activePileIndex;
+        lastActiveDirtyPileIndex = activePileIndex;
 
         for (int i = 0; i < dirtyPileImagesByUnlockOrder.Length; i++)
         {
             Image pileImage = dirtyPileImagesByUnlockOrder[i];
+
+            if (pileImage == null)
+            {
+                continue;
+            }
+
+            bool shouldShow = i == activePileIndex;
+
+            if (pileImage.gameObject.activeSelf != shouldShow)
+            {
+                pileImage.gameObject.SetActive(shouldShow);
+            }
+        }
+    }
+
+    private void RefreshCleanPileImages(bool force)
+    {
+        if (cleanPileImagesByCleanOrder == null || cleanPileImagesByCleanOrder.Length == 0)
+        {
+            return;
+        }
+
+        int activePileIndex = ClampCleanPileIndex(highestCleanedDishIndex);
+
+        if (!force && activePileIndex == lastActiveCleanPileIndex)
+        {
+            return;
+        }
+
+        lastActiveCleanPileIndex = activePileIndex;
+
+        for (int i = 0; i < cleanPileImagesByCleanOrder.Length; i++)
+        {
+            Image pileImage = cleanPileImagesByCleanOrder[i];
 
             if (pileImage == null)
             {
@@ -225,6 +309,131 @@ public class DishPileManager : MonoBehaviour
         return highestUnlockedIndex;
     }
 
+    private int GetDishIndex(DishData dishData)
+    {
+        ResolveReferences();
+
+        if (dishData == null || dishSpawner == null || dishSpawner.allDishes == null)
+        {
+            return -1;
+        }
+
+        for (int i = 0; i < dishSpawner.allDishes.Count; i++)
+        {
+            DishData dish = dishSpawner.allDishes[i];
+
+            if (dish == null)
+            {
+                continue;
+            }
+
+            if (dish == dishData)
+            {
+                return i;
+            }
+
+            if (dish.name == dishData.name)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private void RegisterCleanedDishIndex(int cleanedDishIndex)
+    {
+        if (cleanedDishIndex < 0)
+        {
+            return;
+        }
+
+        int clampedIndex = ClampCleanPileIndex(cleanedDishIndex);
+
+        if (clampedIndex < 0)
+        {
+            return;
+        }
+
+        if (clampedIndex <= highestCleanedDishIndex)
+        {
+            return;
+        }
+
+        highestCleanedDishIndex = clampedIndex;
+
+        SaveCleanPileProgress();
+        RefreshCleanPileImages(force: true);
+    }
+
+    private int ClampCleanPileIndex(int index)
+    {
+        if (cleanPileImagesByCleanOrder == null || cleanPileImagesByCleanOrder.Length == 0)
+        {
+            return -1;
+        }
+
+        if (index < 0)
+        {
+            return -1;
+        }
+
+        return Mathf.Clamp(index, 0, cleanPileImagesByCleanOrder.Length - 1);
+    }
+
+    private void LoadCleanPileProgress()
+    {
+        int defaultIndex = showFirstCleanPileBeforeAnyDishCleaned ? 0 : -1;
+
+        highestCleanedDishIndex = defaultIndex;
+
+        if (!saveCleanPileProgressWithPlayerPrefs)
+        {
+            highestCleanedDishIndex = ClampCleanPileIndex(highestCleanedDishIndex);
+            return;
+        }
+
+        string key = GetCleanPilePrefsKey();
+
+        if (PlayerPrefs.HasKey(key))
+        {
+            highestCleanedDishIndex = PlayerPrefs.GetInt(key, defaultIndex);
+        }
+
+        highestCleanedDishIndex = ClampCleanPileIndex(highestCleanedDishIndex);
+    }
+
+    private void SaveCleanPileProgress()
+    {
+        if (!saveCleanPileProgressWithPlayerPrefs)
+        {
+            return;
+        }
+
+        PlayerPrefs.SetInt(GetCleanPilePrefsKey(), highestCleanedDishIndex);
+        PlayerPrefs.Save();
+    }
+
+    private string GetCleanPilePrefsKey()
+    {
+        return $"{cleanPileProgressPrefsKey}_{ResolveKitchenId()}";
+    }
+
+    private string ResolveKitchenId()
+    {
+        if (autoUseLoanManagerKitchenId)
+        {
+            LoanManager loanManager = FindFirstObjectByType<LoanManager>();
+
+            if (loanManager != null && !string.IsNullOrWhiteSpace(loanManager.GetKitchenId()))
+            {
+                return loanManager.GetKitchenId();
+            }
+        }
+
+        return string.IsNullOrWhiteSpace(kitchenId) ? "kitchen_1" : kitchenId;
+    }
+
     private void CopyRectTransform(RectTransform source, RectTransform copy)
     {
         copy.anchorMin = source.anchorMin;
@@ -251,10 +460,11 @@ public class DishPileManager : MonoBehaviour
         copy.fillClockwise = source.fillClockwise;
     }
 
-    private IEnumerator AnimateToCleanPile(RectTransform dishRect)
+    private IEnumerator AnimateToCleanPile(RectTransform dishRect, int completedDishIndex)
     {
         if (dishRect == null)
         {
+            RegisterCleanedDishIndex(completedDishIndex);
             yield break;
         }
 
@@ -283,5 +493,7 @@ public class DishPileManager : MonoBehaviour
         {
             Destroy(dishRect.gameObject);
         }
+
+        RegisterCleanedDishIndex(completedDishIndex);
     }
 }
