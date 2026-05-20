@@ -32,6 +32,12 @@ public class CooldownManager : MonoBehaviour
         [Tooltip("If empty, the script restores whatever text the button had at startup.")]
         public string readyTextOverride = "";
 
+        [Header("Offscreen Notification")]
+        [Tooltip("Target checked when cooldown ends. Leave empty to use the minigame button itself.")]
+        public Transform notificationTarget;
+
+        [HideInInspector] public bool wasCoolingDownLastFrame;
+
         [HideInInspector] public string originalButtonText;
     }
 
@@ -296,6 +302,20 @@ public class CooldownManager : MonoBehaviour
         bool isCoolingDown = KitchenBusinessProgress.IsMinigameOnCooldown(kitchenId, entry.minigameId);
         float remainingSeconds = KitchenBusinessProgress.GetMinigameCooldownRemainingSeconds(kitchenId, entry.minigameId);
         float progress01 = KitchenBusinessProgress.GetMinigameCooldownProgress01(kitchenId, entry.minigameId);
+        bool becameReadyThisFrame = entry.wasCoolingDownLastFrame && !isCoolingDown;
+
+        if (becameReadyThisFrame)
+        {
+            Transform target = entry.notificationTarget;
+
+            if (target == null && entry.minigameButton != null)
+                target = entry.minigameButton.transform;
+
+            if (OffscreenNotificationManager.Instance != null)
+                OffscreenNotificationManager.Instance.NotifyUntilVisible(target);
+        }
+
+        entry.wasCoolingDownLastFrame = isCoolingDown;
 
         if (entry.minigameButton != null)
         {

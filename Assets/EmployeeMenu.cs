@@ -286,6 +286,7 @@ public class EmployeeManager : MonoBehaviour
         if (thisEmployeeWasUnownedBeforePurchase)
         {
             PlayEmployeeFirstPurchaseAnimations(emp);
+            NotifyFirstPurchaseAnimationsIfOffscreen(emp);
         }
 
         emp.currentCost = Mathf.Max(0.01f, emp.currentCost * emp.costMultiplier);
@@ -738,5 +739,24 @@ public class EmployeeManager : MonoBehaviour
         }
 
         return total;
+    }
+
+    private void NotifyFirstPurchaseAnimationsIfOffscreen(EmployeeDefinition emp)
+    {
+        if (emp == null || emp.firstPurchaseAnimationObjects == null)
+            return;
+
+        if (OffscreenNotificationManager.Instance == null)
+            return;
+
+        for (int i = 0; i < emp.firstPurchaseAnimationObjects.Length; i++)
+        {
+            GameObject obj = emp.firstPurchaseAnimationObjects[i];
+
+            if (obj == null)
+                continue;
+
+            OffscreenNotificationManager.Instance.NotifyUntilVisible(obj.transform);
+        }
     }
 }
