@@ -46967,7 +46967,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 250, y: 69}
+  m_AnchoredPosition: {x: 300, y: 69}
   m_SizeDelta: {x: 103, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1580966304
@@ -54688,11 +54688,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2062272144}
   - {fileID: 94115234}
   - {fileID: 137410830}
   - {fileID: 1814730498}
   - {fileID: 1043575371}
-  - {fileID: 2062272144}
   - {fileID: 1580966303}
   - {fileID: 672662890}
   - {fileID: 1146444239}
@@ -60656,7 +60656,7 @@ MonoBehaviour:
   spongeCloseButton: {fileID: 2118491251}
   spongeButtonImage: {fileID: 26829586}
   backgroundOverlayButton: {fileID: 0}
-  raycastCanvas: {fileID: 0}
+  raycastCanvas: {fileID: 967766793}
 --- !u!4 &2032377219
 Transform:
   m_ObjectHideFlags: 0
