@@ -28,7 +28,24 @@ public class OfflineEarningsReport
 
     public bool HasAnyEarnings
     {
-        get { return totalMoneyEarned > 0f || totalDishesEarned > 0L; }
+        get
+        {
+            if (kitchens == null)
+                return false;
+
+            for (int i = 0; i < kitchens.Count; i++)
+            {
+                OfflineKitchenEarnings kitchen = kitchens[i];
+
+                if (kitchen == null)
+                    continue;
+
+                if (kitchen.moneyEarned > 0f || kitchen.dishesEarned > 0L)
+                    return true;
+            }
+
+            return false;
+        }
     }
 }
 
@@ -47,8 +64,6 @@ public class OfflineEarningsUI : MonoBehaviour
     [SerializeField] private Button closeButton;
 
     [Header("Formatting")]
-    [SerializeField] private bool showPerKitchenBreakdown = true;
-    [SerializeField] private bool showDishEarnings = false;
     [SerializeField] private string titleLine = "Offline Earnings";
 
     private void Awake()
@@ -133,48 +148,40 @@ public class OfflineEarningsUI : MonoBehaviour
             builder.AppendLine(titleLine);
         }
 
-        builder.Append("Away for ");
-        builder.AppendLine(FormatDuration(report.elapsedSeconds));
-        builder.Append("Total earned: ");
-        builder.AppendLine(BigNumberFormatter.FormatMoney((double)report.totalMoneyEarned));
-
-        if (showDishEarnings && report.totalDishesEarned > 0)
+        if (report.kitchens == null || report.kitchens.Count == 0)
         {
-            builder.Append("Dishes finished: ");
-            builder.AppendLine(BigNumberFormatter.FormatNumber(report.totalDishesEarned));
+            return builder.ToString().TrimEnd();
         }
 
-        if (report.secondsApplied > 0 && report.secondsApplied < report.elapsedSeconds)
+        for (int i = 0; i < report.kitchens.Count; i++)
         {
-            builder.Append("Earnings capped at ");
-            builder.AppendLine(FormatDuration(report.secondsApplied));
-        }
+            OfflineKitchenEarnings kitchen = report.kitchens[i];
 
-        if (showPerKitchenBreakdown && report.kitchens != null && report.kitchens.Count > 0)
-        {
-            builder.AppendLine();
-
-            for (int i = 0; i < report.kitchens.Count; i++)
+            if (kitchen == null)
             {
-                OfflineKitchenEarnings kitchen = report.kitchens[i];
-                if (kitchen == null)
-                {
-                    continue;
-                }
-
-                builder.Append(FormatKitchenName(kitchen.kitchenId));
-                builder.Append(": ");
-                builder.Append(BigNumberFormatter.FormatMoney((double)kitchen.moneyEarned));
-                builder.Append(" at ");
-                builder.Append(BigNumberFormatter.FormatMoney((double)kitchen.moneyPerSecond));
-                builder.AppendLine("/sec");
-
-                if (showDishEarnings && kitchen.dishesEarned > 0)
-                {
-                    builder.Append("  Dishes: ");
-                    builder.AppendLine(BigNumberFormatter.FormatNumber(kitchen.dishesEarned));
-                }
+                continue;
             }
+
+            if (kitchen.moneyEarned <= 0f && kitchen.dishesEarned <= 0L)
+            {
+                continue;
+            }
+
+            builder.AppendLine(FormatKitchenName(kitchen.kitchenId));
+
+            builder.Append("Money earned: ");
+            builder.AppendLine(BigNumberFormatter.FormatMoney((double)kitchen.moneyEarned));
+
+            builder.Append("Dishes done: ");
+            builder.AppendLine(BigNumberFormatter.FormatNumber(kitchen.dishesEarned));
+
+            builder.Append("Rate: ");
+            builder.Append(BigNumberFormatter.FormatMoney((double)kitchen.moneyPerSecond));
+            builder.Append("/sec, ");
+            builder.Append(BigNumberFormatter.FormatNumber((double)kitchen.dishesPerSecond));
+            builder.AppendLine(" dishes/sec");
+
+            builder.AppendLine();
         }
 
         return builder.ToString().TrimEnd();
@@ -195,36 +202,5 @@ public class OfflineEarningsUI : MonoBehaviour
         }
 
         return char.ToUpper(clean[0]) + clean.Substring(1);
-    }
-
-    private string FormatDuration(long seconds)
-    {
-        seconds = Math.Max(0L, seconds);
-
-        long days = seconds / 86400L;
-        seconds %= 86400L;
-
-        long hours = seconds / 3600L;
-        seconds %= 3600L;
-
-        long minutes = seconds / 60L;
-        long remainingSeconds = seconds % 60L;
-
-        if (days > 0)
-        {
-            return $"{days}d {hours}h {minutes}m";
-        }
-
-        if (hours > 0)
-        {
-            return $"{hours}h {minutes}m";
-        }
-
-        if (minutes > 0)
-        {
-            return $"{minutes}m {remainingSeconds}s";
-        }
-
-        return $"{remainingSeconds}s";
     }
 }
