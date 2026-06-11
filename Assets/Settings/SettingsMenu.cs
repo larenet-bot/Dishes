@@ -1,8 +1,8 @@
-using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -16,6 +16,7 @@ public class SettingsMenu : MonoBehaviour
     public AudioMixer audioMixer;
 
     public Toggle duckAlternateToggle;
+    public Toggle tooltipToggle;
 
     [Header("World Objects Disabled During Settings")]
     [SerializeField, Tooltip("Scene objects placed here will have their Collider2D disabled while the settings menu is open. Use this for the duck and other fixed clickable objects.")]
@@ -66,6 +67,15 @@ public class SettingsMenu : MonoBehaviour
             bool useAlt = PlayerPrefs.GetInt("DuckAlternate", 0) == 1;
             duckAlternateToggle.isOn = useAlt;
             duckAlternateToggle.onValueChanged.AddListener(SetDuckAlternate);
+        }
+
+        if (tooltipToggle != null)
+        {
+            bool tooltipsOn = PlayerPrefs.GetInt("TooltipsEnabled", 1) == 1;
+            tooltipToggle.isOn = tooltipsOn;
+            tooltipToggle.onValueChanged.AddListener(SetTooltipsEnabled);
+            // apply initial state immediately
+            SetTooltipsEnabled(tooltipsOn);
         }
 
         float master = PlayerPrefs.GetFloat("Master", 0.5f);
@@ -139,6 +149,28 @@ public class SettingsMenu : MonoBehaviour
         PlayerPrefs.Save();
 
         Debug.Log("Duck alternate audio set to: " + isAlternate);
+    }
+
+    public void SetTooltipsEnabled(bool isEnabled)
+    {
+        PlayerPrefs.SetInt("TooltipsEnabled", isEnabled ? 1 : 0);
+        PlayerPrefs.Save();
+
+        TooltipManager[] managers = Resources.FindObjectsOfTypeAll<TooltipManager>();
+
+        for (int i = 0; i < managers.Length; i++)
+        {
+            TooltipManager mgr = managers[i];
+            if (mgr == null)
+                continue;
+
+            if (mgr.gameObject.scene.IsValid())
+            {
+                mgr.enabled = isEnabled;
+            }
+        }
+
+        Debug.Log("Tooltips enabled set to: " + isEnabled);
     }
 
     public void SetFullScreen(bool isFullScreen)

@@ -54,6 +54,18 @@ public class TooltipManager : MonoBehaviour
         HideTooltip();
     }
 
+    private void OnEnable()
+    {
+        SetupCanvas();
+        SetupTooltipUI();
+        HideTooltip();
+    }
+
+    private void OnDisable()
+    {
+        HideTooltip();
+    }
+
     private void Update()
     {
         TooltipEntry hoveredEntry = FindHoveredTooltipEntry();
