@@ -61,6 +61,41 @@ public class Upgrades : MonoBehaviour
         [Tooltip("Number of total completed dishes required to unlock this tier.")]
         public int requiredDishes = 0;
     }
+    [Serializable]
+    public class PiggyBankTier
+    {
+        public string tierName;
+
+        [TextArea]
+        public string description;
+
+        [TextArea]
+        public string loreDescription;
+
+        public float cost;
+
+        [Tooltip("Reserved for future piggy bank functionality.")]
+        public float value = 0f;
+
+        public Sprite icon;
+
+        [Tooltip("Number of total completed dishes required to unlock this tier.")]
+        public int requiredDishes = 0;
+    }
+
+    [Header("Piggy Bank Tiers")]
+    public List<PiggyBankTier> piggyBankTiers = new List<PiggyBankTier>();
+
+    [Header("Piggy Bank UI")]
+    public GameObject piggyBankMenuPanel;
+    public TMP_Text piggyBankNameText;
+    public TMP_Text piggyBankDescText;
+    public TMP_Text piggyBankCostText;
+    public Button piggyBankUpgradeButton;
+    public Button piggyBankCloseButton;
+
+    [Header("HUD Button Image")]
+    public Image piggyBankButtonImage;
 
     [Header("Radio Tiers")]
     public List<RadioTier> radioTiers = new List<RadioTier>();
@@ -72,6 +107,7 @@ public class Upgrades : MonoBehaviour
     public TMP_Text radioCostText;
     public Button radioUpgradeButton;
     public Button radioCloseButton;
+
 
     [Header("HUD Button Image")]
     public Image RadioButtonImage;
@@ -131,6 +167,7 @@ public class Upgrades : MonoBehaviour
     private int currentGloveIndex = 0;
     private int currentSpongeIndex = 0;
     private int currentRadioIndex = 0;
+    private int currentPiggyBankIndex = 0;
 
     private EmployeeManager employeeManager;
     private ScoreManager scoreManager;
@@ -174,6 +211,7 @@ public class Upgrades : MonoBehaviour
         CloseSpongeMenu();
         CloseRadioMenu();
         CloseRadioControlPanel();
+        ClosePiggyBankMenu();
     }
 
     private void Start()
@@ -182,10 +220,13 @@ public class Upgrades : MonoBehaviour
         UpdateGloveMenuUI();
         UpdateSpongeMenuUI();
         UpdateRadioMenuUI();
+        UpdatePiggyBankMenuUI();
     }
 
     private void Update()
     {
+        if (piggyBankMenuPanel != null && piggyBankMenuPanel.activeSelf)
+            UpdatePiggyBankMenuUI();
         if (soapMenuPanel != null && soapMenuPanel.activeSelf)
             UpdateSoapMenuUI();
 
@@ -223,10 +264,46 @@ public class Upgrades : MonoBehaviour
         CloseSpongeMenu();
         CloseRadioMenu();
         CloseRadioControlPanel();
+        ClosePiggyBankMenu();
     }
 
     private void SeedDefaultTiers()
     {
+        if (piggyBankTiers.Count == 0)
+        {
+            piggyBankTiers.Add(new PiggyBankTier
+            {
+                tierName = "Piggy Bank",
+                description = "Stores spare change.",
+                loreDescription = "A simple piggy bank.",
+                cost = 0f,
+                value = 0f,
+                icon = null,
+                requiredDishes = 0
+            });
+
+            piggyBankTiers.Add(new PiggyBankTier
+            {
+                tierName = "Ceramic Piggy Bank",
+                description = "A sturdier piggy bank.",
+                loreDescription = "Maybe there's more money inside.",
+                cost = 100f,
+                value = 0f,
+                icon = null,
+                requiredDishes = 10
+            });
+
+            piggyBankTiers.Add(new PiggyBankTier
+            {
+                tierName = "Golden Piggy Bank",
+                description = "A luxurious piggy bank.",
+                loreDescription = "Shiny and expensive.",
+                cost = 1000f,
+                value = 0f,
+                icon = null,
+                requiredDishes = 100
+            });
+        }
         if (soapTiers.Count == 0)
         {
             soapTiers.Add(new SoapTier
@@ -345,9 +422,40 @@ public class Upgrades : MonoBehaviour
             });
         }
     }
+    public void OpenPiggyBankMenu()
+    {
+        if (piggyBankMenuPanel == null) return;
 
+        UpdatePiggyBankMenuUI();
+
+        if (backgroundOverlayButton != null)
+            backgroundOverlayButton.gameObject.SetActive(true);
+
+        piggyBankMenuPanel.SetActive(true);
+    }
+
+    public void ClosePiggyBankMenu()
+    {
+        if (piggyBankMenuPanel == null) return;
+
+        piggyBankMenuPanel.SetActive(false);
+
+        if (backgroundOverlayButton != null && !AnyUpgradePanelOpen())
+            backgroundOverlayButton.gameObject.SetActive(false);
+    }
     private void WireButtons()
     {
+        if (piggyBankUpgradeButton != null)
+        {
+            piggyBankUpgradeButton.onClick.RemoveAllListeners();
+            piggyBankUpgradeButton.onClick.AddListener(OnPiggyBankUpgradeButton);
+        }
+
+        if (piggyBankCloseButton != null)
+        {
+            piggyBankCloseButton.onClick.RemoveAllListeners();
+            piggyBankCloseButton.onClick.AddListener(ClosePiggyBankMenu);
+        }
         if (soapUpgradeButton != null)
         {
             soapUpgradeButton.onClick.RemoveAllListeners();
@@ -406,6 +514,7 @@ public class Upgrades : MonoBehaviour
                 CloseSpongeMenu();
                 CloseRadioMenu();
                 CloseRadioControlPanel();
+                ClosePiggyBankMenu();
             });
 
             if (backgroundOverlayButton.gameObject.activeSelf)
@@ -623,7 +732,93 @@ public class Upgrades : MonoBehaviour
                 btnText.SetText("Max");
         }
     }
+    private void UpdatePiggyBankMenuUI()
+    {
+        if (piggyBankTiers == null || piggyBankTiers.Count == 0)
+            return;
 
+        PiggyBankTier current =
+            piggyBankTiers[Mathf.Clamp(currentPiggyBankIndex, 0, piggyBankTiers.Count - 1)];
+
+        if (piggyBankNameText != null)
+            piggyBankNameText.text = current.tierName;
+
+        if (piggyBankDescText != null)
+            piggyBankDescText.text = current.description;
+
+        if (piggyBankCostText != null)
+            piggyBankCostText.text =
+                string.IsNullOrEmpty(current.loreDescription)
+                ? string.Empty
+                : current.loreDescription;
+
+        if (piggyBankButtonImage != null && current.icon != null)
+            piggyBankButtonImage.sprite = current.icon;
+
+        bool hasNext = currentPiggyBankIndex < piggyBankTiers.Count - 1;
+
+        if (piggyBankUpgradeButton == null)
+            return;
+
+        TMP_Text btnText =
+            piggyBankUpgradeButton.GetComponentInChildren<TMP_Text>();
+
+        if (hasNext)
+        {
+            PiggyBankTier next = piggyBankTiers[currentPiggyBankIndex + 1];
+
+            float wallet =
+                scoreManager != null ? scoreManager.GetTotalProfit() : 0f;
+
+            bool unlocked =
+                scoreManager != null &&
+                scoreManager.GetTotalDishes() >= next.requiredDishes;
+
+            piggyBankUpgradeButton.interactable =
+                unlocked && wallet >= next.cost;
+
+            if (btnText != null)
+            {
+                btnText.SetText(unlocked
+                    ? $"Upgrade for {BigNumberFormatter.FormatMoney((double)next.cost)}"
+                    : $"Locked: {BigNumberFormatter.FormatNumber(next.requiredDishes)} dishes");
+            }
+        }
+        else
+        {
+            piggyBankUpgradeButton.interactable = false;
+
+            if (btnText != null)
+                btnText.SetText("Max");
+        }
+    }
+    private void OnPiggyBankUpgradeButton()
+    {
+        if (currentPiggyBankIndex >= piggyBankTiers.Count - 1)
+            return;
+
+        PiggyBankTier next =
+            piggyBankTiers[currentPiggyBankIndex + 1];
+
+        if (scoreManager == null)
+            return;
+
+        if (scoreManager.GetTotalDishes() < next.requiredDishes)
+            return;
+
+        float wallet = scoreManager.GetTotalProfit();
+
+        if (wallet < next.cost)
+            return;
+
+        scoreManager.SubtractProfit(next.cost, isPurchase: true);
+
+        currentPiggyBankIndex++;
+
+        UpdatePiggyBankMenuUI();
+
+        Debug.Log($"[Upgrades] Upgraded to {next.tierName}");
+    }
     private void UpdateSpongeMenuUI()
     {
         if (spongeTiers == null || spongeTiers.Count == 0) return;
@@ -1027,18 +1222,19 @@ public class Upgrades : MonoBehaviour
         UpdateRadioMenuUI();
     }
 
-    public void GetSaveState(out int soap, out int glove, out int sponge)
-    {
-        soap = currentSoapIndex;
-        glove = currentGloveIndex;
-        sponge = currentSpongeIndex;
-    }
 
-    public void GetSaveState(out int soap, out int glove, out int sponge, out bool radioOwned)
+
+    public void GetSaveState(
+    out int soap,
+    out int glove,
+    out int sponge,
+    out int piggyBank,
+    out bool radioOwned)
     {
         soap = currentSoapIndex;
         glove = currentGloveIndex;
         sponge = currentSpongeIndex;
+        piggyBank = currentPiggyBankIndex;
         radioOwned = radioPurchased;
     }
 
@@ -1052,13 +1248,15 @@ public class Upgrades : MonoBehaviour
         return radioPurchased;
     }
 
-    public void ApplySaveState(int soap, int glove, int sponge)
+    public void ApplySaveState(int soap, int glove, int sponge, int piggyBank)
     {
-        ApplySaveState(soap, glove, sponge, radioPurchased);
+        ApplySaveState(soap, glove, sponge, radioPurchased,piggyBank);
     }
 
-    public void ApplySaveState(int soap, int glove, int sponge, bool radioOwned)
+    public void ApplySaveState(int soap, int glove, int sponge, bool radioOwned, int piggyBank)
     {
+        currentPiggyBankIndex =
+    Mathf.Clamp(piggyBank, 0, piggyBankTiers.Count - 1);
         if (scoreManager == null)
             scoreManager = FindAnyObjectByType<ScoreManager>();
 
@@ -1132,7 +1330,8 @@ public class Upgrades : MonoBehaviour
             || (gloveMenuPanel != null && gloveMenuPanel.activeSelf)
             || (spongeMenuPanel != null && spongeMenuPanel.activeSelf)
             || (radioMenuPanel != null && radioMenuPanel.activeSelf)
-            || (radioControlPanel != null && radioControlPanel.activeSelf);
+            || (radioControlPanel != null && radioControlPanel.activeSelf)
+            || (piggyBankMenuPanel != null && piggyBankMenuPanel.activeSelf);
     }
 
     private bool ClickedInsideOpenPanel(List<RaycastResult> results)
@@ -1161,8 +1360,13 @@ public class Upgrades : MonoBehaviour
 
             if (radioControlPanel != null && radioControlPanel.activeSelf && hit.transform.IsChildOf(radioControlPanel.transform))
                 return true;
+            if (piggyBankMenuPanel != null &&
+    piggyBankMenuPanel.activeSelf &&
+    hit.transform.IsChildOf(piggyBankMenuPanel.transform))
+                return true;
         }
 
         return false;
     }
+
 }

@@ -254,6 +254,7 @@ public class SaveManager : MonoBehaviour
             loadedData.currentSoapIndex > 0 ||
             loadedData.currentGloveIndex > 0 ||
             loadedData.currentSpongeIndex > 0 ||
+            loadedData.currentPiggyBankIndex > 0 ||
             loadedData.dishCountIncrement > 1 ||
             loadedData.dishProfitMultiplier > 1f ||
             loadedData.radioOwned ||
@@ -278,6 +279,7 @@ public class SaveManager : MonoBehaviour
             currentSoapIndex = Mathf.Max(0, loadedData.currentSoapIndex),
             currentGloveIndex = Mathf.Max(0, loadedData.currentGloveIndex),
             currentSpongeIndex = Mathf.Max(0, loadedData.currentSpongeIndex),
+            currentPiggyBankIndex = Mathf.Max(0, loadedData.currentPiggyBankIndex),
             radioOwned = loadedData.radioOwned,
             employees = loadedData.employees ?? new List<EmployeeSave>(),
             employeeProfitMultiplier = loadedData.employeeProfitMultiplier > 0f ? loadedData.employeeProfitMultiplier : 1f,
@@ -353,6 +355,7 @@ public class SaveManager : MonoBehaviour
             currentSoapIndex = 0,
             currentGloveIndex = 0,
             currentSpongeIndex = 0,
+            currentPiggyBankIndex = 0,
             radioOwned = false,
             employees = new List<EmployeeSave>(),
             employeeProfitMultiplier = 1f,
@@ -477,7 +480,8 @@ public class SaveManager : MonoBehaviour
             kitchen.currentSoapIndex,
             kitchen.currentGloveIndex,
             kitchen.currentSpongeIndex,
-            kitchen.radioOwned
+            kitchen.radioOwned,
+            kitchen.currentPiggyBankIndex
         );
 
         employees.ApplySaveState(kitchen.employees, kitchen.employeeProfitMultiplier);
@@ -746,6 +750,7 @@ public class SaveManager : MonoBehaviour
             out kitchen.currentSoapIndex,
             out kitchen.currentGloveIndex,
             out kitchen.currentSpongeIndex,
+            out kitchen.currentPiggyBankIndex,
             out kitchen.radioOwned
         );
 
@@ -865,6 +870,7 @@ public class SaveManager : MonoBehaviour
         loadedData.currentSoapIndex = kitchen.currentSoapIndex;
         loadedData.currentGloveIndex = kitchen.currentGloveIndex;
         loadedData.currentSpongeIndex = kitchen.currentSpongeIndex;
+        loadedData.currentPiggyBankIndex = kitchen.currentPiggyBankIndex;
         loadedData.radioOwned = kitchen.radioOwned;
         loadedData.employees = kitchen.employees;
         loadedData.employeeProfitMultiplier = kitchen.employeeProfitMultiplier;

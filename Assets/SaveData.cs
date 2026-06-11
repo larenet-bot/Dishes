@@ -17,6 +17,7 @@ public class SaveData
     public int currentSoapIndex = 0;
     public int currentGloveIndex = 0;
     public int currentSpongeIndex = 0;
+    public int currentPiggyBankIndex = 0;
     public bool radioOwned = false;
 
     public List<EmployeeSave> employees = new List<EmployeeSave>();
@@ -50,6 +51,7 @@ public class KitchenSaveData
     public int currentSoapIndex = 0;
     public int currentGloveIndex = 0;
     public int currentSpongeIndex = 0;
+    public int currentPiggyBankIndex = 0;
     public bool radioOwned = false;
 
     public List<EmployeeSave> employees = new List<EmployeeSave>();
