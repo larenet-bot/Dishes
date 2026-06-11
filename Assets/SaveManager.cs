@@ -35,7 +35,7 @@ public class SaveManager : MonoBehaviour
     [Tooltip("If true, total dishes also rise for unloaded kitchens using their saved dishes/sec rate.")]
     [SerializeField] private bool backgroundEarningsAddDishes = true;
 
-    [Tooltip("Safety cap so a corrupted clock or long absence does not instantly create impossible amounts. 0 means no cap.")]
+    [Tooltip("Safety cap so a corrupted clock or long absence does not instantly create impossible amounts. 0 means no global cap.")]
     [SerializeField] private int maxBackgroundEarningSecondsPerTick = 0;
 
     [Header("Offline Earnings")]
@@ -45,7 +45,7 @@ public class SaveManager : MonoBehaviour
     [Tooltip("When true, a panel is shown after offline earnings are granted.")]
     [SerializeField] private bool showOfflineEarningsPanel = true;
 
-    [Tooltip("Optional safety cap for offline earnings. 0 means no cap.")]
+    [Tooltip("Optional safety cap for offline earnings. 0 means no global cap. Per-kitchen piggy bank tier value overrides this.")]
     [SerializeField] private int maxOfflineEarningSeconds = 0;
 
     [Tooltip("Do not show the offline panel unless total earnings are at least this much.")]
@@ -177,7 +177,7 @@ public class SaveManager : MonoBehaviour
 
     private long NowUnixSeconds()
     {
-        return DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        return System.DateTimeOffset.UtcNow.ToUnixTimeSeconds();
     }
 
     private void ReadSaveFileToMemory()
@@ -222,7 +222,7 @@ public class SaveManager : MonoBehaviour
                 Debug.Log($"[SaveManager] Loaded save file from: {SavePath}");
             }
         }
-        catch (Exception e)
+        catch (System.Exception e)
         {
             Debug.LogWarning($"[SaveManager] Failed to read save file. {e.Message}");
             loadedData = new SaveData();
@@ -273,21 +273,21 @@ public class SaveManager : MonoBehaviour
             kitchenId = "kitchen_1",
             totalDishes = loadedData.totalDishes,
             totalProfit = loadedData.totalProfit,
-            dishCountIncrement = Mathf.Max(1, loadedData.dishCountIncrement),
+            dishCountIncrement = System.Math.Max(1, loadedData.dishCountIncrement),
             profitPerDish = loadedData.profitPerDish > 0f ? loadedData.profitPerDish : 1f,
             dishProfitMultiplier = loadedData.dishProfitMultiplier > 0f ? loadedData.dishProfitMultiplier : 1f,
-            currentSoapIndex = Mathf.Max(0, loadedData.currentSoapIndex),
-            currentGloveIndex = Mathf.Max(0, loadedData.currentGloveIndex),
-            currentSpongeIndex = Mathf.Max(0, loadedData.currentSpongeIndex),
-            currentPiggyBankIndex = Mathf.Max(0, loadedData.currentPiggyBankIndex),
+            currentSoapIndex = System.Math.Max(0, loadedData.currentSoapIndex),
+            currentGloveIndex = System.Math.Max(0, loadedData.currentGloveIndex),
+            currentSpongeIndex = System.Math.Max(0, loadedData.currentSpongeIndex),
+            currentPiggyBankIndex = System.Math.Max(0, loadedData.currentPiggyBankIndex),
             radioOwned = loadedData.radioOwned,
             employees = loadedData.employees ?? new List<EmployeeSave>(),
             employeeProfitMultiplier = loadedData.employeeProfitMultiplier > 0f ? loadedData.employeeProfitMultiplier : 1f,
             currentSinkType = loadedData.currentSinkType,
             purchasedSinkNodeIds = loadedData.purchasedSinkNodeIds ?? new List<string>(),
             currentLoanIndex = loadedData.currentLoanIndex,
-            cachedMoneyPerSecond = Mathf.Max(0f, loadedData.cachedMoneyPerSecond),
-            cachedDishesPerSecond = Mathf.Max(0f, loadedData.cachedDishesPerSecond),
+            cachedMoneyPerSecond = System.Math.Max(0f, loadedData.cachedMoneyPerSecond),
+            cachedDishesPerSecond = System.Math.Max(0f, loadedData.cachedDishesPerSecond),
             lastBackgroundEarningsUnixSeconds = loadedData.lastBackgroundEarningsUnixSeconds,
             backgroundDishFraction = Mathf.Clamp01(loadedData.backgroundDishFraction)
         };
@@ -559,10 +559,45 @@ public class SaveManager : MonoBehaviour
 
         for (int i = 0; i < loadedData.kitchens.Count; i++)
         {
+            KitchenSaveData kitchen = loadedData.kitchens[i];
+
+            if (kitchen == null)
+                continue;
+
+            // Determine per-kitchen offline cap:
+            // - If the saved piggy bank tier has value > 0, use that (seconds).
+            // - Otherwise fall back to global maxOfflineEarningSeconds.
+            // - If both are 0, effective cap == 0 => NO offline earnings.
+            int effectiveMaxSeconds = 0;
+
+            if (upgrades != null && upgrades.piggyBankTiers != null && upgrades.piggyBankTiers.Count > 0)
+            {
+                int tierIndex = Mathf.Clamp(kitchen.currentPiggyBankIndex, 0, upgrades.piggyBankTiers.Count - 1);
+                float tierValue = upgrades.piggyBankTiers[tierIndex].value;
+                if (tierValue > 0f)
+                {
+                    effectiveMaxSeconds = Mathf.FloorToInt(tierValue);
+                }
+                else
+                {
+                    // fallback to global cap (0 means none allowed)
+                    effectiveMaxSeconds = maxOfflineEarningSeconds;
+                }
+            }
+            else
+            {
+                effectiveMaxSeconds = maxOfflineEarningSeconds;
+            }
+
+            if (logSaveEvents)
+            {
+                Debug.Log($"[SaveManager] Offline cap for '{kitchen.kitchenId}' (piggy tier {kitchen.currentPiggyBankIndex}): {effectiveMaxSeconds} seconds");
+            }
+
             OfflineKitchenEarnings kitchenResult = ApplyEarningsToKitchen(
-                loadedData.kitchens[i],
+                kitchen,
                 now,
-                maxOfflineEarningSeconds,
+                effectiveMaxSeconds,
                 includeInReport: true
             );
 
@@ -663,14 +698,27 @@ public class SaveManager : MonoBehaviour
         long elapsedSeconds = now - last;
         long secondsApplied = elapsedSeconds;
 
-        if (maxSeconds > 0)
+        // New semantics:
+        // - maxSeconds == 0 => NO offline earnings applied.
+        // - maxSeconds > 0 => cap to maxSeconds.
+        // - maxSeconds < 0  => negative (unused) -> treat as no cap (apply full elapsed).
+        if (maxSeconds == 0)
         {
-            secondsApplied = Math.Min(secondsApplied, maxSeconds);
+            secondsApplied = 0;
         }
+        else if (maxSeconds > 0)
+        {
+            secondsApplied = System.Math.Min(secondsApplied, maxSeconds);
+        }
+        // else maxSeconds < 0 -> no cap
 
         if (secondsApplied <= 0)
         {
             kitchen.lastBackgroundEarningsUnixSeconds = now;
+            if (logSaveEvents && includeInReport)
+            {
+                Debug.Log($"[SaveManager] No offline earnings applied for '{kitchen.kitchenId}' (elapsed {elapsedSeconds}s, applied {secondsApplied}s).");
+            }
             return null;
         }
 
@@ -686,7 +734,7 @@ public class SaveManager : MonoBehaviour
         if (backgroundEarningsAddDishes && kitchen.cachedDishesPerSecond > 0f)
         {
             double dishProgress = kitchen.backgroundDishFraction + ((double)kitchen.cachedDishesPerSecond * secondsApplied);
-            dishesEarned = (long)Math.Floor(dishProgress);
+            dishesEarned = (long)System.Math.Floor(dishProgress);
 
             if (dishesEarned > 0)
             {
@@ -697,6 +745,11 @@ public class SaveManager : MonoBehaviour
         }
 
         kitchen.lastBackgroundEarningsUnixSeconds = now;
+
+        if (logSaveEvents && includeInReport)
+        {
+            Debug.Log($"[SaveManager] Applied offline for '{kitchen.kitchenId}': elapsed={elapsedSeconds}s, applied={secondsApplied}s, money={moneyEarned}, dishes={dishesEarned}");
+        }
 
         if (!includeInReport || (moneyEarned <= 0f && dishesEarned <= 0L))
         {

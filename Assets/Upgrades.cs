@@ -74,7 +74,7 @@ public class Upgrades : MonoBehaviour
 
         public float cost;
 
-        [Tooltip("Reserved for future piggy bank functionality.")]
+        [Tooltip("Offline earnings seconds cap provided by this tier. 0 means this tier grants NO offline earnings. Values are in seconds.")]
         public float value = 0f;
 
         public Sprite icon;
@@ -271,24 +271,26 @@ public class Upgrades : MonoBehaviour
     {
         if (piggyBankTiers.Count == 0)
         {
+            // default tier: no offline earnings
             piggyBankTiers.Add(new PiggyBankTier
             {
                 tierName = "Piggy Bank",
                 description = "Stores spare change.",
                 loreDescription = "A simple piggy bank.",
                 cost = 0f,
-                value = 0f,
+                value = 0f, // NO offline earnings by default
                 icon = null,
                 requiredDishes = 0
             });
 
+            // Each upgrade increases the cap by 2 hours (7200 seconds)
             piggyBankTiers.Add(new PiggyBankTier
             {
                 tierName = "Ceramic Piggy Bank",
                 description = "A sturdier piggy bank.",
-                loreDescription = "Maybe there's more money inside.",
+                loreDescription = "Allows 2 hours of offline earnings.",
                 cost = 100f,
-                value = 0f,
+                value = 7200f, // 2 hours
                 icon = null,
                 requiredDishes = 10
             });
@@ -297,9 +299,9 @@ public class Upgrades : MonoBehaviour
             {
                 tierName = "Golden Piggy Bank",
                 description = "A luxurious piggy bank.",
-                loreDescription = "Shiny and expensive.",
+                loreDescription = "Allows 4 hours of offline earnings.",
                 cost = 1000f,
-                value = 0f,
+                value = 14400f, // 4 hours
                 icon = null,
                 requiredDishes = 100
             });
