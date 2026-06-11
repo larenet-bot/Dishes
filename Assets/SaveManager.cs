@@ -273,22 +273,21 @@ public class SaveManager : MonoBehaviour
             totalDishes = loadedData.totalDishes,
             totalProfit = loadedData.totalProfit,
             dishCountIncrement = Mathf.Max(1, loadedData.dishCountIncrement),
-            profitPerDish = loaded_data.profitPerDish > 0f ? loaded_data.profitPerDish : 1f,
-            dishProfitMultiplier = loaded_data.dishProfitMultiplier > 0f ? loaded_data.dishProfitMultiplier : 1f,
-            currentSoapIndex = Mathf.Max(0, loaded_data.currentSoapIndex),
-            currentGloveIndex = Mathf.Max(0, loaded_data.currentGloveIndex),
-            currentSpongeIndex = Mathf.Max(0, loaded_data.currentSpongeIndex),
-            currentPiggyBankIndex = 0,
-            radioOwned = loaded_data.radioOwned,
-            employees = loaded_data.employees ?? new List<EmployeeSave>(),
-            employeeProfitMultiplier = loaded_data.employeeProfitMultiplier > 0f ? loaded_data.employeeProfitMultiplier : 1f,
-            currentSinkType = loaded_data.currentSinkType,
-            purchasedSinkNodeIds = loaded_data.purchasedSinkNodeIds ?? new List<string>(),
-            currentLoanIndex = loaded_data.currentLoanIndex,
-            cachedMoneyPerSecond = Mathf.Max(0f, loaded_data.cachedMoneyPerSecond),
-            cachedDishesPerSecond = Mathf.Max(0f, loaded_data.cachedDishesPerSecond),
-            lastBackgroundEarningsUnixSeconds = loaded_data.lastBackgroundEarningsUnixSeconds,
-            backgroundDishFraction = Mathf.Clamp01(loaded_data.backgroundDishFraction)
+            profitPerDish = loadedData.profitPerDish > 0f ? loadedData.profitPerDish : 1f,
+            dishProfitMultiplier = loadedData.dishProfitMultiplier > 0f ? loadedData.dishProfitMultiplier : 1f,
+            currentSoapIndex = Mathf.Max(0, loadedData.currentSoapIndex),
+            currentGloveIndex = Mathf.Max(0, loadedData.currentGloveIndex),
+            currentSpongeIndex = Mathf.Max(0, loadedData.currentSpongeIndex),
+            radioOwned = loadedData.radioOwned,
+            employees = loadedData.employees ?? new List<EmployeeSave>(),
+            employeeProfitMultiplier = loadedData.employeeProfitMultiplier > 0f ? loadedData.employeeProfitMultiplier : 1f,
+            currentSinkType = loadedData.currentSinkType,
+            purchasedSinkNodeIds = loadedData.purchasedSinkNodeIds ?? new List<string>(),
+            currentLoanIndex = loadedData.currentLoanIndex,
+            cachedMoneyPerSecond = Mathf.Max(0f, loadedData.cachedMoneyPerSecond),
+            cachedDishesPerSecond = Mathf.Max(0f, loadedData.cachedDishesPerSecond),
+            lastBackgroundEarningsUnixSeconds = loadedData.lastBackgroundEarningsUnixSeconds,
+            backgroundDishFraction = Mathf.Clamp01(loadedData.backgroundDishFraction)
         };
 
         loadedData.kitchens.Add(kitchenOne);
@@ -354,7 +353,6 @@ public class SaveManager : MonoBehaviour
             currentSoapIndex = 0,
             currentGloveIndex = 0,
             currentSpongeIndex = 0,
-            currentPiggyBankIndex = 0,
             radioOwned = false,
             employees = new List<EmployeeSave>(),
             employeeProfitMultiplier = 1f,
@@ -437,11 +435,6 @@ public class SaveManager : MonoBehaviour
         {
             kitchen.lastBackgroundEarningsUnixSeconds = NowUnixSeconds();
         }
-
-        if (kitchen.currentPiggyBankIndex < 0)
-        {
-            kitchen.currentPiggyBankIndex = 0;
-        }
     }
 
     private void TryApplyLoadedDataToScene()
@@ -484,7 +477,6 @@ public class SaveManager : MonoBehaviour
             kitchen.currentSoapIndex,
             kitchen.currentGloveIndex,
             kitchen.currentSpongeIndex,
-            kitchen.currentPiggyBankIndex,
             kitchen.radioOwned
         );
 
@@ -558,20 +550,15 @@ public class SaveManager : MonoBehaviour
             return null;
         }
 
-        // Ensure upgrades ref is available for piggy bank bonus read
-        TryBindRefs();
-
         long now = NowUnixSeconds();
         OfflineEarningsReport report = new OfflineEarningsReport();
-
-        int effectiveCapSeconds = GetEffectiveOfflineEarningSeconds();
 
         for (int i = 0; i < loadedData.kitchens.Count; i++)
         {
             OfflineKitchenEarnings kitchenResult = ApplyEarningsToKitchen(
                 loadedData.kitchens[i],
                 now,
-                effectiveCapSeconds,
+                maxOfflineEarningSeconds,
                 includeInReport: true
             );
 
@@ -602,39 +589,6 @@ public class SaveManager : MonoBehaviour
 
         WriteSaveFile();
         return report;
-    }
-
-    // Computes the effective offline earnings cap in seconds by combining the base inspector cap
-    // with any bonus granted by piggy bank upgrades (additive). A value of 0 means "no cap".
-    private int GetEffectiveOfflineEarningSeconds()
-    {
-        int baseCap = maxOfflineEarningSeconds;
-        int bonus = 0;
-
-        if (upgrades == null)
-        {
-            TryBindRefs();
-        }
-
-        if (upgrades != null)
-        {
-            try
-            {
-                bonus = upgrades.GetPiggyBankBonusSeconds();
-            }
-            catch (Exception)
-            {
-                bonus = 0;
-            }
-        }
-
-        if (baseCap <= 0 && bonus <= 0)
-            return 0;
-
-        if (baseCap <= 0)
-            return bonus;
-
-        return baseCap + bonus;
     }
 
     private void TryShowOfflineEarningsReport(OfflineEarningsReport report)
@@ -792,12 +746,22 @@ public class SaveManager : MonoBehaviour
             out kitchen.currentSoapIndex,
             out kitchen.currentGloveIndex,
             out kitchen.currentSpongeIndex,
-            out kitchen.currentPiggyBankIndex,
             out kitchen.radioOwned
         );
 
-        // Persist upgrades state properly (single canonical call above should suffice)
-        // Continue with existing capture logic...
+        kitchen.employees = employees.GetSaveState();
+        kitchen.employeeProfitMultiplier = employees.GetGlobalEmployeeProfitMultiplierForSave();
+
+        if (loans != null)
+        {
+            kitchen.currentLoanIndex = loans.GetLoanIndexForSave();
+        }
+
+        if (sinks != null)
+        {
+            kitchen.currentSinkType = (int)sinks.CurrentSinkType;
+            kitchen.purchasedSinkNodeIds = sinks.GetPurchasedNodeIds();
+        }
 
         // Persist achievements from runtime manager into save data
         if (AchievementManager.Instance != null)
@@ -833,7 +797,6 @@ public class SaveManager : MonoBehaviour
             currentKitchen = GetOrCreateKitchenData(kitchenId);
             CaptureCurrentKitchenToData(currentKitchen, now);
         }
-
 
         // Keep legacy fields mirroring kitchen_1 for older debugging tools and one-time fallback.
         KitchenSaveData kitchenOne = FindKitchenData("kitchen_1");
@@ -902,7 +865,6 @@ public class SaveManager : MonoBehaviour
         loadedData.currentSoapIndex = kitchen.currentSoapIndex;
         loadedData.currentGloveIndex = kitchen.currentGloveIndex;
         loadedData.currentSpongeIndex = kitchen.currentSpongeIndex;
-        loadedData.currentPiggyBankIndex = kitchen.currentPiggyBankIndex;
         loadedData.radioOwned = kitchen.radioOwned;
         loadedData.employees = kitchen.employees;
         loadedData.employeeProfitMultiplier = kitchen.employeeProfitMultiplier;
