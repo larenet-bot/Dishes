@@ -34,6 +34,21 @@ public class Upgrades : MonoBehaviour
         public Sprite icon;
     }
 
+    // New: PiggyBank tier — separate from soap, grants additive offline cap seconds.
+    [Serializable]
+    public class PiggyBankTier
+    {
+        public string tierName;
+        [TextArea] public string description;
+        [TextArea] public string loreDescription;
+        public float cost;
+        [Tooltip("Additional offline earnings cap in seconds granted by this tier (additive).")]
+        public int offlineCapSeconds = 0;
+        public Sprite icon;
+        [Tooltip("Number of total completed dishes required to unlock this tier.")]
+        public int requiredDishes = 0;
+    }
+
     [Serializable]
     public class GloveTier
     {
@@ -82,6 +97,9 @@ public class Upgrades : MonoBehaviour
     [Header("Soap Tiers")]
     public List<SoapTier> soapTiers = new List<SoapTier>();
 
+    [Header("Piggy Bank Tiers")]
+    public List<PiggyBankTier> piggyBankTiers = new List<PiggyBankTier>();
+
     [Header("Soap UI")]
     public GameObject soapMenuPanel;
     public TMP_Text soapNameText;
@@ -127,10 +145,12 @@ public class Upgrades : MonoBehaviour
     [Header("Optional Canvas For Click Outside Detection")]
     public Canvas raycastCanvas;
 
+    // Track current selected tiers
     private int currentSoapIndex = 0;
     private int currentGloveIndex = 0;
     private int currentSpongeIndex = 0;
     private int currentRadioIndex = 0;
+    private int currentPiggyBankIndex = 0;
 
     private EmployeeManager employeeManager;
     private ScoreManager scoreManager;
@@ -263,6 +283,40 @@ public class Upgrades : MonoBehaviour
                 cost = 2000f,
                 multiplier = 3f,
                 icon = null
+            });
+        }
+
+        // Seed Piggy Bank tiers (separate from soap)
+        if (piggyBankTiers.Count == 0)
+        {
+            piggyBankTiers.Add(new PiggyBankTier
+            {
+                tierName = "Copper Piggy",
+                description = "A small piggy bank. Slightly increases offline cap.",
+                cost = 200f,
+                offlineCapSeconds = 3600, // +1 hour
+                icon = null,
+                requiredDishes = 0
+            });
+
+            piggyBankTiers.Add(new PiggyBankTier
+            {
+                tierName = "Silver Piggy",
+                description = "A sturdier piggy. Grants a bigger offline cap.",
+                cost = 1200f,
+                offlineCapSeconds = 7200, // +2 hours
+                icon = null,
+                requiredDishes = 10
+            });
+
+            piggyBankTiers.Add(new PiggyBankTier
+            {
+                tierName = "Golden Piggy",
+                description = "Large piggy bank. Significantly increases offline cap.",
+                cost = 5000f,
+                offlineCapSeconds = 14400, // +4 hours
+                icon = null,
+                requiredDishes = 100
             });
         }
 
@@ -413,618 +467,39 @@ public class Upgrades : MonoBehaviour
         }
     }
 
-    public void OpenSoapMenu()
+    // Returns the total offline-cap bonus (seconds) granted by currently applied piggy bank tiers.
+    public int GetPiggyBankBonusSeconds()
     {
-        if (soapMenuPanel == null) return;
+        if (piggyBankTiers == null || piggyBankTiers.Count == 0)
+            return 0;
 
-        UpdateSoapMenuUI();
+        int total = 0;
+        int index = Mathf.Clamp(currentPiggyBankIndex, 0, piggyBankTiers.Count - 1);
 
-        if (backgroundOverlayButton != null)
-            backgroundOverlayButton.gameObject.SetActive(true);
+        for (int i = 0; i <= index; i++)
+        {
+            if (piggyBankTiers[i] != null)
+                total += piggyBankTiers[i].offlineCapSeconds;
+        }
 
-        soapMenuPanel.SetActive(true);
+        return total;
     }
 
-    public void CloseSoapMenu()
+    public void GetSaveState(out int soap, out int glove, out int sponge, out int piggy, out bool radioOwned)
     {
-        if (soapMenuPanel == null) return;
-
-        soapMenuPanel.SetActive(false);
-
-        if (backgroundOverlayButton != null && !AnyUpgradePanelOpen())
-            backgroundOverlayButton.gameObject.SetActive(false);
+        soap = currentSoapIndex;
+        glove = currentGloveIndex;
+        sponge = currentSpongeIndex;
+        piggy = currentPiggyBankIndex;
+        radioOwned = radioPurchased;
     }
 
-    public void OpenGloveMenu()
+    public void GetSaveState(out int soap, out int glove, out int sponge, out int piggy)
     {
-        if (gloveMenuPanel == null) return;
-
-        UpdateGloveMenuUI();
-
-        if (backgroundOverlayButton != null)
-            backgroundOverlayButton.gameObject.SetActive(true);
-
-        gloveMenuPanel.SetActive(true);
-    }
-
-    public void CloseGloveMenu()
-    {
-        if (gloveMenuPanel == null) return;
-
-        gloveMenuPanel.SetActive(false);
-
-        if (backgroundOverlayButton != null && !AnyUpgradePanelOpen())
-            backgroundOverlayButton.gameObject.SetActive(false);
-    }
-
-    public void OpenSpongeMenu()
-    {
-        if (spongeMenuPanel == null) return;
-
-        UpdateSpongeMenuUI();
-
-        if (backgroundOverlayButton != null)
-            backgroundOverlayButton.gameObject.SetActive(true);
-
-        spongeMenuPanel.SetActive(true);
-    }
-
-    public void CloseSpongeMenu()
-    {
-        if (spongeMenuPanel == null) return;
-
-        spongeMenuPanel.SetActive(false);
-
-        if (backgroundOverlayButton != null && !AnyUpgradePanelOpen())
-            backgroundOverlayButton.gameObject.SetActive(false);
-    }
-
-    public void OpenRadioMenu()
-    {
-        if (radioMenuPanel == null) return;
-
-        if (!radioPurchased)
-        {
-            UpdateRadioMenuUI();
-
-            if (backgroundOverlayButton != null)
-                backgroundOverlayButton.gameObject.SetActive(true);
-
-            radioMenuPanel.SetActive(true);
-            return;
-        }
-
-        OpenRadioControlPanel();
-    }
-
-    public void CloseRadioMenu()
-    {
-        if (radioMenuPanel == null) return;
-
-        radioMenuPanel.SetActive(false);
-
-        if (backgroundOverlayButton != null && !AnyUpgradePanelOpen())
-            backgroundOverlayButton.gameObject.SetActive(false);
-    }
-
-    private void OpenRadioControlPanel()
-    {
-        if (radioControlPanel == null)
-        {
-            Debug.LogWarning("[Upgrades] Radio control panel not assigned.");
-            return;
-        }
-
-        if (radioMenuPanel != null)
-            radioMenuPanel.SetActive(false);
-
-        if (backgroundOverlayButton != null)
-            backgroundOverlayButton.gameObject.SetActive(true);
-
-        radioControlPanel.SetActive(true);
-    }
-
-    public void CloseRadioControlPanel()
-    {
-        if (radioControlPanel != null)
-            radioControlPanel.SetActive(false);
-
-        if (backgroundOverlayButton != null && !AnyUpgradePanelOpen())
-            backgroundOverlayButton.gameObject.SetActive(false);
-    }
-
-    private void UpdateSoapMenuUI()
-    {
-        if (soapTiers == null || soapTiers.Count == 0) return;
-
-        SoapTier current = soapTiers[Mathf.Clamp(currentSoapIndex, 0, soapTiers.Count - 1)];
-
-        if (soapNameText != null)
-            soapNameText.text = current.tierName;
-
-        if (soapDescText != null)
-            soapDescText.text = current.description;
-
-        if (soapCostText != null)
-            soapCostText.text = string.IsNullOrEmpty(current.loreDescription) ? string.Empty : current.loreDescription;
-
-        if (soapButtonImage != null && current.icon != null)
-            soapButtonImage.sprite = current.icon;
-
-        bool hasNext = currentSoapIndex < soapTiers.Count - 1;
-
-        if (soapUpgradeButton == null) return;
-
-        TMP_Text btnText = soapUpgradeButton.GetComponentInChildren<TMP_Text>();
-
-        if (hasNext)
-        {
-            SoapTier next = soapTiers[currentSoapIndex + 1];
-            float wallet = scoreManager != null ? scoreManager.GetTotalProfit() : 0f;
-
-            soapUpgradeButton.interactable = scoreManager != null && wallet >= next.cost;
-
-            if (btnText != null)
-                btnText.SetText($"Upgrade for {BigNumberFormatter.FormatMoney((double)next.cost)}");
-        }
-        else
-        {
-            soapUpgradeButton.interactable = false;
-
-            if (btnText != null)
-                btnText.SetText("Max");
-        }
-    }
-
-    private void UpdateGloveMenuUI()
-    {
-        if (gloveTiers == null || gloveTiers.Count == 0) return;
-
-        GloveTier current = gloveTiers[Mathf.Clamp(currentGloveIndex, 0, gloveTiers.Count - 1)];
-
-        if (gloveNameText != null)
-            gloveNameText.text = current.tierName;
-
-        if (gloveDescText != null)
-            gloveDescText.text = current.description;
-
-        if (gloveCostText != null)
-            gloveCostText.text = string.IsNullOrEmpty(current.loreDescription) ? string.Empty : current.loreDescription;
-
-        if (gloveButtonImage != null && current.icon != null)
-            gloveButtonImage.sprite = current.icon;
-
-        bool hasNext = currentGloveIndex < gloveTiers.Count - 1;
-
-        if (gloveUpgradeButton == null) return;
-
-        TMP_Text btnText = gloveUpgradeButton.GetComponentInChildren<TMP_Text>();
-
-        if (hasNext)
-        {
-            GloveTier next = gloveTiers[currentGloveIndex + 1];
-            float wallet = scoreManager != null ? scoreManager.GetTotalProfit() : 0f;
-            bool unlocked = scoreManager != null && scoreManager.GetTotalDishes() >= next.requiredDishes;
-
-            gloveUpgradeButton.interactable = unlocked && wallet >= next.cost;
-
-            if (btnText != null)
-            {
-                btnText.SetText(unlocked
-                    ? $"Upgrade for {BigNumberFormatter.FormatMoney((double)next.cost)}"
-                    : $"Locked: {BigNumberFormatter.FormatNumber(next.requiredDishes)} dishes");
-            }
-        }
-        else
-        {
-            gloveUpgradeButton.interactable = false;
-
-            if (btnText != null)
-                btnText.SetText("Max");
-        }
-    }
-
-    private void UpdateSpongeMenuUI()
-    {
-        if (spongeTiers == null || spongeTiers.Count == 0) return;
-
-        SpongeTier current = spongeTiers[Mathf.Clamp(currentSpongeIndex, 0, spongeTiers.Count - 1)];
-
-        if (spongeNameText != null)
-            spongeNameText.text = current.tierName;
-
-        if (spongeDescText != null)
-            spongeDescText.text = current.description;
-
-        if (spongeCostText != null)
-            spongeCostText.text = string.IsNullOrEmpty(current.loreDescription) ? string.Empty : current.loreDescription;
-
-        if (spongeButtonImage != null && current.icon != null)
-            spongeButtonImage.sprite = current.icon;
-
-        bool hasNext = currentSpongeIndex < spongeTiers.Count - 1;
-
-        if (spongeUpgradeButton == null) return;
-
-        TMP_Text btnText = spongeUpgradeButton.GetComponentInChildren<TMP_Text>();
-
-        if (hasNext)
-        {
-            SpongeTier next = spongeTiers[currentSpongeIndex + 1];
-            float wallet = scoreManager != null ? scoreManager.GetTotalProfit() : 0f;
-            bool unlocked = scoreManager != null && scoreManager.GetTotalDishes() >= next.requiredDishes;
-
-            spongeUpgradeButton.interactable = unlocked && wallet >= next.cost;
-
-            if (btnText != null)
-            {
-                btnText.SetText(unlocked
-                    ? $"Upgrade for {BigNumberFormatter.FormatMoney((double)next.cost)}"
-                    : $"Locked: {BigNumberFormatter.FormatNumber(next.requiredDishes)} dishes");
-            }
-        }
-        else
-        {
-            spongeUpgradeButton.interactable = false;
-
-            if (btnText != null)
-                btnText.SetText("Max");
-        }
-    }
-
-    public void UpdateRadioMenuUI()
-    {
-        if (radioTiers == null || radioTiers.Count == 0) return;
-
-        RadioTier current = radioTiers[Mathf.Clamp(currentRadioIndex, 0, radioTiers.Count - 1)];
-
-        if (radioNameText != null)
-            radioNameText.text = current.tierName;
-
-        if (radioDescText != null)
-            radioDescText.text = current.description;
-
-        if (radioCostText != null)
-            radioCostText.text = string.IsNullOrEmpty(current.loreDescription) ? string.Empty : current.loreDescription;
-
-        if (RadioButtonImage != null && current.icon != null)
-            RadioButtonImage.sprite = current.icon;
-
-        if (radioUpgradeButton == null) return;
-
-        TMP_Text btnText = radioUpgradeButton.GetComponentInChildren<TMP_Text>();
-
-        bool hasNext = currentRadioIndex < radioTiers.Count - 1;
-        float wallet = scoreManager != null ? scoreManager.GetTotalProfit() : 0f;
-
-        if (hasNext)
-        {
-            RadioTier next = radioTiers[currentRadioIndex + 1];
-            bool unlocked = scoreManager != null && scoreManager.GetTotalDishes() >= next.requiredDishes;
-
-            radioUpgradeButton.interactable = unlocked && wallet >= next.cost;
-
-            if (btnText != null)
-            {
-                btnText.SetText(unlocked
-                    ? $"Upgrade for {BigNumberFormatter.FormatMoney((double)next.cost)}"
-                    : $"Locked: {BigNumberFormatter.FormatNumber(next.requiredDishes)} dishes");
-            }
-
-            return;
-        }
-
-        bool canBuyRadio = !radioPurchased && wallet >= current.cost;
-        radioUpgradeButton.interactable = canBuyRadio;
-
-        if (btnText != null)
-            btnText.SetText(radioPurchased ? "Owned" : $"Buy {BigNumberFormatter.FormatMoney((double)current.cost)}");
-    }
-
-    private void OnSoapUpgradeButton()
-    {
-        if (currentSoapIndex >= soapTiers.Count - 1) return;
-
-        SoapTier next = soapTiers[currentSoapIndex + 1];
-
-        if (scoreManager == null)
-        {
-            Debug.LogWarning("[Upgrades] ScoreManager not found.");
-            return;
-        }
-
-        float wallet = scoreManager.GetTotalProfit();
-
-        if (wallet < next.cost)
-        {
-            Debug.Log($"[Upgrades] Not enough profit to buy {next.tierName}.");
-            return;
-        }
-
-        scoreManager.SubtractProfit(next.cost, isPurchase: true);
-        scoreManager.MultiplyDishProfit(next.multiplier);
-
-        if (employeeManager == null)
-            employeeManager = FindAnyObjectByType<EmployeeManager>();
-
-        if (employeeManager != null)
-            employeeManager.MultiplyEmployeeProfit(next.multiplier);
-
-        currentSoapIndex++;
-        UpdateSoapMenuUI();
-
-        Debug.Log($"[Upgrades] Upgraded to {next.tierName}.");
-    }
-
-    private void OnGloveUpgradeButton()
-    {
-        if (currentGloveIndex >= gloveTiers.Count - 1) return;
-
-        GloveTier next = gloveTiers[currentGloveIndex + 1];
-
-        if (scoreManager == null)
-        {
-            Debug.LogWarning("[Upgrades] ScoreManager not found.");
-            return;
-        }
-
-        if (scoreManager.GetTotalDishes() < next.requiredDishes)
-        {
-            Debug.Log($"[Upgrades] {next.tierName} locked.");
-            return;
-        }
-
-        float wallet = scoreManager.GetTotalProfit();
-
-        if (wallet < next.cost)
-        {
-            Debug.Log($"[Upgrades] Not enough profit to buy {next.tierName}.");
-            return;
-        }
-
-        scoreManager.SubtractProfit(next.cost, isPurchase: true);
-
-        int currentAdded = gloveTiers[Mathf.Clamp(currentGloveIndex, 0, gloveTiers.Count - 1)].dishesAdded;
-        int delta = next.dishesAdded - currentAdded;
-
-        if (delta > 0)
-            scoreManager.IncreaseDishCountIncrement(delta);
-
-        currentGloveIndex++;
-        UpdateGloveMenuUI();
-
-        Debug.Log($"[Upgrades] Upgraded to {next.tierName}.");
-    }
-
-    private void OnSpongeUpgradeButton()
-    {
-        if (currentSpongeIndex >= spongeTiers.Count - 1) return;
-
-        SpongeTier next = spongeTiers[currentSpongeIndex + 1];
-
-        if (scoreManager == null)
-        {
-            Debug.LogWarning("[Upgrades] ScoreManager not found.");
-            return;
-        }
-
-        if (scoreManager.GetTotalDishes() < next.requiredDishes)
-        {
-            Debug.Log($"[Upgrades] {next.tierName} locked.");
-            return;
-        }
-
-        float wallet = scoreManager.GetTotalProfit();
-
-        if (wallet < next.cost)
-        {
-            Debug.Log($"[Upgrades] Not enough profit to buy {next.tierName}.");
-            return;
-        }
-
-        scoreManager.SubtractProfit(next.cost, isPurchase: true);
-
-        currentSpongeIndex++;
-        UpdateSpongeMenuUI();
-        AssignThisUpgradeSourceToDishClickers();
-
-        Debug.Log($"[Upgrades] Upgraded to {next.tierName}.");
-    }
-
-    private void OnRadioUpgradeButton()
-    {
-        if (radioPurchased) return;
-        if (radioTiers == null || radioTiers.Count == 0) return;
-        if (scoreManager == null) return;
-
-        RadioTier radio = radioTiers[Mathf.Clamp(currentRadioIndex, 0, radioTiers.Count - 1)];
-
-        float wallet = scoreManager.GetTotalProfit();
-
-        if (wallet < radio.cost)
-        {
-            Debug.Log("[Upgrades] Not enough money to buy Radio.");
-            return;
-        }
-
-        scoreManager.SubtractProfit(radio.cost, isPurchase: true);
-
-        radioPurchased = true;
-
-        UpdateRadioMenuUI();
-        CloseRadioMenu();
-        OpenRadioControlPanel();
-
-        try
-        {
-            if (AudioManager.instance != null)
-                AudioManager.instance.DisableAmbientLooping();
-
-            var radioController = FindAnyObjectByType<RadioCOntroller>();
-
-            if (radioController != null)
-            {
-                radioController.MarkPurchased();
-                radioController.StartRadio();
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.LogWarning($"[Upgrades] Failed to start radio after purchase: {ex.Message}");
-        }
-
-        Debug.Log("[Upgrades] Radio purchased.");
-    }
-
-    public int GetCurrentStagesPerClick()
-    {
-        if (spongeTiers == null || spongeTiers.Count == 0)
-            return 1;
-
-        return spongeTiers[Mathf.Clamp(currentSpongeIndex, 0, spongeTiers.Count - 1)].stagesPerClick;
-    }
-
-    public void SetSoapTierIndex(int targetIndex, bool spend = false)
-    {
-        targetIndex = Mathf.Clamp(targetIndex, 0, soapTiers.Count - 1);
-
-        if (targetIndex == currentSoapIndex)
-        {
-            UpdateSoapMenuUI();
-            return;
-        }
-
-        int from = currentSoapIndex;
-        int to = Mathf.Max(targetIndex, from);
-
-        float totalCost = 0f;
-        float cumulativeMultiplier = 1f;
-
-        for (int i = from + 1; i <= to; i++)
-        {
-            totalCost += soapTiers[i].cost;
-            cumulativeMultiplier *= soapTiers[i].multiplier;
-        }
-
-        if (spend && scoreManager != null && scoreManager.GetTotalProfit() < totalCost)
-            return;
-
-        if (spend && scoreManager != null)
-            scoreManager.SubtractProfit(totalCost, isPurchase: true);
-
-        if (scoreManager != null)
-            scoreManager.MultiplyDishProfit(cumulativeMultiplier);
-
-        if (employeeManager != null)
-            employeeManager.MultiplyEmployeeProfit(cumulativeMultiplier);
-
-        currentSoapIndex = to;
-        UpdateSoapMenuUI();
-    }
-
-    public void SetGloveTierIndex(int targetIndex, bool spend = false)
-    {
-        targetIndex = Mathf.Clamp(targetIndex, 0, gloveTiers.Count - 1);
-
-        if (targetIndex == currentGloveIndex)
-        {
-            UpdateGloveMenuUI();
-            return;
-        }
-
-        int from = currentGloveIndex;
-        int to = Mathf.Max(targetIndex, from);
-
-        float totalCost = 0f;
-        int addDishesDelta = gloveTiers[to].dishesAdded - gloveTiers[from].dishesAdded;
-
-        if (spend && scoreManager != null && scoreManager.GetTotalDishes() < gloveTiers[to].requiredDishes)
-            return;
-
-        for (int i = from + 1; i <= to; i++)
-            totalCost += gloveTiers[i].cost;
-
-        if (spend && scoreManager != null && scoreManager.GetTotalProfit() < totalCost)
-            return;
-
-        if (spend && scoreManager != null)
-            scoreManager.SubtractProfit(totalCost, isPurchase: true);
-
-        if (addDishesDelta > 0 && scoreManager != null)
-            scoreManager.IncreaseDishCountIncrement(addDishesDelta);
-
-        currentGloveIndex = to;
-        UpdateGloveMenuUI();
-    }
-
-    public void SetSpongeTierIndex(int targetIndex, bool spend = false)
-    {
-        targetIndex = Mathf.Clamp(targetIndex, 0, spongeTiers.Count - 1);
-
-        if (targetIndex == currentSpongeIndex)
-        {
-            UpdateSpongeMenuUI();
-            return;
-        }
-
-        int from = currentSpongeIndex;
-        int to = Mathf.Max(targetIndex, from);
-
-        float totalCost = 0f;
-
-        if (spend && scoreManager != null && scoreManager.GetTotalDishes() < spongeTiers[to].requiredDishes)
-            return;
-
-        for (int i = from + 1; i <= to; i++)
-            totalCost += spongeTiers[i].cost;
-
-        if (spend && scoreManager != null && scoreManager.GetTotalProfit() < totalCost)
-            return;
-
-        if (spend && scoreManager != null)
-            scoreManager.SubtractProfit(totalCost, isPurchase: true);
-
-        currentSpongeIndex = to;
-        UpdateSpongeMenuUI();
-        AssignThisUpgradeSourceToDishClickers();
-    }
-
-    public void SetRadioTierIndex(int targetIndex, bool spend = false)
-    {
-        if (radioTiers == null || radioTiers.Count == 0)
-            return;
-
-        targetIndex = Mathf.Clamp(targetIndex, 0, radioTiers.Count - 1);
-
-        if (targetIndex == currentRadioIndex)
-        {
-            UpdateRadioMenuUI();
-            return;
-        }
-
-        int from = currentRadioIndex;
-        int to = Mathf.Max(targetIndex, from);
-
-        float totalCost = 0f;
-        int addDishesDelta = radioTiers[to].dishesAdded - radioTiers[from].dishesAdded;
-
-        if (spend && scoreManager != null && scoreManager.GetTotalDishes() < radioTiers[to].requiredDishes)
-            return;
-
-        for (int i = from + 1; i <= to; i++)
-            totalCost += radioTiers[i].cost;
-
-        if (spend && scoreManager != null && scoreManager.GetTotalProfit() < totalCost)
-            return;
-
-        if (spend && scoreManager != null)
-            scoreManager.SubtractProfit(totalCost, isPurchase: true);
-
-        if (addDishesDelta > 0 && scoreManager != null)
-            scoreManager.IncreaseDishCountIncrement(addDishesDelta);
-
-        currentRadioIndex = to;
-        UpdateRadioMenuUI();
+        soap = currentSoapIndex;
+        glove = currentGloveIndex;
+        sponge = currentSpongeIndex;
+        piggy = currentPiggyBankIndex;
     }
 
     public void GetSaveState(out int soap, out int glove, out int sponge)
@@ -1032,14 +507,6 @@ public class Upgrades : MonoBehaviour
         soap = currentSoapIndex;
         glove = currentGloveIndex;
         sponge = currentSpongeIndex;
-    }
-
-    public void GetSaveState(out int soap, out int glove, out int sponge, out bool radioOwned)
-    {
-        soap = currentSoapIndex;
-        glove = currentGloveIndex;
-        sponge = currentSpongeIndex;
-        radioOwned = radioPurchased;
     }
 
     public void SetRadioOwnedForSave(bool owned)
@@ -1054,10 +521,10 @@ public class Upgrades : MonoBehaviour
 
     public void ApplySaveState(int soap, int glove, int sponge)
     {
-        ApplySaveState(soap, glove, sponge, radioPurchased);
+        ApplySaveState(soap, glove, sponge, 0, radioPurchased);
     }
 
-    public void ApplySaveState(int soap, int glove, int sponge, bool radioOwned)
+    public void ApplySaveState(int soap, int glove, int sponge, int piggy, bool radioOwned)
     {
         if (scoreManager == null)
             scoreManager = FindAnyObjectByType<ScoreManager>();
@@ -1068,6 +535,7 @@ public class Upgrades : MonoBehaviour
         currentSoapIndex = Mathf.Clamp(soap, 0, soapTiers.Count - 1);
         currentGloveIndex = Mathf.Clamp(glove, 0, gloveTiers.Count - 1);
         currentSpongeIndex = Mathf.Clamp(sponge, 0, spongeTiers.Count - 1);
+        currentPiggyBankIndex = Mathf.Clamp(piggy, 0, Math.Max(0, piggyBankTiers.Count - 1));
         radioPurchased = radioOwned;
 
         UpdateSoapMenuUI();
