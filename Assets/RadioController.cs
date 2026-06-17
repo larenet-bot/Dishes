@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class RadioCOntroller : MonoBehaviour
@@ -6,6 +7,7 @@ public class RadioCOntroller : MonoBehaviour
     [Header("List of Tracks")]
     [SerializeField] private Track[] audiotracks;
     private int currentTrackIndex;
+    [SerializeField] private Track noAudiotracks;
 
     [Header("Text UI")]
     [SerializeField] private TMPro.TextMeshProUGUI trackTitleText;
@@ -54,11 +56,11 @@ public class RadioCOntroller : MonoBehaviour
         }
 
         // Only play automatically if explicitly allowed and (if required) purchased.
-        if (autoPlayOnAwake && (!requirePurchase || isPurchased))
-        {
+        //if (autoPlayOnAwake && (!requirePurchase || isPurchased))
+        //{
             // Use StartRadio so we get consistent behavior (including persistence)
             StartRadio();
-        }
+        //}
     }
 
     /// <summary>
@@ -68,11 +70,25 @@ public class RadioCOntroller : MonoBehaviour
     /// </summary>
     public void StartRadio()
     {
+        //noRadio(); // handle the "no radio" case first, which may early out of normal playback
+        // No radio duct tape: if purchase is required but not yet purchased, play the "no audio" track and do not start normal playback.
         if (requirePurchase && !isPurchased)
         {
+            if (radioAudioSource == null)
+                radioAudioSource = GetComponent<AudioSource>();
+
+            radioAudioSource.clip = noAudiotracks.trackAudioClip;
+
+            if (!radioAudioSource.isPlaying)
+            {
+                radioAudioSource.volume = 1f; // use audio source volume (AudioManager may control mixer)
+                radioAudioSource.Play();
+            }
             Debug.Log("[RadioCOntroller] StartRadio called but radio not purchased.");
+            StartCoroutine(PlaybackMonitor());
             return;
         }
+
 
         if (radioAudioSource == null)
             radioAudioSource = GetComponent<AudioSource>();
@@ -100,6 +116,27 @@ public class RadioCOntroller : MonoBehaviour
         // ensure the playback monitor coroutine is running
         StartCoroutine(PlaybackMonitor());
     }
+
+    //public void noRadio()
+    //{
+    //    // No radio duct tape: if purchase is required but not yet purchased, play the "no audio" track and do not start normal playback.
+    //        if (requirePurchase && !isPurchased)
+    //        {
+    //            if (radioAudioSource == null)
+    //                radioAudioSource = GetComponent<AudioSource>();
+
+    //            radioAudioSource.clip = noAudiotracks.trackAudioClip;
+
+    //            if (!radioAudioSource.isPlaying)
+    //            {
+    //                radioAudioSource.volume = 1f; // use audio source volume (AudioManager may control mixer)
+    //                radioAudioSource.Play();
+    //            }
+    //            Debug.Log("[RadioCOntroller] StartRadio called but radio not purchased.");
+    //        return;
+    //        }
+        
+    //}
 
     public void skipforwardButton()
     {
@@ -157,7 +194,7 @@ public class RadioCOntroller : MonoBehaviour
 
     public void LoopAudio()
     {
-        if (requirePurchase && !isPurchased) return;
+        if (requirePurchase && !isPurchased);
         radioAudioSource.loop = !radioAudioSource.loop;
     }
 
@@ -227,8 +264,24 @@ public class RadioCOntroller : MonoBehaviour
                 yield return null;
             }
 
-            // If a transition is running, skip reacting here.
-            if (isTransitioning)
+            if (requirePurchase && !isPurchased)
+            {
+                if (radioAudioSource == null)
+                    radioAudioSource = GetComponent<AudioSource>();
+
+                radioAudioSource.clip = noAudiotracks.trackAudioClip;
+
+                if (!radioAudioSource.isPlaying)
+                {
+                    radioAudioSource.volume = 1f; // use audio source volume (AudioManager may control mixer)
+                    radioAudioSource.Play();
+                }
+                Debug.Log("[RadioCOntroller] StartRadio called but radio not purchased.");
+                StartCoroutine(PlaybackMonitor());
+                yield return null;
+            }
+                // If a transition is running, skip reacting here.
+                if (isTransitioning)
             {
                 yield return null;
                 continue;
