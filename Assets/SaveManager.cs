@@ -19,6 +19,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private Upgrades upgrades;
     [SerializeField] private SinkManager sinks;
     [SerializeField] private LoanManager loans;
+    [SerializeField] private MopUpgradeShelf mop;
 
     [Header("Kitchen Id")]
     [Tooltip("Used only if SaveManager cannot find a LoanManager or KitchenIdentity in the active scene.")]
@@ -136,6 +137,7 @@ public class SaveManager : MonoBehaviour
         upgrades = null;
         sinks = null;
         loans = null;
+        mop = null;
 
         hasAppliedToCurrentScene = false;
 
@@ -150,6 +152,7 @@ public class SaveManager : MonoBehaviour
         if (upgrades == null) upgrades = FindFirstObjectByType<Upgrades>();
         if (sinks == null) sinks = FindFirstObjectByType<SinkManager>();
         if (loans == null) loans = FindFirstObjectByType<LoanManager>();
+        if (mop == null) mop = FindFirstObjectByType<MopUpgradeShelf>();
     }
 
     private bool HaveGameplayRefs()
@@ -255,6 +258,7 @@ public class SaveManager : MonoBehaviour
             loadedData.currentGloveIndex > 0 ||
             loadedData.currentSpongeIndex > 0 ||
             loadedData.currentPiggyBankIndex > 0 ||
+            loadedData.currentMopIndex > 0 ||
             loadedData.dishCountIncrement > 1 ||
             loadedData.dishProfitMultiplier > 1f ||
             loadedData.radioOwned ||
@@ -280,6 +284,10 @@ public class SaveManager : MonoBehaviour
             currentGloveIndex = System.Math.Max(0, loadedData.currentGloveIndex),
             currentSpongeIndex = System.Math.Max(0, loadedData.currentSpongeIndex),
             currentPiggyBankIndex = System.Math.Max(0, loadedData.currentPiggyBankIndex),
+            currentMopIndex = System.Math.Max(0, loadedData.currentMopIndex),
+            selectedMopFilterId = string.IsNullOrWhiteSpace(loadedData.selectedMopFilterId) ? MopUpgradeShelf.CleanFilterId : loadedData.selectedMopFilterId,
+            purchasedMopFilterIds = loadedData.purchasedMopFilterIds ?? new List<string>(),
+            selectedMopStaticColorHtml = string.IsNullOrWhiteSpace(loadedData.selectedMopStaticColorHtml) ? "#0000004D" : loadedData.selectedMopStaticColorHtml,
             radioOwned = loadedData.radioOwned,
             employees = loadedData.employees ?? new List<EmployeeSave>(),
             employeeProfitMultiplier = loadedData.employeeProfitMultiplier > 0f ? loadedData.employeeProfitMultiplier : 1f,
@@ -293,7 +301,7 @@ public class SaveManager : MonoBehaviour
         };
 
         loadedData.kitchens.Add(kitchenOne);
-        loadedData.saveVersion = 4;
+        loadedData.saveVersion = 6;
 
         if (logSaveEvents)
         {
@@ -356,6 +364,10 @@ public class SaveManager : MonoBehaviour
             currentGloveIndex = 0,
             currentSpongeIndex = 0,
             currentPiggyBankIndex = 0,
+            currentMopIndex = 0,
+            selectedMopFilterId = MopUpgradeShelf.CleanFilterId,
+            purchasedMopFilterIds = new List<string> { MopUpgradeShelf.CleanFilterId },
+            selectedMopStaticColorHtml = "#0000004D",
             radioOwned = false,
             employees = new List<EmployeeSave>(),
             employeeProfitMultiplier = 1f,
@@ -402,6 +414,36 @@ public class SaveManager : MonoBehaviour
         if (kitchen.employeeProfitMultiplier <= 0f)
         {
             kitchen.employeeProfitMultiplier = 1f;
+        }
+
+        if (kitchen.currentMopIndex < 0)
+        {
+            kitchen.currentMopIndex = 0;
+        }
+
+        if (string.IsNullOrWhiteSpace(kitchen.selectedMopFilterId))
+        {
+            kitchen.selectedMopFilterId = MopUpgradeShelf.CleanFilterId;
+        }
+
+        if (string.IsNullOrWhiteSpace(kitchen.selectedMopStaticColorHtml))
+        {
+            kitchen.selectedMopStaticColorHtml = "#0000004D";
+        }
+
+        if (kitchen.purchasedMopFilterIds == null)
+        {
+            kitchen.purchasedMopFilterIds = new List<string>();
+        }
+
+        if (!kitchen.purchasedMopFilterIds.Contains(MopUpgradeShelf.CleanFilterId))
+        {
+            kitchen.purchasedMopFilterIds.Add(MopUpgradeShelf.CleanFilterId);
+        }
+
+        if (kitchen.currentMopIndex >= 2 && !kitchen.purchasedMopFilterIds.Contains(kitchen.selectedMopFilterId))
+        {
+            kitchen.purchasedMopFilterIds.Add(kitchen.selectedMopFilterId);
         }
 
         if (kitchen.employees == null)
@@ -483,6 +525,16 @@ public class SaveManager : MonoBehaviour
             kitchen.radioOwned,
             kitchen.currentPiggyBankIndex
         );
+
+        if (mop != null)
+        {
+            mop.ApplySaveState(
+                kitchen.currentMopIndex,
+                kitchen.selectedMopFilterId,
+                kitchen.purchasedMopFilterIds,
+                kitchen.selectedMopStaticColorHtml
+            );
+        }
 
         employees.ApplySaveState(kitchen.employees, kitchen.employeeProfitMultiplier);
 
@@ -807,6 +859,16 @@ public class SaveManager : MonoBehaviour
             out kitchen.radioOwned
         );
 
+        if (mop != null)
+        {
+            mop.GetSaveState(
+                out kitchen.currentMopIndex,
+                out kitchen.selectedMopFilterId,
+                out kitchen.purchasedMopFilterIds,
+                out kitchen.selectedMopStaticColorHtml
+            );
+        }
+
         kitchen.employees = employees.GetSaveState();
         kitchen.employeeProfitMultiplier = employees.GetGlobalEmployeeProfitMultiplierForSave();
 
@@ -841,7 +903,7 @@ public class SaveManager : MonoBehaviour
             loadedData = new SaveData();
         }
 
-        loadedData.saveVersion = 4;
+        loadedData.saveVersion = 6;
 
         bool hasGameplayRefs = HaveGameplayRefs();
         string kitchenId = hasGameplayRefs ? ResolveCurrentKitchenId() : string.Empty;
@@ -924,6 +986,12 @@ public class SaveManager : MonoBehaviour
         loadedData.currentGloveIndex = kitchen.currentGloveIndex;
         loadedData.currentSpongeIndex = kitchen.currentSpongeIndex;
         loadedData.currentPiggyBankIndex = kitchen.currentPiggyBankIndex;
+        loadedData.currentMopIndex = kitchen.currentMopIndex;
+        loadedData.selectedMopFilterId = kitchen.selectedMopFilterId;
+        loadedData.selectedMopStaticColorHtml = string.IsNullOrWhiteSpace(kitchen.selectedMopStaticColorHtml) ? "#0000004D" : kitchen.selectedMopStaticColorHtml;
+        loadedData.purchasedMopFilterIds = kitchen.purchasedMopFilterIds != null
+            ? new List<string>(kitchen.purchasedMopFilterIds)
+            : new List<string> { MopUpgradeShelf.CleanFilterId };
         loadedData.radioOwned = kitchen.radioOwned;
         loadedData.employees = kitchen.employees;
         loadedData.employeeProfitMultiplier = kitchen.employeeProfitMultiplier;

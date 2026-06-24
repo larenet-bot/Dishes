@@ -4,7 +4,7 @@ using System.Collections.Generic;
 [Serializable]
 public class SaveData
 {
-    public int saveVersion = 4;
+    public int saveVersion = 6;
 
     // Legacy single-kitchen fields. These are still mirrored from kitchen_1 so old debugging
     // tools or old fallback paths do not immediately break.
@@ -18,6 +18,10 @@ public class SaveData
     public int currentGloveIndex = 0;
     public int currentSpongeIndex = 0;
     public int currentPiggyBankIndex = 0;
+    public int currentMopIndex = 0;
+    public string selectedMopFilterId = "clean";
+    public List<string> purchasedMopFilterIds = new List<string> { "clean" };
+    public string selectedMopStaticColorHtml = "#0000004D";
     public bool radioOwned = false;
 
     public List<EmployeeSave> employees = new List<EmployeeSave>();
@@ -52,6 +56,10 @@ public class KitchenSaveData
     public int currentGloveIndex = 0;
     public int currentSpongeIndex = 0;
     public int currentPiggyBankIndex = 0;
+    public int currentMopIndex = 0;
+    public string selectedMopFilterId = "clean";
+    public List<string> purchasedMopFilterIds = new List<string> { "clean" };
+    public string selectedMopStaticColorHtml = "#0000004D";
     public bool radioOwned = false;
 
     public List<EmployeeSave> employees = new List<EmployeeSave>();

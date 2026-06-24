@@ -18,6 +18,10 @@ public class SettingsMenu : MonoBehaviour
     public Toggle duckAlternateToggle;
     public Toggle tooltipToggle;
 
+    [Header("Visual Filter")]
+    [SerializeField] private GameFilterOverlay gameFilterOverlay;
+    public Toggle visualFilterToggle;
+
     [Header("World Objects Disabled During Settings")]
     [SerializeField, Tooltip("Scene objects placed here will have their Collider2D disabled while the settings menu is open. Use this for the duck and other fixed clickable objects.")]
     private GameObject[] objectsToDisableDuringSettings;
@@ -43,6 +47,7 @@ public class SettingsMenu : MonoBehaviour
 
         settingsColliderRefreshTimer = 0f;
         DisableSettingsObjectColliders(true);
+        SyncVisualFilterToggle();
     }
 
     private void OnDisable()
@@ -77,6 +82,8 @@ public class SettingsMenu : MonoBehaviour
             // apply initial state immediately
             SetTooltipsEnabled(tooltipsOn);
         }
+
+        BindVisualFilterToggle();
 
         float master = PlayerPrefs.GetFloat("Master", 0.5f);
         float music = PlayerPrefs.GetFloat("Music", 0.5f);
@@ -171,6 +178,97 @@ public class SettingsMenu : MonoBehaviour
         }
 
         Debug.Log("Tooltips enabled set to: " + isEnabled);
+    }
+
+    private void BindVisualFilterToggle()
+    {
+        CacheVisualFilterOverlay();
+
+        if (visualFilterToggle == null)
+            return;
+
+        visualFilterToggle.onValueChanged.RemoveListener(SetVisualFilterEnabled);
+        SyncVisualFilterToggle();
+        visualFilterToggle.onValueChanged.AddListener(SetVisualFilterEnabled);
+    }
+
+    private void SyncVisualFilterToggle()
+    {
+        CacheVisualFilterOverlay();
+
+        if (visualFilterToggle == null)
+            return;
+
+        bool filterIsEnabled = gameFilterOverlay != null && gameFilterOverlay.IsFilterEnabled();
+        visualFilterToggle.SetIsOnWithoutNotify(filterIsEnabled);
+    }
+
+    public void SetVisualFilterEnabled(bool isEnabled)
+    {
+        CacheVisualFilterOverlay();
+
+        if (gameFilterOverlay != null)
+        {
+            gameFilterOverlay.SetFilterEnabled(isEnabled);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("GameFilterOverlayEnabled", isEnabled ? 1 : 0);
+            PlayerPrefs.Save();
+        }
+
+        if (visualFilterToggle != null)
+        {
+            visualFilterToggle.SetIsOnWithoutNotify(isEnabled);
+        }
+
+        Debug.Log("Visual filter enabled set to: " + isEnabled);
+    }
+
+    public void ToggleVisualFilter()
+    {
+        CacheVisualFilterOverlay();
+
+        bool nextState = true;
+
+        if (gameFilterOverlay != null)
+        {
+            nextState = !gameFilterOverlay.IsFilterEnabled();
+        }
+        else if (visualFilterToggle != null)
+        {
+            nextState = !visualFilterToggle.isOn;
+        }
+
+        SetVisualFilterEnabled(nextState);
+    }
+
+    private void CacheVisualFilterOverlay()
+    {
+        if (gameFilterOverlay != null)
+            return;
+
+        if (GameFilterOverlay.Instance != null)
+        {
+            gameFilterOverlay = GameFilterOverlay.Instance;
+            return;
+        }
+
+        GameFilterOverlay[] overlays = Resources.FindObjectsOfTypeAll<GameFilterOverlay>();
+
+        for (int i = 0; i < overlays.Length; i++)
+        {
+            GameFilterOverlay overlay = overlays[i];
+
+            if (overlay == null)
+                continue;
+
+            if (!overlay.gameObject.scene.IsValid())
+                continue;
+
+            gameFilterOverlay = overlay;
+            return;
+        }
     }
 
     public void SetFullScreen(bool isFullScreen)
