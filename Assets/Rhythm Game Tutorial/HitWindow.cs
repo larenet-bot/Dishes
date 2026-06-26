@@ -23,6 +23,10 @@ public class HitWindow : MonoBehaviour
     public HitType JudgeNoteHit(float timeDifference)
     {
         float absDiff = Mathf.Abs(timeDifference);
+
+        Debug.Log(
+            $"Judge: diff={absDiff:F3}  Perfect={perfectRange} Good={goodRange} Bad={badRange}"
+        );
         HitType result;
 
         if (absDiff <= perfectRange)

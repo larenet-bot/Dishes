@@ -312,7 +312,7 @@ public class NoteSpawner : MonoBehaviour
 
             // desired DSP time to instantiate this note
             // subtract globalTimingOffset so when you tune timingOffset the visual spawn timing follows the judgement offset.
-            double desiredSpawnDsp = globalSongStartDspTime + spawnTime - globalTimingOffset;
+            double desiredSpawnDsp = globalSongStartDspTime + spawnTime;
 
             // If the desired spawn DSP time is already in the past, spawn immediately on next frame.
             if (AudioSettings.dspTime >= desiredSpawnDsp)
