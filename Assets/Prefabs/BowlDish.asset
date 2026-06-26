@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9bdb99a9c8c51d408242a5ec1b693ed, type: 3}
   m_Name: BowlDish
   m_EditorClassIdentifier: 
-  dishPrefab: {fileID: 0}
+  displayName: 
   stageSprites:
   - {fileID: 5001746023961310147, guid: 11455bd5356b8e34594ad34e399097e1, type: 3}
   - {fileID: -8137669759446092205, guid: 70499a3d7457793428cee59695333191, type: 3}
   - {fileID: 8394152611511241524, guid: 62a2d7f1055e03740a7b2d9fd787c559, type: 3}
+  uiScale: 1
   profitPerDish: 2
-  clicksRequired: 3
   unlockAtDishCount: 10
   spawnChance: 0.45
-  uiScale: 1.5

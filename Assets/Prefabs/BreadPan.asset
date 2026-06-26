@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9bdb99a9c8c51d408242a5ec1b693ed, type: 3}
   m_Name: BreadPan
   m_EditorClassIdentifier: 
-  dishPrefab: {fileID: 0}
+  displayName: 
   stageSprites:
   - {fileID: -7423247573598235085, guid: 57eb30a0a50f286499a37b1dc61b5d10, type: 3}
   - {fileID: 252795690013099719, guid: 4cc8100ed4769f9409c4879883574e46, type: 3}
   - {fileID: 3613583612938040932, guid: f239c3a773e8f734aa37ce473aa7ca4c, type: 3}
+  uiScale: 0.15
   profitPerDish: 256
-  clicksRequired: 3
   unlockAtDishCount: 12000
   spawnChance: 0.3
-  uiScale: 0.25
