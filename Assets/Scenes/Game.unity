@@ -12301,7 +12301,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 436591006}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e52beca5aa7af334b8da618bd5c5be32, type: 3}
   m_Name: 
@@ -36624,8 +36624,9 @@ MonoBehaviour:
     branch: 1
     tier: 2
     displayName: 'TECHNIQUE: Turbo Jet Mode'
-    description: Holding click for 30 seconds triggers a skill check. Success adds
-      a burn effect that cleans twice as fast for 4 seconds.
+    description: Holding click for 30 seconds triggers a skill check.Press Space
+      to complete the skill check. Success adds a burn effect that cleans twice as
+      fast for 4 seconds.
     loreDescription: 
     cost: 1800
     isTechnique: 1
