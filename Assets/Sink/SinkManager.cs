@@ -154,6 +154,7 @@ public class SinkManager : MonoBehaviour
 
     public bool TryPurchase(string nodeId)
     {
+        Debug.Log($"Purchase Manager: {GetInstanceID()}");
         var node = GetNode(nodeId);
         if (node == null) return false;
         if (!CanPurchase(nodeId)) return false;
@@ -171,6 +172,9 @@ public class SinkManager : MonoBehaviour
         ScoreManager.Instance.SubtractProfit(node.cost, isPurchase: true);
 
         purchased.Add(node.id);
+        Debug.Log($"Purchased {node.id}");
+        Debug.Log($"pw_rate1? {IsPurchased("pw_rate1")}");
+        Debug.Log($"pw_technique? {IsPurchased("pw_technique")}");
 
         // Commit if this was the first unlock
         if (node.unlocksSinkType && currentSinkType == SinkType.Basic)

@@ -47,12 +47,22 @@ public class PowerWasherController : MonoBehaviour
 
     public void OnDishAssigned(DishData data)
     {
-        // Reset per-dish hold state when a new dish is assigned.
-        ResetHoldState();
+        // Clear accumulated progress for the previous dish.
+        holdStageUnits = 0f;
+
+        // Only fully reset if the player isn't actively holding.
+        if (!Input.GetMouseButton(0))
+        {
+            ResetHoldState();
+        }
     }
 
     private void Update()
     {
+        if (sinkManager == null)
+            sinkManager = SinkManager.Instance;
+
+        Debug.Log($"PW SinkManager: {sinkManager.GetInstanceID()}");
         if (!enablePowerWasherHold || dishClicker == null)
         {
             return;
@@ -97,6 +107,9 @@ public class PowerWasherController : MonoBehaviour
 
         if (ShouldTriggerTurboJetSkillCheck())
         {
+            Debug.Log(
+    $"TurboJet Purchased: {sinkManager.IsPurchased("pw_technique")}"
+);
             TryBeginTurboJetSkillCheck();
             if (isTurboJetSkillCheckActive)
             {
@@ -174,6 +187,8 @@ public class PowerWasherController : MonoBehaviour
 
     private float GetPowerWasherStagesPerSecond()
     {
+        Debug.Log($"Rate1={sinkManager.IsPurchased("pw_rate1")}");
+        Debug.Log($"Technique={sinkManager.IsPurchased("pw_technique")}");
         if (sinkManager == null)
             sinkManager = SinkManager.Instance;
 
@@ -195,12 +210,14 @@ public class PowerWasherController : MonoBehaviour
 
             stagesPerSecond *= 1f + bonus;
         }
-
+        Debug.Log($"PowerWasher Rate = {stagesPerSecond}");
         return stagesPerSecond;
+        
     }
 
     private void ResetHoldState()
     {
+        Debug.Log($"ResetHoldState! holdSeconds was {holdSeconds}");
         if (!isHolding && !isTurboJetSkillCheckActive)
         {
             holdStageUnits = 0f;
@@ -230,17 +247,29 @@ public class PowerWasherController : MonoBehaviour
 
     private bool ShouldTriggerTurboJetSkillCheck()
     {
+        Debug.Log(
+            $"Hold={holdSeconds:F1}  Purchased={sinkManager.IsPurchased(powerWasherTechniqueNodeId)}  Next={nextTurboJetSkillCheckAt}"
+        );
+
         if (sinkManager == null || string.IsNullOrWhiteSpace(powerWasherTechniqueNodeId))
         {
+            Debug.Log("No SinkManager or node ID.");
             return false;
         }
 
         if (!sinkManager.IsPurchased(powerWasherTechniqueNodeId))
         {
+            Debug.Log("Technique not purchased.");
             return false;
         }
 
-        return holdSeconds >= nextTurboJetSkillCheckAt;
+        if (holdSeconds >= nextTurboJetSkillCheckAt)
+        {
+            Debug.Log("Triggering Skill Check!");
+            return true;
+        }
+
+        return false;
     }
 
     private void OnTurboJetSkillCheckResolved(bool success)
