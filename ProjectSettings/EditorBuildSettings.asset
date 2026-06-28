@@ -21,7 +21,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Loan0.unity
     guid: a3c266ab562e395419de0a68bca41d2d
   - enabled: 1
-    path: Assets/Scenes/Loan1.unity
+    path: Assets/Scenes/Kitchen2Intro.unity
     guid: bbaddbd0f4ed02f49905aa76b5983391
   - enabled: 1
     path: Assets/Scenes/Kitchen2.unity

@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79e7f050724ee1d42b44f6a5b9804f0b, type: 3}
+  m_Name: Kitchen2Intro
+  m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
+  lines:
+  - text: Wow I have not had a free day in forever, I should try out that new restraunt
+      now that I am out of debt.
+    sfx: {fileID: 0}
+    background: {fileID: 4850878120845980919, guid: 0dd04368b68655a479b4877bb54922a1, type: 3}
+    postDelay: 0
+    branchId: 0
+    hasChoices: 0
+    choices: []
+    overrideNextLineIndex: 0
+  - text: '"I think I will try the Oysters!"'
+    sfx: {fileID: 0}
+    background: {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
+    postDelay: 0
+    branchId: 0
+    hasChoices: 0
+    choices: []
+    overrideNextLineIndex: 0
+  - text: waiteress- " You look a little lost, you know how to eat these ... right?"
+    sfx: {fileID: 0}
+    background: {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
+    postDelay: 0
+    branchId: 0
+    hasChoices: 0
+    choices: []
+    overrideNextLineIndex: 0
+  - text: '*gagging choking*'
+    sfx: {fileID: 0}
+    background: {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
+    postDelay: 0
+    branchId: 0
+    hasChoices: 0
+    choices: []
+    overrideNextLineIndex: 0
+  - text: '*broken water tank*'
+    sfx: {fileID: 0}
+    background: {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
+    postDelay: 0
+    branchId: 0
+    hasChoices: 0
+    choices: []
+    overrideNextLineIndex: 0
+  - text: owner- "your paying for that!"
+    sfx: {fileID: 0}
+    background: {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
+    postDelay: 0
+    branchId: 0
+    hasChoices: 0
+    choices: []
+    overrideNextLineIndex: 0
+  - text: Aw shucks here we go again
+    sfx: {fileID: 0}
+    background: {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
+    postDelay: 0
+    branchId: 0
+    hasChoices: 0
+    choices: []
+    overrideNextLineIndex: 0
+  typingSFX: {fileID: 0}
+  typingSFXIntervalChars: 2
+  typeSpeed: 0.02
+  nextSceneName: Kitchen2

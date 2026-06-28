@@ -1831,14 +1831,10 @@ MonoBehaviour:
   payLoanButton: {fileID: 1217270757}
   payButtonText: {fileID: 686284900}
   loanTiers:
-  - loanName: Pay Your Bill!
-    amount: 1000
-    loadSceneOnPay: 1
-    sceneName: Loan0
   - loanName: Payoff Your Shares
-    amount: 1000000
+    amount: 10000000
     loadSceneOnPay: 1
-    sceneName: Loan1
+    sceneName: Loan2
   useKitchenScopedLoanProgress: 1
   kitchenId: kitchen_2
   allowGlobalSaveMigrationForThisKitchen: 0

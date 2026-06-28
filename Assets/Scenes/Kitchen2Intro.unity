@@ -723,14 +723,16 @@ MonoBehaviour:
   choiceButtons:
   - {fileID: 1769527687}
   - {fileID: 1975324182}
-  cutsceneData: {fileID: 11400000, guid: 73456e8a27597854d90b6d0d42e06b32, type: 2}
+  cutsceneData: {fileID: 11400000, guid: 410d770befc323449bc2d7fd657b9bb1, type: 2}
   dialogueText: {fileID: 1628628439}
   nextButton: {fileID: 1179297046}
   backgroundImage: {fileID: 1281278824}
   dialogueLines:
-  - 'Wow, you paid off what you owe me already. You got talent, kid! Hows about I
-    give you a job here.  '
-  - Perfect, now you can help me pay off my own debt to the bank! HAHAHA
+  - 'Wow, you paid off what you owe me already. You got talent, kid! What say we
+    go into business together? '
+  - ...
+  - Great! I'll let the bank know you'll finance this mess. You and I are going places,
+    kid.
   dialogueSFX:
   - {fileID: 0}
   typingSFX: {fileID: 0}
@@ -740,7 +742,7 @@ MonoBehaviour:
   - {fileID: -2232703539582777383, guid: 9c2e1a50f6a6fa94786cac5d895324bf, type: 3}
   - {fileID: 5349049136137013527, guid: 4013cbb0e066b7740a18bc6b23461093, type: 3}
   backgroundChangeIndices: 000000000100000002000000
-  nextSceneName: Game
+  nextSceneName: Kitchen2
   typeSpeed: 0.02
 --- !u!4 &1049557283
 Transform:

@@ -1619,7 +1619,7 @@ MonoBehaviour:
   - loanName: Payoff Your Shares
     amount: 1000000
     loadSceneOnPay: 1
-    sceneName: Loan1
+    sceneName: Kitchen2Intro
   useKitchenScopedLoanProgress: 1
   kitchenId: kitchen_1
   allowGlobalSaveMigrationForThisKitchen: 1

@@ -10,27 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79e7f050724ee1d42b44f6a5b9804f0b, type: 3}
-  m_Name: NewCutscene
+  m_Name: loan0
   m_EditorClassIdentifier: 
   lines:
-  - text: 'Wow, you paid off what you owe me already. You got talent, kid! What say
-      we go into business together? '
-    sfx: {fileID: 8300000, guid: 4b1805353656a3f48a636ca4f04b4bbb, type: 3}
+  - text: 'Wow, you paid off what you owe me already. You got talent, kid! Hows about
+      I give you a full time job? '
+    sfx: {fileID: 0}
     background: {fileID: 0}
     postDelay: 0
     branchId: 0
     hasChoices: 1
     choices:
-    - choiceText: '"Uhh"'
+    - choiceText: '"I guess..."'
       nextLineIndex: 1
       nextBranchId: 0
-    - choiceText: '"...wait huh?"'
+    - choiceText: '"I have always wanted to wash dishes!"'
       nextLineIndex: 1
       nextBranchId: 0
     overrideNextLineIndex: -1
-  - text: Great! I'll let the bank know you'll finance this mess. You and I are going
-      places, kid.
-    sfx: {fileID: 8300000, guid: 913e0828438242743af71e0e5cc70b31, type: 3}
+  - text: Perfect, now you can help me pay off my own debt! HAHAAH
+    sfx: {fileID: 0}
     background: {fileID: 0}
     postDelay: 0
     branchId: 1
@@ -46,4 +45,4 @@ MonoBehaviour:
   typingSFX: {fileID: 0}
   typingSFXIntervalChars: 2
   typeSpeed: 0.02
-  nextSceneName: Kitchen2
+  nextSceneName: Game
