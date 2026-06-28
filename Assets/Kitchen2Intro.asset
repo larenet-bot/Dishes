@@ -21,7 +21,7 @@ MonoBehaviour:
     branchId: 0
     hasChoices: 0
     choices: []
-    overrideNextLineIndex: 0
+    overrideNextLineIndex: -1
   - text: '"I think I will try the Oysters!"'
     sfx: {fileID: 0}
     background: {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
@@ -29,7 +29,7 @@ MonoBehaviour:
     branchId: 0
     hasChoices: 0
     choices: []
-    overrideNextLineIndex: 0
+    overrideNextLineIndex: -1
   - text: waiteress- " You look a little lost, you know how to eat these ... right?"
     sfx: {fileID: 0}
     background: {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
@@ -37,7 +37,7 @@ MonoBehaviour:
     branchId: 0
     hasChoices: 0
     choices: []
-    overrideNextLineIndex: 0
+    overrideNextLineIndex: -1
   - text: '*gagging choking*'
     sfx: {fileID: 0}
     background: {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
@@ -45,7 +45,7 @@ MonoBehaviour:
     branchId: 0
     hasChoices: 0
     choices: []
-    overrideNextLineIndex: 0
+    overrideNextLineIndex: -1
   - text: '*broken water tank*'
     sfx: {fileID: 0}
     background: {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
@@ -53,7 +53,7 @@ MonoBehaviour:
     branchId: 0
     hasChoices: 0
     choices: []
-    overrideNextLineIndex: 0
+    overrideNextLineIndex: -1
   - text: owner- "your paying for that!"
     sfx: {fileID: 0}
     background: {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
@@ -61,7 +61,7 @@ MonoBehaviour:
     branchId: 0
     hasChoices: 0
     choices: []
-    overrideNextLineIndex: 0
+    overrideNextLineIndex: -1
   - text: Aw shucks here we go again
     sfx: {fileID: 0}
     background: {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
@@ -69,7 +69,7 @@ MonoBehaviour:
     branchId: 0
     hasChoices: 0
     choices: []
-    overrideNextLineIndex: 0
+    overrideNextLineIndex: -1
   typingSFX: {fileID: 0}
   typingSFXIntervalChars: 2
   typeSpeed: 0.02

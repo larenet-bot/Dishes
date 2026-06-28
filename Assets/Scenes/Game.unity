@@ -42191,7 +42191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   tooltipEntries:
   - targetObject: {fileID: 1934337358}
-    tooltipText: 'Radio: Adjust the cuurrent song.'
+    tooltipText: 'Radio: Adjust the current song.'
   - targetObject: {fileID: 137410829}
     tooltipText: 'Shelf Upgrades: Upgrading each item gives different benefits.'
   - targetObject: {fileID: 1580966302}
