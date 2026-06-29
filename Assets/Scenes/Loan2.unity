@@ -609,10 +609,10 @@ MonoBehaviour:
   nextButton: {fileID: 1896927181}
   backgroundImage: {fileID: 1281278824}
   dialogueLines:
-  - 'Thank you so much for playing this demo! You made it out debt free. We appreciate
-    you taking extra time to see the extent of our game. If you could fill out the
-    survey, we''d  love to hear your thoughts! Otherwise, click anywhere to go to
-    endless mode to see how high you can climb!!! '
+  - 'Thank you so much for playing this second playtest! You made it out debt free.
+    We appreciate you taking extra time to see the extent of our game. If you could
+    fill out the survey, we''d  love to hear your thoughts! Otherwise, click anywhere
+    to go to endless mode to see how high you can climb!!! '
   dialogueSFX:
   - {fileID: 0}
   typingSFX: {fileID: 0}
