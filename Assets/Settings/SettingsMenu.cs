@@ -89,6 +89,7 @@ public class SettingsMenu : MonoBehaviour
         float music = PlayerPrefs.GetFloat("Music", 0.5f);
         float sfx = PlayerPrefs.GetFloat("SFX", 0.5f);
 
+        // Apply volumes to mixer immediately
         if (audioMixer != null)
         {
             audioMixer.SetFloat("Master", master <= 0.0001f ? -80f : Mathf.Log10(master) * 20);
@@ -96,18 +97,24 @@ public class SettingsMenu : MonoBehaviour
             audioMixer.SetFloat("SFX", sfx <= 0.0001f ? -80f : Mathf.Log10(sfx) * 20);
         }
 
+        // Sync slider UI values
         if (masterSlider != null)
+        {
             masterSlider.value = master;
+            masterSlider.onValueChanged.AddListener(SetMasterVolume);
+        }
 
         if (musicSlider != null)
+        {
             musicSlider.value = music;
+            musicSlider.onValueChanged.AddListener(SetMusicVolume);
+        }
 
         if (sfxSlider != null)
+        {
             sfxSlider.value = sfx;
-
-        SetMasterVolume(master);
-        SetMusicVolume(music);
-        SetSFXVolume(sfx);
+            sfxSlider.onValueChanged.AddListener(SetSFXVolume);
+        }
     }
 
     private void Update()
@@ -131,7 +138,13 @@ public class SettingsMenu : MonoBehaviour
         if (audioMixer != null)
             audioMixer.SetFloat("Master", volume <= 0.0001f ? -80f : Mathf.Log10(volume) * 20);
 
-        PlayerPrefs.SetFloat("Master", volume);
+        if (AudioSettingsPersist.instance != null)
+            AudioSettingsPersist.instance.UpdateAndSaveVolume("Master", volume);
+        else
+        {
+            PlayerPrefs.SetFloat("Master", volume);
+            PlayerPrefs.Save();
+        }
     }
 
     public void SetMusicVolume(float volume)
@@ -139,7 +152,13 @@ public class SettingsMenu : MonoBehaviour
         if (audioMixer != null)
             audioMixer.SetFloat("Music", volume <= 0.0001f ? -80f : Mathf.Log10(volume) * 20);
 
-        PlayerPrefs.SetFloat("Music", volume);
+        if (AudioSettingsPersist.instance != null)
+            AudioSettingsPersist.instance.UpdateAndSaveVolume("Music", volume);
+        else
+        {
+            PlayerPrefs.SetFloat("Music", volume);
+            PlayerPrefs.Save();
+        }
     }
 
     public void SetSFXVolume(float volume)
@@ -147,7 +166,13 @@ public class SettingsMenu : MonoBehaviour
         if (audioMixer != null)
             audioMixer.SetFloat("SFX", volume <= 0.0001f ? -80f : Mathf.Log10(volume) * 20);
 
-        PlayerPrefs.SetFloat("SFX", volume);
+        if (AudioSettingsPersist.instance != null)
+            AudioSettingsPersist.instance.UpdateAndSaveVolume("SFX", volume);
+        else
+        {
+            PlayerPrefs.SetFloat("SFX", volume);
+            PlayerPrefs.Save();
+        }
     }
 
     public void SetDuckAlternate(bool isAlternate)
