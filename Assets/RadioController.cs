@@ -31,8 +31,30 @@ public class RadioCOntroller : MonoBehaviour
     // Allow external systems to query whether the radio is currently playing.
     public bool IsPlaying => radioAudioSource != null && radioAudioSource.isPlaying;
 
+    private void OnEnable()
+    {
+        if (radioAudioSource == null)
+            radioAudioSource = GetComponent<AudioSource>();
+
+        if (radioAudioSource.clip != null && !radioAudioSource.isPlaying)
+        {
+            StartRadio();
+        }
+    }
+    private void OnDisable()
+    {
+        Debug.Log("Radio disabled");
+    }
+
+    private void OnDestroy()
+    {
+        Debug.Log("Radio destroyed");
+    }
     private void Start()
     {
+        Debug.Log("[Radio] Start called on " + gameObject.scene.name);
+
+     
         radioAudioSource = GetComponent<AudioSource>();
 
         if (audiotracks == null || audiotracks.Length == 0)
@@ -70,6 +92,9 @@ public class RadioCOntroller : MonoBehaviour
     /// </summary>
     public void StartRadio()
     {
+        Debug.Log("PLAY CALLED");
+        Debug.Log("isPlaying = " + radioAudioSource.isPlaying);
+        Debug.Log("time = " + radioAudioSource.time);
         //noRadio(); // handle the "no radio" case first, which may early out of normal playback
         // No radio duct tape: if purchase is required but not yet purchased, play the "no audio" track and do not start normal playback.
         if (requirePurchase && !isPurchased)
@@ -85,7 +110,7 @@ public class RadioCOntroller : MonoBehaviour
                 radioAudioSource.Play();
             }
             Debug.Log("[RadioCOntroller] StartRadio called but radio not purchased.");
-            StartCoroutine(PlaybackMonitor());
+            //StartCoroutine(PlaybackMonitor());
             return;
         }
 
@@ -257,6 +282,8 @@ public class RadioCOntroller : MonoBehaviour
             {
                 yield return null;
             }
+            Debug.Log($"Playback stopped. time={radioAudioSource.time}, clipLength={radioAudioSource.clip.length}");
+            Debug.Log("PlaybackMonitor detected playback");
 
             // Wait until it stops playing (either ended, paused or stopped)
             while (radioAudioSource.isPlaying)
@@ -290,7 +317,7 @@ public class RadioCOntroller : MonoBehaviour
             // Determine whether the clip ended naturally (time near clip length).
             float clipLength = radioAudioSource.clip != null ? radioAudioSource.clip.length : 0f;
             float time = radioAudioSource.time;
-
+            Debug.Log($"Ended naturally? {time >= clipLength - endEpsilon}");
             if (clipLength > 0f && time >= clipLength - endEpsilon)
             {
                 // advance to next track and wrap around
