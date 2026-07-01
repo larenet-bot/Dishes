@@ -70,7 +70,7 @@ public class CutsceneManager : MonoBehaviour
 
         AudioClip sfx = GetLineSFX(currentLine);
         if (AudioManager.instance != null && sfx != null)
-            AudioManager.instance.PlaySFX(sfx);
+            AudioManager.instance.PlaySFXExclusive(sfx);
 
         UpdateBackground();
 

@@ -234,6 +234,22 @@ public class AudioManager : MonoBehaviour
             sfxSource.PlayOneShot(clip);
     }
 
+    /// <summary>
+    /// Play SFX exclusively on the dedicated SFX AudioSource.
+    /// Stops any currently-playing SFX so the newly-requested clip starts immediately.
+    /// Use this from cutscene/dialogue playback when you want the last line's SFX to replace any previous one.
+    /// </summary>
+    public void PlaySFXExclusive(AudioClip clip)
+    {
+        if (clip == null || sfxSource == null) return;
+        // Stop any currently-playing sound on the sfx source (this also stops PlayOneShot instances)
+        sfxSource.Stop();
+        // Play as the source's clip so it will start immediately and not overlap
+        sfxSource.clip = clip;
+        sfxSource.loop = false;
+        sfxSource.Play();
+    }
+
     public IEnumerator FadeOutMusic(float duration)
     {
         isFading = true;
