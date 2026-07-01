@@ -36,7 +36,8 @@ public class GameFilterOverlay : MonoBehaviour
         RollingFogLines = 3,
         DreamHaze = 4,
         NeonGlow = 5,
-        ClassicNeonGlow = 6
+        ClassicNeonGlow = 6,
+        FixedTriColorNeonGlow = 7
     }
 
     [System.Serializable]
@@ -166,7 +167,7 @@ public class GameFilterOverlay : MonoBehaviour
     [Header("Preset Default Upgrade")]
     [SerializeField] private bool autoApplyPresetDefaultUpgrades = true;
     [SerializeField, HideInInspector] private int presetDefaultsVersion = 0;
-    private const int CurrentPresetDefaultsVersion = 9;
+    private const int CurrentPresetDefaultsVersion = 10;
 
     [Header("Preset Settings")]
     [SerializeField] private FilterSettings dirtyGrease = CreateDirtyGreaseDefaults();
@@ -1766,12 +1767,12 @@ public class GameFilterOverlay : MonoBehaviour
             colorWash = new Color(0.12f, 0.035f, 0.26f, 0.20f),
             colorPulseStrength = 0.045f,
             colorPulseSpeed = 0.80f,
-            proceduralMode = ProceduralLensMode.NeonGlow,
-            proceduralColorA = new Color(0.48f, 0.12f, 1f, 1f),
-            proceduralColorB = new Color(1f, 0.10f, 0.76f, 1f),
+            proceduralMode = ProceduralLensMode.FixedTriColorNeonGlow,
+            proceduralColorA = new Color(0.00f, 0.36f, 1.00f, 1f), // blue, bottom left
+            proceduralColorB = new Color(1.00f, 0.10f, 0.72f, 1f), // pink, bottom right
             proceduralAlpha = 0.30f,
-            proceduralSpeed = 1.2f,
-            proceduralIntensity = 0.9f,
+            proceduralSpeed = 0.95f,
+            proceduralIntensity = 0.95f,
             scanlineAlpha = 0.11f,
             scanlineSpacingPixels = 4,
             scanlineScrollSpeed = 0.07f,
@@ -1903,12 +1904,12 @@ public class GameFilterOverlay : MonoBehaviour
             colorWash = new Color(0f, 0.04f, 0.13f, 0.19f),
             colorPulseStrength = 0.045f,
             colorPulseSpeed = 0.75f,
-            proceduralMode = ProceduralLensMode.NeonGlow,
-            proceduralColorA = new Color(0.00f, 0.40f, 1f, 1f),
-            proceduralColorB = new Color(0.70f, 0.035f, 0.82f, 1f),
-            proceduralAlpha = 0.20f,
-            proceduralSpeed = 1.5f,
-            proceduralIntensity = 1.2f,
+            proceduralMode = ProceduralLensMode.FixedTriColorNeonGlow,
+            proceduralColorA = new Color(0.00f, 0.40f, 1.00f, 1f), // blue, bottom left
+            proceduralColorB = new Color(1.00f, 0.08f, 0.74f, 1f), // pink, bottom right
+            proceduralAlpha = 0.22f,
+            proceduralSpeed = 1.10f,
+            proceduralIntensity = 1.15f,
             scanlineAlpha = 0.34f,
             scanlineSpacingPixels = 3,
             scanlineScrollSpeed = 0.18f,

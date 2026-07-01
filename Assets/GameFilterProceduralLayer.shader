@@ -310,6 +310,47 @@ Shader "Hidden/IncrementalDishes/GameFilterProceduralLayer"
                 return alpha;
             }
 
+            float fixedTriColorNeonGlow(float2 uv, out fixed3 outColor)
+            {
+                float t = _Time.y * max(0.05, _Speed);
+
+                // Fixed screen-space glow anchors:
+                // _ColorA = blue bottom-left and top-right, _ColorB = pink bottom-right and top-left.
+                float2 blueBottomLeftCenter = float2(0.00, 0.00);
+                float2 blueTopRightCenter = float2(1.00, 1.00);
+                float2 pinkBottomRightCenter = float2(1.00, 0.00);
+                float2 pinkTopLeftCenter = float2(0.00, 1.00);
+
+                // Pulse between a floor and a ceiling so no glow fully disappears.
+                float bluePulse = lerp(0.62, 1.00, sin(t * 1.15 + 0.20) * 0.5 + 0.5);
+                float pinkPulse = lerp(0.62, 1.00, sin(t * 1.10 + 2.35) * 0.5 + 0.5);
+
+                float blueBottomLeft = 1.0 - smoothstep(0.02, 0.58, distance(uv, blueBottomLeftCenter));
+                float blueTopRight = 1.0 - smoothstep(0.02, 0.58, distance(uv, blueTopRightCenter));
+                float pinkBottomRight = 1.0 - smoothstep(0.02, 0.58, distance(uv, pinkBottomRightCenter));
+                float pinkTopLeft = 1.0 - smoothstep(0.02, 0.58, distance(uv, pinkTopLeftCenter));
+
+                blueBottomLeft *= blueBottomLeft * bluePulse;
+                blueTopRight *= blueTopRight * bluePulse;
+                pinkBottomRight *= pinkBottomRight * pinkPulse;
+                pinkTopLeft *= pinkTopLeft * pinkPulse;
+
+                float blue = blueBottomLeft + blueTopRight;
+                float pink = pinkBottomRight + pinkTopLeft;
+                float weight = blue + pink;
+
+                if (weight > 0.001)
+                {
+                    outColor = (_ColorA.rgb * blue + _ColorB.rgb * pink) / weight;
+                }
+                else
+                {
+                    outColor = lerp(_ColorA.rgb, _ColorB.rgb, 0.5);
+                }
+
+                return saturate(weight * _Intensity);
+            }
+
             fixed4 frag(v2f i) : SV_Target
             {
                 float2 uv = i.uv;
@@ -341,6 +382,10 @@ Shader "Hidden/IncrementalDishes/GameFilterProceduralLayer"
                 else if (_Mode > 5.5 && _Mode < 6.5)
                 {
                     alpha = classicNeonGlow(uv, color);
+                }
+                else if (_Mode > 6.5 && _Mode < 7.5)
+                {
+                    alpha = fixedTriColorNeonGlow(uv, color);
                 }
 
                 alpha = saturate(alpha * _Alpha) * i.color.a;
