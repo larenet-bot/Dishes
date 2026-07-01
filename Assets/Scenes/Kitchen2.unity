@@ -38025,10 +38025,8 @@ MonoBehaviour:
   helpWantedButton: {fileID: 751712707}
   closeButton: {fileID: 658681995}
   globalEmployeeProfitMultiplier: 1
-  canvas: {fileID: 967766793}
+  tooltipManager: {fileID: 0}
   tooltipRoot: {fileID: 764468234}
-  tooltipText: {fileID: 96551939}
-  tooltipOffset: {x: 200, y: 80}
 --- !u!4 &1151283106
 Transform:
   m_ObjectHideFlags: 0
@@ -50704,7 +50702,9 @@ MonoBehaviour:
   tooltipCanvas: {fileID: 1037320927}
   tooltipRoot: {fileID: 0}
   tooltipText: {fileID: 0}
-  tooltipOffset: {x: 1000, y: -500}
+  tooltipOffset: {x: 0, y: 45}
+  tooltipMaxTextWidth: 320
+  flipOnRightHalf: 1
   clampToCanvas: 0
   check2DColliders: 1
   check3DColliders: 1

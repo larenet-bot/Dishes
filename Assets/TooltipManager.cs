@@ -33,6 +33,13 @@ public class TooltipManager : MonoBehaviour
 
     [Header("Position")]
     [SerializeField] private Vector2 tooltipOffset = new Vector2(18f, -18f);
+
+    [Tooltip("Maximum tooltip text width before wrapping. The actual tooltip width is measured after layout rebuilds.")]
+    [SerializeField] private float tooltipMaxTextWidth = 320f;
+
+    [Tooltip("When true, the tooltip appears to the left of the cursor whenever the mouse is on the right half of the screen.")]
+    [SerializeField] private bool flipOnRightHalf = true;
+
     [SerializeField] private bool clampToCanvas = true;
 
     [Header("World Object Hover")]
@@ -46,6 +53,9 @@ public class TooltipManager : MonoBehaviour
     private readonly List<RaycastResult> uiResults = new List<RaycastResult>();
 
     private TooltipEntry currentEntry;
+
+    private bool manualTooltipActive;
+    private string manualTooltipText = string.Empty;
 
     private void Awake()
     {
@@ -63,11 +73,20 @@ public class TooltipManager : MonoBehaviour
 
     private void OnDisable()
     {
+        manualTooltipActive = false;
+        manualTooltipText = string.Empty;
         HideTooltip();
     }
 
     private void Update()
     {
+        if (manualTooltipActive)
+        {
+            ShowTooltipText(manualTooltipText);
+            UpdateTooltipPosition();
+            return;
+        }
+
         TooltipEntry hoveredEntry = FindHoveredTooltipEntry();
 
         if (hoveredEntry != null)
@@ -124,6 +143,7 @@ public class TooltipManager : MonoBehaviour
             }
 
             existingGroup.blocksRaycasts = false;
+            ConfigureTooltipTransform();
             return;
         }
 
@@ -131,9 +151,7 @@ public class TooltipManager : MonoBehaviour
         root.transform.SetParent(tooltipCanvas.transform, false);
 
         tooltipRoot = root.AddComponent<RectTransform>();
-        tooltipRoot.anchorMin = new Vector2(0f, 1f);
-        tooltipRoot.anchorMax = new Vector2(0f, 1f);
-        tooltipRoot.pivot = new Vector2(0f, 1f);
+        ConfigureTooltipTransform();
 
         Image background = root.AddComponent<Image>();
         background.color = new Color(0f, 0f, 0f, 0.82f);
@@ -162,7 +180,21 @@ public class TooltipManager : MonoBehaviour
         tooltipText.enableWordWrapping = true;
 
         RectTransform textRect = tooltipText.GetComponent<RectTransform>();
-        textRect.sizeDelta = new Vector2(320f, 0f);
+        textRect.sizeDelta = new Vector2(Mathf.Max(80f, tooltipMaxTextWidth), 0f);
+    }
+
+    private void ConfigureTooltipTransform()
+    {
+        if (tooltipRoot == null)
+        {
+            return;
+        }
+
+        // Center anchors make anchoredPosition use the same coordinate space
+        // returned by ScreenPointToLocalPointInRectangle on the canvas.
+        tooltipRoot.anchorMin = new Vector2(0.5f, 0.5f);
+        tooltipRoot.anchorMax = new Vector2(0.5f, 0.5f);
+        tooltipRoot.pivot = new Vector2(0f, 1f);
     }
 
     private TooltipEntry FindHoveredTooltipEntry()
@@ -329,13 +361,31 @@ public class TooltipManager : MonoBehaviour
         return null;
     }
 
-    private void ShowTooltip(TooltipEntry entry)
+    public void ShowManualTooltip(string text)
     {
-        if (tooltipRoot == null || tooltipText == null)
+        manualTooltipText = text;
+        manualTooltipActive = !string.IsNullOrWhiteSpace(manualTooltipText);
+
+        if (!manualTooltipActive)
         {
+            HideTooltip();
             return;
         }
 
+        currentEntry = null;
+        ShowTooltipText(manualTooltipText);
+        UpdateTooltipPosition();
+    }
+
+    public void HideManualTooltip()
+    {
+        manualTooltipActive = false;
+        manualTooltipText = string.Empty;
+        HideTooltip();
+    }
+
+    private void ShowTooltip(TooltipEntry entry)
+    {
         if (entry == null || string.IsNullOrWhiteSpace(entry.tooltipText))
         {
             HideTooltip();
@@ -344,14 +394,36 @@ public class TooltipManager : MonoBehaviour
 
         if (currentEntry != entry)
         {
-            tooltipText.text = entry.tooltipText;
             currentEntry = entry;
+        }
+
+        ShowTooltipText(entry.tooltipText);
+    }
+
+    private void ShowTooltipText(string text)
+    {
+        if (tooltipRoot == null || tooltipText == null)
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            HideTooltip();
+            return;
+        }
+
+        if (tooltipText.text != text)
+        {
+            tooltipText.text = text;
         }
 
         if (!tooltipRoot.gameObject.activeSelf)
         {
             tooltipRoot.gameObject.SetActive(true);
         }
+
+        RebuildTooltipLayout();
     }
 
     private void HideTooltip()
@@ -378,6 +450,9 @@ public class TooltipManager : MonoBehaviour
             return;
         }
 
+        ConfigureTooltipTransform();
+        RebuildTooltipLayout();
+
         Vector2 localMousePosition;
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -387,7 +462,17 @@ public class TooltipManager : MonoBehaviour
             out localMousePosition
         );
 
-        Vector2 anchoredPosition = localMousePosition + tooltipOffset;
+        bool shouldFlipLeft = flipOnRightHalf && Input.mousePosition.x > Screen.width * 0.5f;
+
+        tooltipRoot.pivot = shouldFlipLeft
+            ? new Vector2(1f, 1f)
+            : new Vector2(0f, 1f);
+
+        Vector2 appliedOffset = shouldFlipLeft
+            ? new Vector2(-Mathf.Abs(tooltipOffset.x), tooltipOffset.y)
+            : new Vector2(Mathf.Abs(tooltipOffset.x), tooltipOffset.y);
+
+        Vector2 anchoredPosition = localMousePosition + appliedOffset;
 
         if (clampToCanvas)
         {
@@ -397,21 +482,106 @@ public class TooltipManager : MonoBehaviour
         tooltipRoot.anchoredPosition = anchoredPosition;
     }
 
+    private void RebuildTooltipLayout()
+    {
+        if (tooltipRoot == null)
+        {
+            return;
+        }
+
+        if (tooltipText != null)
+        {
+            RectTransform textRect = tooltipText.GetComponent<RectTransform>();
+
+            if (textRect != null)
+            {
+                textRect.sizeDelta = new Vector2(Mathf.Max(80f, tooltipMaxTextWidth), textRect.sizeDelta.y);
+            }
+
+            tooltipText.ForceMeshUpdate();
+        }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(tooltipRoot);
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(tooltipRoot);
+    }
+
     private Vector2 ClampTooltipToCanvas(Vector2 position, RectTransform canvasRect)
     {
-        Vector2 tooltipSize = tooltipRoot.rect.size;
+        Vector2 tooltipSize = GetMeasuredTooltipSize();
+        Vector2 pivot = tooltipRoot.pivot;
         Rect canvasBounds = canvasRect.rect;
 
-        float minX = canvasBounds.xMin;
-        float maxX = canvasBounds.xMax - tooltipSize.x;
+        float minX = canvasBounds.xMin + tooltipSize.x * pivot.x;
+        float maxX = canvasBounds.xMax - tooltipSize.x * (1f - pivot.x);
 
-        float minY = canvasBounds.yMin + tooltipSize.y;
-        float maxY = canvasBounds.yMax;
+        float minY = canvasBounds.yMin + tooltipSize.y * pivot.y;
+        float maxY = canvasBounds.yMax - tooltipSize.y * (1f - pivot.y);
 
-        position.x = Mathf.Clamp(position.x, minX, maxX);
-        position.y = Mathf.Clamp(position.y, minY, maxY);
+        position.x = ClampAxis(position.x, minX, maxX, canvasBounds.center.x);
+        position.y = ClampAxis(position.y, minY, maxY, canvasBounds.center.y);
 
         return position;
+    }
+
+    private Vector2 GetMeasuredTooltipSize()
+    {
+        Vector2 size = tooltipRoot.rect.size;
+
+        if (size.x > 1f && size.y > 1f)
+        {
+            return size;
+        }
+
+        if (tooltipText == null)
+        {
+            return new Vector2(Mathf.Max(80f, tooltipMaxTextWidth), 40f);
+        }
+
+        Vector2 preferred = tooltipText.GetPreferredValues(
+            tooltipText.text,
+            Mathf.Max(80f, tooltipMaxTextWidth),
+            0f
+        );
+
+        Vector2 padding = GetLayoutPadding();
+
+        return new Vector2(
+            Mathf.Max(1f, preferred.x + padding.x),
+            Mathf.Max(1f, preferred.y + padding.y)
+        );
+    }
+
+    private Vector2 GetLayoutPadding()
+    {
+        HorizontalOrVerticalLayoutGroup layout = tooltipRoot.GetComponent<HorizontalOrVerticalLayoutGroup>();
+
+        if (layout == null)
+        {
+            return Vector2.zero;
+        }
+
+        RectOffset padding = layout.padding;
+
+        if (padding == null)
+        {
+            return Vector2.zero;
+        }
+
+        return new Vector2(
+            padding.left + padding.right,
+            padding.top + padding.bottom
+        );
+    }
+
+    private float ClampAxis(float value, float min, float max, float fallback)
+    {
+        if (min > max)
+        {
+            return fallback;
+        }
+
+        return Mathf.Clamp(value, min, max);
     }
 
     private Camera GetUICamera()

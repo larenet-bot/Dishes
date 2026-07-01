@@ -108,10 +108,11 @@ public class EmployeeManager : MonoBehaviour
     [SerializeField] private float globalEmployeeProfitMultiplier = 1f;
 
     [Header("UI: Tooltip")]
-    [SerializeField] private Canvas canvas;
+    [Tooltip("General tooltip manager used for employee and upgrade descriptions. Leave empty to auto-find one.")]
+    [SerializeField] private TooltipManager tooltipManager;
+
+    [Tooltip("Old fixed employee tooltip root. Kept only so existing scene references can be disabled.")]
     [SerializeField] private RectTransform tooltipRoot;
-    [SerializeField] private TMP_Text tooltipText;
-    [SerializeField] private Vector2 tooltipOffset = new Vector2(16f, -16f);
 
     private void Reset()
     {
@@ -125,6 +126,9 @@ public class EmployeeManager : MonoBehaviour
 
         if (sfxSource == null)
             sfxSource = gameObject.AddComponent<AudioSource>();
+
+        if (tooltipManager == null)
+            tooltipManager = FindFirstObjectByType<TooltipManager>();
 
         foreach (var emp in employees)
         {
@@ -190,10 +194,6 @@ public class EmployeeManager : MonoBehaviour
                 CloseEmployeesPanel();
         }
 
-        if (tooltipRoot != null && tooltipRoot.gameObject.activeSelf)
-        {
-            UpdateTooltipPosition();
-        }
     }
 
     private void WireButtons()
@@ -502,20 +502,13 @@ public class EmployeeManager : MonoBehaviour
 
     public void ShowEmployeeDescription(int index)
     {
-        if (tooltipRoot == null || tooltipText == null) return;
         if (index < 0 || index >= employees.Count) return;
 
-        var emp = employees[index];
-
-        tooltipText.text = emp.description;
-        tooltipRoot.gameObject.SetActive(true);
-
-        UpdateTooltipPosition();
+        ShowDescriptionText(employees[index].description);
     }
 
     public void ShowEmployeeUpgradeDescription(int index)
     {
-        if (tooltipRoot == null || tooltipText == null) return;
         if (index < 0 || index >= employees.Count) return;
 
         var emp = employees[index];
@@ -535,34 +528,39 @@ public class EmployeeManager : MonoBehaviour
             text = tier.description;
         }
 
-        tooltipText.text = text;
-        tooltipRoot.gameObject.SetActive(true);
-
-        UpdateTooltipPosition();
+        ShowDescriptionText(text);
     }
 
     public void ClearDescription()
     {
+        TooltipManager manager = GetTooltipManager();
+
+        if (manager != null)
+            manager.HideManualTooltip();
+
         if (tooltipRoot != null)
             tooltipRoot.gameObject.SetActive(false);
     }
 
-    private void UpdateTooltipPosition()
+    private void ShowDescriptionText(string text)
     {
-        if (tooltipRoot == null || canvas == null)
+        TooltipManager manager = GetTooltipManager();
+
+        if (manager == null)
             return;
 
-        Vector2 screenPos = Input.mousePosition;
-        Vector2 localPos;
+        if (tooltipRoot != null)
+            tooltipRoot.gameObject.SetActive(false);
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvas.transform as RectTransform,
-            screenPos,
-            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera,
-            out localPos
-        );
+        manager.ShowManualTooltip(text);
+    }
 
-        tooltipRoot.anchoredPosition = localPos + tooltipOffset;
+    private TooltipManager GetTooltipManager()
+    {
+        if (tooltipManager == null)
+            tooltipManager = FindFirstObjectByType<TooltipManager>();
+
+        return tooltipManager;
     }
 
     public float GetTotalDishesPerSecond()
