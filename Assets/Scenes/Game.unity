@@ -2854,6 +2854,374 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1527837723}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &113964388
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 113964390}
+  - component: {fileID: 113964389}
+  m_Layer: 0
+  m_Name: MenuManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &113964389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113964388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aad6524e84bc73488977f7dde3c7d9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  menus:
+  - menuName: Employee
+    menuRoot: {fileID: 789398971}
+    mainPanel: {fileID: 789398975}
+    closeOnEscape: 1
+    closeOnOutsideClick: 1
+    closeOtherMenusWhenOpened: 1
+    canBeClosedByOtherMenus: 1
+    onCloseRequested:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1151283105}
+          m_TargetAssemblyTypeName: EmployeeManager, Assembly-CSharp
+          m_MethodName: CloseEmployeesPanel
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onOpenDetected:
+      m_PersistentCalls:
+        m_Calls: []
+  - menuName: MopUpgrade
+    menuRoot: {fileID: 1698463819}
+    mainPanel: {fileID: 1698463820}
+    closeOnEscape: 1
+    closeOnOutsideClick: 1
+    closeOtherMenusWhenOpened: 1
+    canBeClosedByOtherMenus: 1
+    onCloseRequested:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1203922682}
+          m_TargetAssemblyTypeName: MopUpgradeShelf, Assembly-CSharp
+          m_MethodName: CloseMopMenu
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onOpenDetected:
+      m_PersistentCalls:
+        m_Calls: []
+  - menuName: Sink
+    menuRoot: {fileID: 1764119591}
+    mainPanel: {fileID: 1764119594}
+    closeOnEscape: 1
+    closeOnOutsideClick: 1
+    closeOtherMenusWhenOpened: 1
+    canBeClosedByOtherMenus: 1
+    onCloseRequested:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2072855600}
+          m_TargetAssemblyTypeName: SinkMenuUI, Assembly-CSharp
+          m_MethodName: CloseMenu
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onOpenDetected:
+      m_PersistentCalls:
+        m_Calls: []
+  - menuName: OtherBusinesses
+    menuRoot: {fileID: 680165466}
+    mainPanel: {fileID: 1943724533}
+    closeOnEscape: 1
+    closeOnOutsideClick: 1
+    closeOtherMenusWhenOpened: 1
+    canBeClosedByOtherMenus: 1
+    onCloseRequested:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1486720449}
+          m_TargetAssemblyTypeName: KitchenBusinessMenu, Assembly-CSharp
+          m_MethodName: CloseMenu
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onOpenDetected:
+      m_PersistentCalls:
+        m_Calls: []
+  - menuName: OfflineErnings
+    menuRoot: {fileID: 1709694850}
+    mainPanel: {fileID: 55332081}
+    closeOnEscape: 1
+    closeOnOutsideClick: 1
+    closeOtherMenusWhenOpened: 1
+    canBeClosedByOtherMenus: 1
+    onCloseRequested:
+      m_PersistentCalls:
+        m_Calls: []
+    onOpenDetected:
+      m_PersistentCalls:
+        m_Calls: []
+  - menuName: Settings
+    menuRoot: {fileID: 863348881}
+    mainPanel: {fileID: 863348883}
+    closeOnEscape: 1
+    closeOnOutsideClick: 1
+    closeOtherMenusWhenOpened: 1
+    canBeClosedByOtherMenus: 1
+    onCloseRequested:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 863348884}
+          m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
+          m_MethodName: CloseSettings
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onOpenDetected:
+      m_PersistentCalls:
+        m_Calls: []
+  - menuName: Soap
+    menuRoot: {fileID: 467942471}
+    mainPanel: {fileID: 467942472}
+    closeOnEscape: 1
+    closeOnOutsideClick: 1
+    closeOtherMenusWhenOpened: 1
+    canBeClosedByOtherMenus: 1
+    onCloseRequested:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2032377218}
+          m_TargetAssemblyTypeName: Upgrades, Assembly-CSharp
+          m_MethodName: CloseSoapMenu
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onOpenDetected:
+      m_PersistentCalls:
+        m_Calls: []
+  - menuName: Glove
+    menuRoot: {fileID: 1816192135}
+    mainPanel: {fileID: 1816192136}
+    closeOnEscape: 1
+    closeOnOutsideClick: 1
+    closeOtherMenusWhenOpened: 1
+    canBeClosedByOtherMenus: 1
+    onCloseRequested:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2032377218}
+          m_TargetAssemblyTypeName: Upgrades, Assembly-CSharp
+          m_MethodName: CloseGloveMenu
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onOpenDetected:
+      m_PersistentCalls:
+        m_Calls: []
+  - menuName: Sponge
+    menuRoot: {fileID: 68355194}
+    mainPanel: {fileID: 68355195}
+    closeOnEscape: 1
+    closeOnOutsideClick: 1
+    closeOtherMenusWhenOpened: 1
+    canBeClosedByOtherMenus: 1
+    onCloseRequested:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2032377218}
+          m_TargetAssemblyTypeName: Upgrades, Assembly-CSharp
+          m_MethodName: CloseSpongeMenu
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onOpenDetected:
+      m_PersistentCalls:
+        m_Calls: []
+  - menuName: RadioBuy
+    menuRoot: {fileID: 616211249}
+    mainPanel: {fileID: 616211252}
+    closeOnEscape: 1
+    closeOnOutsideClick: 1
+    closeOtherMenusWhenOpened: 1
+    canBeClosedByOtherMenus: 1
+    onCloseRequested:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2032377218}
+          m_TargetAssemblyTypeName: Upgrades, Assembly-CSharp
+          m_MethodName: CloseRadioMenu
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onOpenDetected:
+      m_PersistentCalls:
+        m_Calls: []
+  - menuName: Radio
+    menuRoot: {fileID: 1108493256}
+    mainPanel: {fileID: 1108493257}
+    closeOnEscape: 1
+    closeOnOutsideClick: 1
+    closeOtherMenusWhenOpened: 1
+    canBeClosedByOtherMenus: 1
+    onCloseRequested:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2032377218}
+          m_TargetAssemblyTypeName: Upgrades, Assembly-CSharp
+          m_MethodName: CloseRadioControlPanel
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onOpenDetected:
+      m_PersistentCalls:
+        m_Calls: []
+  - menuName: PiggyBank
+    menuRoot: {fileID: 609932578}
+    mainPanel: {fileID: 609932579}
+    closeOnEscape: 1
+    closeOnOutsideClick: 1
+    closeOtherMenusWhenOpened: 1
+    canBeClosedByOtherMenus: 1
+    onCloseRequested:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2032377218}
+          m_TargetAssemblyTypeName: Upgrades, Assembly-CSharp
+          m_MethodName: ClosePiggyBankMenu
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onOpenDetected:
+      m_PersistentCalls:
+        m_Calls: []
+  - menuName: PaintBrush
+    menuRoot: {fileID: 605944032}
+    mainPanel: {fileID: 605944033}
+    closeOnEscape: 1
+    closeOnOutsideClick: 1
+    closeOtherMenusWhenOpened: 1
+    canBeClosedByOtherMenus: 1
+    onCloseRequested:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1203922682}
+          m_TargetAssemblyTypeName: MopUpgradeShelf, Assembly-CSharp
+          m_MethodName: CloseMopMenu
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onOpenDetected:
+      m_PersistentCalls:
+        m_Calls: []
+  pauseMenu: {fileID: 549219903}
+  pauseMainPanel: {fileID: 549219902}
+  escapeOpensPauseWhenNoMenuOpen: 1
+  escapeClosesPauseMenu: 1
+  pauseClosesOnOutsideClick: 0
+  closePauseWhenManagedMenuOpens: 1
+  handleEscape: 1
+  handleOutsideClick: 1
+  mouseButtonForOutsideClick: 0
+  logMenuChanges: 0
+--- !u!4 &113964390
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113964388}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.57843, y: 3.35009, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &117016248
 GameObject:
   m_ObjectHideFlags: 0
@@ -6445,7 +6813,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 589158037}
   m_HandleRect: {fileID: 589158036}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -14201,7 +14569,7 @@ MonoBehaviour:
   allowSpriteRendererLens: 1
   includeInactiveSpriteRenderers: 0
   autoApplyPresetDefaultUpgrades: 1
-  presetDefaultsVersion: 9
+  presetDefaultsVersion: 10
   dirtyGrease:
     colorWash: {r: 0.28, g: 0.13, b: 0.03, a: 0.055}
     pulseColorWashTowardTarget: 0
@@ -14328,13 +14696,13 @@ MonoBehaviour:
     colorWashPulseTarget: {r: 0, g: 0, b: 0, a: 0}
     colorPulseStrength: 0.045
     colorPulseSpeed: 0.8
-    proceduralMode: 5
-    proceduralColorA: {r: 0.48, g: 0.12, b: 1, a: 1}
-    proceduralColorB: {r: 1, g: 0.1, b: 0.76, a: 1}
+    proceduralMode: 7
+    proceduralColorA: {r: 0, g: 0.36, b: 1, a: 1}
+    proceduralColorB: {r: 1, g: 0.1, b: 0.72, a: 1}
     proceduralAlpha: 0.3
     proceduralScale: 1
-    proceduralSpeed: 1.2
-    proceduralIntensity: 0.9
+    proceduralSpeed: 0.95
+    proceduralIntensity: 0.95
     proceduralDirection: {x: -1, y: 0}
     useOverlayGlow: 0
     overlayGlowColorA: {r: 0, g: 0.7, b: 0.85, a: 1}
@@ -14688,13 +15056,13 @@ MonoBehaviour:
     colorWashPulseTarget: {r: 0, g: 0, b: 0, a: 0}
     colorPulseStrength: 0.045
     colorPulseSpeed: 0.75
-    proceduralMode: 5
+    proceduralMode: 7
     proceduralColorA: {r: 0, g: 0.4, b: 1, a: 1}
-    proceduralColorB: {r: 0.7, g: 0.035, b: 0.82, a: 1}
-    proceduralAlpha: 0.2
+    proceduralColorB: {r: 1, g: 0.08, b: 0.74, a: 1}
+    proceduralAlpha: 0.22
     proceduralScale: 1
-    proceduralSpeed: 1.5
-    proceduralIntensity: 1.2
+    proceduralSpeed: 1.1
+    proceduralIntensity: 1.15
     proceduralDirection: {x: -1, y: 0}
     useOverlayGlow: 0
     overlayGlowColorA: {r: 0, g: 0.7, b: 0.85, a: 1}
@@ -21537,7 +21905,7 @@ RectTransform:
   m_Father: {fileID: 425478286}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0.99996775}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -23979,6 +24347,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4977637629110029844, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
   m_PrefabInstance: {fileID: 1407865668}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &863348884 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1929303750459934912, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
+  m_PrefabInstance: {fileID: 1407865668}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 863348881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70180ad99e8bb3c44a73b34ca94a4953, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &865353377
 GameObject:
   m_ObjectHideFlags: 0
@@ -41040,7 +41419,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 756603109}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99996793
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -54895,3 +55274,4 @@ SceneRoots:
   - {fileID: 1960617664}
   - {fileID: 1372325943}
   - {fileID: 542167463}
+  - {fileID: 113964390}

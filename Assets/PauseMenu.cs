@@ -29,16 +29,19 @@ public class PauseMenu : MonoBehaviour
     private readonly List<Collider2D> collidersDisabledByPause = new List<Collider2D>();
     private float pausedColliderRefreshTimer = 0f;
 
+    public bool IsPauseMenuOpen
+    {
+        get { return pauseMenuUI != null && pauseMenuUI.activeSelf; }
+    }
+
+    public GameObject PauseMenuRoot
+    {
+        get { return pauseMenuUI; }
+    }
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (GameIsPaused)
-                Resume();
-            else
-                Pause();
-        }
-
+        // Escape is handled by MenuManager so every menu follows the same rules.
         if (GameIsPaused)
         {
             pausedColliderRefreshTimer += Time.unscaledDeltaTime;
