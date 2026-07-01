@@ -5,58 +5,58 @@ using UnityEngine;
 public class ProfitRate : MonoBehaviour
 {
     public static ProfitRate Instance { get; private set; }
+
     [Header("UI References")]
     public TMP_Text profitRateText;
 
-    float timer = 0f;
-
     [Header("Profit Rate Settings")]
-    [SerializeField] float updateTime = 1f; // Adjustable in Inspector
+    [SerializeField] private float updateTime = 1f;
 
-    float previousProfit = 0f;
-    float averageProfit = 0f;
-    float currentProfit = 0f;
+    private float timer = 0f;
+    private double averageProfit = 0d;
 
     //private Coroutine tempDisplayCoroutine;
 
-    void Awake()
+    private void Awake()
     {
         if (Instance != null && Instance != this)
+        {
             Destroy(gameObject);
-        else
-            Instance = this;
+            return;
+        }
+
+        Instance = this;
     }
 
-    void Start()
+    private void Start()
     {
         ResetBaseline();
     }
 
     private void Update()
     {
-        if (ScoreManager.Instance == null) return;
+        if (ScoreManager.Instance == null)
+        {
+            return;
+        }
 
-        currentProfit = ScoreManager.Instance.GetTotalProfit();
         timer += Time.deltaTime;
 
         if (timer >= updateTime)
         {
-            //Debug.Log($"Average Profit pre calculation: {averageProfit}");
-            //Debug.Log($"Current Profit pre calculation: {currentProfit}"); 
-            //Debug.Log($"Previous Profit pre calculation: {previousProfit}");
-            averageProfit = ((currentProfit - previousProfit)
-                             + ScoreManager.PendingProfitAdjustment
-                             - ScoreManager.PendingRewardAdjustment) / updateTime;
-            //Debug.Log($"Average Profit post calculation: {averageProfit}");
-            previousProfit = currentProfit;
-           // Debug.Log($"Previous Profit post calculation: {previousProfit}");
+            double elapsed = System.Math.Max(0.0001d, (double)timer);
+            double incomeThisPeriod = ScoreManager.Instance.ConsumeProfitRateIncome();
+
+            averageProfit = incomeThisPeriod / elapsed;
+
+            if (double.IsNaN(averageProfit) || double.IsInfinity(averageProfit) || averageProfit < 0d)
+            {
+                averageProfit = 0d;
+            }
 
             timer = 0f;
-            ScoreManager.PendingProfitAdjustment = 0f;
-            ScoreManager.PendingRewardAdjustment = 0f;
-            if (averageProfit < 0)
-                averageProfit = 0f;
         }
+
         UpdateUI();
     }
 
@@ -64,35 +64,41 @@ public class ProfitRate : MonoBehaviour
     {
         if (profitRateText != null)
         {
-            profitRateText.text = $"{BigNumberFormatter.FormatMoney((double)averageProfit)}/second";
+            profitRateText.text = $"{BigNumberFormatter.FormatMoney(averageProfit)}/second";
         }
     }
 
     public void ResetBaseline()
     {
         timer = 0f;
-        averageProfit = 0f;
+        averageProfit = 0d;
 
         if (ScoreManager.Instance != null)
         {
-            currentProfit = ScoreManager.Instance.GetTotalProfit();
-            previousProfit = currentProfit;
+            ScoreManager.Instance.ClearProfitRateIncome();
         }
-        else
-        {
-            currentProfit = 0f;
-            previousProfit = 0f;
-        }
-
-        ScoreManager.PendingProfitAdjustment = 0f;
-        ScoreManager.PendingRewardAdjustment = 0f;
 
         UpdateUI();
     }
 
-    public float AverageProfit => averageProfit;
+    public float AverageProfit => ToSafeFloat(averageProfit);
+    public double AverageProfitDouble => averageProfit;
 
-  
+    private static float ToSafeFloat(double value)
+    {
+        if (double.IsNaN(value) || value <= 0d)
+        {
+            return 0f;
+        }
+
+        if (double.IsPositiveInfinity(value) || value > float.MaxValue)
+        {
+            return float.MaxValue;
+        }
+
+        return (float)value;
+    }
+
     //public void ShowTemporaryProfitRate(float value, float duration = 1f)
     //{
     //    if (tempDisplayCoroutine != null)
@@ -102,7 +108,7 @@ public class ProfitRate : MonoBehaviour
 
     private IEnumerator ShowTempProfitRateCoroutine(float value, float duration)
     {
-        profitRateText.text = $"${value:0.00/second}";
+        profitRateText.text = $"${value:0.00}/second";
         yield return new WaitForSeconds(duration);
         UpdateUI();
     }

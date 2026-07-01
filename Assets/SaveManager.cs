@@ -183,6 +183,21 @@ public class SaveManager : MonoBehaviour
         return System.DateTimeOffset.UtcNow.ToUnixTimeSeconds();
     }
 
+    private static float ToSafeFloat(double value)
+    {
+        if (double.IsNaN(value) || value <= 0d)
+        {
+            return 0f;
+        }
+
+        if (double.IsInfinity(value) || value > float.MaxValue)
+        {
+            return float.MaxValue;
+        }
+
+        return (float)value;
+    }
+
     private void ReadSaveFileToMemory()
     {
         hasLoadedFile = false;
@@ -846,7 +861,7 @@ public class SaveManager : MonoBehaviour
         }
 
         kitchen.totalDishes = score.GetTotalDishes();
-        kitchen.totalProfit = score.GetTotalProfit();
+        kitchen.totalProfit = score.GetTotalProfitDouble();
         kitchen.dishCountIncrement = score.GetDishCountIncrement();
         kitchen.profitPerDish = score.GetProfitPerDish();
         kitchen.dishProfitMultiplier = score.dishProfitMultiplier;
@@ -1052,7 +1067,7 @@ public class SaveManager : MonoBehaviour
         KitchenSaveData kitchen = GetOrCreateKitchenData(kitchenId);
         ApplyBackgroundEarningsToKitchen(kitchen, NowUnixSeconds());
 
-        totalProfit = kitchen.totalProfit;
+        totalProfit = ToSafeFloat(kitchen.totalProfit);
         moneyPerSecond = kitchen.cachedMoneyPerSecond;
         totalDishes = kitchen.totalDishes;
         dishesPerSecond = kitchen.cachedDishesPerSecond;

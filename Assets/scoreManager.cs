@@ -38,14 +38,17 @@ public class ScoreManager : MonoBehaviour
 
     [Header("Tracking")]
     private long totalDishes = 0;
-    private float totalProfit = 0f;
+    private double totalProfit = 0d;
 
     [Header("Dish Types")]
     public List<DishData> allDishes;
     private DishData currentDish;
 
-    public static float PendingProfitAdjustment = 0f;
-    public static float PendingRewardAdjustment = 0f;
+    public static double PendingProfitAdjustment = 0d;
+    public static double PendingRewardAdjustment = 0d;
+
+    private const double MaxSafeProfit = 1e300d;
+    private double profitRateIncomeThisPeriod = 0d;
 
     [Header("Employee Dish Production")]
     [SerializeField] private EmployeeManager employeeManager;   // Drag your EmployeeManager here in Inspector
@@ -144,8 +147,9 @@ public class ScoreManager : MonoBehaviour
 
         totalDishes += dishesCompleted;
 
-        float reward = (float)dishesCompleted * finishedDish.profitPerDish * GetEffectiveDishProfitMultiplier();
-        totalProfit += reward;
+        double reward = (double)dishesCompleted * finishedDish.profitPerDish * GetEffectiveDishProfitMultiplier();
+        AddToTotalProfit(reward);
+        TrackProfitRateIncome(reward);
 
         NotifyProfitChanged();
         UpdateUI();
@@ -160,7 +164,7 @@ public class ScoreManager : MonoBehaviour
             }
         }
 
-        return reward;
+        return ToSafeFloat(reward);
     }
 
 
@@ -168,26 +172,144 @@ public class ScoreManager : MonoBehaviour
     // --- Manual Add / Subtract Profit ---
     public void AddProfit(float amount)
     {
-        if (amount == 0f) return;
-        totalProfit += amount;
+        AddProfit((double)amount);
+    }
+
+    public void AddProfit(double amount)
+    {
+        AddProfit(amount, countForProfitRate: true);
+    }
+
+    public void AddProfit(double amount, bool countForProfitRate)
+    {
+        amount = SanitizeProfitAmount(amount);
+
+        if (amount <= 0d)
+        {
+            return;
+        }
+
+        AddToTotalProfit(amount);
+
+        if (countForProfitRate)
+        {
+            TrackProfitRateIncome(amount);
+        }
+
         UpdateUI();
         NotifyProfitChanged();
     }
 
     public void SubtractProfit(float amount, bool isPurchase = false)
     {
-        totalProfit = Mathf.Max(0, totalProfit - amount);
-        if (isPurchase) PendingProfitAdjustment += amount;
+        SubtractProfit((double)amount, isPurchase);
+    }
+
+    public void SubtractProfit(double amount, bool isPurchase = false)
+    {
+        amount = SanitizeProfitAmount(amount);
+
+        if (amount <= 0d)
+        {
+            return;
+        }
+
+        double previousTotal = totalProfit;
+        totalProfit = System.Math.Max(0d, totalProfit - amount);
+
+        // Kept for old callers/debug logs. ProfitRate no longer depends on this value.
+        if (isPurchase)
+        {
+            PendingProfitAdjustment += System.Math.Max(0d, previousTotal - totalProfit);
+        }
+
         UpdateUI();
         NotifyProfitChanged();
     }
 
     public void AddBubbleReward(float reward)
     {
-        totalProfit += reward;
-        PendingRewardAdjustment += reward;
+        AddBubbleReward((double)reward);
+    }
+
+    public void AddBubbleReward(double reward)
+    {
+        reward = SanitizeProfitAmount(reward);
+
+        if (reward <= 0d)
+        {
+            return;
+        }
+
+        AddToTotalProfit(reward);
+        TrackProfitRateIncome(reward);
+
         UpdateUI();
         NotifyProfitChanged();
+    }
+
+    public double ConsumeProfitRateIncome()
+    {
+        double income = profitRateIncomeThisPeriod;
+        profitRateIncomeThisPeriod = 0d;
+        return SanitizeProfitAmount(income);
+    }
+
+    public void ClearProfitRateIncome()
+    {
+        profitRateIncomeThisPeriod = 0d;
+        PendingProfitAdjustment = 0d;
+        PendingRewardAdjustment = 0d;
+    }
+
+    private void TrackProfitRateIncome(double amount)
+    {
+        amount = SanitizeProfitAmount(amount);
+
+        if (amount <= 0d)
+        {
+            return;
+        }
+
+        profitRateIncomeThisPeriod = AddClamped(profitRateIncomeThisPeriod, amount);
+    }
+
+    private void AddToTotalProfit(double amount)
+    {
+        totalProfit = AddClamped(totalProfit, amount);
+    }
+
+    private static double AddClamped(double current, double amount)
+    {
+        current = SanitizeProfitAmount(current);
+        amount = SanitizeProfitAmount(amount);
+
+        if (amount <= 0d)
+        {
+            return current;
+        }
+
+        if (current >= MaxSafeProfit - amount)
+        {
+            return MaxSafeProfit;
+        }
+
+        return current + amount;
+    }
+
+    private static double SanitizeProfitAmount(double value)
+    {
+        if (double.IsNaN(value) || value <= 0d)
+        {
+            return 0d;
+        }
+
+        if (double.IsPositiveInfinity(value) || value > MaxSafeProfit)
+        {
+            return MaxSafeProfit;
+        }
+
+        return value;
     }
 
     // Exposed API used by upgrades to multiply dish profit globally
@@ -299,8 +421,9 @@ public class ScoreManager : MonoBehaviour
 
         totalDishes += dishesCompleted;
 
-        float reward = dishesCompleted * referenceDish.profitPerDish * GetEffectiveDishProfitMultiplier() * cashMultiplier;
-        totalProfit += reward;
+        double reward = (double)dishesCompleted * referenceDish.profitPerDish * GetEffectiveDishProfitMultiplier() * cashMultiplier;
+        AddToTotalProfit(reward);
+        TrackProfitRateIncome(reward);
 
         NotifyProfitChanged();
         UpdateUI();
@@ -309,9 +432,25 @@ public class ScoreManager : MonoBehaviour
     public void OnModifierCountClicked() => TryUpgradeDishCount();
     public void OnModifierProfitClicked() => TryUpgradeProfit();
 
+    private static float ToSafeFloat(double value)
+    {
+        if (double.IsNaN(value) || value <= 0d)
+        {
+            return 0f;
+        }
+
+        if (double.IsInfinity(value) || value > float.MaxValue)
+        {
+            return float.MaxValue;
+        }
+
+        return (float)value;
+    }
+
     // --- Getters ---
     public long GetTotalDishes() => totalDishes;
-    public float GetTotalProfit() => totalProfit;
+    public float GetTotalProfit() => ToSafeFloat(totalProfit);
+    public double GetTotalProfitDouble() => totalProfit;
     public float GetProfitPerDish() => profitPerDish;
     public int GetDishCountIncrement() => dishCountIncrement;
 
@@ -360,7 +499,7 @@ public class ScoreManager : MonoBehaviour
 
         if (profitText != null)
         {
-            profitText.text = $"Profit: {BigNumberFormatter.FormatMoney((double)totalProfit)}";
+            profitText.text = $"Profit: {BigNumberFormatter.FormatMoney(totalProfit)}";
         }
 
         if (dishesPerSecondText != null)
@@ -372,13 +511,23 @@ public class ScoreManager : MonoBehaviour
 
     public void LoadFromSave(long dishes, float profit, int countInc, float dishProfitMult)
     {
+        LoadFromSave(dishes, (double)profit, countInc, profitPerDish, dishProfitMult);
+    }
+
+    public void LoadFromSave(long dishes, double profit, int countInc, float dishProfitMult)
+    {
         LoadFromSave(dishes, profit, countInc, profitPerDish, dishProfitMult);
     }
 
     public void LoadFromSave(long dishes, float profit, int countInc, float savedProfitPerDish, float dishProfitMult)
     {
+        LoadFromSave(dishes, (double)profit, countInc, savedProfitPerDish, dishProfitMult);
+    }
+
+    public void LoadFromSave(long dishes, double profit, int countInc, float savedProfitPerDish, float dishProfitMult)
+    {
         totalDishes = System.Math.Max(0L, dishes);
-        totalProfit = Mathf.Max(0f, profit);
+        totalProfit = SanitizeProfitAmount(profit);
         dishCountIncrement = Mathf.Max(1, countInc);
         profitPerDish = savedProfitPerDish > 0f ? savedProfitPerDish : 1f;
         dishProfitMultiplier = dishProfitMult > 0f ? dishProfitMult : 1f;
@@ -386,8 +535,7 @@ public class ScoreManager : MonoBehaviour
         employeeDishAccumulator = 0d;
         employeeDishUITimer = 0f;
 
-        PendingProfitAdjustment = 0f;
-        PendingRewardAdjustment = 0f;
+        ClearProfitRateIncome();
 
         ResetBubbleBuffs();
         RefreshActiveDishAfterLoad();

@@ -9,7 +9,7 @@ public class SaveData
     // Legacy single-kitchen fields. These are still mirrored from kitchen_1 so old debugging
     // tools or old fallback paths do not immediately break.
     public long totalDishes = 0;
-    public float totalProfit = 0f;
+    public double totalProfit = 0d;
     public int dishCountIncrement = 1;
     public float profitPerDish = 1f;
     public float dishProfitMultiplier = 1f;
@@ -47,7 +47,7 @@ public class KitchenSaveData
     public string kitchenId = "kitchen_1";
 
     public long totalDishes = 0;
-    public float totalProfit = 0f;
+    public double totalProfit = 0d;
     public int dishCountIncrement = 1;
     public float profitPerDish = 1f;
     public float dishProfitMultiplier = 1f;
