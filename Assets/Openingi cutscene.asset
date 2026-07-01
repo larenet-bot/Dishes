@@ -17,6 +17,7 @@ MonoBehaviour:
       you aimlessly walk the streets. '
     sfx: {fileID: 0}
     background: {fileID: 4850878120845980919, guid: 0dd04368b68655a479b4877bb54922a1, type: 3}
+    backgroundTrack: {fileID: 0}
     postDelay: 0
     branchId: 0
     hasChoices: 0
@@ -28,6 +29,7 @@ MonoBehaviour:
 '
     sfx: {fileID: 8300000, guid: 9ac98f26b659ed5458225474d8bd9155, type: 3}
     background: {fileID: -1625096493650568400, guid: 5183c70a21fbba646b61274053c44dd1, type: 3}
+    backgroundTrack: {fileID: 0}
     postDelay: 0
     branchId: 0
     hasChoices: 0
@@ -36,6 +38,7 @@ MonoBehaviour:
   - text: "You see out of the corner of your eye a poster. \r\n"
     sfx: {fileID: 0}
     background: {fileID: -6705866497878393880, guid: 9d4689b799782bf4a9d6cf834a8832bd, type: 3}
+    backgroundTrack: {fileID: 0}
     postDelay: 0
     branchId: 0
     hasChoices: 0
@@ -46,6 +49,7 @@ MonoBehaviour:
 '
     sfx: {fileID: 8300000, guid: f8d2c3aaaaa504444bdb1525ebe785f5, type: 3}
     background: {fileID: -6705866497878393880, guid: 9d4689b799782bf4a9d6cf834a8832bd, type: 3}
+    backgroundTrack: {fileID: 0}
     postDelay: 0
     branchId: 0
     hasChoices: 0
@@ -54,6 +58,7 @@ MonoBehaviour:
   - text: 'You go in and take on the challenge. '
     sfx: {fileID: 8300000, guid: 441453fca93e9e04f8e2470d75389152, type: 3}
     background: {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
+    backgroundTrack: {fileID: 0}
     postDelay: 0
     branchId: 0
     hasChoices: 1
@@ -68,6 +73,7 @@ MonoBehaviour:
   - text: She looks you up and down doubtfully and writes down your order
     sfx: {fileID: 0}
     background: {fileID: -6705866497878393880, guid: 9d4689b799782bf4a9d6cf834a8832bd, type: 3}
+    backgroundTrack: {fileID: 0}
     postDelay: 0
     branchId: 0
     hasChoices: 0
@@ -76,6 +82,7 @@ MonoBehaviour:
   - text: 'She rolls her eyes and walks away '
     sfx: {fileID: 0}
     background: {fileID: -5171784070949930643, guid: 0cb9324539f58224e9a7a2cf1b137d37, type: 3}
+    backgroundTrack: {fileID: 0}
     postDelay: 0
     branchId: 2
     hasChoices: 0
@@ -86,6 +93,7 @@ MonoBehaviour:
 '
     sfx: {fileID: 0}
     background: {fileID: -5654681492125983662, guid: f2b4201dc72847b46ad5fa7ade9b3d8c, type: 3}
+    backgroundTrack: {fileID: 0}
     postDelay: 0
     branchId: 0
     hasChoices: 0
@@ -96,6 +104,7 @@ MonoBehaviour:
 '
     sfx: {fileID: 0}
     background: {fileID: -7670856166824447854, guid: bc49aa708aaa04d428667b4569125151, type: 3}
+    backgroundTrack: {fileID: 0}
     postDelay: 0
     branchId: 0
     hasChoices: 0
@@ -106,6 +115,7 @@ MonoBehaviour:
 '
     sfx: {fileID: 8300000, guid: 5fc5819c24bbc77458ad436a7c729b57, type: 3}
     background: {fileID: -7670856166824447854, guid: bc49aa708aaa04d428667b4569125151, type: 3}
+    backgroundTrack: {fileID: 0}
     postDelay: 0
     branchId: 0
     hasChoices: 0
@@ -116,6 +126,7 @@ MonoBehaviour:
 '
     sfx: {fileID: 0}
     background: {fileID: -2232703539582777383, guid: 9c2e1a50f6a6fa94786cac5d895324bf, type: 3}
+    backgroundTrack: {fileID: 0}
     postDelay: 0
     branchId: 0
     hasChoices: 0
@@ -124,6 +135,7 @@ MonoBehaviour:
   - text: "\"Ya didn't read da fine print, didya!?\" \r\n"
     sfx: {fileID: 0}
     background: {fileID: -2888777204600070448, guid: 1427537051391b84292095a9ad58225b, type: 3}
+    backgroundTrack: {fileID: 0}
     postDelay: 0
     branchId: 0
     hasChoices: 0
@@ -134,6 +146,7 @@ MonoBehaviour:
 '
     sfx: {fileID: 8300000, guid: c7f46b087c88f3045964bcb6d4c34b16, type: 3}
     background: {fileID: 5349049136137013527, guid: 4013cbb0e066b7740a18bc6b23461093, type: 3}
+    backgroundTrack: {fileID: 0}
     postDelay: 0
     branchId: 0
     hasChoices: 0
@@ -142,6 +155,7 @@ MonoBehaviour:
   - text: ...well dang, guess you better get to work.
     sfx: {fileID: 0}
     background: {fileID: 5349049136137013527, guid: 4013cbb0e066b7740a18bc6b23461093, type: 3}
+    backgroundTrack: {fileID: 0}
     postDelay: 0
     branchId: 0
     hasChoices: 0
@@ -151,3 +165,4 @@ MonoBehaviour:
   typingSFXIntervalChars: 2
   typeSpeed: 0.02
   nextSceneName: Game
+  backgroundTrack: {fileID: 11400000, guid: 72e27d46fd200464587cf3d9e6e5e362, type: 2}

@@ -10,6 +10,9 @@ public class CutsceneData : ScriptableObject
     public int typingSFXIntervalChars = 2;
     public float typeSpeed = 0.02f;
     public string nextSceneName = "Game";
+
+    [Tooltip("Optional global background track to play for this cutscene. Per-line track (if provided) overrides this.")]
+    public Track backgroundTrack;
 }
 
 [System.Serializable]
@@ -37,6 +40,9 @@ public class CutsceneLine
     [Tooltip("Optional background sprite to switch to for this line. Leave null to keep previous.")]
     public Sprite background;
 
+    [Tooltip("Optional background track to play while this line is active. Leave null to keep previous.")]
+    public Track backgroundTrack;
+
     [Tooltip("Optional additional pause after the line finishes (seconds).")]
     public float postDelay = 0f;
 
@@ -52,6 +58,4 @@ public class CutsceneLine
     [Header("Flow Control")]
     [Tooltip("If >= 0, cutscene will jump to this index instead of going to the next line.")]
     public int overrideNextLineIndex = -1;
-
-    
 }

@@ -17,6 +17,7 @@ MonoBehaviour:
       I give you a full time job? '
     sfx: {fileID: 0}
     background: {fileID: 0}
+    backgroundTrack: {fileID: 0}
     postDelay: 0
     branchId: 0
     hasChoices: 1
@@ -31,6 +32,7 @@ MonoBehaviour:
   - text: Perfect, now you can help me pay off my own debt! HAHAAH
     sfx: {fileID: 0}
     background: {fileID: 0}
+    backgroundTrack: {fileID: 0}
     postDelay: 0
     branchId: 1
     hasChoices: 0
@@ -46,3 +48,4 @@ MonoBehaviour:
   typingSFXIntervalChars: 2
   typeSpeed: 0.02
   nextSceneName: Game
+  backgroundTrack: {fileID: 11400000, guid: 72e27d46fd200464587cf3d9e6e5e362, type: 2}

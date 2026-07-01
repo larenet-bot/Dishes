@@ -35,6 +35,9 @@ public class CutsceneManager : MonoBehaviour
     private int currentLine = 0;
     private bool isTyping = false;
 
+    // Track currently active background track clip so we avoid re-starting the same music
+    private AudioClip activeBackgroundTrackClip = null;
+
     private void Start()
     {
         if (nextButton != null)
@@ -47,6 +50,13 @@ public class CutsceneManager : MonoBehaviour
             typingSFXIntervalChars = Mathf.Max(1, cutsceneData.typingSFXIntervalChars);
             typeSpeed = Mathf.Max(0.001f, cutsceneData.typeSpeed);
             nextSceneName = cutsceneData.nextSceneName;
+
+            // If a global background track is assigned, start it now.
+            if (cutsceneData.backgroundTrack != null && cutsceneData.backgroundTrack.trackAudioClip != null && AudioManager.instance != null)
+            {
+                activeBackgroundTrackClip = cutsceneData.backgroundTrack.trackAudioClip;
+                AudioManager.instance.PlayMusic(activeBackgroundTrackClip);
+            }
         }
 
         UpdateBackground();
@@ -205,6 +215,19 @@ public class CutsceneManager : MonoBehaviour
         {
             backgroundImage.sprite = desired;
         }
+
+        // Music/track handling: per-line track overrides global cutscene track.
+        AudioClip desiredTrack = GetLineTrackAudioClip(currentLine);
+
+        // If no per-line track, nothing to do (keep previous / global)
+        if (desiredTrack != null && AudioManager.instance != null)
+        {
+            if (activeBackgroundTrackClip != desiredTrack)
+            {
+                activeBackgroundTrackClip = desiredTrack;
+                AudioManager.instance.PlayMusic(activeBackgroundTrackClip);
+            }
+        }
     }
 
     private IEnumerator EndCutscene()
@@ -270,6 +293,28 @@ public class CutsceneManager : MonoBehaviour
             }
         }
         return result;
+    }
+
+    private AudioClip GetLineTrackAudioClip(int index)
+    {
+        // Per-line track takes precedence
+        if (cutsceneData != null && cutsceneData.lines != null)
+        {
+            if (index >= 0 && index < cutsceneData.lines.Length)
+            {
+                var t = cutsceneData.lines[index].backgroundTrack;
+                if (t != null) return t.trackAudioClip;
+            }
+
+            // If no per-line track and we haven't set activeBackgroundTrackClip yet, use global
+            if (activeBackgroundTrackClip == null && cutsceneData.backgroundTrack != null)
+            {
+                return cutsceneData.backgroundTrack.trackAudioClip;
+            }
+        }
+
+        // No track available
+        return null;
     }
 
     /// <summary>
