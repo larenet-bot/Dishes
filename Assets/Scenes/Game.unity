@@ -1613,11 +1613,11 @@ MonoBehaviour:
   payButtonText: {fileID: 686284900}
   loanTiers:
   - loanName: Pay Your Bill!
-    amount: 1000
+    amount: 10000
     loadSceneOnPay: 1
     sceneName: Loan0
   - loanName: Payoff Your Shares
-    amount: 1000000
+    amount: 10000000
     loadSceneOnPay: 1
     sceneName: Kitchen2Intro
   useKitchenScopedLoanProgress: 1
@@ -5090,8 +5090,8 @@ RectTransform:
   m_LocalScale: {x: 0.9999202, y: 0.9999202, z: 0.9999202}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 609932579}
   - {fileID: 1672635294}
+  - {fileID: 609932579}
   m_Father: {fileID: 1903721168}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -7531,8 +7531,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bubblePrefab:
   - {fileID: 5059608596444091316, guid: cce91c0996086ee4db7d818f1189d6c6, type: 3}
-  minSpawn: 9
-  maxSpawn: 10
+  minSpawn: 12
+  maxSpawn: 30
   horizontalPadding: 0.3
   spawnBelowScreen: 0.5
   minX: -6
@@ -31980,14 +31980,14 @@ MonoBehaviour:
   - tierName: Dirty Mop
     description: Cleans up the place
     loreDescription: Replace the mop head
-    cost: 100
+    cost: 10
     requiredDishes: 0
     icon: {fileID: 0}
     filterPreset: 0
   - tierName: Mop
     description: Cleans up the place
     loreDescription: Wash up, please!
-    cost: 100
+    cost: 10
     requiredDishes: 0
     icon: {fileID: 0}
     filterPreset: 4
@@ -33583,7 +33583,7 @@ MonoBehaviour:
   cMultiplier: 1.25
   dMultiplier: 1
   minAccuracy: 0.01
-  rewardScale: 0.05
+  rewardScale: 0.15
   toggleRef: {fileID: 542946269}
 --- !u!4 &1283580353
 Transform:
@@ -37323,7 +37323,7 @@ MonoBehaviour:
     description: Unlock the power washer sink. Hold left click to wash. While held,
       stages auto-complete at 2 stages per second.
     loreDescription: 
-    cost: 250
+    cost: 500
     isTechnique: 0
     unlocksSinkType: 1
     requires: []
@@ -37333,7 +37333,7 @@ MonoBehaviour:
     displayName: Pressure Nozzle
     description: Increase stage completion rate by 15% while holding click.
     loreDescription: 
-    cost: 600
+    cost: 1200
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37345,7 +37345,7 @@ MonoBehaviour:
     description: Holding click for more than 3 seconds builds momentum, +5% per second,
       up to +25%.
     loreDescription: 
-    cost: 600
+    cost: 1200
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37358,7 +37358,7 @@ MonoBehaviour:
       to complete the skill check. Success adds a burn effect that cleans twice as
       fast for 4 seconds.
     loreDescription: 
-    cost: 1800
+    cost: 3600
     isTechnique: 1
     unlocksSinkType: 0
     requires:
@@ -37369,7 +37369,7 @@ MonoBehaviour:
     displayName: Fire Hose
     description: Upgrade Pressure Nozzle. Hold wash rate becomes +20%.
     loreDescription: 
-    cost: 1800
+    cost: 3600
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37381,7 +37381,7 @@ MonoBehaviour:
     description: Upgrade Reinforced Hose. Momentum becomes +7% per second, up to
       +40%.
     loreDescription: 
-    cost: 1800
+    cost: 3600
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37392,7 +37392,7 @@ MonoBehaviour:
     displayName: Industrual Pump
     description: Upgrade Fire Hose. Hold wash rate becomes +25%.
     loreDescription: 
-    cost: 5000
+    cost: 10000
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37403,7 +37403,7 @@ MonoBehaviour:
     displayName: A Tank's Barrel
     description: Upgrade Kevlar Lining. Momentum becomes +10% per second, up to +50%.
     loreDescription: 
-    cost: 5000
+    cost: 10000
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37415,7 +37415,7 @@ MonoBehaviour:
     description: Unlock the wash basin sink. Base manual dishes and all per-click
       dish upgrades are doubled.
     loreDescription: 
-    cost: 250
+    cost: 500
     isTechnique: 0
     unlocksSinkType: 1
     requires: []
@@ -37425,7 +37425,7 @@ MonoBehaviour:
     displayName: Deeper Hole
     description: Increase basin depth. After manual washes, +2 dishes.
     loreDescription: 
-    cost: 600
+    cost: 1200
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37436,7 +37436,7 @@ MonoBehaviour:
     displayName: Ambidextrous
     description: 'Chance to clean extra dishes: 40% for +1, 15% for +2, 5% for +3.'
     loreDescription: 
-    cost: 600
+    cost: 1200
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37447,7 +37447,7 @@ MonoBehaviour:
     displayName: 'TECHNIQUE: Overnight Soak'
     description: Every 100 dishes cleaned, your next manual wash cleans double dishes.
     loreDescription: 
-    cost: 1800
+    cost: 3600
     isTechnique: 1
     unlocksSinkType: 0
     requires:
@@ -37458,7 +37458,7 @@ MonoBehaviour:
     displayName: An Even Deeper Hole
     description: Increase depth further. +2 more dishes.
     loreDescription: 
-    cost: 1800
+    cost: 3600
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37469,7 +37469,7 @@ MonoBehaviour:
     displayName: Hands and Feet
     description: 'Increases extra dish odds and cap: 50% +1, 25% +2, 10% +3, 5% +4.'
     loreDescription: 
-    cost: 1800
+    cost: 3600
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37480,7 +37480,7 @@ MonoBehaviour:
     displayName: A Quarry
     description: Increase depth again. +2 more dishes.
     loreDescription: 
-    cost: 5000
+    cost: 10000
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37492,7 +37492,7 @@ MonoBehaviour:
     description: 'Guarantees +1 extra dish. Improves odds for more: 25% +2, 10% +3,
       10% +4, 5% +5.'
     loreDescription: 
-    cost: 5000
+    cost: 10000
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37504,7 +37504,7 @@ MonoBehaviour:
     description: Unlock the dishwasher sink. Adds a 5 minute rinse cycle. When complete,
       it auto-washes the amount of dishes your manual wash would do.
     loreDescription: 
-    cost: 250
+    cost: 500
     isTechnique: 0
     unlocksSinkType: 1
     requires: []
@@ -37514,7 +37514,7 @@ MonoBehaviour:
     displayName: More Racks
     description: Increase dishes done per cycle by 50%.
     loreDescription: 
-    cost: 600
+    cost: 1200
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37525,7 +37525,7 @@ MonoBehaviour:
     displayName: Faster Cycle
     description: Decrease rinse cycle by 1 minute.
     loreDescription: 
-    cost: 600
+    cost: 1200
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37536,7 +37536,7 @@ MonoBehaviour:
     displayName: 'TECHNIQUE: Heat Dry Boost'
     description: Every 10th auto-wash yields double cash.
     loreDescription: 
-    cost: 1800
+    cost: 3600
     isTechnique: 1
     unlocksSinkType: 0
     requires:
@@ -37547,7 +37547,7 @@ MonoBehaviour:
     displayName: Efficient Placement
     description: Increase dishes done per cycle by 100%.
     loreDescription: 
-    cost: 1800
+    cost: 3600
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37558,7 +37558,7 @@ MonoBehaviour:
     displayName: Increase Water Pressure
     description: Decrease rinse cycle by an additional minute.
     loreDescription: 
-    cost: 1800
+    cost: 3600
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37569,7 +37569,7 @@ MonoBehaviour:
     displayName: XL Dishwasher
     description: Increase dishes done per cycle by 150%.
     loreDescription: 
-    cost: 5000
+    cost: 10000
     isTechnique: 0
     unlocksSinkType: 0
     requires:
@@ -37580,7 +37580,7 @@ MonoBehaviour:
     displayName: Turbo DishWasher
     description: Decrease rinse cycle by an additional minute.
     loreDescription: 
-    cost: 5000
+    cost: 10000
     isTechnique: 0
     unlocksSinkType: 0
     requires:
