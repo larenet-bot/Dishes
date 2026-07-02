@@ -24,6 +24,10 @@ public class SaveData
     public string selectedMopStaticColorHtml = "#0000004D";
     public bool radioOwned = false;
 
+    // Legacy mirror of kitchen_1 clean pile progress.
+    public bool hasCleanPileProgress = false;
+    public int cleanPileHighestDishIndex = -1;
+
     public List<EmployeeSave> employees = new List<EmployeeSave>();
     public float employeeProfitMultiplier = 1f;
 
@@ -61,6 +65,10 @@ public class KitchenSaveData
     public List<string> purchasedMopFilterIds = new List<string> { "clean" };
     public string selectedMopStaticColorHtml = "#0000004D";
     public bool radioOwned = false;
+
+    // Legacy mirror of kitchen_1 clean pile progress.
+    public bool hasCleanPileProgress = false;
+    public int cleanPileHighestDishIndex = -1;
 
     public List<EmployeeSave> employees = new List<EmployeeSave>();
     public float employeeProfitMultiplier = 1f;

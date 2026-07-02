@@ -20,6 +20,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private SinkManager sinks;
     [SerializeField] private LoanManager loans;
     [SerializeField] private MopUpgradeShelf mop;
+    [SerializeField] private DishPileManager dishPile;
 
     [Header("Kitchen Id")]
     [Tooltip("Used only if SaveManager cannot find a LoanManager or KitchenIdentity in the active scene.")]
@@ -138,6 +139,7 @@ public class SaveManager : MonoBehaviour
         sinks = null;
         loans = null;
         mop = null;
+        dishPile = null;
 
         hasAppliedToCurrentScene = false;
 
@@ -153,6 +155,7 @@ public class SaveManager : MonoBehaviour
         if (sinks == null) sinks = FindFirstObjectByType<SinkManager>();
         if (loans == null) loans = FindFirstObjectByType<LoanManager>();
         if (mop == null) mop = FindFirstObjectByType<MopUpgradeShelf>();
+        if (dishPile == null) dishPile = FindFirstObjectByType<DishPileManager>();
     }
 
     private bool HaveGameplayRefs()
@@ -274,6 +277,7 @@ public class SaveManager : MonoBehaviour
             loadedData.currentSpongeIndex > 0 ||
             loadedData.currentPiggyBankIndex > 0 ||
             loadedData.currentMopIndex > 0 ||
+            loadedData.hasCleanPileProgress ||
             loadedData.dishCountIncrement > 1 ||
             loadedData.dishProfitMultiplier > 1f ||
             loadedData.radioOwned ||
@@ -304,6 +308,8 @@ public class SaveManager : MonoBehaviour
             purchasedMopFilterIds = loadedData.purchasedMopFilterIds ?? new List<string>(),
             selectedMopStaticColorHtml = string.IsNullOrWhiteSpace(loadedData.selectedMopStaticColorHtml) ? "#0000004D" : loadedData.selectedMopStaticColorHtml,
             radioOwned = loadedData.radioOwned,
+            hasCleanPileProgress = loadedData.hasCleanPileProgress,
+            cleanPileHighestDishIndex = loadedData.cleanPileHighestDishIndex,
             employees = loadedData.employees ?? new List<EmployeeSave>(),
             employeeProfitMultiplier = loadedData.employeeProfitMultiplier > 0f ? loadedData.employeeProfitMultiplier : 1f,
             currentSinkType = loadedData.currentSinkType,
@@ -384,6 +390,8 @@ public class SaveManager : MonoBehaviour
             purchasedMopFilterIds = new List<string> { MopUpgradeShelf.CleanFilterId },
             selectedMopStaticColorHtml = "#0000004D",
             radioOwned = false,
+            hasCleanPileProgress = false,
+            cleanPileHighestDishIndex = -1,
             employees = new List<EmployeeSave>(),
             employeeProfitMultiplier = 1f,
             currentSinkType = 0,
@@ -429,6 +437,11 @@ public class SaveManager : MonoBehaviour
         if (kitchen.employeeProfitMultiplier <= 0f)
         {
             kitchen.employeeProfitMultiplier = 1f;
+        }
+
+        if (kitchen.cleanPileHighestDishIndex < -1)
+        {
+            kitchen.cleanPileHighestDishIndex = -1;
         }
 
         if (kitchen.currentMopIndex < 0)
@@ -562,6 +575,11 @@ public class SaveManager : MonoBehaviour
         {
             List<string> purchasedSinkNodes = kitchen.purchasedSinkNodeIds ?? new List<string>();
             sinks.LoadFromSave((SinkManager.SinkType)kitchen.currentSinkType, purchasedSinkNodes);
+        }
+
+        if (dishPile != null)
+        {
+            dishPile.ApplySaveState(kitchen.hasCleanPileProgress, kitchen.cleanPileHighestDishIndex);
         }
 
         if (AchievementManager.Instance != null)
@@ -884,6 +902,14 @@ public class SaveManager : MonoBehaviour
             );
         }
 
+        if (dishPile != null)
+        {
+            dishPile.GetSaveState(
+                out kitchen.hasCleanPileProgress,
+                out kitchen.cleanPileHighestDishIndex
+            );
+        }
+
         kitchen.employees = employees.GetSaveState();
         kitchen.employeeProfitMultiplier = employees.GetGlobalEmployeeProfitMultiplierForSave();
 
@@ -1008,6 +1034,8 @@ public class SaveManager : MonoBehaviour
             ? new List<string>(kitchen.purchasedMopFilterIds)
             : new List<string> { MopUpgradeShelf.CleanFilterId };
         loadedData.radioOwned = kitchen.radioOwned;
+        loadedData.hasCleanPileProgress = kitchen.hasCleanPileProgress;
+        loadedData.cleanPileHighestDishIndex = kitchen.cleanPileHighestDishIndex;
         loadedData.employees = kitchen.employees;
         loadedData.employeeProfitMultiplier = kitchen.employeeProfitMultiplier;
         loadedData.currentSinkType = kitchen.currentSinkType;

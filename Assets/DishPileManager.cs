@@ -45,6 +45,9 @@ public class DishPileManager : MonoBehaviour
     [Tooltip("Base PlayerPrefs key for clean pile progress.")]
     [SerializeField] private string cleanPileProgressPrefsKey = "CLEAN_DISH_PILE_INDEX";
 
+    [Tooltip("If true, advancing the clean pile asks SaveManager to write the main save immediately. This only happens when the highest clean pile image changes.")]
+    [SerializeField] private bool saveCleanPileProgressWithSaveManager = true;
+
     [Header("References")]
     [Tooltip("Optional. If left empty, this manager uses ScoreManager.Instance.dishSpawner.")]
     [SerializeField] private DishSpawner dishSpawner;
@@ -68,6 +71,7 @@ public class DishPileManager : MonoBehaviour
 
     private int highestCleanedDishIndex = -1;
     private int lastActiveCleanPileIndex = -2;
+    private bool saveStateAppliedThisScene = false;
 
     private readonly List<CompletedDishAnimation> activeCompletedDishAnimations = new List<CompletedDishAnimation>();
 
@@ -92,7 +96,11 @@ public class DishPileManager : MonoBehaviour
     private void Start()
     {
         ResolveReferences();
-        LoadCleanPileProgress();
+
+        if (!saveStateAppliedThisScene)
+        {
+            LoadCleanPileProgress();
+        }
 
         RefreshDirtyPileImages(force: true);
         RefreshCleanPileImages(force: true);
@@ -220,6 +228,7 @@ public class DishPileManager : MonoBehaviour
     {
         highestCleanedDishIndex = showFirstCleanPileBeforeAnyDishCleaned ? 0 : -1;
         lastActiveCleanPileIndex = -2;
+        saveStateAppliedThisScene = true;
 
         if (saveCleanPileProgressWithPlayerPrefs)
         {
@@ -228,6 +237,56 @@ public class DishPileManager : MonoBehaviour
         }
 
         RefreshCleanPileImages(force: true);
+    }
+
+    public void GetSaveState(out bool hasCleanPileProgress, out int savedHighestCleanedDishIndex)
+    {
+        hasCleanPileProgress = true;
+        savedHighestCleanedDishIndex = GetHighestCleanedDishIndexIncludingActiveAnimations();
+    }
+
+    public void ApplySaveState(bool hasSavedCleanPileProgress, int savedHighestCleanedDishIndex)
+    {
+        ResolveReferences();
+        saveStateAppliedThisScene = true;
+
+        if (hasSavedCleanPileProgress)
+        {
+            highestCleanedDishIndex = ClampCleanPileIndex(savedHighestCleanedDishIndex);
+        }
+        else
+        {
+            // Keeps old PlayerPrefs clean-pile progress alive for existing saves until
+            // the next SaveManager write migrates it into save.json.
+            LoadCleanPileProgress();
+        }
+
+        lastActiveCleanPileIndex = -2;
+        RefreshCleanPileImages(force: true);
+    }
+
+    private int GetHighestCleanedDishIndexIncludingActiveAnimations()
+    {
+        int highestIndex = highestCleanedDishIndex;
+
+        for (int i = 0; i < activeCompletedDishAnimations.Count; i++)
+        {
+            CompletedDishAnimation animation = activeCompletedDishAnimations[i];
+
+            if (animation == null)
+            {
+                continue;
+            }
+
+            int animationIndex = ClampCleanPileIndex(animation.completedDishIndex);
+
+            if (animationIndex > highestIndex)
+            {
+                highestIndex = animationIndex;
+            }
+        }
+
+        return ClampCleanPileIndex(highestIndex);
     }
 
     private void ResolveReferences()
@@ -420,6 +479,11 @@ public class DishPileManager : MonoBehaviour
 
         SaveCleanPileProgress();
         RefreshCleanPileImages(force: true);
+
+        if (saveCleanPileProgressWithSaveManager && SaveManager.Instance != null)
+        {
+            SaveManager.Instance.Save();
+        }
     }
 
     private int ClampCleanPileIndex(int index)

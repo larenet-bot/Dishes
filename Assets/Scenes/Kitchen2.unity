@@ -6985,7 +6985,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &187998194
 RectTransform:
   m_ObjectHideFlags: 0
@@ -39847,10 +39847,11 @@ MonoBehaviour:
   - {fileID: 109057719}
   - {fileID: 1733851006}
   showFirstCleanPileBeforeAnyDishCleaned: 1
-  saveCleanPileProgressWithPlayerPrefs: 1
-  kitchenId: kitchen_1
-  autoUseLoanManagerKitchenId: 1
+  saveCleanPileProgressWithPlayerPrefs: 0
+  kitchenId: kitchen_2
+  autoUseLoanManagerKitchenId: 0
   cleanPileProgressPrefsKey: CLEAN_DISH_PILE_INDEX
+  saveCleanPileProgressWithSaveManager: 1
   dishSpawner: {fileID: 638805220}
   scoreManager: {fileID: 1535544642}
   moveSpeed: 800
@@ -55385,7 +55386,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1733851005
 RectTransform:
   m_ObjectHideFlags: 0
