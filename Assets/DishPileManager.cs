@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -68,6 +69,15 @@ public class DishPileManager : MonoBehaviour
     private int highestCleanedDishIndex = -1;
     private int lastActiveCleanPileIndex = -2;
 
+    private readonly List<CompletedDishAnimation> activeCompletedDishAnimations = new List<CompletedDishAnimation>();
+
+    private sealed class CompletedDishAnimation
+    {
+        public RectTransform dishRect;
+        public int completedDishIndex;
+        public Coroutine coroutine;
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -91,6 +101,45 @@ public class DishPileManager : MonoBehaviour
     private void Update()
     {
         RefreshDirtyPileImages(force: false);
+    }
+
+    private void OnDisable()
+    {
+        CompleteActiveCompletedDishAnimations();
+    }
+
+    public void CompleteActiveCompletedDishAnimations()
+    {
+        if (activeCompletedDishAnimations.Count == 0)
+        {
+            return;
+        }
+
+        for (int i = activeCompletedDishAnimations.Count - 1; i >= 0; i--)
+        {
+            CompletedDishAnimation animation = activeCompletedDishAnimations[i];
+
+            if (animation == null)
+            {
+                activeCompletedDishAnimations.RemoveAt(i);
+                continue;
+            }
+
+            if (animation.coroutine != null)
+            {
+                StopCoroutine(animation.coroutine);
+                animation.coroutine = null;
+            }
+
+            if (animation.dishRect != null)
+            {
+                Destroy(animation.dishRect.gameObject);
+                animation.dishRect = null;
+            }
+
+            RegisterCleanedDishIndex(animation.completedDishIndex);
+            activeCompletedDishAnimations.RemoveAt(i);
+        }
     }
 
     public void AnimateCompletedDish(DishVisual completedDishVisual)
@@ -147,7 +196,14 @@ public class DishPileManager : MonoBehaviour
         // The real dish image can immediately become the next dirty dish and stay clickable.
         copyRect.SetSiblingIndex(sourceRect.GetSiblingIndex());
 
-        StartCoroutine(AnimateToCleanPile(copyRect, completedDishIndex));
+        CompletedDishAnimation animation = new CompletedDishAnimation
+        {
+            dishRect = copyRect,
+            completedDishIndex = completedDishIndex
+        };
+
+        activeCompletedDishAnimations.Add(animation);
+        animation.coroutine = StartCoroutine(AnimateToCleanPile(animation));
     }
 
     public void RefreshDirtyPileImagesNow()
@@ -460,11 +516,15 @@ public class DishPileManager : MonoBehaviour
         copy.fillClockwise = source.fillClockwise;
     }
 
-    private IEnumerator AnimateToCleanPile(RectTransform dishRect, int completedDishIndex)
+    private IEnumerator AnimateToCleanPile(CompletedDishAnimation animation)
     {
+        RectTransform dishRect = animation != null ? animation.dishRect : null;
+        int completedDishIndex = animation != null ? animation.completedDishIndex : -1;
+
         if (dishRect == null)
         {
             RegisterCleanedDishIndex(completedDishIndex);
+            RemoveCompletedDishAnimation(animation);
             yield break;
         }
 
@@ -480,7 +540,7 @@ public class DishPileManager : MonoBehaviour
 
         while (elapsed < duration && dishRect != null)
         {
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
 
             dishRect.anchoredPosition = Vector2.Lerp(startPosition, targetPosition, t);
@@ -495,5 +555,16 @@ public class DishPileManager : MonoBehaviour
         }
 
         RegisterCleanedDishIndex(completedDishIndex);
+        RemoveCompletedDishAnimation(animation);
+    }
+
+    private void RemoveCompletedDishAnimation(CompletedDishAnimation animation)
+    {
+        if (animation == null)
+        {
+            return;
+        }
+
+        activeCompletedDishAnimations.Remove(animation);
     }
 }

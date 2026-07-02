@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -37,7 +37,7 @@ public class RhythmGameEndManager : MonoBehaviour
     public float dMultiplier = 1.0f;
 
     [Header("Reward settings")]
-    [Tooltip("Minimum accuracy used when dividing — prevents divide-by-zero / enormous rewards.")]
+    [Tooltip("Minimum accuracy used when dividing ï¿½ prevents divide-by-zero / enormous rewards.")]
     [Range(0.0001f, 0.1f)] public float minAccuracy = 0.01f;
 
     [Tooltip("Global scale applied to the computed reward. Use < 1 to make rewards smaller.")]
@@ -138,8 +138,16 @@ public class RhythmGameEndManager : MonoBehaviour
         // Reset mini-score so next run starts cleanly (UI will update via events)
         MiniScoreManager.ResetScore();
     }
+    private void RestoreScaledTime()
+    {
+        Time.timeScale = 1f;
+    }
+
     public void ContinueAndExit()
     {
+        RestoreScaledTime();
+        DishPileManager.Instance?.CompleteActiveCompletedDishAnimations();
+
         // Hide results
         if (resultsPanel != null)
             resultsPanel.SetActive(false);
@@ -221,7 +229,7 @@ public class RhythmGameEndManager : MonoBehaviour
 
         // however long you want the cooldown to be
         float cooldownTime = 10f;
-        yield return new WaitForSeconds(cooldownTime);
+        yield return new WaitForSecondsRealtime(cooldownTime);
 
         isOnCooldown = false;
     }

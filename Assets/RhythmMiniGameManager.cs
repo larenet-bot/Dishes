@@ -47,6 +47,9 @@ public class RhythmMiniGameToggle : MonoBehaviour
                 selector.beatmapPanel.SetActive(true);
         }
 
+        RestoreScaledTime();
+        DishPileManager.Instance?.CompleteActiveCompletedDishAnimations();
+
         isActive = true;
         if (rhythmMiniGame != null) rhythmMiniGame.SetActive(true);
         if (mainGameUI != null) mainGameUI.SetActive(false);
@@ -62,6 +65,9 @@ public class RhythmMiniGameToggle : MonoBehaviour
     {
         if (!isActive) return;
 
+        RestoreScaledTime();
+        DishPileManager.Instance?.CompleteActiveCompletedDishAnimations();
+
         isActive = false;
         if (rhythmMiniGame != null) rhythmMiniGame.SetActive(false);
         if (mainGameUI != null) mainGameUI.SetActive(true);
@@ -76,6 +82,11 @@ public class RhythmMiniGameToggle : MonoBehaviour
         }
 
         waitingForStart = false;
+    }
+
+    private void RestoreScaledTime()
+    {
+        Time.timeScale = 1f;
     }
 
     private void StartMinigameMusic()
