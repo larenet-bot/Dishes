@@ -315,5 +315,5 @@ MonoBehaviour:
   instantWashStageCountOverride: 0
   happyEmployeesMultiplier: 10
   happyEmployeesSeconds: 20
-  wellMotivatedMultiplier: 20
+  wellMotivatedMultiplier: 5
   wellMotivatedSeconds: 10
