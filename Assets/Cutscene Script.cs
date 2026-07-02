@@ -6,6 +6,7 @@ using System.Collections;
 
 public class CutsceneManager : MonoBehaviour
 {
+
     [Header("Choice UI")]
     public GameObject choicesPanel;
     public Button[] choiceButtons;
@@ -13,11 +14,13 @@ public class CutsceneManager : MonoBehaviour
 
     [Header("Data (preferred)")]
     public CutsceneData cutsceneData;
+    
 
     [Header("UI References")]
     public TMP_Text dialogueText;
     public Button nextButton;
     public Image backgroundImage;
+    public Image fadeImage;
 
     [Header("Legacy / Fallback fields (optional)")]
     [TextArea(2, 5)]
@@ -38,10 +41,13 @@ public class CutsceneManager : MonoBehaviour
     // Track currently active background track clip so we avoid re-starting the same music
     private AudioClip activeBackgroundTrackClip = null;
 
+    // Only stop the typing coroutine instead of all coroutines
+    private Coroutine typingCoroutine;
+
     private void Start()
     {
         if (nextButton != null)
-            nextButton.onClick.AddListener(OnNextClicked);
+            nextButton.onClick.AddListener(() => StartCoroutine(OnNextClicked()));
 
         // If a CutsceneData asset is provided, adopt its defaults
         if (cutsceneData != null)
@@ -65,8 +71,14 @@ public class CutsceneManager : MonoBehaviour
 
     private void ShowLine()
     {
-        StopAllCoroutines();
-        StartCoroutine(TypeText(GetLineText(currentLine)));
+        // Stop only the typing coroutine so other coroutines keep running
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null;
+        }
+
+        typingCoroutine = StartCoroutine(TypeText(GetLineText(currentLine)));
 
         AudioClip sfx = GetLineSFX(currentLine);
         if (AudioManager.instance != null && sfx != null)
@@ -85,7 +97,7 @@ public class CutsceneManager : MonoBehaviour
             return;
 
         CutsceneLine line = cutsceneData.lines[currentLine];
-
+       
         if (line.hasChoices && line.choices != null && line.choices.Length > 0)
         {
             nextButton.gameObject.SetActive(false);
@@ -104,7 +116,8 @@ public class CutsceneManager : MonoBehaviour
                     choiceButtons[i].onClick.RemoveAllListeners();
                     choiceButtons[i].onClick.AddListener(() =>
                     {
-                        OnChoiceSelected(line.choices[choiceIndex].nextLineIndex);
+                        // Start coroutine so fade/wait logic can use yields
+                        StartCoroutine(OnChoiceSelected(line.choices[choiceIndex].nextLineIndex));
                     });
                 }
                 else
@@ -123,13 +136,39 @@ public class CutsceneManager : MonoBehaviour
         UpdateNextButtonState();
     }
 
-    private void OnChoiceSelected(int nextIndex)
+    private IEnumerator OnChoiceSelected(int nextIndex)
     {
         choicesPanel.SetActive(false);
         nextButton.gameObject.SetActive(true);
 
+        // Determine current cutscene line data (before advancing)
+        CutsceneLine currentCutLine = null;
+        if (cutsceneData != null && cutsceneData.lines != null &&
+            currentLine >= 0 && currentLine < cutsceneData.lines.Length)
+        {
+            currentCutLine = cutsceneData.lines[currentLine];
+        }
+
+        // Fade before advancing depending on mode
+        if (currentCutLine != null)
+        {
+            if (currentCutLine.fadeMode == FadeMode.FadeOutIn || currentCutLine.fadeMode == FadeMode.FadeOutOnly)
+            {
+                yield return StartCoroutine(FadeToBlack(currentCutLine.fadeDuration));
+
+                if (currentCutLine.fadeMode == FadeMode.FadeOutIn && currentCutLine.blackScreenTime > 0)
+                    yield return new WaitForSeconds(currentCutLine.blackScreenTime);
+            }
+        }
+
         currentLine = nextIndex;
         ShowLine();
+
+        // Fade back in if requested
+        if (currentCutLine != null && currentCutLine.fadeMode == FadeMode.FadeOutIn)
+        {
+            yield return StartCoroutine(FadeFromBlack(currentCutLine.fadeDuration));
+        }
     }
 
 
@@ -153,24 +192,32 @@ public class CutsceneManager : MonoBehaviour
         }
         isTyping = false;
 
+        // Typing finished; clear typingCoroutine reference
+        typingCoroutine = null;
+
         // Ensure button label/state updates once typing completes
         UpdateNextButtonState();
     }
 
-    private void OnNextClicked()
+    private IEnumerator OnNextClicked()
     {
         // If currently typing, stop typing and reveal the full line (still allow this even on last line).
         if (isTyping)
         {
-            StopAllCoroutines();
+            if (typingCoroutine != null)
+            {
+                StopCoroutine(typingCoroutine);
+                typingCoroutine = null;
+            }
+
             dialogueText.text = GetLineText(currentLine);
             isTyping = false;
             UpdateNextButtonState();
-            return;
+            yield break;
         }
 
         int total = GetTotalLines();
-        if (total == 0) return;
+        if (total == 0) yield break;
 
         // If the current line has choices, Next should do nothing.
         if (cutsceneData != null &&
@@ -179,7 +226,7 @@ public class CutsceneManager : MonoBehaviour
             currentLine < cutsceneData.lines.Length &&
             cutsceneData.lines[currentLine].hasChoices)
         {
-            return;
+            yield break;
         }
 
         // Resolve the next line index (respect override if provided)
@@ -200,12 +247,28 @@ public class CutsceneManager : MonoBehaviour
         if (nextIndex >= total)
         {
             StartCoroutine(EndCutscene());
-            return;
+            yield break;
         }
 
-        // Otherwise advance to the resolved next index.
+        // Fade if requested (match choice behavior)
+        if (currentCutLine != null)
+        {
+            if (currentCutLine.fadeMode == FadeMode.FadeOutIn || currentCutLine.fadeMode == FadeMode.FadeOutOnly)
+            {
+                yield return StartCoroutine(FadeToBlack(currentCutLine.fadeDuration));
+
+                if (currentCutLine.fadeMode == FadeMode.FadeOutIn && currentCutLine.blackScreenTime > 0)
+                    yield return new WaitForSeconds(currentCutLine.blackScreenTime);
+            }
+        }
+
         currentLine = nextIndex;
         ShowLine();
+
+        if (currentCutLine != null && currentCutLine.fadeMode == FadeMode.FadeOutIn)
+        {
+            yield return StartCoroutine(FadeFromBlack(currentCutLine.fadeDuration));
+        }
     }
 
     private void UpdateBackground()
@@ -343,9 +406,55 @@ public class CutsceneManager : MonoBehaviour
 
         bool isLastLine = (currentLine >= total - 1);
 
+        if (btnText != null) btnText.SetText(isLastLine ? "Finish" : "Next");
 
         // Allow clicking to finish typing; otherwise keep it interactable so user can advance or finish.
         nextButton.interactable = true;
+    }
+    private IEnumerator FadeToBlack(float duration)
+    {
+        if (fadeImage == null)
+            yield break;
+
+        Color c = fadeImage.color;
+
+        float t = 0f;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+
+            c.a = Mathf.Lerp(0f, 1f, t / duration);
+            fadeImage.color = c;
+
+            yield return null;
+        }
+
+        c.a = 1f;
+        fadeImage.color = c;
+    }
+
+    private IEnumerator FadeFromBlack(float duration)
+    {
+        if (fadeImage == null)
+            yield break;
+
+        Color c = fadeImage.color;
+
+        float t = 0f;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+
+            c.a = Mathf.Lerp(1f, 0f, t / duration);
+            fadeImage.color = c;
+
+            yield return null;
+        }
+
+        c.a = 0f;
+        fadeImage.color = c;
     }
 }
 

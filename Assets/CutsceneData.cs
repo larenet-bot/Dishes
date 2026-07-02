@@ -15,6 +15,13 @@ public class CutsceneData : ScriptableObject
     public Track backgroundTrack;
 }
 
+public enum FadeMode
+{
+    None = 0,
+    FadeOutIn = 1,   // fade to black, optional hold, then fade back in after advancing
+    FadeOutOnly = 2, // fade to black and remain black (no fade back in)
+}
+
 [System.Serializable]
 public class DialogueChoice
 {
@@ -34,28 +41,28 @@ public class CutsceneLine
     [TextArea(2, 5)]
     public string text;
 
-    [Tooltip("Optional sound to play when this line is shown")]
     public AudioClip sfx;
-
-    [Tooltip("Optional background sprite to switch to for this line. Leave null to keep previous.")]
     public Sprite background;
-
-    [Tooltip("Optional background track to play while this line is active. Leave null to keep previous.")]
     public Track backgroundTrack;
-
-    [Tooltip("Optional additional pause after the line finishes (seconds).")]
     public float postDelay = 0f;
 
+    [Header("Screen Fade")]
+    [Tooltip("Which fade (if any) should occur before advancing to the next line.")]
+    public FadeMode fadeMode = FadeMode.None;
+
+    [Tooltip("How long the fade takes.")]
+    public float fadeDuration = 1f;
+
+    [Tooltip("How long to stay black before fading back in. Only applied for FadeOutIn.")]
+    public float blackScreenTime = 0f;
+
     [Header("Branching")]
-    [Tooltip("Branch id for this line. Use 0 for main/default branch. Lines in other branches will not affect background/legacy branch logic unless the manager's current branch matches.")]
     public int branchId = 0;
 
     [Header("Choices (Optional)")]
     public bool hasChoices;
     public DialogueChoice[] choices;
 
-
     [Header("Flow Control")]
-    [Tooltip("If >= 0, cutscene will jump to this index instead of going to the next line.")]
     public int overrideNextLineIndex = -1;
 }
