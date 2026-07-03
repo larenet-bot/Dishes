@@ -1,0 +1,1183 @@
+fileFormatVersion: 2
+guid: df797ab6e335b5f4383918aff57ab5b0
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7553694266556416647
+    second: seasponge_0
+  - first:
+      213: -3582523611405026426
+    second: seasponge_1
+  - first:
+      213: -2444789792900611598
+    second: seasponge_2
+  - first:
+      213: -4551796872975929519
+    second: seasponge_3
+  - first:
+      213: 792577193173979487
+    second: seasponge_4
+  - first:
+      213: 605666411585023607
+    second: seasponge_5
+  - first:
+      213: -4140751958963863110
+    second: seasponge_6
+  - first:
+      213: -5601071644982392842
+    second: seasponge_7
+  - first:
+      213: 9194265948504632148
+    second: seasponge_8
+  - first:
+      213: 1514153157946767889
+    second: seasponge_9
+  - first:
+      213: -3778685084968898877
+    second: seasponge_10
+  - first:
+      213: -667817100522007926
+    second: seasponge_11
+  - first:
+      213: -2365516894899149820
+    second: seasponge_12
+  - first:
+      213: -1925311250175469474
+    second: seasponge_13
+  - first:
+      213: -3372454367575587557
+    second: seasponge_14
+  - first:
+      213: -4020083072520787807
+    second: seasponge_15
+  - first:
+      213: -2836179823991775491
+    second: seasponge_16
+  - first:
+      213: 9203647205551699054
+    second: seasponge_17
+  - first:
+      213: 6994974067861825788
+    second: seasponge_18
+  - first:
+      213: 5854370329382288288
+    second: seasponge_19
+  - first:
+      213: 5001362635866336399
+    second: seasponge_20
+  - first:
+      213: 282155614520253512
+    second: seasponge_21
+  - first:
+      213: 3406575337166794849
+    second: seasponge_22
+  - first:
+      213: 3858276511450894074
+    second: seasponge_23
+  - first:
+      213: -4421651019059527593
+    second: seasponge_24
+  - first:
+      213: -2009808383650005478
+    second: seasponge_25
+  - first:
+      213: 6177676565485973229
+    second: seasponge_26
+  - first:
+      213: 4278340252872339718
+    second: seasponge_27
+  - first:
+      213: -7998245396508150035
+    second: seasponge_28
+  - first:
+      213: -8710894773176523314
+    second: seasponge_29
+  - first:
+      213: -1012421435844401426
+    second: seasponge_30
+  - first:
+      213: 591894705096821210
+    second: seasponge_31
+  - first:
+      213: -3893984175281114537
+    second: seasponge_32
+  - first:
+      213: -7051731950313031509
+    second: seasponge_33
+  - first:
+      213: 8311330501963974239
+    second: seasponge_34
+  - first:
+      213: 8799712013716997231
+    second: seasponge_35
+  - first:
+      213: -7784240328749068107
+    second: seasponge_36
+  - first:
+      213: 6451143889807418509
+    second: seasponge_37
+  - first:
+      213: 7479783861390399069
+    second: seasponge_38
+  - first:
+      213: -3649416966697189346
+    second: seasponge_39
+  - first:
+      213: -2890791318287498297
+    second: seasponge_40
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: seasponge_0
+      rect:
+        serializedVersion: 2
+        x: 1886
+        y: 4627
+        width: 14
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 782000c0aec14d860800000000000000
+      internalID: 7553694266556416647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_1
+      rect:
+        serializedVersion: 2
+        x: 1929
+        y: 4632
+        width: 72
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68bf0c6a1c1584ec0800000000000000
+      internalID: -3582523611405026426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_2
+      rect:
+        serializedVersion: 2
+        x: 2100
+        y: 4630
+        width: 30
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f188abe2ac521ed0800000000000000
+      internalID: -2444789792900611598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_3
+      rect:
+        serializedVersion: 2
+        x: 1748
+        y: 4593
+        width: 9
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15f29884cd4c4d0c0800000000000000
+      internalID: -4551796872975929519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_4
+      rect:
+        serializedVersion: 2
+        x: 1754
+        y: 4608
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f51163802cccffa00800000000000000
+      internalID: 792577193173979487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_5
+      rect:
+        serializedVersion: 2
+        x: 1788
+        y: 4584
+        width: 33
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77e29e27462c76800800000000000000
+      internalID: 605666411585023607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_6
+      rect:
+        serializedVersion: 2
+        x: 2412
+        y: 4559
+        width: 26
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab1c4fe28081986c0800000000000000
+      internalID: -4140751958963863110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_7
+      rect:
+        serializedVersion: 2
+        x: 1728
+        y: 4556
+        width: 21
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f7cf4fb30ff442b0800000000000000
+      internalID: -5601071644982392842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_8
+      rect:
+        serializedVersion: 2
+        x: 1731
+        y: 4581
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45ba617ba28989f70800000000000000
+      internalID: 9194265948504632148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_9
+      rect:
+        serializedVersion: 2
+        x: 1750
+        y: 4564
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11af3fa564a530510800000000000000
+      internalID: 1514153157946767889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_10
+      rect:
+        serializedVersion: 2
+        x: 1756
+        y: 4573
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ceac508fe96f8bc0800000000000000
+      internalID: -3778685084968898877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_11
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 488
+        width: 4328
+        height: 4053
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a825474a2ef6bb6f0800000000000000
+      internalID: -667817100522007926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_12
+      rect:
+        serializedVersion: 2
+        x: 2165
+        y: 4491
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 404e959caeefb2fd0800000000000000
+      internalID: -2365516894899149820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_13
+      rect:
+        serializedVersion: 2
+        x: 2255
+        y: 4471
+        width: 16
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e585a336e9be745e0800000000000000
+      internalID: -1925311250175469474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_14
+      rect:
+        serializedVersion: 2
+        x: 2267
+        y: 4473
+        width: 28
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b154177ee92a231d0800000000000000
+      internalID: -3372454367575587557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_15
+      rect:
+        serializedVersion: 2
+        x: 2337
+        y: 4485
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a866deaebbc538c0800000000000000
+      internalID: -4020083072520787807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_16
+      rect:
+        serializedVersion: 2
+        x: 2345
+        y: 4471
+        width: 11
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfe17df0a7dd3a8d0800000000000000
+      internalID: -2836179823991775491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_17
+      rect:
+        serializedVersion: 2
+        x: 2356
+        y: 4488
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e64fce4de5ce9bf70800000000000000
+      internalID: 9203647205551699054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_18
+      rect:
+        serializedVersion: 2
+        x: 2362
+        y: 4490
+        width: 9
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf829ff8ad3231160800000000000000
+      internalID: 6994974067861825788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_19
+      rect:
+        serializedVersion: 2
+        x: 2370
+        y: 4477
+        width: 9
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0abfa6afbc6ee3150800000000000000
+      internalID: 5854370329382288288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_20
+      rect:
+        serializedVersion: 2
+        x: 2412
+        y: 4493
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8c69b7a1d8686540800000000000000
+      internalID: 5001362635866336399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_21
+      rect:
+        serializedVersion: 2
+        x: 2120
+        y: 4469
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84c9cd6590b6ae300800000000000000
+      internalID: 282155614520253512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_22
+      rect:
+        serializedVersion: 2
+        x: 2156
+        y: 4470
+        width: 9
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 160fe686836964f20800000000000000
+      internalID: 3406575337166794849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_23
+      rect:
+        serializedVersion: 2
+        x: 2171
+        y: 4476
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afe834e8b0a5b8530800000000000000
+      internalID: 3858276511450894074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_24
+      rect:
+        serializedVersion: 2
+        x: 2197
+        y: 4467
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 750863833d323a2c0800000000000000
+      internalID: -4421651019059527593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_25
+      rect:
+        serializedVersion: 2
+        x: 2355
+        y: 4462
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1e70f96ce9bb14e0800000000000000
+      internalID: -2009808383650005478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_26
+      rect:
+        serializedVersion: 2
+        x: 2482
+        y: 4468
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: deeeb070b148bb550800000000000000
+      internalID: 6177676565485973229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_27
+      rect:
+        serializedVersion: 2
+        x: 2495
+        y: 4461
+        width: 8
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 601f5b8dac7bf5b30800000000000000
+      internalID: 4278340252872339718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_28
+      rect:
+        serializedVersion: 2
+        x: 2118
+        y: 4466
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de67aba3036800190800000000000000
+      internalID: -7998245396508150035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_29
+      rect:
+        serializedVersion: 2
+        x: 2213
+        y: 4454
+        width: 8
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec5a1092b5fac1780800000000000000
+      internalID: -8710894773176523314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_30
+      rect:
+        serializedVersion: 2
+        x: 2226
+        y: 4457
+        width: 11
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee6e081711823f1f0800000000000000
+      internalID: -1012421435844401426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_31
+      rect:
+        serializedVersion: 2
+        x: 2280
+        y: 4464
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad90bb92915d63800800000000000000
+      internalID: 591894705096821210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_32
+      rect:
+        serializedVersion: 2
+        x: 2336
+        y: 4468
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7527067160ac5f9c0800000000000000
+      internalID: -3893984175281114537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_33
+      rect:
+        serializedVersion: 2
+        x: 2343
+        y: 4457
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba8b1522727332e90800000000000000
+      internalID: -7051731950313031509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_34
+      rect:
+        serializedVersion: 2
+        x: 2348
+        y: 4466
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f568e646e07c75370800000000000000
+      internalID: 8311330501963974239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_35
+      rect:
+        serializedVersion: 2
+        x: 2375
+        y: 4465
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f64c65f147bde1a70800000000000000
+      internalID: 8799712013716997231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_36
+      rect:
+        serializedVersion: 2
+        x: 2397
+        y: 4467
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b054a6e9a2d8f390800000000000000
+      internalID: -7784240328749068107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_37
+      rect:
+        serializedVersion: 2
+        x: 2398
+        y: 4460
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8427ea2031178950800000000000000
+      internalID: 6451143889807418509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_38
+      rect:
+        serializedVersion: 2
+        x: 2502
+        y: 4452
+        width: 7
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d56dfd6dac78dc760800000000000000
+      internalID: 7479783861390399069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_39
+      rect:
+        serializedVersion: 2
+        x: 2362
+        y: 4457
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e100bbeaa9aaa5dc0800000000000000
+      internalID: -3649416966697189346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seasponge_40
+      rect:
+        serializedVersion: 2
+        x: 2481
+        y: 4451
+        width: 9
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c3c0b1bc98d1e7d0800000000000000
+      internalID: -2890791318287498297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      seasponge_0: 7553694266556416647
+      seasponge_1: -3582523611405026426
+      seasponge_10: -3778685084968898877
+      seasponge_11: -667817100522007926
+      seasponge_12: -2365516894899149820
+      seasponge_13: -1925311250175469474
+      seasponge_14: -3372454367575587557
+      seasponge_15: -4020083072520787807
+      seasponge_16: -2836179823991775491
+      seasponge_17: 9203647205551699054
+      seasponge_18: 6994974067861825788
+      seasponge_19: 5854370329382288288
+      seasponge_2: -2444789792900611598
+      seasponge_20: 5001362635866336399
+      seasponge_21: 282155614520253512
+      seasponge_22: 3406575337166794849
+      seasponge_23: 3858276511450894074
+      seasponge_24: -4421651019059527593
+      seasponge_25: -2009808383650005478
+      seasponge_26: 6177676565485973229
+      seasponge_27: 4278340252872339718
+      seasponge_28: -7998245396508150035
+      seasponge_29: -8710894773176523314
+      seasponge_3: -4551796872975929519
+      seasponge_30: -1012421435844401426
+      seasponge_31: 591894705096821210
+      seasponge_32: -3893984175281114537
+      seasponge_33: -7051731950313031509
+      seasponge_34: 8311330501963974239
+      seasponge_35: 8799712013716997231
+      seasponge_36: -7784240328749068107
+      seasponge_37: 6451143889807418509
+      seasponge_38: 7479783861390399069
+      seasponge_39: -3649416966697189346
+      seasponge_4: 792577193173979487
+      seasponge_40: -2890791318287498297
+      seasponge_5: 605666411585023607
+      seasponge_6: -4140751958963863110
+      seasponge_7: -5601071644982392842
+      seasponge_8: 9194265948504632148
+      seasponge_9: 1514153157946767889
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,7709 @@
+fileFormatVersion: 2
+guid: f3856858a157045419a7bc0f9f01dff4
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7571338919346670808
+    second: sandpaper_0
+  - first:
+      213: -422516412081353888
+    second: sandpaper_1
+  - first:
+      213: 5333335469042071935
+    second: sandpaper_2
+  - first:
+      213: -5296189407395293539
+    second: sandpaper_3
+  - first:
+      213: -1789820096973584067
+    second: sandpaper_4
+  - first:
+      213: 2850125608561458238
+    second: sandpaper_5
+  - first:
+      213: -7813847410804162727
+    second: sandpaper_6
+  - first:
+      213: -6294138262397791975
+    second: sandpaper_7
+  - first:
+      213: -1188238198877856856
+    second: sandpaper_8
+  - first:
+      213: -8266644377332602485
+    second: sandpaper_9
+  - first:
+      213: -1436696188627669873
+    second: sandpaper_10
+  - first:
+      213: 4564299079032033861
+    second: sandpaper_11
+  - first:
+      213: -3515816921080987432
+    second: sandpaper_12
+  - first:
+      213: -1522855716100969993
+    second: sandpaper_13
+  - first:
+      213: -7266064620811212531
+    second: sandpaper_14
+  - first:
+      213: -6826625457364729415
+    second: sandpaper_15
+  - first:
+      213: 3475272656046190417
+    second: sandpaper_16
+  - first:
+      213: -4343973293619424029
+    second: sandpaper_17
+  - first:
+      213: -99479439487686609
+    second: sandpaper_18
+  - first:
+      213: -2379642928706610630
+    second: sandpaper_19
+  - first:
+      213: -1643394185669008433
+    second: sandpaper_20
+  - first:
+      213: -472283290920529712
+    second: sandpaper_21
+  - first:
+      213: 3526618929040410632
+    second: sandpaper_22
+  - first:
+      213: -1578689804715148339
+    second: sandpaper_23
+  - first:
+      213: -7729861353539348474
+    second: sandpaper_24
+  - first:
+      213: -5765492090743013627
+    second: sandpaper_25
+  - first:
+      213: 1365644352653855066
+    second: sandpaper_26
+  - first:
+      213: 1483092435318536056
+    second: sandpaper_27
+  - first:
+      213: 6093385660786380683
+    second: sandpaper_28
+  - first:
+      213: -3935585609977334586
+    second: sandpaper_29
+  - first:
+      213: -5788624632104970863
+    second: sandpaper_30
+  - first:
+      213: -4686377067356327663
+    second: sandpaper_31
+  - first:
+      213: 4448463929739352807
+    second: sandpaper_32
+  - first:
+      213: 8076232190055363722
+    second: sandpaper_33
+  - first:
+      213: -8781025780397292695
+    second: sandpaper_34
+  - first:
+      213: -1664911550459851833
+    second: sandpaper_35
+  - first:
+      213: -3976217802761515331
+    second: sandpaper_36
+  - first:
+      213: -7236744246939530562
+    second: sandpaper_37
+  - first:
+      213: 4884013641031014674
+    second: sandpaper_38
+  - first:
+      213: 222976786049382591
+    second: sandpaper_39
+  - first:
+      213: -8021819282641939119
+    second: sandpaper_40
+  - first:
+      213: 898906161849248269
+    second: sandpaper_41
+  - first:
+      213: 851891431822318383
+    second: sandpaper_42
+  - first:
+      213: -6755801611238755874
+    second: sandpaper_43
+  - first:
+      213: 3824337396040823995
+    second: sandpaper_44
+  - first:
+      213: -3617776706719235501
+    second: sandpaper_45
+  - first:
+      213: 2401577299433151460
+    second: sandpaper_46
+  - first:
+      213: -376620409231867624
+    second: sandpaper_47
+  - first:
+      213: -5834370178032908574
+    second: sandpaper_48
+  - first:
+      213: 5229127999425480253
+    second: sandpaper_49
+  - first:
+      213: -1980301302653042856
+    second: sandpaper_50
+  - first:
+      213: -4063501260056943020
+    second: sandpaper_51
+  - first:
+      213: 3984422486528457437
+    second: sandpaper_52
+  - first:
+      213: -1324340015433210365
+    second: sandpaper_53
+  - first:
+      213: 2842992168723518999
+    second: sandpaper_54
+  - first:
+      213: -8708613315895583284
+    second: sandpaper_55
+  - first:
+      213: -5418637887707745407
+    second: sandpaper_56
+  - first:
+      213: 2265606466586433994
+    second: sandpaper_57
+  - first:
+      213: 1140701563574329214
+    second: sandpaper_58
+  - first:
+      213: -4575877821210298580
+    second: sandpaper_59
+  - first:
+      213: 6153673105586016059
+    second: sandpaper_60
+  - first:
+      213: 4415763562943089001
+    second: sandpaper_61
+  - first:
+      213: 3073836505976219932
+    second: sandpaper_62
+  - first:
+      213: -8415028530533222146
+    second: sandpaper_63
+  - first:
+      213: 5831239591794179391
+    second: sandpaper_64
+  - first:
+      213: -3300524623452824699
+    second: sandpaper_65
+  - first:
+      213: 2829555905667193491
+    second: sandpaper_66
+  - first:
+      213: 8164434549033284613
+    second: sandpaper_67
+  - first:
+      213: -2239286307516006374
+    second: sandpaper_68
+  - first:
+      213: -9094417703753668156
+    second: sandpaper_69
+  - first:
+      213: 5389351205049755372
+    second: sandpaper_70
+  - first:
+      213: -5118088564214803302
+    second: sandpaper_71
+  - first:
+      213: 6632087626693844508
+    second: sandpaper_72
+  - first:
+      213: -5837630801312878584
+    second: sandpaper_73
+  - first:
+      213: -5876002716675114658
+    second: sandpaper_74
+  - first:
+      213: -4461229392552244797
+    second: sandpaper_75
+  - first:
+      213: -7728266576187269687
+    second: sandpaper_76
+  - first:
+      213: -6273549343644258530
+    second: sandpaper_77
+  - first:
+      213: -4204417312100422477
+    second: sandpaper_78
+  - first:
+      213: -4970452559980747627
+    second: sandpaper_79
+  - first:
+      213: -7924507720746049389
+    second: sandpaper_80
+  - first:
+      213: -5238252097625340778
+    second: sandpaper_81
+  - first:
+      213: -681884228562512497
+    second: sandpaper_82
+  - first:
+      213: -4605553454602977238
+    second: sandpaper_83
+  - first:
+      213: 1912570554928403646
+    second: sandpaper_84
+  - first:
+      213: -4951787104247918533
+    second: sandpaper_85
+  - first:
+      213: 7827161733055113679
+    second: sandpaper_86
+  - first:
+      213: 339512272840168591
+    second: sandpaper_87
+  - first:
+      213: -2349371515680090281
+    second: sandpaper_88
+  - first:
+      213: 981477491004411350
+    second: sandpaper_89
+  - first:
+      213: 1672681697058299302
+    second: sandpaper_90
+  - first:
+      213: 7895241258940259679
+    second: sandpaper_91
+  - first:
+      213: 1279384903932074820
+    second: sandpaper_92
+  - first:
+      213: 4298404390475554566
+    second: sandpaper_93
+  - first:
+      213: 5627672509133062791
+    second: sandpaper_94
+  - first:
+      213: -6589371771799154270
+    second: sandpaper_95
+  - first:
+      213: 379260189174708436
+    second: sandpaper_96
+  - first:
+      213: 6356463119940493289
+    second: sandpaper_97
+  - first:
+      213: -5125906894138629516
+    second: sandpaper_98
+  - first:
+      213: 2246734270172244380
+    second: sandpaper_99
+  - first:
+      213: 3037670084360822597
+    second: sandpaper_100
+  - first:
+      213: 6798526029198060345
+    second: sandpaper_101
+  - first:
+      213: -5516164638247797172
+    second: sandpaper_102
+  - first:
+      213: 1686005465098954550
+    second: sandpaper_103
+  - first:
+      213: 1561541709538200923
+    second: sandpaper_104
+  - first:
+      213: 1201156498367808655
+    second: sandpaper_105
+  - first:
+      213: 602262921793564827
+    second: sandpaper_106
+  - first:
+      213: 5563959887680428622
+    second: sandpaper_107
+  - first:
+      213: -7546946550428207830
+    second: sandpaper_108
+  - first:
+      213: 2170158397315009699
+    second: sandpaper_109
+  - first:
+      213: -7777089366600015908
+    second: sandpaper_110
+  - first:
+      213: 1164006208681454910
+    second: sandpaper_111
+  - first:
+      213: 3389900391116542429
+    second: sandpaper_112
+  - first:
+      213: -8190091258359311531
+    second: sandpaper_113
+  - first:
+      213: -8645532946264025418
+    second: sandpaper_114
+  - first:
+      213: 2829037080100801162
+    second: sandpaper_115
+  - first:
+      213: -23780759827939364
+    second: sandpaper_116
+  - first:
+      213: -402959101198808171
+    second: sandpaper_117
+  - first:
+      213: 6635596721785041754
+    second: sandpaper_118
+  - first:
+      213: -2118151099110804617
+    second: sandpaper_119
+  - first:
+      213: -8892984505502909995
+    second: sandpaper_120
+  - first:
+      213: -6735720300520071034
+    second: sandpaper_121
+  - first:
+      213: -2448513814220683012
+    second: sandpaper_122
+  - first:
+      213: -4341154453798379084
+    second: sandpaper_123
+  - first:
+      213: -7019038314761950835
+    second: sandpaper_124
+  - first:
+      213: -8278172074926296715
+    second: sandpaper_125
+  - first:
+      213: 2787067488434177601
+    second: sandpaper_126
+  - first:
+      213: -1618119136264858865
+    second: sandpaper_127
+  - first:
+      213: -4864897693830696523
+    second: sandpaper_128
+  - first:
+      213: 4549659519280953764
+    second: sandpaper_129
+  - first:
+      213: -343708305918178823
+    second: sandpaper_130
+  - first:
+      213: -6971231503122332532
+    second: sandpaper_131
+  - first:
+      213: 5199623487828277075
+    second: sandpaper_132
+  - first:
+      213: -1160148748533058020
+    second: sandpaper_133
+  - first:
+      213: 4476758536937610807
+    second: sandpaper_134
+  - first:
+      213: -8873940580399019599
+    second: sandpaper_135
+  - first:
+      213: -5851280020853142973
+    second: sandpaper_136
+  - first:
+      213: -9016220799572286880
+    second: sandpaper_137
+  - first:
+      213: -3623609468389719051
+    second: sandpaper_138
+  - first:
+      213: -6237742301622966270
+    second: sandpaper_139
+  - first:
+      213: 8030480509237191742
+    second: sandpaper_140
+  - first:
+      213: 170676687480457383
+    second: sandpaper_141
+  - first:
+      213: 8007434608375867913
+    second: sandpaper_142
+  - first:
+      213: 1286956873778981552
+    second: sandpaper_143
+  - first:
+      213: -3703060803433284374
+    second: sandpaper_144
+  - first:
+      213: -1372062210012494560
+    second: sandpaper_145
+  - first:
+      213: -7580742868882089451
+    second: sandpaper_146
+  - first:
+      213: 4233046790251195114
+    second: sandpaper_147
+  - first:
+      213: 7456611393734390555
+    second: sandpaper_148
+  - first:
+      213: -6108415840396601062
+    second: sandpaper_149
+  - first:
+      213: 1594159778363801348
+    second: sandpaper_150
+  - first:
+      213: -7734550454407460947
+    second: sandpaper_151
+  - first:
+      213: -265045342256665516
+    second: sandpaper_152
+  - first:
+      213: -4306131354258154827
+    second: sandpaper_153
+  - first:
+      213: -8885991394237859652
+    second: sandpaper_154
+  - first:
+      213: -1482213921610538104
+    second: sandpaper_155
+  - first:
+      213: -4752585996006764682
+    second: sandpaper_156
+  - first:
+      213: 6740060146294526837
+    second: sandpaper_157
+  - first:
+      213: 4760689747476806940
+    second: sandpaper_158
+  - first:
+      213: -5058288309078528941
+    second: sandpaper_159
+  - first:
+      213: -5760486025050390314
+    second: sandpaper_160
+  - first:
+      213: -388045244125627022
+    second: sandpaper_161
+  - first:
+      213: 1338935486092996608
+    second: sandpaper_162
+  - first:
+      213: 1116004406648460659
+    second: sandpaper_163
+  - first:
+      213: 3436934265847408120
+    second: sandpaper_164
+  - first:
+      213: 1368096883928167066
+    second: sandpaper_165
+  - first:
+      213: -8516745776806884958
+    second: sandpaper_166
+  - first:
+      213: -2774212521560871578
+    second: sandpaper_167
+  - first:
+      213: -9013678758812310845
+    second: sandpaper_168
+  - first:
+      213: -5446922461238304158
+    second: sandpaper_169
+  - first:
+      213: 2857144180389563439
+    second: sandpaper_170
+  - first:
+      213: -5981108403558383887
+    second: sandpaper_171
+  - first:
+      213: 7341325471653476209
+    second: sandpaper_172
+  - first:
+      213: -765260894405787495
+    second: sandpaper_173
+  - first:
+      213: 4980085160238292185
+    second: sandpaper_174
+  - first:
+      213: 7978331586197054225
+    second: sandpaper_175
+  - first:
+      213: 4071709546495167502
+    second: sandpaper_176
+  - first:
+      213: -3148225524569480208
+    second: sandpaper_177
+  - first:
+      213: 4437938842485163610
+    second: sandpaper_178
+  - first:
+      213: 268285835014118982
+    second: sandpaper_179
+  - first:
+      213: 2715234472148455477
+    second: sandpaper_180
+  - first:
+      213: -4180468580433130674
+    second: sandpaper_181
+  - first:
+      213: 4329747091119061139
+    second: sandpaper_182
+  - first:
+      213: 1541430079502926596
+    second: sandpaper_183
+  - first:
+      213: 7504134230269891922
+    second: sandpaper_184
+  - first:
+      213: -1388675711853275402
+    second: sandpaper_185
+  - first:
+      213: -7442390294895143441
+    second: sandpaper_186
+  - first:
+      213: -3370925700605515119
+    second: sandpaper_187
+  - first:
+      213: 8062916399326235475
+    second: sandpaper_188
+  - first:
+      213: 3111413916765751518
+    second: sandpaper_189
+  - first:
+      213: 2389754915377449709
+    second: sandpaper_190
+  - first:
+      213: 6598894026763164667
+    second: sandpaper_191
+  - first:
+      213: 4269814679928608171
+    second: sandpaper_192
+  - first:
+      213: 4614208042978083385
+    second: sandpaper_193
+  - first:
+      213: -9138802159949181341
+    second: sandpaper_194
+  - first:
+      213: -3076036059368717844
+    second: sandpaper_195
+  - first:
+      213: 2617372510582968078
+    second: sandpaper_196
+  - first:
+      213: 562012348336467732
+    second: sandpaper_197
+  - first:
+      213: 3040859151140833782
+    second: sandpaper_198
+  - first:
+      213: 4218612186961906975
+    second: sandpaper_199
+  - first:
+      213: -5502385404157589898
+    second: sandpaper_200
+  - first:
+      213: -8887459994964711809
+    second: sandpaper_201
+  - first:
+      213: -429559040046303114
+    second: sandpaper_202
+  - first:
+      213: -5005026103277563389
+    second: sandpaper_203
+  - first:
+      213: -1050279334291233376
+    second: sandpaper_204
+  - first:
+      213: 5843527731267144123
+    second: sandpaper_205
+  - first:
+      213: -826902530567941997
+    second: sandpaper_206
+  - first:
+      213: 5103736126961923664
+    second: sandpaper_207
+  - first:
+      213: 5125523084245939310
+    second: sandpaper_208
+  - first:
+      213: 7238045019720036314
+    second: sandpaper_209
+  - first:
+      213: -4431606805162200171
+    second: sandpaper_210
+  - first:
+      213: -1868658720672900231
+    second: sandpaper_211
+  - first:
+      213: -3056122116613937981
+    second: sandpaper_212
+  - first:
+      213: -6531766831666144546
+    second: sandpaper_213
+  - first:
+      213: 1533111138557592534
+    second: sandpaper_214
+  - first:
+      213: 530276055711662788
+    second: sandpaper_215
+  - first:
+      213: 1499297630633576033
+    second: sandpaper_216
+  - first:
+      213: 2476154901361351052
+    second: sandpaper_217
+  - first:
+      213: -7316075613389132417
+    second: sandpaper_218
+  - first:
+      213: -8140665035886323931
+    second: sandpaper_219
+  - first:
+      213: -6550411038315500371
+    second: sandpaper_220
+  - first:
+      213: -5357696442725016995
+    second: sandpaper_221
+  - first:
+      213: 3396587509102023708
+    second: sandpaper_222
+  - first:
+      213: -1766031830276655662
+    second: sandpaper_223
+  - first:
+      213: -1387584921129561916
+    second: sandpaper_224
+  - first:
+      213: -6732003549164072899
+    second: sandpaper_225
+  - first:
+      213: 2546097442533604592
+    second: sandpaper_226
+  - first:
+      213: -6759675675911443386
+    second: sandpaper_227
+  - first:
+      213: -4885361348107469499
+    second: sandpaper_228
+  - first:
+      213: -605371513629225212
+    second: sandpaper_229
+  - first:
+      213: -4450448958507504835
+    second: sandpaper_230
+  - first:
+      213: -5651922813884389613
+    second: sandpaper_231
+  - first:
+      213: 8383645897648301600
+    second: sandpaper_232
+  - first:
+      213: -1615289586627168556
+    second: sandpaper_233
+  - first:
+      213: 3745652944856841601
+    second: sandpaper_234
+  - first:
+      213: -8155455238498800059
+    second: sandpaper_235
+  - first:
+      213: 3720891762484839777
+    second: sandpaper_236
+  - first:
+      213: 1765509801701775540
+    second: sandpaper_237
+  - first:
+      213: 963525107625606980
+    second: sandpaper_238
+  - first:
+      213: 5549742203419669754
+    second: sandpaper_239
+  - first:
+      213: -3831613972316676304
+    second: sandpaper_240
+  - first:
+      213: -6730254094352251608
+    second: sandpaper_241
+  - first:
+      213: 1301053818060899849
+    second: sandpaper_242
+  - first:
+      213: 8544474219552169381
+    second: sandpaper_243
+  - first:
+      213: 5877830349575890007
+    second: sandpaper_244
+  - first:
+      213: -5937761092333134728
+    second: sandpaper_245
+  - first:
+      213: 5156569579031821765
+    second: sandpaper_246
+  - first:
+      213: 3812913714353984875
+    second: sandpaper_247
+  - first:
+      213: 5677351398399606795
+    second: sandpaper_248
+  - first:
+      213: 4634017842416620912
+    second: sandpaper_249
+  - first:
+      213: 6936471990461057790
+    second: sandpaper_250
+  - first:
+      213: -6631003028874669433
+    second: sandpaper_251
+  - first:
+      213: 4238702448164084529
+    second: sandpaper_252
+  - first:
+      213: 1837202021794193718
+    second: sandpaper_253
+  - first:
+      213: -1496683665876292436
+    second: sandpaper_254
+  - first:
+      213: -8003578797103564431
+    second: sandpaper_255
+  - first:
+      213: 7854469909794983224
+    second: sandpaper_256
+  - first:
+      213: 6286631843949499048
+    second: sandpaper_257
+  - first:
+      213: -8141837629095182338
+    second: sandpaper_258
+  - first:
+      213: -7740664633781547633
+    second: sandpaper_259
+  - first:
+      213: 2405107898384884571
+    second: sandpaper_260
+  - first:
+      213: -4539364303265000957
+    second: sandpaper_261
+  - first:
+      213: -4305057008117269156
+    second: sandpaper_262
+  - first:
+      213: -279648665745267253
+    second: sandpaper_263
+  - first:
+      213: 4100343846710484020
+    second: sandpaper_264
+  - first:
+      213: 5935731372194374453
+    second: sandpaper_265
+  - first:
+      213: -3536028153633975480
+    second: sandpaper_266
+  - first:
+      213: 2433350661140705533
+    second: sandpaper_267
+  - first:
+      213: 1216221970274186915
+    second: sandpaper_268
+  - first:
+      213: 1534862553949863832
+    second: sandpaper_269
+  - first:
+      213: 1400185294772835730
+    second: sandpaper_270
+  - first:
+      213: 1550742176212273106
+    second: sandpaper_271
+  - first:
+      213: 8599000598216904490
+    second: sandpaper_272
+  - first:
+      213: 7505309524909195899
+    second: sandpaper_273
+  - first:
+      213: 1987811842608587999
+    second: sandpaper_274
+  - first:
+      213: 6969933370412538415
+    second: sandpaper_275
+  - first:
+      213: -6114592719805210241
+    second: sandpaper_276
+  - first:
+      213: -3240151915362146981
+    second: sandpaper_277
+  - first:
+      213: -8264451449161285398
+    second: sandpaper_278
+  - first:
+      213: 4534725194180444308
+    second: sandpaper_279
+  - first:
+      213: -4247520992069401851
+    second: sandpaper_280
+  - first:
+      213: -6129579941015516903
+    second: sandpaper_281
+  - first:
+      213: 2122368476707786427
+    second: sandpaper_282
+  - first:
+      213: 2563925437983838398
+    second: sandpaper_283
+  - first:
+      213: -4405157745820215488
+    second: sandpaper_284
+  - first:
+      213: 5757956187916409498
+    second: sandpaper_285
+  - first:
+      213: 7799370101441608340
+    second: sandpaper_286
+  - first:
+      213: -527733703325615514
+    second: sandpaper_287
+  - first:
+      213: -8846114466417941137
+    second: sandpaper_288
+  - first:
+      213: 7284240030214232296
+    second: sandpaper_289
+  - first:
+      213: -4436575968416128385
+    second: sandpaper_290
+  - first:
+      213: -5409092727020314264
+    second: sandpaper_291
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: sandpaper_0
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 395
+        width: 3861
+        height: 3678
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8dc8fb9e1acc21960800000000000000
+      internalID: 7571338919346670808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_1
+      rect:
+        serializedVersion: 2
+        x: 683
+        y: 4043
+        width: 6
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06b4e12df8be22af0800000000000000
+      internalID: -422516412081353888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_2
+      rect:
+        serializedVersion: 2
+        x: 321
+        y: 3943
+        width: 17
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f797e341a50d30a40800000000000000
+      internalID: 5333335469042071935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_3
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 3609
+        width: 164
+        height: 387
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d96540d5bc72086b0800000000000000
+      internalID: -5296189407395293539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_4
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 3950
+        width: 32
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d39c80cca184927e0800000000000000
+      internalID: -1789820096973584067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_5
+      rect:
+        serializedVersion: 2
+        x: 363
+        y: 3969
+        width: 9
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3cbc8fe32ead8720800000000000000
+      internalID: 2850125608561458238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_6
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 3960
+        width: 7
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95f79eded23af8390800000000000000
+      internalID: -7813847410804162727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_7
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 3883
+        width: 34
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 911d59e199ab6a8a0800000000000000
+      internalID: -6294138262397791975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_8
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 3950
+        width: 8
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8abd55757a7828fe0800000000000000
+      internalID: -1188238198877856856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_9
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 3939
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b892c94ccbaf64d80800000000000000
+      internalID: -8266644377332602485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_10
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 3111
+        width: 174
+        height: 836
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8ca0baad64df0ce0800000000000000
+      internalID: -1436696188627669873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_11
+      rect:
+        serializedVersion: 2
+        x: 333
+        y: 3933
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 542d85664d5a75f30800000000000000
+      internalID: 4564299079032033861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_12
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 3914
+        width: 22
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d009ab432f453fc0800000000000000
+      internalID: -3515816921080987432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_13
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 3914
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f9e0ad6bcabddae0800000000000000
+      internalID: -1522855716100969993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_14
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 3921
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d09a38189b0c92b90800000000000000
+      internalID: -7266064620811212531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_15
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 3894
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b10327c054f241a0800000000000000
+      internalID: -6826625457364729415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_16
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 3894
+        width: 9
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15fe2416116aa3030800000000000000
+      internalID: 3475272656046190417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_17
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 3879
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e4d7080e4b17b3c0800000000000000
+      internalID: -4343973293619424029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_18
+      rect:
+        serializedVersion: 2
+        x: 339
+        y: 3881
+        width: 11
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f28a1e21af39e9ef0800000000000000
+      internalID: -99479439487686609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_19
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 3878
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3a1c2e3d5fc9fed0800000000000000
+      internalID: -2379642928706610630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_20
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 3875
+        width: 22
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc3a149f1bd7139e0800000000000000
+      internalID: -1643394185669008433
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_21
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 3857
+        width: 10
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d0545369dc1279f0800000000000000
+      internalID: -472283290920529712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_22
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 3858
+        width: 13
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8084f9b2b3111f030800000000000000
+      internalID: 3526618929040410632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_23
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 3878
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcb3c63acfd571ae0800000000000000
+      internalID: -1578689804715148339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_24
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 3862
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6085443bd040ab490800000000000000
+      internalID: -7729861353539348474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_25
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 3878
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50f30f78d7bdcffa0800000000000000
+      internalID: -5765492090743013627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_26
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 3856
+        width: 13
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a598371ad4eb3f210800000000000000
+      internalID: 1365644352653855066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_27
+      rect:
+        serializedVersion: 2
+        x: 354
+        y: 3877
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 877fa3056b0059410800000000000000
+      internalID: 1483092435318536056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_28
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 3858
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8f81ae69fd009450800000000000000
+      internalID: 6093385660786380683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_29
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 3842
+        width: 10
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c479264dbdf169c0800000000000000
+      internalID: -3935585609977334586
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_30
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 3857
+        width: 11
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1959e49019caaafa0800000000000000
+      internalID: -5788624632104970863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_31
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 3829
+        width: 12
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11170b003e4a6feb0800000000000000
+      internalID: -4686377067356327663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_32
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 3847
+        width: 7
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ea9048006e1cbd30800000000000000
+      internalID: 4448463929739352807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_33
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 3857
+        width: 8
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8433db136a841070800000000000000
+      internalID: 8076232190055363722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_34
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 3850
+        width: 6
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9634fdb9397832680800000000000000
+      internalID: -8781025780397292695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_35
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 3851
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7cb456414cb05e8e0800000000000000
+      internalID: -1664911550459851833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_36
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 3794
+        width: 29
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbec0dca9f2a1d8c0800000000000000
+      internalID: -3976217802761515331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_37
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 3841
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eba41d6037be19b90800000000000000
+      internalID: -7236744246939530562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_38
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 3842
+        width: 15
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 219d0d7a78087c340800000000000000
+      internalID: 4884013641031014674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_39
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 3803
+        width: 14
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb8b1ad943c281300800000000000000
+      internalID: 222976786049382591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_40
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 3792
+        width: 16
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1559fb52dd5cca090800000000000000
+      internalID: -8021819282641939119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_41
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 3820
+        width: 12
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0a2f6f346e897c00800000000000000
+      internalID: 898906161849248269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_42
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 3817
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2bd7f46eb682db00800000000000000
+      internalID: 851891431822318383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_43
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 3809
+        width: 9
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed13a157a329e32a0800000000000000
+      internalID: -6755801611238755874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_44
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 3818
+        width: 6
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb471487996c21530800000000000000
+      internalID: 3824337396040823995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_45
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 3802
+        width: 19
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3524157c0431bcdc0800000000000000
+      internalID: -3617776706719235501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_46
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 3825
+        width: 6
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ebda5964dd145120800000000000000
+      internalID: 2401577299433151460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_47
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 3795
+        width: 17
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8118294bbb9f5caf0800000000000000
+      internalID: -376620409231867624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_48
+      rect:
+        serializedVersion: 2
+        x: 354
+        y: 3817
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e647322c37280fa0800000000000000
+      internalID: -5834370178032908574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_49
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 3817
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d360ecad538919840800000000000000
+      internalID: 5229127999425480253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_50
+      rect:
+        serializedVersion: 2
+        x: 194
+        y: 3719
+        width: 60
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85f3f13157e8484e0800000000000000
+      internalID: -1980301302653042856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_51
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 3802
+        width: 8
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45624f1222b8b97c0800000000000000
+      internalID: -4063501260056943020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_52
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 3806
+        width: 8
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dda7b9024238b4730800000000000000
+      internalID: 3984422486528457437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_53
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 3794
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 306a44ac5cffe9de0800000000000000
+      internalID: -1324340015433210365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_54
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 3769
+        width: 17
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7169bfb8056547720800000000000000
+      internalID: 2842992168723518999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_55
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 3768
+        width: 10
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ccd9ec3545ac42780800000000000000
+      internalID: -8708613315895583284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_56
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 3762
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 183f4b0ec812dc4b0800000000000000
+      internalID: -5418637887707745407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_57
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 3755
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac956b1e31d017f10800000000000000
+      internalID: 2265606466586433994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_58
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 3758
+        width: 8
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7f9493470694df00800000000000000
+      internalID: 1140701563574329214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_59
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 3758
+        width: 20
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c27fb2b9d573f70c0800000000000000
+      internalID: -4575877821210298580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_60
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 3760
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3f4452061d366550800000000000000
+      internalID: 6153673105586016059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_61
+      rect:
+        serializedVersion: 2
+        x: 333
+        y: 3780
+        width: 8
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96906559091f74d30800000000000000
+      internalID: 4415763562943089001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_62
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 3766
+        width: 8
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c19275c240678aa20800000000000000
+      internalID: 3073836505976219932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_63
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 3739
+        width: 19
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef83aced220d73b80800000000000000
+      internalID: -8415028530533222146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_64
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 3720
+        width: 9
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3df5157389bce050800000000000000
+      internalID: 5831239591794179391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_65
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 3740
+        width: 8
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58b1aa6875e2232d0800000000000000
+      internalID: -3300524623452824699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_66
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 3741
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39ad665ca1a944720800000000000000
+      internalID: 2829555905667193491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_67
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 3720
+        width: 15
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5043e0f17f5ed4170800000000000000
+      internalID: 8164434549033284613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_68
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 3738
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a10cc12b7f47ce0e0800000000000000
+      internalID: -2239286307516006374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_69
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 3734
+        width: 10
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c92db068432ac180800000000000000
+      internalID: -9094417703753668156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_70
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 3719
+        width: 11
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce660d2fd52daca40800000000000000
+      internalID: 5389351205049755372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_71
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 3684
+        width: 20
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a94dcf05195e8f8b0800000000000000
+      internalID: -5118088564214803302
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_72
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 3708
+        width: 9
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1e9954ee88e90c50800000000000000
+      internalID: 6632087626693844508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_73
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 3722
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 800fddd17b19cfea0800000000000000
+      internalID: -5837630801312878584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_74
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 3720
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e59795d59ae347ea0800000000000000
+      internalID: -5876002716675114658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_75
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 3706
+        width: 6
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c9446b01878612c0800000000000000
+      internalID: -4461229392552244797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_76
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 3711
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cd55dcbe7eafb490800000000000000
+      internalID: -7728266576187269687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_77
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 3680
+        width: 32
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1fe2335c10efe8a0800000000000000
+      internalID: -6273549343644258530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_78
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 3695
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bc60c80bb8e6a5c0800000000000000
+      internalID: -4204417312100422477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_79
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 3701
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 594aa653bb7650bb0800000000000000
+      internalID: -4970452559980747627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_80
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 3664
+        width: 26
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 390671db63e760290800000000000000
+      internalID: -7924507720746049389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_81
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 3686
+        width: 8
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 694c81d787dfd47b0800000000000000
+      internalID: -5238252097625340778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_82
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 3697
+        width: 8
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f85179a28e57986f0800000000000000
+      internalID: -681884228562512497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_83
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 3691
+        width: 9
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a200158c889c510c0800000000000000
+      internalID: -4605553454602977238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_84
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 3693
+        width: 11
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb4116659c0da8a10800000000000000
+      internalID: 1912570554928403646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_85
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 3681
+        width: 7
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3051f74dd7b74bb0800000000000000
+      internalID: -4951787104247918533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_86
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 3677
+        width: 9
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc9e74a402aaf9c60800000000000000
+      internalID: 7827161733055113679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_87
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 3653
+        width: 23
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8416830d9036b400800000000000000
+      internalID: 339512272840168591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_88
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 3688
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7579772dd0b556fd0800000000000000
+      internalID: -2349371515680090281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_89
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 3680
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6dd0c56f398ee9d00800000000000000
+      internalID: 981477491004411350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_90
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 3687
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ad1577242f863710800000000000000
+      internalID: 1672681697058299302
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_91
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 3658
+        width: 18
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5d542f1818819d60800000000000000
+      internalID: 7895241258940259679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_92
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 3622
+        width: 39
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44b5ed9aac941c110800000000000000
+      internalID: 1279384903932074820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_93
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 3634
+        width: 17
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60f564be40007ab30800000000000000
+      internalID: 4298404390475554566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_94
+      rect:
+        serializedVersion: 2
+        x: 286
+        y: 3665
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7828b139452891e40800000000000000
+      internalID: 5627672509133062791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_95
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 3664
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a1dce81949dd84a0800000000000000
+      internalID: -6589371771799154270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_96
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 3656
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d8b435f127634500800000000000000
+      internalID: 379260189174708436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_97
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 3655
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ef9ce39781b63850800000000000000
+      internalID: 6356463119940493289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_98
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 3652
+        width: 8
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 472242786de1dd8b0800000000000000
+      internalID: -5125906894138629516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_99
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 3654
+        width: 9
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c99205e3ae00e2f10800000000000000
+      internalID: 2246734270172244380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_100
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 3644
+        width: 14
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54f5823f8d8f72a20800000000000000
+      internalID: 3037670084360822597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_101
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 3643
+        width: 9
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93be8964767395e50800000000000000
+      internalID: 6798526029198060345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_102
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 3644
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4e3ba6cc75a273b0800000000000000
+      internalID: -5516164638247797172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_103
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 3649
+        width: 6
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6372794a905e56710800000000000000
+      internalID: 1686005465098954550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_104
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 3625
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5d0bf259e5bba510800000000000000
+      internalID: 1561541709538200923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_105
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 3636
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f848dd4a87d5ba010800000000000000
+      internalID: 1201156498367808655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_106
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 3600
+        width: 24
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b90f4eabfeaab5800800000000000000
+      internalID: 602262921793564827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_107
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 3600
+        width: 9
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4ad6b9e908273d40800000000000000
+      internalID: 5563959887680428622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_108
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 3621
+        width: 11
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a25fdda091cd34790800000000000000
+      internalID: -7546946550428207830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_109
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 3604
+        width: 8
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3acca4a7093fd1e10800000000000000
+      internalID: 2170158397315009699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_110
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 3589
+        width: 25
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cdf96550d6a321490800000000000000
+      internalID: -7777089366600015908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_111
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 3621
+        width: 7
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3daec8ca71672010800000000000000
+      internalID: 1164006208681454910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_112
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 3612
+        width: 6
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd1957cf1785b0f20800000000000000
+      internalID: 3389900391116542429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_113
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 3617
+        width: 8
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 553167bb463f65e80800000000000000
+      internalID: -8190091258359311531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_114
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 3593
+        width: 9
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b61ff36795e40880800000000000000
+      internalID: -8645532946264025418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_115
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 3611
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8a01d74c32c24720800000000000000
+      internalID: 2829037080100801162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_116
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 3587
+        width: 22
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cdf77f166838baff0800000000000000
+      internalID: -23780759827939364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_117
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 3581
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59bc80a15d6686af0800000000000000
+      internalID: -402959101198808171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_118
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 3582
+        width: 10
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a537eb2cf00661c50800000000000000
+      internalID: 6635596721785041754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_119
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 3580
+        width: 21
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 773b5ec3cc0da92e0800000000000000
+      internalID: -2118151099110804617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_120
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 3598
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d9327495b5c59480800000000000000
+      internalID: -8892984505502909995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_121
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 3573
+        width: 13
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6802d15f21ae582a0800000000000000
+      internalID: -6735720300520071034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_122
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 3548
+        width: 12
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf84db3a8a1250ed0800000000000000
+      internalID: -2448513814220683012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_123
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 3550
+        width: 15
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b12e32560f11c3c0800000000000000
+      internalID: -4341154453798379084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_124
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 3535
+        width: 22
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d89e1c757dd579e90800000000000000
+      internalID: -7019038314761950835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_125
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 3541
+        width: 27
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 571b5748b560e1d80800000000000000
+      internalID: -8278172074926296715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_126
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 3580
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 146c82d3d17ada620800000000000000
+      internalID: 2787067488434177601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_127
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 3574
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f03dbaef7394b89e0800000000000000
+      internalID: -1618119136264858865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_128
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 3574
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b1ba92a2596c7cb0800000000000000
+      internalID: -4864897693830696523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_129
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 3461
+        width: 73
+        height: 129
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a937b74a33a32f30800000000000000
+      internalID: 4549659519280953764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_130
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 3569
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f94567ed17ea3bf0800000000000000
+      internalID: -343708305918178823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_131
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 3564
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c84816112e5314f90800000000000000
+      internalID: -6971231503122332532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_132
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 3572
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35738cd6306c82840800000000000000
+      internalID: 5199623487828277075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_133
+      rect:
+        serializedVersion: 2
+        x: 514
+        y: 3561
+        width: 6
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c16b2152cd256efe0800000000000000
+      internalID: -1160148748533058020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_134
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 3559
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73e1d53ab24a02e30800000000000000
+      internalID: 4476758536937610807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_135
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 3527
+        width: 17
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b9846bee0e69d480800000000000000
+      internalID: -8873940580399019599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_136
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 3536
+        width: 20
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34a45bb82d31ccea0800000000000000
+      internalID: -5851280020853142973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_137
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 3559
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0626109e3f2ffd280800000000000000
+      internalID: -9016220799572286880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_138
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 3547
+        width: 6
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f383ef136a56bdc0800000000000000
+      internalID: -3623609468389719051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_139
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 3547
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 208e557fc661f69a0800000000000000
+      internalID: -6237742301622966270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_140
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 3511
+        width: 24
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e34e7c0d97ff17f60800000000000000
+      internalID: 8030480509237191742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_141
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 3529
+        width: 10
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a886b00b8d5e5200800000000000000
+      internalID: 170676687480457383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_142
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 3537
+        width: 6
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90aa962e95f102f60800000000000000
+      internalID: 8007434608375867913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_143
+      rect:
+        serializedVersion: 2
+        x: 332
+        y: 3547
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0bae7d645703cd110800000000000000
+      internalID: 1286956873778981552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_144
+      rect:
+        serializedVersion: 2
+        x: 190
+        y: 3513
+        width: 9
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aecbfa5a1d51c9cc0800000000000000
+      internalID: -3703060803433284374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_145
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 3525
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 025c77280b475fce0800000000000000
+      internalID: -1372062210012494560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_146
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 3525
+        width: 14
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51a15b6768acbc690800000000000000
+      internalID: -7580742868882089451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_147
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 3518
+        width: 17
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aeaa78ac0adceba30800000000000000
+      internalID: 4233046790251195114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_148
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 3532
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b133ba74e843b7760800000000000000
+      internalID: 7456611393734390555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_149
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 3527
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a199acc282c8a3ba0800000000000000
+      internalID: -6108415840396601062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_150
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 3533
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40ff6984fd79f1610800000000000000
+      internalID: 1594159778363801348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_151
+      rect:
+        serializedVersion: 2
+        x: 317
+        y: 3526
+        width: 6
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da705b3575b59a490800000000000000
+      internalID: -7734550454407460947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_152
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 3525
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45c6b6d5aae525cf0800000000000000
+      internalID: -265045342256665516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_153
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 3502
+        width: 13
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ba5541295c8d34c0800000000000000
+      internalID: -4306131354258154827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_154
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 3515
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb8364d28ed9ea480800000000000000
+      internalID: -8885991394237859652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_155
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 3494
+        width: 15
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 883e3499a4e1e6be0800000000000000
+      internalID: -1482213921610538104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_156
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 3514
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67f4587873c6b0eb0800000000000000
+      internalID: -4752585996006764682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_157
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 3512
+        width: 6
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57317a02ef0898d50800000000000000
+      internalID: 6740060146294526837
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_158
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 3510
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1df2342a1e511240800000000000000
+      internalID: 4760689747476806940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_159
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 3499
+        width: 7
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35cecd535995dc9b0800000000000000
+      internalID: -5058288309078528941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_160
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 3472
+        width: 20
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d005470b74ae00b0800000000000000
+      internalID: -5760486025050390314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_161
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 3439
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27dbc1b08e26d9af0800000000000000
+      internalID: -388045244125627022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_162
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 3493
+        width: 11
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 000fcb90bbad49210800000000000000
+      internalID: 1338935486092996608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_163
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 3491
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3755d025818dc7f00800000000000000
+      internalID: 1116004406648460659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_164
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 3500
+        width: 8
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f5e330518172bf20800000000000000
+      internalID: 3436934265847408120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_165
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 3494
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a927bd01ed47cf210800000000000000
+      internalID: 1368096883928167066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_166
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 3464
+        width: 16
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a90e13f6d07ec980800000000000000
+      internalID: -8516745776806884958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_167
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 3474
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66d6ce8f8640089d0800000000000000
+      internalID: -2774212521560871578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_168
+      rect:
+        serializedVersion: 2
+        x: 494
+        y: 3482
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c22285eceaf8e280800000000000000
+      internalID: -9013678758812310845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_169
+      rect:
+        serializedVersion: 2
+        x: 321
+        y: 3469
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2626bca61e4a864b0800000000000000
+      internalID: -5446922461238304158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_170
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 3471
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2cc1388e7d96a720800000000000000
+      internalID: 2857144180389563439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_171
+      rect:
+        serializedVersion: 2
+        x: 223
+        y: 3447
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1fe7cc2a895defca0800000000000000
+      internalID: -5981108403558383887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_172
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 3438
+        width: 8
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 177be66de90a1e560800000000000000
+      internalID: 7341325471653476209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_173
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 3448
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9900274654f3165f0800000000000000
+      internalID: -765260894405787495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_174
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 3459
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9dc923f4111dc1540800000000000000
+      internalID: 4980085160238292185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_175
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 3446
+        width: 6
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 113ed8f7e4ab8be60800000000000000
+      internalID: 7978331586197054225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_176
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 3443
+        width: 9
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0c496b724e918830800000000000000
+      internalID: 4071709546495167502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_177
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 3441
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f3e73fb0914f44d0800000000000000
+      internalID: -3148225524569480208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_178
+      rect:
+        serializedVersion: 2
+        x: 211
+        y: 3389
+        width: 20
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a568c313dd9b69d30800000000000000
+      internalID: 4437938842485163610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_179
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 3430
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64e1946ab8429b300800000000000000
+      internalID: 268285835014118982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_180
+      rect:
+        serializedVersion: 2
+        x: 520
+        y: 3412
+        width: 7
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 530dd42dd537ea520800000000000000
+      internalID: 2715234472148455477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_181
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 3388
+        width: 16
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4b0a94a9fdfbf5c0800000000000000
+      internalID: -4180468580433130674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_182
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 3408
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 398be651a0a561c30800000000000000
+      internalID: 4329747091119061139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_183
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 3406
+        width: 7
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 403cfde8d72446510800000000000000
+      internalID: 1541430079502926596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_184
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 3410
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2551616e25a042860800000000000000
+      internalID: 7504134230269891922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_185
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 3375
+        width: 13
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f6d5ce2cce6abce0800000000000000
+      internalID: -1388675711853275402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_186
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 3373
+        width: 10
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe5d5f0557157b890800000000000000
+      internalID: -7442390294895143441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_187
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 3381
+        width: 6
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19a6c2b6fe01831d0800000000000000
+      internalID: -3370925700605515119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_188
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 3355
+        width: 19
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35b038bfebb35ef60800000000000000
+      internalID: 8062916399326235475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_189
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 3388
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed8870ae876fd2b20800000000000000
+      internalID: 3111413916765751518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_190
+      rect:
+        serializedVersion: 2
+        x: 509
+        y: 3379
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dea015f1f6d1a2120800000000000000
+      internalID: 2389754915377449709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_191
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 3351
+        width: 19
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfb5aa7a72bf39b50800000000000000
+      internalID: 6598894026763164667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_192
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 3360
+        width: 10
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba594e534dd614b30800000000000000
+      internalID: 4269814679928608171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_193
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 3343
+        width: 10
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 932857994c5f80040800000000000000
+      internalID: 4614208042978083385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_194
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 3351
+        width: 14
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36e08afdad37c2180800000000000000
+      internalID: -9138802159949181341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_195
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 3367
+        width: 10
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce109056089bf45d0800000000000000
+      internalID: -3076036059368717844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_196
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 3323
+        width: 15
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0f8b225e66c25420800000000000000
+      internalID: 2617372510582968078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_197
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 3348
+        width: 10
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41f6afdc04bacc700800000000000000
+      internalID: 562012348336467732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_198
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 3334
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f9cebb694d433a20800000000000000
+      internalID: 3040859151140833782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_199
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 3313
+        width: 17
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1d8ff0de658b8a30800000000000000
+      internalID: 4218612186961906975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_200
+      rect:
+        serializedVersion: 2
+        x: 503
+        y: 3352
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67684e7b0a993a3b0800000000000000
+      internalID: -5502385404157589898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_201
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 3324
+        width: 10
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7622ace83669a480800000000000000
+      internalID: -8887459994964711809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_202
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 3312
+        width: 21
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6787bf73456e90af0800000000000000
+      internalID: -429559040046303114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_203
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 3330
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 302559ed6439a8ab0800000000000000
+      internalID: -5005026103277563389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_204
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 3338
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a523a49288ac61f0800000000000000
+      internalID: -1050279334291233376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_205
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 3319
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb98251e281681150800000000000000
+      internalID: 5843527731267144123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_206
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 3307
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39050a197804684f0800000000000000
+      internalID: -826902530567941997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_207
+      rect:
+        serializedVersion: 2
+        x: 249
+        y: 3304
+        width: 7
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 056b4ea77fc14d640800000000000000
+      internalID: 5103736126961923664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_208
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 3297
+        width: 10
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e643b84c614812740800000000000000
+      internalID: 5125523084245939310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_209
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 3291
+        width: 11
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: adfa2bcb893b27460800000000000000
+      internalID: 7238045019720036314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_210
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 3287
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5937a122715cf72c0800000000000000
+      internalID: -4431606805162200171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_211
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 3308
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97b1bdb4bc03116e0800000000000000
+      internalID: -1868658720672900231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_212
+      rect:
+        serializedVersion: 2
+        x: 332
+        y: 3303
+        width: 8
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c4e20180297695d0800000000000000
+      internalID: -3056122116613937981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_213
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 3290
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eda5cd26ca08a55a0800000000000000
+      internalID: -6531766831666144546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_214
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 3296
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d38bee2574b64510800000000000000
+      internalID: 1533111138557592534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_215
+      rect:
+        serializedVersion: 2
+        x: 478
+        y: 3284
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c2c69d534beb5700800000000000000
+      internalID: 530276055711662788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_216
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 3277
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 166cf7e50439ec410800000000000000
+      internalID: 1499297630633576033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_217
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 3284
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c895c7873c11d5220800000000000000
+      internalID: 2476154901361351052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_218
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 3258
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7dea0aedf3187a90800000000000000
+      internalID: -7316075613389132417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_219
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 3262
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5279d8ce74c860f80800000000000000
+      internalID: -8140665035886323931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_220
+      rect:
+        serializedVersion: 2
+        x: 519
+        y: 3263
+        width: 8
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dac2860cdd34815a0800000000000000
+      internalID: -6550411038315500371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_221
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 3239
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5a500db873a5a5b0800000000000000
+      internalID: -5357696442725016995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_222
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 3247
+        width: 6
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c141e88f75a132f20800000000000000
+      internalID: 3396587509102023708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_223
+      rect:
+        serializedVersion: 2
+        x: 281
+        y: 3249
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d5b35e386bcd77e0800000000000000
+      internalID: -1766031830276655662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_224
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 3251
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c05260bdde4ebce0800000000000000
+      internalID: -1387584921129561916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_225
+      rect:
+        serializedVersion: 2
+        x: 491
+        y: 3252
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d301861907e1392a0800000000000000
+      internalID: -6732003549164072899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_226
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 3213
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fcfeb9522e855320800000000000000
+      internalID: 2546097442533604592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_227
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 3193
+        width: 6
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64c237c79cec032a0800000000000000
+      internalID: -6759675675911443386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_228
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 3168
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54d71a6dcb5b33cb0800000000000000
+      internalID: -4885361348107469499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_229
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 3177
+        width: 6
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40f4df4d0d94997f0800000000000000
+      internalID: -605371513629225212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_230
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 3162
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3b27217044dc32c0800000000000000
+      internalID: -4450448958507504835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_231
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 3154
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 317ae7c55265091b0800000000000000
+      internalID: -5651922813884389613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_232
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 3147
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 026ecf38681b85470800000000000000
+      internalID: 8383645897648301600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_233
+      rect:
+        serializedVersion: 2
+        x: 481
+        y: 3142
+        width: 6
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d633bbdda65599e0800000000000000
+      internalID: -1615289586627168556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_234
+      rect:
+        serializedVersion: 2
+        x: 511
+        y: 3151
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18d761e028b3bf330800000000000000
+      internalID: 3745652944856841601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_235
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 3140
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54e2ea78ba002de80800000000000000
+      internalID: -8155455238498800059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_236
+      rect:
+        serializedVersion: 2
+        x: 496
+        y: 3129
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1650696085343a330800000000000000
+      internalID: 3720891762484839777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_237
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 3112
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b897e18fc9508810800000000000000
+      internalID: 1765509801701775540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_238
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 3119
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44fb13cfaf02f5d00800000000000000
+      internalID: 963525107625606980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_239
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 3092
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af4b2d55125a40d40800000000000000
+      internalID: 5549742203419669754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_240
+      rect:
+        serializedVersion: 2
+        x: 503
+        y: 3084
+        width: 6
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03f14a7946f53dac0800000000000000
+      internalID: -3831613972316676304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_241
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 3084
+        width: 9
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82504024f855992a0800000000000000
+      internalID: -6730254094352251608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_242
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 3063
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9068f23ed854e0210800000000000000
+      internalID: 1301053818060899849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_243
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 3060
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5add3e83802149670800000000000000
+      internalID: 8544474219552169381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_244
+      rect:
+        serializedVersion: 2
+        x: 434
+        y: 3046
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7542b749f8f329150800000000000000
+      internalID: 5877830349575890007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_245
+      rect:
+        serializedVersion: 2
+        x: 475
+        y: 3037
+        width: 6
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87c19520fb5d89da0800000000000000
+      internalID: -5937761092333134728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_246
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 3048
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5cdf6c126b0df8740800000000000000
+      internalID: 5156569579031821765
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_247
+      rect:
+        serializedVersion: 2
+        x: 452
+        y: 3018
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b65d84f42d03ae430800000000000000
+      internalID: 3812913714353984875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_248
+      rect:
+        serializedVersion: 2
+        x: 490
+        y: 3019
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b000da654010ace40800000000000000
+      internalID: 5677351398399606795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_249
+      rect:
+        serializedVersion: 2
+        x: 493
+        y: 3030
+        width: 6
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0759014fca65f4040800000000000000
+      internalID: 4634017842416620912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_250
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 3028
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efac0e9368c434060800000000000000
+      internalID: 6936471990461057790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_251
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 3008
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 782d267b0e1f9f3a0800000000000000
+      internalID: -6631003028874669433
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_252
+      rect:
+        serializedVersion: 2
+        x: 453
+        y: 2992
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13b16634b65e2da30800000000000000
+      internalID: 4238702448164084529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_253
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 2991
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6312ca1418d0f7910800000000000000
+      internalID: 1837202021794193718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_254
+      rect:
+        serializedVersion: 2
+        x: 449
+        y: 2970
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cac605ab226ba3be0800000000000000
+      internalID: -1496683665876292436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_255
+      rect:
+        serializedVersion: 2
+        x: 487
+        y: 2978
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1793bc22d739de090800000000000000
+      internalID: -8003578797103564431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_256
+      rect:
+        serializedVersion: 2
+        x: 503
+        y: 2970
+        width: 9
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83d0358a4cea00d60800000000000000
+      internalID: 7854469909794983224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_257
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 2965
+        width: 8
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a2d444aa5a9e3750800000000000000
+      internalID: 6286631843949499048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_258
+      rect:
+        serializedVersion: 2
+        x: 459
+        y: 2948
+        width: 6
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eff7fda40d1620f80800000000000000
+      internalID: -8141837629095182338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_259
+      rect:
+        serializedVersion: 2
+        x: 467
+        y: 2953
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8d85020782a39490800000000000000
+      internalID: -7740664633781547633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_260
+      rect:
+        serializedVersion: 2
+        x: 492
+        y: 2959
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b53a7b904e8a06120800000000000000
+      internalID: 2405107898384884571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_261
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 2949
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3021dcd7730f001c0800000000000000
+      internalID: -4539364303265000957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_262
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 2940
+        width: 10
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5d3d55d57d5144c0800000000000000
+      internalID: -4305057008117269156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_263
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 2946
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc56758250d7e1cf0800000000000000
+      internalID: -279648665745267253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_264
+      rect:
+        serializedVersion: 2
+        x: 485
+        y: 2932
+        width: 9
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43c1328010957e830800000000000000
+      internalID: 4100343846710484020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_265
+      rect:
+        serializedVersion: 2
+        x: 453
+        y: 2933
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 533a9c1fb34ff5250800000000000000
+      internalID: 5935731372194374453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_266
+      rect:
+        serializedVersion: 2
+        x: 470
+        y: 2922
+        width: 7
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 843ddd201218deec0800000000000000
+      internalID: -3536028153633975480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_267
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 2923
+        width: 6
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df0f04ba88ff4c120800000000000000
+      internalID: 2433350661140705533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_268
+      rect:
+        serializedVersion: 2
+        x: 451
+        y: 2917
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a6f73a2073e0e010800000000000000
+      internalID: 1216221970274186915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_269
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 2912
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89ffa3b5c5dec4510800000000000000
+      internalID: 1534862553949863832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_270
+      rect:
+        serializedVersion: 2
+        x: 485
+        y: 2908
+        width: 9
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29519aa6b157e6310800000000000000
+      internalID: 1400185294772835730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_271
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 2897
+        width: 10
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d749570bc7558510800000000000000
+      internalID: 1550742176212273106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_272
+      rect:
+        serializedVersion: 2
+        x: 467
+        y: 2895
+        width: 6
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2f07101c79c55770800000000000000
+      internalID: 8599000598216904490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_273
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 2893
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7281918f37382860800000000000000
+      internalID: 7505309524909195899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_274
+      rect:
+        serializedVersion: 2
+        x: 508
+        y: 2871
+        width: 11
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd4eff6c650269b10800000000000000
+      internalID: 1987811842608587999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_275
+      rect:
+        serializedVersion: 2
+        x: 497
+        y: 2876
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2a949bd87d2ab060800000000000000
+      internalID: 6969933370412538415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_276
+      rect:
+        serializedVersion: 2
+        x: 508
+        y: 2840
+        width: 8
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7122dd515a942ba0800000000000000
+      internalID: -6114592719805210241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_277
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 2841
+        width: 10
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b55a982000ba803d0800000000000000
+      internalID: -3240151915362146981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_278
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 2820
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae08745a135ce4d80800000000000000
+      internalID: -8264451449161285398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_279
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 2812
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 490c321c9849eee30800000000000000
+      internalID: 4534725194180444308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_280
+      rect:
+        serializedVersion: 2
+        x: 4210
+        y: 1707
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50340bb7926cd05c0800000000000000
+      internalID: -4247520992069401851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_281
+      rect:
+        serializedVersion: 2
+        x: 4212
+        y: 1566
+        width: 6
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9190961058b5feaa0800000000000000
+      internalID: -6129579941015516903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_282
+      rect:
+        serializedVersion: 2
+        x: 4242
+        y: 1575
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbe87a082ea247d10800000000000000
+      internalID: 2122368476707786427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_283
+      rect:
+        serializedVersion: 2
+        x: 4225
+        y: 1559
+        width: 9
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb05d910a94e49320800000000000000
+      internalID: 2563925437983838398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_284
+      rect:
+        serializedVersion: 2
+        x: 4226
+        y: 1550
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04753d4ae5cbdd2c0800000000000000
+      internalID: -4405157745820215488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_285
+      rect:
+        serializedVersion: 2
+        x: 4240
+        y: 1556
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9a150d55ae58ef40800000000000000
+      internalID: 5757956187916409498
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_286
+      rect:
+        serializedVersion: 2
+        x: 4208
+        y: 1518
+        width: 6
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49aba30d8cdec3c60800000000000000
+      internalID: 7799370101441608340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_287
+      rect:
+        serializedVersion: 2
+        x: 4245
+        y: 1530
+        width: 8
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66a764d2efc1da8f0800000000000000
+      internalID: -527733703325615514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_288
+      rect:
+        serializedVersion: 2
+        x: 4205
+        y: 1492
+        width: 8
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f65e6b2f2c94c3580800000000000000
+      internalID: -8846114466417941137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_289
+      rect:
+        serializedVersion: 2
+        x: 4233
+        y: 1507
+        width: 7
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e89993c6b1d61560800000000000000
+      internalID: 7284240030214232296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_290
+      rect:
+        serializedVersion: 2
+        x: 4242
+        y: 1507
+        width: 10
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f72a587a9ad1e62c0800000000000000
+      internalID: -4436575968416128385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sandpaper_291
+      rect:
+        serializedVersion: 2
+        x: 4246
+        y: 1484
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8612ec8c2da0fe4b0800000000000000
+      internalID: -5409092727020314264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      sandpaper_0: 7571338919346670808
+      sandpaper_1: -422516412081353888
+      sandpaper_10: -1436696188627669873
+      sandpaper_100: 3037670084360822597
+      sandpaper_101: 6798526029198060345
+      sandpaper_102: -5516164638247797172
+      sandpaper_103: 1686005465098954550
+      sandpaper_104: 1561541709538200923
+      sandpaper_105: 1201156498367808655
+      sandpaper_106: 602262921793564827
+      sandpaper_107: 5563959887680428622
+      sandpaper_108: -7546946550428207830
+      sandpaper_109: 2170158397315009699
+      sandpaper_11: 4564299079032033861
+      sandpaper_110: -7777089366600015908
+      sandpaper_111: 1164006208681454910
+      sandpaper_112: 3389900391116542429
+      sandpaper_113: -8190091258359311531
+      sandpaper_114: -8645532946264025418
+      sandpaper_115: 2829037080100801162
+      sandpaper_116: -23780759827939364
+      sandpaper_117: -402959101198808171
+      sandpaper_118: 6635596721785041754
+      sandpaper_119: -2118151099110804617
+      sandpaper_12: -3515816921080987432
+      sandpaper_120: -8892984505502909995
+      sandpaper_121: -6735720300520071034
+      sandpaper_122: -2448513814220683012
+      sandpaper_123: -4341154453798379084
+      sandpaper_124: -7019038314761950835
+      sandpaper_125: -8278172074926296715
+      sandpaper_126: 2787067488434177601
+      sandpaper_127: -1618119136264858865
+      sandpaper_128: -4864897693830696523
+      sandpaper_129: 4549659519280953764
+      sandpaper_13: -1522855716100969993
+      sandpaper_130: -343708305918178823
+      sandpaper_131: -6971231503122332532
+      sandpaper_132: 5199623487828277075
+      sandpaper_133: -1160148748533058020
+      sandpaper_134: 4476758536937610807
+      sandpaper_135: -8873940580399019599
+      sandpaper_136: -5851280020853142973
+      sandpaper_137: -9016220799572286880
+      sandpaper_138: -3623609468389719051
+      sandpaper_139: -6237742301622966270
+      sandpaper_14: -7266064620811212531
+      sandpaper_140: 8030480509237191742
+      sandpaper_141: 170676687480457383
+      sandpaper_142: 8007434608375867913
+      sandpaper_143: 1286956873778981552
+      sandpaper_144: -3703060803433284374
+      sandpaper_145: -1372062210012494560
+      sandpaper_146: -7580742868882089451
+      sandpaper_147: 4233046790251195114
+      sandpaper_148: 7456611393734390555
+      sandpaper_149: -6108415840396601062
+      sandpaper_15: -6826625457364729415
+      sandpaper_150: 1594159778363801348
+      sandpaper_151: -7734550454407460947
+      sandpaper_152: -265045342256665516
+      sandpaper_153: -4306131354258154827
+      sandpaper_154: -8885991394237859652
+      sandpaper_155: -1482213921610538104
+      sandpaper_156: -4752585996006764682
+      sandpaper_157: 6740060146294526837
+      sandpaper_158: 4760689747476806940
+      sandpaper_159: -5058288309078528941
+      sandpaper_16: 3475272656046190417
+      sandpaper_160: -5760486025050390314
+      sandpaper_161: -388045244125627022
+      sandpaper_162: 1338935486092996608
+      sandpaper_163: 1116004406648460659
+      sandpaper_164: 3436934265847408120
+      sandpaper_165: 1368096883928167066
+      sandpaper_166: -8516745776806884958
+      sandpaper_167: -2774212521560871578
+      sandpaper_168: -9013678758812310845
+      sandpaper_169: -5446922461238304158
+      sandpaper_17: -4343973293619424029
+      sandpaper_170: 2857144180389563439
+      sandpaper_171: -5981108403558383887
+      sandpaper_172: 7341325471653476209
+      sandpaper_173: -765260894405787495
+      sandpaper_174: 4980085160238292185
+      sandpaper_175: 7978331586197054225
+      sandpaper_176: 4071709546495167502
+      sandpaper_177: -3148225524569480208
+      sandpaper_178: 4437938842485163610
+      sandpaper_179: 268285835014118982
+      sandpaper_18: -99479439487686609
+      sandpaper_180: 2715234472148455477
+      sandpaper_181: -4180468580433130674
+      sandpaper_182: 4329747091119061139
+      sandpaper_183: 1541430079502926596
+      sandpaper_184: 7504134230269891922
+      sandpaper_185: -1388675711853275402
+      sandpaper_186: -7442390294895143441
+      sandpaper_187: -3370925700605515119
+      sandpaper_188: 8062916399326235475
+      sandpaper_189: 3111413916765751518
+      sandpaper_19: -2379642928706610630
+      sandpaper_190: 2389754915377449709
+      sandpaper_191: 6598894026763164667
+      sandpaper_192: 4269814679928608171
+      sandpaper_193: 4614208042978083385
+      sandpaper_194: -9138802159949181341
+      sandpaper_195: -3076036059368717844
+      sandpaper_196: 2617372510582968078
+      sandpaper_197: 562012348336467732
+      sandpaper_198: 3040859151140833782
+      sandpaper_199: 4218612186961906975
+      sandpaper_2: 5333335469042071935
+      sandpaper_20: -1643394185669008433
+      sandpaper_200: -5502385404157589898
+      sandpaper_201: -8887459994964711809
+      sandpaper_202: -429559040046303114
+      sandpaper_203: -5005026103277563389
+      sandpaper_204: -1050279334291233376
+      sandpaper_205: 5843527731267144123
+      sandpaper_206: -826902530567941997
+      sandpaper_207: 5103736126961923664
+      sandpaper_208: 5125523084245939310
+      sandpaper_209: 7238045019720036314
+      sandpaper_21: -472283290920529712
+      sandpaper_210: -4431606805162200171
+      sandpaper_211: -1868658720672900231
+      sandpaper_212: -3056122116613937981
+      sandpaper_213: -6531766831666144546
+      sandpaper_214: 1533111138557592534
+      sandpaper_215: 530276055711662788
+      sandpaper_216: 1499297630633576033
+      sandpaper_217: 2476154901361351052
+      sandpaper_218: -7316075613389132417
+      sandpaper_219: -8140665035886323931
+      sandpaper_22: 3526618929040410632
+      sandpaper_220: -6550411038315500371
+      sandpaper_221: -5357696442725016995
+      sandpaper_222: 3396587509102023708
+      sandpaper_223: -1766031830276655662
+      sandpaper_224: -1387584921129561916
+      sandpaper_225: -6732003549164072899
+      sandpaper_226: 2546097442533604592
+      sandpaper_227: -6759675675911443386
+      sandpaper_228: -4885361348107469499
+      sandpaper_229: -605371513629225212
+      sandpaper_23: -1578689804715148339
+      sandpaper_230: -4450448958507504835
+      sandpaper_231: -5651922813884389613
+      sandpaper_232: 8383645897648301600
+      sandpaper_233: -1615289586627168556
+      sandpaper_234: 3745652944856841601
+      sandpaper_235: -8155455238498800059
+      sandpaper_236: 3720891762484839777
+      sandpaper_237: 1765509801701775540
+      sandpaper_238: 963525107625606980
+      sandpaper_239: 5549742203419669754
+      sandpaper_24: -7729861353539348474
+      sandpaper_240: -3831613972316676304
+      sandpaper_241: -6730254094352251608
+      sandpaper_242: 1301053818060899849
+      sandpaper_243: 8544474219552169381
+      sandpaper_244: 5877830349575890007
+      sandpaper_245: -5937761092333134728
+      sandpaper_246: 5156569579031821765
+      sandpaper_247: 3812913714353984875
+      sandpaper_248: 5677351398399606795
+      sandpaper_249: 4634017842416620912
+      sandpaper_25: -5765492090743013627
+      sandpaper_250: 6936471990461057790
+      sandpaper_251: -6631003028874669433
+      sandpaper_252: 4238702448164084529
+      sandpaper_253: 1837202021794193718
+      sandpaper_254: -1496683665876292436
+      sandpaper_255: -8003578797103564431
+      sandpaper_256: 7854469909794983224
+      sandpaper_257: 6286631843949499048
+      sandpaper_258: -8141837629095182338
+      sandpaper_259: -7740664633781547633
+      sandpaper_26: 1365644352653855066
+      sandpaper_260: 2405107898384884571
+      sandpaper_261: -4539364303265000957
+      sandpaper_262: -4305057008117269156
+      sandpaper_263: -279648665745267253
+      sandpaper_264: 4100343846710484020
+      sandpaper_265: 5935731372194374453
+      sandpaper_266: -3536028153633975480
+      sandpaper_267: 2433350661140705533
+      sandpaper_268: 1216221970274186915
+      sandpaper_269: 1534862553949863832
+      sandpaper_27: 1483092435318536056
+      sandpaper_270: 1400185294772835730
+      sandpaper_271: 1550742176212273106
+      sandpaper_272: 8599000598216904490
+      sandpaper_273: 7505309524909195899
+      sandpaper_274: 1987811842608587999
+      sandpaper_275: 6969933370412538415
+      sandpaper_276: -6114592719805210241
+      sandpaper_277: -3240151915362146981
+      sandpaper_278: -8264451449161285398
+      sandpaper_279: 4534725194180444308
+      sandpaper_28: 6093385660786380683
+      sandpaper_280: -4247520992069401851
+      sandpaper_281: -6129579941015516903
+      sandpaper_282: 2122368476707786427
+      sandpaper_283: 2563925437983838398
+      sandpaper_284: -4405157745820215488
+      sandpaper_285: 5757956187916409498
+      sandpaper_286: 7799370101441608340
+      sandpaper_287: -527733703325615514
+      sandpaper_288: -8846114466417941137
+      sandpaper_289: 7284240030214232296
+      sandpaper_29: -3935585609977334586
+      sandpaper_290: -4436575968416128385
+      sandpaper_291: -5409092727020314264
+      sandpaper_3: -5296189407395293539
+      sandpaper_30: -5788624632104970863
+      sandpaper_31: -4686377067356327663
+      sandpaper_32: 4448463929739352807
+      sandpaper_33: 8076232190055363722
+      sandpaper_34: -8781025780397292695
+      sandpaper_35: -1664911550459851833
+      sandpaper_36: -3976217802761515331
+      sandpaper_37: -7236744246939530562
+      sandpaper_38: 4884013641031014674
+      sandpaper_39: 222976786049382591
+      sandpaper_4: -1789820096973584067
+      sandpaper_40: -8021819282641939119
+      sandpaper_41: 898906161849248269
+      sandpaper_42: 851891431822318383
+      sandpaper_43: -6755801611238755874
+      sandpaper_44: 3824337396040823995
+      sandpaper_45: -3617776706719235501
+      sandpaper_46: 2401577299433151460
+      sandpaper_47: -376620409231867624
+      sandpaper_48: -5834370178032908574
+      sandpaper_49: 5229127999425480253
+      sandpaper_5: 2850125608561458238
+      sandpaper_50: -1980301302653042856
+      sandpaper_51: -4063501260056943020
+      sandpaper_52: 3984422486528457437
+      sandpaper_53: -1324340015433210365
+      sandpaper_54: 2842992168723518999
+      sandpaper_55: -8708613315895583284
+      sandpaper_56: -5418637887707745407
+      sandpaper_57: 2265606466586433994
+      sandpaper_58: 1140701563574329214
+      sandpaper_59: -4575877821210298580
+      sandpaper_6: -7813847410804162727
+      sandpaper_60: 6153673105586016059
+      sandpaper_61: 4415763562943089001
+      sandpaper_62: 3073836505976219932
+      sandpaper_63: -8415028530533222146
+      sandpaper_64: 5831239591794179391
+      sandpaper_65: -3300524623452824699
+      sandpaper_66: 2829555905667193491
+      sandpaper_67: 8164434549033284613
+      sandpaper_68: -2239286307516006374
+      sandpaper_69: -9094417703753668156
+      sandpaper_7: -6294138262397791975
+      sandpaper_70: 5389351205049755372
+      sandpaper_71: -5118088564214803302
+      sandpaper_72: 6632087626693844508
+      sandpaper_73: -5837630801312878584
+      sandpaper_74: -5876002716675114658
+      sandpaper_75: -4461229392552244797
+      sandpaper_76: -7728266576187269687
+      sandpaper_77: -6273549343644258530
+      sandpaper_78: -4204417312100422477
+      sandpaper_79: -4970452559980747627
+      sandpaper_8: -1188238198877856856
+      sandpaper_80: -7924507720746049389
+      sandpaper_81: -5238252097625340778
+      sandpaper_82: -681884228562512497
+      sandpaper_83: -4605553454602977238
+      sandpaper_84: 1912570554928403646
+      sandpaper_85: -4951787104247918533
+      sandpaper_86: 7827161733055113679
+      sandpaper_87: 339512272840168591
+      sandpaper_88: -2349371515680090281
+      sandpaper_89: 981477491004411350
+      sandpaper_9: -8266644377332602485
+      sandpaper_90: 1672681697058299302
+      sandpaper_91: 7895241258940259679
+      sandpaper_92: 1279384903932074820
+      sandpaper_93: 4298404390475554566
+      sandpaper_94: 5627672509133062791
+      sandpaper_95: -6589371771799154270
+      sandpaper_96: 379260189174708436
+      sandpaper_97: 6356463119940493289
+      sandpaper_98: -5125906894138629516
+      sandpaper_99: 2246734270172244380
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

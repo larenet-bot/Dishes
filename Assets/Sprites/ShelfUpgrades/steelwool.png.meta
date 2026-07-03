@@ -1,0 +1,585 @@
+fileFormatVersion: 2
+guid: 29ee5dbe4ac7885458c3aad78c34bbbd
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3198397661969174975
+    second: steelwool_0
+  - first:
+      213: 7913193750068087417
+    second: steelwool_1
+  - first:
+      213: 6484732917664365149
+    second: steelwool_2
+  - first:
+      213: -7712333397636922818
+    second: steelwool_3
+  - first:
+      213: -3528581015364609520
+    second: steelwool_4
+  - first:
+      213: -7127407892751392916
+    second: steelwool_5
+  - first:
+      213: -8594935589296581625
+    second: steelwool_6
+  - first:
+      213: 6362915829560190878
+    second: steelwool_7
+  - first:
+      213: 1015187004544258382
+    second: steelwool_8
+  - first:
+      213: -8475165499939943262
+    second: steelwool_9
+  - first:
+      213: 5022348512888182751
+    second: steelwool_10
+  - first:
+      213: 8352796694909713557
+    second: steelwool_11
+  - first:
+      213: -2456698451630886933
+    second: steelwool_12
+  - first:
+      213: 8903862645031945442
+    second: steelwool_13
+  - first:
+      213: 7382997729397889133
+    second: steelwool_14
+  - first:
+      213: -8828114538181663095
+    second: steelwool_15
+  - first:
+      213: -5233290386931588178
+    second: steelwool_16
+  - first:
+      213: -5510295784523972870
+    second: steelwool_17
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: steelwool_0
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 1265
+        width: 4380
+        height: 2949
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14e23e3b5420d93d0800000000000000
+      internalID: -3198397661969174975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_1
+      rect:
+        serializedVersion: 2
+        x: 1393
+        y: 1284
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97a46af2acf41dd60800000000000000
+      internalID: 7913193750068087417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_2
+      rect:
+        serializedVersion: 2
+        x: 1464
+        y: 1275
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5abaa42b366ef950800000000000000
+      internalID: 6484732917664365149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_3
+      rect:
+        serializedVersion: 2
+        x: 1542
+        y: 1284
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e324874f2a948f490800000000000000
+      internalID: -7712333397636922818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_4
+      rect:
+        serializedVersion: 2
+        x: 1593
+        y: 1279
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01a51020346f70fc0800000000000000
+      internalID: -3528581015364609520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_5
+      rect:
+        serializedVersion: 2
+        x: 1608
+        y: 1272
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6fdc3fb84c561d90800000000000000
+      internalID: -7127407892751392916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_6
+      rect:
+        serializedVersion: 2
+        x: 1612
+        y: 1267
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7045d949e97a8b880800000000000000
+      internalID: -8594935589296581625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_7
+      rect:
+        serializedVersion: 2
+        x: 1613
+        y: 1277
+        width: 8
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9725ac1c3e9d4850800000000000000
+      internalID: 6362915829560190878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_8
+      rect:
+        serializedVersion: 2
+        x: 1626
+        y: 1265
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e411472b33ba61e00800000000000000
+      internalID: 1015187004544258382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_9
+      rect:
+        serializedVersion: 2
+        x: 1630
+        y: 1267
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ac0f6391e9226a80800000000000000
+      internalID: -8475165499939943262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_10
+      rect:
+        serializedVersion: 2
+        x: 1635
+        y: 1266
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd759e8ec57f2b540800000000000000
+      internalID: 5022348512888182751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_11
+      rect:
+        serializedVersion: 2
+        x: 1647
+        y: 1279
+        width: 10
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59c7629c6581be370800000000000000
+      internalID: 8352796694909713557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_12
+      rect:
+        serializedVersion: 2
+        x: 1655
+        y: 1264
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: befe94e36cd08edd0800000000000000
+      internalID: -2456698451630886933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_13
+      rect:
+        serializedVersion: 2
+        x: 1668
+        y: 1257
+        width: 8
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e4cff5a6efd09b70800000000000000
+      internalID: 8903862645031945442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_14
+      rect:
+        serializedVersion: 2
+        x: 1820
+        y: 1281
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d68d64e615da57660800000000000000
+      internalID: 7382997729397889133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_15
+      rect:
+        serializedVersion: 2
+        x: 1838
+        y: 1274
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9866833d99c3c7580800000000000000
+      internalID: -8828114538181663095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_16
+      rect:
+        serializedVersion: 2
+        x: 1850
+        y: 1264
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea3e978ce1e9f57b0800000000000000
+      internalID: -5233290386931588178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steelwool_17
+      rect:
+        serializedVersion: 2
+        x: 1856
+        y: 1264
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afebd14cd2f7783b0800000000000000
+      internalID: -5510295784523972870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      steelwool_0: -3198397661969174975
+      steelwool_1: 7913193750068087417
+      steelwool_10: 5022348512888182751
+      steelwool_11: 8352796694909713557
+      steelwool_12: -2456698451630886933
+      steelwool_13: 8903862645031945442
+      steelwool_14: 7382997729397889133
+      steelwool_15: -8828114538181663095
+      steelwool_16: -5233290386931588178
+      steelwool_17: -5510295784523972870
+      steelwool_2: 6484732917664365149
+      steelwool_3: -7712333397636922818
+      steelwool_4: -3528581015364609520
+      steelwool_5: -7127407892751392916
+      steelwool_6: -8594935589296581625
+      steelwool_7: 6362915829560190878
+      steelwool_8: 1015187004544258382
+      steelwool_9: -8475165499939943262
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

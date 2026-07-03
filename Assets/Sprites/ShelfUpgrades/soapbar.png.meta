@@ -1,0 +1,1157 @@
+fileFormatVersion: 2
+guid: 277ede34a3c8ab34ea0e0215e3e4bc13
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 9097224317191444759
+    second: soapbar_0
+  - first:
+      213: 1104254062275425565
+    second: soapbar_1
+  - first:
+      213: 7426155626870812140
+    second: soapbar_2
+  - first:
+      213: -4864698873896416417
+    second: soapbar_3
+  - first:
+      213: 1673036818204291738
+    second: soapbar_4
+  - first:
+      213: -4610697771404102275
+    second: soapbar_5
+  - first:
+      213: 7542884434470782149
+    second: soapbar_6
+  - first:
+      213: 3765486623520502522
+    second: soapbar_7
+  - first:
+      213: -5682747004077606722
+    second: soapbar_8
+  - first:
+      213: 1498163519588337318
+    second: soapbar_9
+  - first:
+      213: -5730756853422681494
+    second: soapbar_10
+  - first:
+      213: -7022545218443420962
+    second: soapbar_11
+  - first:
+      213: -5331616926060673408
+    second: soapbar_12
+  - first:
+      213: 3037951459134783789
+    second: soapbar_13
+  - first:
+      213: -7477546921149944032
+    second: soapbar_14
+  - first:
+      213: 3805310690519361081
+    second: soapbar_15
+  - first:
+      213: -3767572092848375756
+    second: soapbar_16
+  - first:
+      213: -1296778233726091727
+    second: soapbar_17
+  - first:
+      213: 385528674516136156
+    second: soapbar_18
+  - first:
+      213: -3230736139157176435
+    second: soapbar_19
+  - first:
+      213: 364432929017084227
+    second: soapbar_20
+  - first:
+      213: -9026331037978603116
+    second: soapbar_21
+  - first:
+      213: -2932003666829533208
+    second: soapbar_22
+  - first:
+      213: -6309349302510400215
+    second: soapbar_23
+  - first:
+      213: -6248178290952133814
+    second: soapbar_24
+  - first:
+      213: -6982838858370604940
+    second: soapbar_25
+  - first:
+      213: -1360064287360809373
+    second: soapbar_26
+  - first:
+      213: -2441700275929138542
+    second: soapbar_27
+  - first:
+      213: 5231644912766358564
+    second: soapbar_28
+  - first:
+      213: -2668582938326719024
+    second: soapbar_29
+  - first:
+      213: 8181434552479843339
+    second: soapbar_30
+  - first:
+      213: 7646811971412347880
+    second: soapbar_31
+  - first:
+      213: 6173986616396460898
+    second: soapbar_32
+  - first:
+      213: 3213894313209798659
+    second: soapbar_33
+  - first:
+      213: 870348612184984095
+    second: soapbar_34
+  - first:
+      213: -4525404681400825022
+    second: soapbar_35
+  - first:
+      213: 5415265858600647872
+    second: soapbar_36
+  - first:
+      213: 6935180823744705999
+    second: soapbar_37
+  - first:
+      213: 6461162095699993762
+    second: soapbar_38
+  - first:
+      213: -2035682009061449424
+    second: soapbar_39
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: soapbar_0
+      rect:
+        serializedVersion: 2
+        x: 3465
+        y: 4672
+        width: 92
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 719dd3c3155df3e70800000000000000
+      internalID: 9097224317191444759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_1
+      rect:
+        serializedVersion: 2
+        x: 3548
+        y: 4733
+        width: 14
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1575b31839135f00800000000000000
+      internalID: 1104254062275425565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_2
+      rect:
+        serializedVersion: 2
+        x: 3556
+        y: 4717
+        width: 28
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ced276a72310f0760800000000000000
+      internalID: 7426155626870812140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_3
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 464
+        width: 3215
+        height: 4176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5b4922062e1d7cb0800000000000000
+      internalID: -4864698873896416417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_4
+      rect:
+        serializedVersion: 2
+        x: 2305
+        y: 4610
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a92773d3f12d73710800000000000000
+      internalID: 1673036818204291738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_5
+      rect:
+        serializedVersion: 2
+        x: 2316
+        y: 4605
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d75f5c03ec28300c0800000000000000
+      internalID: -4610697771404102275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_6
+      rect:
+        serializedVersion: 2
+        x: 2326
+        y: 4609
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c44472ed65bda860800000000000000
+      internalID: 7542884434470782149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_7
+      rect:
+        serializedVersion: 2
+        x: 2376
+        y: 4606
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af2bc693222b14430800000000000000
+      internalID: 3765486623520502522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_8
+      rect:
+        serializedVersion: 2
+        x: 2547
+        y: 4590
+        width: 17
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb8f98155b3d221b0800000000000000
+      internalID: -5682747004077606722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_9
+      rect:
+        serializedVersion: 2
+        x: 3517
+        y: 4610
+        width: 64
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a6038098cb8ac410800000000000000
+      internalID: 1498163519588337318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_10
+      rect:
+        serializedVersion: 2
+        x: 3780
+        y: 4611
+        width: 21
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a621b9131034870b0800000000000000
+      internalID: -5730756853422681494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_11
+      rect:
+        serializedVersion: 2
+        x: 2341
+        y: 4599
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: edadf83b458ea8e90800000000000000
+      internalID: -7022545218443420962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_12
+      rect:
+        serializedVersion: 2
+        x: 2365
+        y: 4599
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08681b367aa4206b0800000000000000
+      internalID: -5331616926060673408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_13
+      rect:
+        serializedVersion: 2
+        x: 2380
+        y: 4594
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d21cb9e91c8f82a20800000000000000
+      internalID: 3037951459134783789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_14
+      rect:
+        serializedVersion: 2
+        x: 2507
+        y: 4595
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02faa8561ba6a3890800000000000000
+      internalID: -7477546921149944032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_15
+      rect:
+        serializedVersion: 2
+        x: 2616
+        y: 4588
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 936276069ed2fc430800000000000000
+      internalID: 3805310690519361081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_16
+      rect:
+        serializedVersion: 2
+        x: 3110
+        y: 4597
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 438f81c9425e6bbc0800000000000000
+      internalID: -3767572092848375756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_17
+      rect:
+        serializedVersion: 2
+        x: 2590
+        y: 4587
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13e3c4a211be00ee0800000000000000
+      internalID: -1296778233726091727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_18
+      rect:
+        serializedVersion: 2
+        x: 3798
+        y: 4592
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd0f24f694ca95500800000000000000
+      internalID: 385528674516136156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_19
+      rect:
+        serializedVersion: 2
+        x: 3889
+        y: 4427
+        width: 11
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8ff48e399e1a23d0800000000000000
+      internalID: -3230736139157176435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_20
+      rect:
+        serializedVersion: 2
+        x: 3893
+        y: 4412
+        width: 10
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 349b48e61d9be0500800000000000000
+      internalID: 364432929017084227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_21
+      rect:
+        serializedVersion: 2
+        x: 3895
+        y: 4379
+        width: 15
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 491d3389eb70cb280800000000000000
+      internalID: -9026331037978603116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_22
+      rect:
+        serializedVersion: 2
+        x: 3901
+        y: 4371
+        width: 9
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ef9b7e033e6f47d0800000000000000
+      internalID: -2932003666829533208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_23
+      rect:
+        serializedVersion: 2
+        x: 3903
+        y: 4278
+        width: 24
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92d420cdc30b078a0800000000000000
+      internalID: -6309349302510400215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_24
+      rect:
+        serializedVersion: 2
+        x: 3915
+        y: 4267
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a43ad7ad2f20a49a0800000000000000
+      internalID: -6248178290952133814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_25
+      rect:
+        serializedVersion: 2
+        x: 3918
+        y: 4247
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 470a6031e09f71f90800000000000000
+      internalID: -6982838858370604940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_26
+      rect:
+        serializedVersion: 2
+        x: 3919
+        y: 4238
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3660a209cb4102de0800000000000000
+      internalID: -1360064287360809373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_27
+      rect:
+        serializedVersion: 2
+        x: 3921
+        y: 4186
+        width: 14
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29a354529865d1ed0800000000000000
+      internalID: -2441700275929138542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_28
+      rect:
+        serializedVersion: 2
+        x: 3926
+        y: 4230
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4241b6864598a9840800000000000000
+      internalID: 5231644912766358564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_29
+      rect:
+        serializedVersion: 2
+        x: 3859
+        y: 3255
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d52e53d4f947fad0800000000000000
+      internalID: -2668582938326719024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_30
+      rect:
+        serializedVersion: 2
+        x: 3874
+        y: 3236
+        width: 26
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b040badd06b4a8170800000000000000
+      internalID: 8181434552479843339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_31
+      rect:
+        serializedVersion: 2
+        x: 3895
+        y: 3217
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ebcc3439feee1a60800000000000000
+      internalID: 7646811971412347880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_32
+      rect:
+        serializedVersion: 2
+        x: 734
+        y: 1606
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 263b35ecd186ea550800000000000000
+      internalID: 6173986616396460898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_33
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 1597
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 300a48499db0a9c20800000000000000
+      internalID: 3213894313209798659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_34
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 1586
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1a4a049379141c00800000000000000
+      internalID: 870348612184984095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_35
+      rect:
+        serializedVersion: 2
+        x: 738
+        y: 1566
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24bc63c3b688231c0800000000000000
+      internalID: -4525404681400825022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_36
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 1467
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0cc313a6b93e62b40800000000000000
+      internalID: 5415265858600647872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_37
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 1444
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc5776c0736be3060800000000000000
+      internalID: 6935180823744705999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_38
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 1430
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a4aa6e71b8aaa950800000000000000
+      internalID: 6461162095699993762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soapbar_39
+      rect:
+        serializedVersion: 2
+        x: 1705
+        y: 439
+        width: 116
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0312d3e8ffdcfb3e0800000000000000
+      internalID: -2035682009061449424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      soapbar_0: 9097224317191444759
+      soapbar_1: 1104254062275425565
+      soapbar_10: -5730756853422681494
+      soapbar_11: -7022545218443420962
+      soapbar_12: -5331616926060673408
+      soapbar_13: 3037951459134783789
+      soapbar_14: -7477546921149944032
+      soapbar_15: 3805310690519361081
+      soapbar_16: -3767572092848375756
+      soapbar_17: -1296778233726091727
+      soapbar_18: 385528674516136156
+      soapbar_19: -3230736139157176435
+      soapbar_2: 7426155626870812140
+      soapbar_20: 364432929017084227
+      soapbar_21: -9026331037978603116
+      soapbar_22: -2932003666829533208
+      soapbar_23: -6309349302510400215
+      soapbar_24: -6248178290952133814
+      soapbar_25: -6982838858370604940
+      soapbar_26: -1360064287360809373
+      soapbar_27: -2441700275929138542
+      soapbar_28: 5231644912766358564
+      soapbar_29: -2668582938326719024
+      soapbar_3: -4864698873896416417
+      soapbar_30: 8181434552479843339
+      soapbar_31: 7646811971412347880
+      soapbar_32: 6173986616396460898
+      soapbar_33: 3213894313209798659
+      soapbar_34: 870348612184984095
+      soapbar_35: -4525404681400825022
+      soapbar_36: 5415265858600647872
+      soapbar_37: 6935180823744705999
+      soapbar_38: 6461162095699993762
+      soapbar_39: -2035682009061449424
+      soapbar_4: 1673036818204291738
+      soapbar_5: -4610697771404102275
+      soapbar_6: 7542884434470782149
+      soapbar_7: 3765486623520502522
+      soapbar_8: -5682747004077606722
+      soapbar_9: 1498163519588337318
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
