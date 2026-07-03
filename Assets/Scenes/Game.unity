@@ -1523,8 +1523,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -129.13, y: 0.63}
-  m_SizeDelta: {x: 187.8, y: 131.68}
+  m_AnchoredPosition: {x: -176.1756, y: 0.63}
+  m_SizeDelta: {x: 93.7088, y: 131.68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &59006075
 CanvasRenderer:
@@ -1554,9 +1554,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -5747029811783782415, guid: 5f0bf632e9ad1c74eac7f6fc25795799, type: 3}
+  m_Sprite: {fileID: -2185472608353246101, guid: 24ad74da851cc5147b8bb64c19eca25c, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -4636,7 +4636,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 3166240362032845361, guid: ba675b1b7ff70694094e2319af791e3e, type: 3}
+  m_Sprite: {fileID: 2691655998432282992, guid: 9739f1651cd9a014e8c00b5546c8b31f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8649,8 +8649,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -129.13, y: 0.63245}
-  m_SizeDelta: {x: 187.8, y: 131.69}
+  m_AnchoredPosition: {x: -176.1756, y: 0.63}
+  m_SizeDelta: {x: 93.7088, y: 131.68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &310906498
 CanvasRenderer:
@@ -8680,9 +8680,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -5747029811783782415, guid: 5f0bf632e9ad1c74eac7f6fc25795799, type: 3}
+  m_Sprite: {fileID: -2185472608353246101, guid: 24ad74da851cc5147b8bb64c19eca25c, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -11714,7 +11714,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 389846214}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5238209}
+  m_AnchorMin: {x: 0, y: 0.523821}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -16432,9 +16432,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -5340893247509571021, guid: 6f9d2025e543e6746b5b782450852200, type: 3}
+  m_Sprite: {fileID: 8418947683755063568, guid: e54e827729c64a649a3b097bd5634217, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -18239,7 +18239,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 2691655998432282992, guid: 9739f1651cd9a014e8c00b5546c8b31f, type: 3}
+  m_Sprite: {fileID: 3166240362032845361, guid: ba675b1b7ff70694094e2319af791e3e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -23444,7 +23444,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 232.735, y: 377.61}
+  m_AnchoredPosition: {x: 232.73499, y: 377.60995}
   m_SizeDelta: {x: 465.47, y: 755.22}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &807563336
@@ -24636,8 +24636,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -170.44, y: 0.63245}
-  m_SizeDelta: {x: 105.19, y: 131.69}
+  m_AnchoredPosition: {x: -160.6522, y: 5.3097}
+  m_SizeDelta: {x: 124.7657, y: 156.1855}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &862897731
 CanvasRenderer:
@@ -24667,9 +24667,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -154363563120835906, guid: 29d4713ba80d10b40a39548ab332915f, type: 3}
+  m_Sprite: {fileID: 3408717571145459868, guid: b80c36df9cfbca84b8425bb866cfce3c, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -25029,7 +25029,7 @@ GameObject:
   - component: {fileID: 874576252}
   - component: {fileID: 874576251}
   m_Layer: 5
-  m_Name: Firetruck
+  m_Name: Alien
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26122,8 +26122,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -111.52, y: 0.63245}
-  m_SizeDelta: {x: 223.04, y: 131.69}
+  m_AnchoredPosition: {x: -141.6132, y: 0.63}
+  m_SizeDelta: {x: 162.8536, y: 131.68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &925189599
 CanvasRenderer:
@@ -26153,9 +26153,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -4112335321582555246, guid: b3a1fe0f9a8d064438e7f0f216f412fc, type: 3}
+  m_Sprite: {fileID: 247316491014427907, guid: d73c15c33ab324b478e79f483dba1037, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -31205,7 +31205,8 @@ MonoBehaviour:
     dishesPerSecond: 0.8
     startingDebuff: 1
     debuffPerUpgrade: 0.5
-    firstPurchaseAnimationObjects: []
+    firstPurchaseAnimationObjects:
+    - {fileID: 201905483}
     purchaseSfx:
     - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
     upgrades:
@@ -31236,7 +31237,8 @@ MonoBehaviour:
     dishesPerSecond: 1.6
     startingDebuff: 1
     debuffPerUpgrade: 0.5
-    firstPurchaseAnimationObjects: []
+    firstPurchaseAnimationObjects:
+    - {fileID: 299972372}
     purchaseSfx:
     - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
     upgrades:
@@ -31260,19 +31262,20 @@ MonoBehaviour:
     currentCost: 0
     currentUpgradeIndex: 0
     currentDebuff: 0
-  - employeeName: Spitle
-    description: USE WATER PUMP!
+  - employeeName: WASH-E
+    description: A cleaning machine
     baseCost: 12000
     costMultiplier: 1.15
     dishesPerSecond: 3.2
     startingDebuff: 1
     debuffPerUpgrade: 0.5
-    firstPurchaseAnimationObjects: []
+    firstPurchaseAnimationObjects:
+    - {fileID: 1900343759}
     purchaseSfx:
     - {fileID: 8300000, guid: d769c2644a0087b449e415c687eb8169, type: 3}
     upgrades:
-    - upgradeName: Unique Candy
-      description: Gain valuable work experience
+    - upgradeName: Amplifier
+      description: For turbo mode
       icon: {fileID: -4455473766417857067, guid: b39d2151ddd338147aa50689b3591d64, type: 3}
       cost: 60000
     panelRoot: {fileID: 1879129989}
@@ -31298,7 +31301,8 @@ MonoBehaviour:
     dishesPerSecond: 6.4
     startingDebuff: 1
     debuffPerUpgrade: 0.5
-    firstPurchaseAnimationObjects: []
+    firstPurchaseAnimationObjects:
+    - {fileID: 732873046}
     purchaseSfx:
     - {fileID: 8300000, guid: ef0b8f3064dacc5418907d2a6250ef32, type: 3}
     upgrades:
@@ -31329,7 +31333,8 @@ MonoBehaviour:
     dishesPerSecond: 12.8
     startingDebuff: 1
     debuffPerUpgrade: 0.5
-    firstPurchaseAnimationObjects: []
+    firstPurchaseAnimationObjects:
+    - {fileID: 2095695985}
     purchaseSfx:
     - {fileID: 8300000, guid: 7ea08711ec9dbc74c86766f5fd894b01, type: 3}
     upgrades:
@@ -31353,20 +31358,21 @@ MonoBehaviour:
     currentCost: 0
     currentUpgradeIndex: 0
     currentDebuff: 0
-  - employeeName: Firetruck
-    description: It's time to get the city involved
+  - employeeName: Alien
+    description: Has 4th dimensional cleaning tools
     baseCost: 400000
     costMultiplier: 1.15
     dishesPerSecond: 25.6
-    startingDebuff: 0.8
-    debuffPerUpgrade: 0.25
-    firstPurchaseAnimationObjects: []
+    startingDebuff: 1
+    debuffPerUpgrade: 0.5
+    firstPurchaseAnimationObjects:
+    - {fileID: 686170539}
     purchaseSfx:
-    - {fileID: 8300000, guid: 1fc629ddcef30ba40a22a05d3a1e8ba8, type: 3}
+    - {fileID: 8300000, guid: 3c858bee5de052541a5cd99ecbe8ceea, type: 3}
     upgrades:
-    - upgradeName: Fire Hose
-      description: 2000 psi Firehose
-      icon: {fileID: 3166240362032845361, guid: ba675b1b7ff70694094e2319af791e3e, type: 3}
+    - upgradeName: Tesseract
+      description: Let's other dimensions clean your dishes
+      icon: {fileID: 2691655998432282992, guid: 9739f1651cd9a014e8c00b5546c8b31f, type: 3}
       cost: 2000000
     panelRoot: {fileID: 874576249}
     buyButton: {fileID: 1355297691}
@@ -31384,8 +31390,8 @@ MonoBehaviour:
     currentCost: 0
     currentUpgradeIndex: 0
     currentDebuff: 0
-  - employeeName: Blue Whale
-    description: Nature's greatest dishwasher
+  - employeeName: Firetruck
+    description: It's time to get the city involved
     baseCost: 900000
     costMultiplier: 1.15
     dishesPerSecond: 51.2
@@ -31393,11 +31399,11 @@ MonoBehaviour:
     debuffPerUpgrade: 0.5
     firstPurchaseAnimationObjects: []
     purchaseSfx:
-    - {fileID: 8300000, guid: 3c858bee5de052541a5cd99ecbe8ceea, type: 3}
+    - {fileID: 8300000, guid: 1fc629ddcef30ba40a22a05d3a1e8ba8, type: 3}
     upgrades:
-    - upgradeName: Barnacle
-      description: Barnacle
-      icon: {fileID: 2691655998432282992, guid: 9739f1651cd9a014e8c00b5546c8b31f, type: 3}
+    - upgradeName: Fire Hose
+      description: 2000 psi Firehose
+      icon: {fileID: 3166240362032845361, guid: ba675b1b7ff70694094e2319af791e3e, type: 3}
       cost: 4500000
     panelRoot: {fileID: 1441717395}
     buyButton: {fileID: 544485232}
@@ -36131,14 +36137,14 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1814730498}
   - {fileID: 1043575371}
+  - {fileID: 1814730498}
   - {fileID: 201905484}
   - {fileID: 299972373}
   - {fileID: 1900343760}
   - {fileID: 732873047}
-  - {fileID: 686170540}
   - {fileID: 2095695986}
+  - {fileID: 686170540}
   m_Father: {fileID: 1819217423}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -38316,7 +38322,7 @@ GameObject:
   - component: {fileID: 1441717398}
   - component: {fileID: 1441717397}
   m_Layer: 5
-  m_Name: BlueWhale
+  m_Name: Firetruck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44902,8 +44908,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -125.15997, y: 0.63}
-  m_SizeDelta: {x: 195.75, y: 131.68}
+  m_AnchoredPosition: {x: -169.29674, y: 0.63}
+  m_SizeDelta: {x: 107.4765, y: 131.68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1705349901
 CanvasRenderer:
@@ -44933,9 +44939,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 247316491014427907, guid: d73c15c33ab324b478e79f483dba1037, type: 3}
+  m_Sprite: {fileID: -1438511877844967724, guid: 0195aab4c36fceb4598a2d045af49a2a, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -46621,8 +46627,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -170.44, y: 0.63}
-  m_SizeDelta: {x: 105.19, y: 131.68}
+  m_AnchoredPosition: {x: -160.6522, y: 5.3097}
+  m_SizeDelta: {x: 124.7657, y: 156.1855}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1782849412
 CanvasRenderer:
@@ -46652,9 +46658,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -154363563120835906, guid: 29d4713ba80d10b40a39548ab332915f, type: 3}
+  m_Sprite: {fileID: 3408717571145459868, guid: b80c36df9cfbca84b8425bb866cfce3c, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -49019,7 +49025,7 @@ GameObject:
   - component: {fileID: 1879129992}
   - component: {fileID: 1879129991}
   m_Layer: 5
-  m_Name: Spitle
+  m_Name: WASH-E
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51486,8 +51492,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -111.52, y: 0.63}
-  m_SizeDelta: {x: 223.04, y: 131.68}
+  m_AnchoredPosition: {x: -141.6132, y: 0.63}
+  m_SizeDelta: {x: 162.8536, y: 131.68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1962179895
 CanvasRenderer:
@@ -51517,9 +51523,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -4112335321582555246, guid: b3a1fe0f9a8d064438e7f0f216f412fc, type: 3}
+  m_Sprite: {fileID: 247316491014427907, guid: d73c15c33ab324b478e79f483dba1037, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -54711,8 +54717,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -170.44, y: 0.63245}
-  m_SizeDelta: {x: 105.19, y: 131.69}
+  m_AnchoredPosition: {x: -170.44, y: 0.63}
+  m_SizeDelta: {x: 105.19, y: 131.68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2101591582
 CanvasRenderer:
@@ -54742,9 +54748,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -5340893247509571021, guid: 6f9d2025e543e6746b5b782450852200, type: 3}
+  m_Sprite: {fileID: 8418947683755063568, guid: e54e827729c64a649a3b097bd5634217, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -54925,8 +54931,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -125.16, y: 0.63245}
-  m_SizeDelta: {x: 195.75, y: 131.69}
+  m_AnchoredPosition: {x: -169.29674, y: 0.63}
+  m_SizeDelta: {x: 107.4765, y: 131.68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2103581050
 CanvasRenderer:
@@ -54956,9 +54962,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 247316491014427907, guid: d73c15c33ab324b478e79f483dba1037, type: 3}
+  m_Sprite: {fileID: -1438511877844967724, guid: 0195aab4c36fceb4598a2d045af49a2a, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
