@@ -137,6 +137,7 @@ public class EmployeeManager : MonoBehaviour
         }
 
         WireButtons();
+        WireFirstPurchaseAnimationObjects();
         InitMenuVisibility();
 
         if (tooltipRoot != null)
@@ -213,6 +214,32 @@ public class EmployeeManager : MonoBehaviour
             {
                 emp.upgradeButton.onClick.RemoveAllListeners();
                 emp.upgradeButton.onClick.AddListener(() => BuyEmployeeUpgrade(index));
+            }
+        }
+    }
+
+    private void WireFirstPurchaseAnimationObjects()
+    {
+        for (int i = 0; i < employees.Count; i++)
+        {
+            EmployeeDefinition emp = employees[i];
+
+            if (emp == null || emp.firstPurchaseAnimationObjects == null)
+                continue;
+
+            for (int j = 0; j < emp.firstPurchaseAnimationObjects.Length; j++)
+            {
+                GameObject obj = emp.firstPurchaseAnimationObjects[j];
+
+                if (obj == null)
+                    continue;
+
+                EmployeeSceneInteractable interactable = obj.GetComponent<EmployeeSceneInteractable>();
+
+                if (interactable == null)
+                    interactable = obj.AddComponent<EmployeeSceneInteractable>();
+
+                interactable.Configure(this, i);
             }
         }
     }
@@ -500,9 +527,27 @@ public class EmployeeManager : MonoBehaviour
         }
     }
 
+    public bool IsValidEmployeeIndex(int index)
+    {
+        return index >= 0 && index < employees.Count;
+    }
+
+    public bool IsEmployeeOwned(int index)
+    {
+        return IsValidEmployeeIndex(index) && employees[index].count > 0;
+    }
+
+    public void PlayEmployeePurchaseSfx(int index)
+    {
+        if (!IsValidEmployeeIndex(index))
+            return;
+
+        PlayPurchaseSfx(employees[index]);
+    }
+
     public void ShowEmployeeDescription(int index)
     {
-        if (index < 0 || index >= employees.Count) return;
+        if (!IsValidEmployeeIndex(index)) return;
 
         ShowDescriptionText(employees[index].description);
     }

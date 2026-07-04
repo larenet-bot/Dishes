@@ -52,6 +52,9 @@ TagManager:
   - name: arrows
     uniqueID: 2300484631
     locked: 0
+  - name: bubble
+    uniqueID: 1811807709
+    locked: 0
   m_RenderingLayers:
   - Default
   - Menu
