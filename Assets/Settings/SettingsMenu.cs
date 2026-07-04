@@ -97,6 +97,12 @@ public class SettingsMenu : MonoBehaviour
             audioMixer.SetFloat("SFX", sfx <= 0.0001f ? -80f : Mathf.Log10(sfx) * 20);
         }
 
+        // Debug: report that audio was started and current volumes (linear and dB)
+        float masterDb = master <= 0.0001f ? -80f : Mathf.Log10(master) * 20;
+        float musicDb = music <= 0.0001f ? -80f : Mathf.Log10(music) * 20;
+        float sfxDb = sfx <= 0.0001f ? -80f : Mathf.Log10(sfx) * 20;
+        Debug.Log("Audio started. Master=" + master + " (" + masterDb + " dB), Music=" + music + " (" + musicDb + " dB), SFX=" + sfx + " (" + sfxDb + " dB)");
+
         // Sync slider UI values
         if (masterSlider != null)
         {

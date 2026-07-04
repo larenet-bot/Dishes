@@ -453,7 +453,7 @@ MonoBehaviour:
   allowSpriteRendererLens: 1
   includeInactiveSpriteRenderers: 0
   autoApplyPresetDefaultUpgrades: 1
-  presetDefaultsVersion: 9
+  presetDefaultsVersion: 10
   dirtyGrease:
     colorWash: {r: 0.28, g: 0.13, b: 0.03, a: 0.055}
     pulseColorWashTowardTarget: 0
@@ -580,13 +580,13 @@ MonoBehaviour:
     colorWashPulseTarget: {r: 0, g: 0, b: 0, a: 0}
     colorPulseStrength: 0.045
     colorPulseSpeed: 0.8
-    proceduralMode: 5
-    proceduralColorA: {r: 0.48, g: 0.12, b: 1, a: 1}
-    proceduralColorB: {r: 1, g: 0.1, b: 0.76, a: 1}
+    proceduralMode: 7
+    proceduralColorA: {r: 0, g: 0.36, b: 1, a: 1}
+    proceduralColorB: {r: 1, g: 0.1, b: 0.72, a: 1}
     proceduralAlpha: 0.3
     proceduralScale: 1
-    proceduralSpeed: 1.2
-    proceduralIntensity: 0.9
+    proceduralSpeed: 0.95
+    proceduralIntensity: 0.95
     proceduralDirection: {x: -1, y: 0}
     useOverlayGlow: 0
     overlayGlowColorA: {r: 0, g: 0.7, b: 0.85, a: 1}
@@ -940,13 +940,13 @@ MonoBehaviour:
     colorWashPulseTarget: {r: 0, g: 0, b: 0, a: 0}
     colorPulseStrength: 0.045
     colorPulseSpeed: 0.75
-    proceduralMode: 5
+    proceduralMode: 7
     proceduralColorA: {r: 0, g: 0.4, b: 1, a: 1}
-    proceduralColorB: {r: 0.7, g: 0.035, b: 0.82, a: 1}
-    proceduralAlpha: 0.2
+    proceduralColorB: {r: 1, g: 0.08, b: 0.74, a: 1}
+    proceduralAlpha: 0.22
     proceduralScale: 1
-    proceduralSpeed: 1.5
-    proceduralIntensity: 1.2
+    proceduralSpeed: 1.1
+    proceduralIntensity: 1.15
     proceduralDirection: {x: -1, y: 0}
     useOverlayGlow: 0
     overlayGlowColorA: {r: 0, g: 0.7, b: 0.85, a: 1}
@@ -1505,7 +1505,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 1698371678404170224, guid: e30935e55bf325e448023fdd8451a615, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 22f23c263b2e0d94b8a1b93e1d240c32, type: 3}
+  m_Resource: {fileID: 8300000, guid: 179051b5dbeafbe4ca33464cca918563, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1764,7 +1764,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1577810179}
+      - m_Target: {fileID: 1205603066}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -1826,6 +1826,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 872548899}
   m_CullTransparentMesh: 1
+--- !u!1 &1205603066 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3929666343683093893, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
+  m_PrefabInstance: {fileID: 7438086142695329620}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1240896717
 GameObject:
   m_ObjectHideFlags: 0
@@ -2407,11 +2412,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1534090754}
   m_CullTransparentMesh: 1
---- !u!1 &1577810179 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4311589501951461181, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
-  m_PrefabInstance: {fileID: 7438086142695329620}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1577810180 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4977637629110029844, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
@@ -2856,6 +2856,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3929666343683093893, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4149928978427292973, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 38
@@ -2870,7 +2874,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4311589501951461181, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4977637629110029844, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_Pivot.x
@@ -2974,6 +2978,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7002356872137242559, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7231427581170576270, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
+      propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
