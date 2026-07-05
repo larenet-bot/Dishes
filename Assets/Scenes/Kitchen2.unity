@@ -64307,7 +64307,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 598e24caac8300046866a27f5d1df710, type: 2}
   noAudiotracks: {fileID: 11400000, guid: 2ffa35112386e434885177482d724033, type: 2}
   trackTitleText: {fileID: 379076677}
+  songCardContentParent: {fileID: 0}
+  songCardPrefab: {fileID: 0}
+  songToggleGroup: {fileID: 0}
+  nowPlayingText: {fileID: 0}
+  nowPlayingProgressFill: {fileID: 0}
+  nowPlayingTimerText: {fileID: 0}
+  playPauseButtonText: {fileID: 0}
+  rebuildSongCardsOnEnable: 0
   autoPlayOnAwake: 1
+  transitionSeconds: 0.5
   requirePurchase: 1
 --- !u!114 &1934337362
 MonoBehaviour:
@@ -66720,7 +66729,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ed50b4e8e828349ab8983247fe453b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  piggyBankTiers: []
+  piggyBankTiers:
+  - tierName: Toy Piggybank
+    description: A prop from a childrens playset, can you even actually put money
+      in this thing?
+    loreDescription: Would allow for offline earning if it was not so small.
+    cost: 1
+    value: 0
+    icon: {fileID: 0}
+    requiredDishes: 1
+  - tierName: Ceramic Piggy Bank
+    description: A sturdier piggy bank.
+    loreDescription: Allows 2 hours of offline earnings.
+    cost: 150
+    value: 7200
+    icon: {fileID: 0}
+    requiredDishes: 100
+  - tierName: Golden Piggy Bank
+    description: A luxurious piggy bank.Allows 4 hours of offline earnings.
+    loreDescription: Allows 4 hours of offline earnings.
+    cost: 1500
+    value: 14400
+    icon: {fileID: 0}
+    requiredDishes: 500
+  - tierName: Large Piggy Bank
+    description: A luxurious piggy bank.Allows 4 hours of offline earnings.
+    loreDescription: Allows 6 hours of offline earnings.
+    cost: 30000
+    value: 28800
+    icon: {fileID: 0}
+    requiredDishes: 2000
+  - tierName: Larger Piggy Bank
+    description: A luxurious piggy bank.Allows 4 hours of offline earnings.
+    loreDescription: Allows 8 hours of offline earnings.
+    cost: 60000
+    value: 57600
+    icon: {fileID: 0}
+    requiredDishes: 4000
+  - tierName: Largest Piggy Bank
+    description: A luxurious piggy bank.Allows 4 hours of offline earnings.
+    loreDescription: Allows 12 hours of offline earnings.
+    cost: 100000
+    value: 57600
+    icon: {fileID: 0}
+    requiredDishes: 5000
   piggyBankMenuPanel: {fileID: 726055854}
   piggyBankNameText: {fileID: 1972696592}
   piggyBankDescText: {fileID: 497138910}

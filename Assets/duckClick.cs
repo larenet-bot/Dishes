@@ -23,13 +23,13 @@ public class DuckClick : MonoBehaviour
 
     void OnMouseDown()
     {
-        // If a DuckAchievementViewer is assigned, use it (prefab-driven UI).
-        // Otherwise fall back to the existing AchievementViewer dynamic menu.
-        if (achievementViewer != null)
-        {
-            achievementViewer.ToggleAchievements();
-        }
-        else
+        //// If a DuckAchievementViewer is assigned, use it (prefab-driven UI).
+        //// Otherwise fall back to the existing AchievementViewer dynamic menu.
+        ////if (achievementViewer != null)
+        ////{
+        ////    achievementViewer.ToggleAchievements();
+        ////}
+        //else
         {
             AchievementViewer.ToggleMenuStatic();
         }
