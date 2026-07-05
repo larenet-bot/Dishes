@@ -1,131 +1,36 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SongButtonUI : MonoBehaviour
 {
-    [Header("Core UI")]
-    [SerializeField] private TMP_Text titleText;
-    [SerializeField] private TMP_Text timerText;
-    [SerializeField] private TMP_Text playButtonText;
-    [SerializeField] private Image progressFill;
-    [SerializeField] private GameObject playingRoot;
-
     [Header("Controls")]
     public Button playButton;
-
-    [Tooltip("Optional radio-style toggle used only to show/select the current song. This can be grouped.")]
-    [SerializeField] private Toggle selectionToggle;
-
-    [Tooltip("Optional on/off toggle used to include or remove this song from skip/auto-play rotation.")]
     public Toggle enableToggle;
 
+    [Header("Display")]
+    public TextMeshProUGUI titleText;
+    public TextMeshProUGUI playButtonText;
     public Image background;
 
-    [Header("Optional Colors")]
-    [SerializeField] private Color enabledColor = new Color(0.18f, 0.18f, 0.22f, 1f);
-    [SerializeField] private Color disabledColor = new Color(0.1f, 0.1f, 0.1f, 0.5f);
-    [SerializeField] private Color selectedColor = new Color(0.25f, 0.25f, 0.32f, 1f);
+    [Header("Progress Bar")]
+    [Tooltip("Assign the Image inside this radio card that uses Image Type = Filled, Fill Method = Horizontal.")]
+    public Image progressFill;
 
-    private int songIndex = -1;
-    private float songDuration;
-    private Action<int> playCallback;
-    private Action<int, bool> enabledCallback;
-    private bool eventsWired;
+    private RadioCOntroller radioController;
+    private int trackIndex = -1;
 
     public bool IsEnabled => enableToggle != null ? enableToggle.isOn : true;
 
-    private void Reset()
+    public void Initialize(RadioCOntroller controller, int index, string title)
     {
-        CacheChildReferences();
-    }
+        AutoWireReferences();
 
-    private void Awake()
-    {
-        CacheChildReferences();
-    }
-
-    private void CacheChildReferences()
-    {
-        if (playButton == null)
-        {
-            playButton = GetComponent<Button>();
-        }
-
-        if (background == null)
-        {
-            background = GetComponent<Image>();
-        }
-
-        if (selectionToggle == null)
-        {
-            Transform selectionChild = transform.Find("SelectionToggle");
-            if (selectionChild != null)
-            {
-                selectionToggle = selectionChild.GetComponent<Toggle>();
-            }
-        }
-
-        if (enableToggle == null)
-        {
-            Transform toggleChild = transform.Find("EnableToggle");
-            if (toggleChild != null)
-            {
-                enableToggle = toggleChild.GetComponent<Toggle>();
-            }
-        }
-
-        if (titleText == null)
-        {
-            TMP_Text[] texts = GetComponentsInChildren<TMP_Text>(true);
-            if (texts.Length > 0)
-            {
-                titleText = texts[0];
-            }
-        }
-
-        if (playButtonText == null && playButton != null)
-        {
-            playButtonText = playButton.GetComponentInChildren<TMP_Text>(true);
-        }
-    }
-
-    public void Initialize(
-        int index,
-        string title,
-        float duration,
-        ToggleGroup toggleGroup,
-        Action<int> onPlay,
-        Action<int, bool> onEnabledChanged)
-    {
-        songIndex = index;
-        songDuration = Mathf.Max(0f, duration);
-        playCallback = onPlay;
-        enabledCallback = onEnabledChanged;
-
-        CacheChildReferences();
+        radioController = controller;
+        trackIndex = index;
 
         if (titleText != null)
-        {
-            titleText.SetText(string.IsNullOrWhiteSpace(title) ? $"Track {index + 1}" : title);
-        }
-
-        if (selectionToggle != null)
-        {
-            selectionToggle.group = toggleGroup;
-        }
-
-        WireEvents();
-        Refresh(selected: false, playing: false, enabled: IsEnabled, currentTime: 0f, duration: songDuration, locked: false);
-    }
-
-    private void WireEvents()
-    {
-        if (eventsWired)
-        {
-            return;
-        }
+            titleText.text = title;
 
         if (playButton != null)
         {
@@ -133,116 +38,141 @@ public class SongButtonUI : MonoBehaviour
             playButton.onClick.AddListener(OnPlayClicked);
         }
 
-        if (selectionToggle != null)
-        {
-            selectionToggle.onValueChanged.RemoveAllListeners();
-            selectionToggle.onValueChanged.AddListener(OnSelectionToggleChanged);
-        }
-
         if (enableToggle != null)
         {
-            enableToggle.onValueChanged.RemoveAllListeners();
-            enableToggle.onValueChanged.AddListener(OnEnabledToggleChanged);
+            enableToggle.onValueChanged.RemoveListener(SetEnabledVisual);
+            enableToggle.onValueChanged.AddListener(SetEnabledVisual);
+            SetEnabledVisual(enableToggle.isOn);
         }
 
-        eventsWired = true;
+        SetProgressFill(0f);
+        SetButtonLabel("Play");
     }
 
-    public void Refresh(bool selected, bool playing, bool enabled, float currentTime, float duration, bool locked)
+    public void Refresh(bool isCurrentTrack, bool isPlaying, float progress, bool isTransitioning)
     {
-        songDuration = Mathf.Max(0f, duration);
-
-        if (selectionToggle != null)
-        {
-            selectionToggle.SetIsOnWithoutNotify(selected);
-            selectionToggle.interactable = !locked && enabled;
-        }
-
-        if (enableToggle != null)
-        {
-            enableToggle.SetIsOnWithoutNotify(enabled);
-            enableToggle.interactable = !locked;
-        }
+        bool usable = IsEnabled && !isTransitioning;
 
         if (playButton != null)
+            playButton.interactable = usable;
+
+        if (isCurrentTrack && isPlaying)
         {
-            playButton.interactable = !locked && enabled;
+            SetButtonLabel("Playing");
+        }
+        else if (isCurrentTrack)
+        {
+            SetButtonLabel("Resume");
+        }
+        else
+        {
+            SetButtonLabel("Play");
         }
 
-        if (playButtonText != null)
-        {
-            playButtonText.SetText(playing ? "Playing" : "Play");
-        }
-
-        if (playingRoot != null)
-        {
-            playingRoot.SetActive(playing);
-        }
-
-        float visibleTime = selected ? currentTime : 0f;
-        float fill = songDuration > 0f ? Mathf.Clamp01(visibleTime / songDuration) : 0f;
-
-        if (progressFill != null)
-        {
-            progressFill.fillAmount = fill;
-        }
-
-        if (timerText != null)
-        {
-            timerText.SetText($"{RadioCOntroller.FormatTime(visibleTime)} / {RadioCOntroller.FormatTime(songDuration)}");
-        }
-
-        SetEnabledVisual(enabled, selected);
+        SetProgressFill(isCurrentTrack ? progress : 0f);
+        SetEnabledVisual(IsEnabled);
     }
 
     public void SetEnabledVisual(bool enabled)
     {
-        SetEnabledVisual(enabled, false);
+        if (background == null) return;
+
+        background.color = enabled
+            ? new Color(0.18f, 0.18f, 0.22f, 1f)
+            : new Color(0.1f, 0.1f, 0.1f, 0.5f);
     }
 
-    private void SetEnabledVisual(bool enabled, bool selected)
+    private void SetProgressFill(float amount)
     {
-        if (background == null)
-        {
+        if (progressFill == null)
             return;
-        }
 
-        if (!enabled)
-        {
-            background.color = disabledColor;
-            return;
-        }
+        progressFill.fillAmount = Mathf.Clamp01(amount);
+    }
 
-        background.color = selected ? selectedColor : enabledColor;
+    private void SetButtonLabel(string label)
+    {
+        if (playButtonText != null)
+            playButtonText.text = label;
     }
 
     private void OnPlayClicked()
     {
-        if (songIndex < 0)
-        {
+        if (!IsEnabled)
             return;
-        }
 
-        playCallback?.Invoke(songIndex);
+        if (radioController != null && trackIndex >= 0)
+            radioController.PlayTrackFromList(trackIndex);
     }
 
-    private void OnSelectionToggleChanged(bool isOn)
+    private void Reset()
     {
-        if (!isOn || songIndex < 0)
-        {
-            return;
-        }
-
-        playCallback?.Invoke(songIndex);
+        AutoWireReferences();
+        SetProgressFill(0f);
     }
 
-    private void OnEnabledToggleChanged(bool isOn)
+    private void Awake()
     {
-        SetEnabledVisual(isOn);
+        AutoWireReferences();
+        SetProgressFill(0f);
 
-        if (songIndex >= 0)
+        if (enableToggle != null)
         {
-            enabledCallback?.Invoke(songIndex, isOn);
+            enableToggle.onValueChanged.RemoveListener(SetEnabledVisual);
+            enableToggle.onValueChanged.AddListener(SetEnabledVisual);
+            SetEnabledVisual(enableToggle.isOn);
         }
+    }
+
+    private void AutoWireReferences()
+    {
+        if (playButton == null)
+            playButton = GetComponentInChildren<Button>(true);
+
+        if (enableToggle == null)
+        {
+            Transform t = FindChildByNameContains(transform, "EnableToggle");
+            if (t != null) enableToggle = t.GetComponent<Toggle>();
+        }
+
+        if (titleText == null)
+        {
+            Transform t = FindChildByNameContains(transform, "TitleText");
+            if (t != null) titleText = t.GetComponent<TextMeshProUGUI>();
+        }
+
+        if (playButtonText == null && playButton != null)
+            playButtonText = playButton.GetComponentInChildren<TextMeshProUGUI>(true);
+
+        if (background == null)
+            background = GetComponent<Image>();
+
+        if (progressFill == null)
+        {
+            Transform t = FindChildByNameContains(transform, "ProgressFill");
+            if (t == null) t = FindChildByNameContains(transform, "ProgressBar");
+            if (t == null) t = FindChildByNameContains(transform, "Progress");
+            if (t != null) progressFill = t.GetComponent<Image>();
+        }
+    }
+
+    private Transform FindChildByNameContains(Transform root, string text)
+    {
+        if (root == null || string.IsNullOrWhiteSpace(text))
+            return null;
+
+        for (int i = 0; i < root.childCount; i++)
+        {
+            Transform child = root.GetChild(i);
+
+            if (child.name.IndexOf(text, System.StringComparison.OrdinalIgnoreCase) >= 0)
+                return child;
+
+            Transform found = FindChildByNameContains(child, text);
+            if (found != null)
+                return found;
+        }
+
+        return null;
     }
 }

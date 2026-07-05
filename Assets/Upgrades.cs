@@ -163,6 +163,10 @@ public class Upgrades : MonoBehaviour
     [Header("Optional Canvas For Click Outside Detection")]
     public Canvas raycastCanvas;
 
+    [Header("Additional Click-Inside Roots")]
+    [Tooltip("Extra UI roots that count as inside an open upgrade panel even when they live on another Canvas. Use this for overlay Scroll Views, spawned content, or other radio controls that are not children of the normal panel root.")]
+    [SerializeField] private List<GameObject> additionalClickInsideRoots = new List<GameObject>();
+
     private int currentSoapIndex = 0;
     private int currentGloveIndex = 0;
     private int currentSpongeIndex = 0;
@@ -245,7 +249,7 @@ public class Upgrades : MonoBehaviour
         if (!Input.GetMouseButtonDown(0))
             return;
 
-        if (EventSystem.current == null || graphicRaycaster == null)
+        if (EventSystem.current == null)
             return;
 
         PointerEventData pointerData = new PointerEventData(EventSystem.current)
@@ -254,9 +258,9 @@ public class Upgrades : MonoBehaviour
         };
 
         var results = new List<RaycastResult>();
-        graphicRaycaster.Raycast(pointerData, results);
+        EventSystem.current.RaycastAll(pointerData, results);
 
-        if (ClickedInsideOpenPanel(results))
+        if (PointerIsInsideOpenPanel() || ClickedInsideOpenPanel(results))
             return;
 
         CloseSoapMenu();
@@ -511,6 +515,9 @@ public class Upgrades : MonoBehaviour
             backgroundOverlayButton.onClick.RemoveAllListeners();
             backgroundOverlayButton.onClick.AddListener(() =>
             {
+                if (PointerIsInsideOpenPanel())
+                    return;
+
                 CloseSoapMenu();
                 CloseGloveMenu();
                 CloseSpongeMenu();
@@ -1252,7 +1259,7 @@ public class Upgrades : MonoBehaviour
 
     public void ApplySaveState(int soap, int glove, int sponge, int piggyBank)
     {
-        ApplySaveState(soap, glove, sponge, radioPurchased,piggyBank);
+        ApplySaveState(soap, glove, sponge, radioPurchased, piggyBank);
     }
 
     public void ApplySaveState(int soap, int glove, int sponge, bool radioOwned, int piggyBank)
@@ -1348,27 +1355,116 @@ public class Upgrades : MonoBehaviour
             if (hit == null)
                 continue;
 
-            if (soapMenuPanel != null && soapMenuPanel.activeSelf && hit.transform.IsChildOf(soapMenuPanel.transform))
+            if (HitIsInsideRoot(hit, soapMenuPanel, requireActive: true))
                 return true;
 
-            if (gloveMenuPanel != null && gloveMenuPanel.activeSelf && hit.transform.IsChildOf(gloveMenuPanel.transform))
+            if (HitIsInsideRoot(hit, gloveMenuPanel, requireActive: true))
                 return true;
 
-            if (spongeMenuPanel != null && spongeMenuPanel.activeSelf && hit.transform.IsChildOf(spongeMenuPanel.transform))
+            if (HitIsInsideRoot(hit, spongeMenuPanel, requireActive: true))
                 return true;
 
-            if (radioMenuPanel != null && radioMenuPanel.activeSelf && hit.transform.IsChildOf(radioMenuPanel.transform))
+            if (HitIsInsideRoot(hit, radioMenuPanel, requireActive: true))
                 return true;
 
-            if (radioControlPanel != null && radioControlPanel.activeSelf && hit.transform.IsChildOf(radioControlPanel.transform))
+            if (HitIsInsideRoot(hit, radioControlPanel, requireActive: true))
                 return true;
-            if (piggyBankMenuPanel != null &&
-    piggyBankMenuPanel.activeSelf &&
-    hit.transform.IsChildOf(piggyBankMenuPanel.transform))
+
+            if (HitIsInsideRoot(hit, piggyBankMenuPanel, requireActive: true))
+                return true;
+
+            if (HitIsInsideAdditionalClickRoot(hit))
                 return true;
         }
 
         return false;
+    }
+
+    private bool PointerIsInsideOpenPanel()
+    {
+        if (PointerIsInsideRoot(soapMenuPanel, requireActive: true))
+            return true;
+
+        if (PointerIsInsideRoot(gloveMenuPanel, requireActive: true))
+            return true;
+
+        if (PointerIsInsideRoot(spongeMenuPanel, requireActive: true))
+            return true;
+
+        if (PointerIsInsideRoot(radioMenuPanel, requireActive: true))
+            return true;
+
+        if (PointerIsInsideRoot(radioControlPanel, requireActive: true))
+            return true;
+
+        if (PointerIsInsideRoot(piggyBankMenuPanel, requireActive: true))
+            return true;
+
+        if (additionalClickInsideRoots == null)
+            return false;
+
+        for (int i = 0; i < additionalClickInsideRoots.Count; i++)
+        {
+            if (PointerIsInsideRoot(additionalClickInsideRoots[i], requireActive: true))
+                return true;
+        }
+
+        return false;
+    }
+
+    private bool HitIsInsideAdditionalClickRoot(GameObject hit)
+    {
+        if (hit == null || additionalClickInsideRoots == null)
+            return false;
+
+        for (int i = 0; i < additionalClickInsideRoots.Count; i++)
+        {
+            if (HitIsInsideRoot(hit, additionalClickInsideRoots[i], requireActive: true))
+                return true;
+        }
+
+        return false;
+    }
+
+    private bool HitIsInsideRoot(GameObject hit, GameObject root, bool requireActive)
+    {
+        if (hit == null || root == null)
+            return false;
+
+        if (requireActive && !root.activeInHierarchy)
+            return false;
+
+        return hit.transform == root.transform || hit.transform.IsChildOf(root.transform);
+    }
+
+    private bool PointerIsInsideRoot(GameObject root, bool requireActive)
+    {
+        if (root == null)
+            return false;
+
+        if (requireActive && !root.activeInHierarchy)
+            return false;
+
+        RectTransform rectTransform = root.GetComponent<RectTransform>();
+
+        if (rectTransform == null)
+            return false;
+
+        Camera eventCamera = GetEventCamera(rectTransform);
+        return RectTransformUtility.RectangleContainsScreenPoint(rectTransform, Input.mousePosition, eventCamera);
+    }
+
+    private Camera GetEventCamera(RectTransform rectTransform)
+    {
+        Canvas canvas = rectTransform.GetComponentInParent<Canvas>();
+
+        if (canvas == null || canvas.renderMode == RenderMode.ScreenSpaceOverlay)
+            return null;
+
+        if (canvas.worldCamera != null)
+            return canvas.worldCamera;
+
+        return Camera.main;
     }
 
 }
