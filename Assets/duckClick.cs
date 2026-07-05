@@ -30,9 +30,9 @@ public class DuckClick : MonoBehaviour
         ////    achievementViewer.ToggleAchievements();
         ////}
         //else
-        {
-            AchievementViewer.ToggleMenuStatic();
-        }
+        //{
+        //    AchievementViewer.ToggleMenuStatic();
+        //}
 
         StartCoroutine(PressRoutine());
     }
