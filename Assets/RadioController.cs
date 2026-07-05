@@ -1,127 +1,153 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RadioCOntroller : MonoBehaviour
 {
     [Header("List of Tracks")]
     [SerializeField] private Track[] audiotracks;
-    private int currentTrackIndex;
     [SerializeField] private Track noAudiotracks;
 
     [Header("Text UI")]
-    [SerializeField] private TMPro.TextMeshProUGUI trackTitleText;
+    [SerializeField] private TextMeshProUGUI trackTitleText;
 
-    private AudioSource radioAudioSource;
-    private bool isTransitioning;
+    [Header("Song Selection Menu")]
+    [Tooltip("Parent transform under a ScrollRect/VerticalLayoutGroup where song cards will be spawned.")]
+    [SerializeField] private Transform songCardContentParent;
+
+    [Tooltip("Prefab for one song card. Put SongButtonUI on the prefab root.")]
+    [SerializeField] private SongButtonUI songCardPrefab;
+
+    [Tooltip("Optional toggle group if your song cards use toggles like radio buttons for the currently selected song.")]
+    [SerializeField] private ToggleGroup songToggleGroup;
+
+    [Tooltip("Optional text in the overlay header. If empty, trackTitleText is still updated.")]
+    [SerializeField] private TextMeshProUGUI nowPlayingText;
+
+    [Tooltip("Optional current-track progress bar for the old/global menu area.")]
+    [SerializeField] private Image nowPlayingProgressFill;
+
+    [Tooltip("Optional current-track timer for the old/global menu area.")]
+    [SerializeField] private TextMeshProUGUI nowPlayingTimerText;
+
+    [Tooltip("Optional play/pause button text for the old/global menu area.")]
+    [SerializeField] private TextMeshProUGUI playPauseButtonText;
+
+    [Tooltip("When true, song cards are rebuilt every time this object is enabled. Usually false is fine.")]
+    [SerializeField] private bool rebuildSongCardsOnEnable = false;
 
     [Header("Playback")]
-    [Tooltip("When false the radio will not start playing on Scene Start. Call StartRadio() to begin playback (useful when radio must be purchased first).")]
+    [Tooltip("When false the radio will not start playing on Scene Start. Call StartRadio() to begin playback.")]
     public bool autoPlayOnAwake = false;
+
+    [Tooltip("Seconds used for skip/selection fade transitions.")]
+    [SerializeField] private float transitionSeconds = 0.5f;
 
     [Header("Purchase")]
     [Tooltip("When true the radio must be purchased via Upgrades before it can play.")]
     [SerializeField] private bool requirePurchase = true;
-    private bool isPurchased = false;
 
-    // Allow external systems (Upgrades / save code) to mark this radio as purchased.
+    private readonly List<SongButtonUI> spawnedSongCards = new List<SongButtonUI>();
+    private readonly HashSet<int> disabledSongIndexes = new HashSet<int>();
+
+    private AudioSource radioAudioSource;
+    private Coroutine playbackMonitorCoroutine;
+    private bool isTransitioning;
+    private bool isPurchased;
+    private int currentTrackIndex;
+
     public bool IsPurchased => isPurchased;
-    public void MarkPurchased() => isPurchased = true;
-
-    // Allow external systems to query whether the radio is currently playing.
     public bool IsPlaying => radioAudioSource != null && radioAudioSource.isPlaying;
+    public int CurrentTrackIndex => currentTrackIndex;
+
+    public void MarkPurchased()
+    {
+        isPurchased = true;
+        RefreshSongCards();
+        RefreshNowPlayingUI();
+    }
+
+    private void Awake()
+    {
+        CacheAudioSource();
+    }
 
     private void OnEnable()
     {
-        if (radioAudioSource == null)
-            radioAudioSource = GetComponent<AudioSource>();
+        CacheAudioSource();
 
-        if (radioAudioSource.clip != null && !radioAudioSource.isPlaying)
+        if (rebuildSongCardsOnEnable)
         {
-            StartRadio();
+            RebuildSongCards();
         }
-    }
-    private void OnDisable()
-    {
-        Debug.Log("Radio disabled");
+        else
+        {
+            BuildSongCardsIfNeeded();
+            RefreshSongCards();
+        }
+
+        RefreshNowPlayingUI();
     }
 
-    private void OnDestroy()
-    {
-        Debug.Log("Radio destroyed");
-    }
     private void Start()
     {
         Debug.Log("[Radio] Start called on " + gameObject.scene.name);
 
-     
-        radioAudioSource = GetComponent<AudioSource>();
+        CacheAudioSource();
 
         if (audiotracks == null || audiotracks.Length == 0)
         {
             Debug.LogWarning("No audio tracks assigned to RadioCOntroller.");
+            RefreshNowPlayingUI();
             return;
         }
 
-        currentTrackIndex = 0;
-        updateTrack(currentTrackIndex);
+        currentTrackIndex = Mathf.Clamp(currentTrackIndex, 0, audiotracks.Length - 1);
+        UpdateTrack(currentTrackIndex, keepCurrentTime: false);
 
-        // If purchase is required and the radio hasn't been marked purchased yet,
-        // check the Upgrades instance (if present) to see if the player already owns it.
         if (requirePurchase && !isPurchased)
         {
-            var upgrades = FindAnyObjectByType<Upgrades>();
+            Upgrades upgrades = FindAnyObjectByType<Upgrades>();
             if (upgrades != null && upgrades.RadioPurchased)
             {
                 isPurchased = true;
             }
         }
 
-        // Only play automatically if explicitly allowed and (if required) purchased.
-        //if (autoPlayOnAwake && (!requirePurchase || isPurchased))
-        //{
-            // Use StartRadio so we get consistent behavior (including persistence)
+        BuildSongCardsIfNeeded();
+        RefreshSongCards();
+        RefreshNowPlayingUI();
+
+        if (autoPlayOnAwake && (!requirePurchase || isPurchased))
+        {
             StartRadio();
-        //}
+        }
     }
 
-    /// <summary>
-    /// Start radio playback (stops ambient via AudioManager if present).
-    /// Safe to call multiple times.
-    /// Will refuse to start if purchase is required and not yet owned.
-    /// </summary>
+    private void Update()
+    {
+        RefreshSongCards();
+        RefreshNowPlayingUI();
+    }
+
     public void StartRadio()
     {
-        Debug.Log("PLAY CALLED");
-        Debug.Log("isPlaying = " + radioAudioSource.isPlaying);
-        Debug.Log("time = " + radioAudioSource.time);
-        //noRadio(); // handle the "no radio" case first, which may early out of normal playback
-        // No radio duct tape: if purchase is required but not yet purchased, play the "no audio" track and do not start normal playback.
-        if (requirePurchase && !isPurchased)
+        CacheAudioSource();
+
+        if (radioAudioSource == null)
         {
-            if (radioAudioSource == null)
-                radioAudioSource = GetComponent<AudioSource>();
-
-            radioAudioSource.clip = noAudiotracks.trackAudioClip;
-
-            if (!radioAudioSource.isPlaying)
-            {
-                radioAudioSource.volume = 1f; // use audio source volume (AudioManager may control mixer)
-                radioAudioSource.Play();
-            }
-            Debug.Log("[RadioCOntroller] StartRadio called but radio not purchased.");
-            //StartCoroutine(PlaybackMonitor());
+            Debug.LogWarning("[RadioCOntroller] Missing AudioSource.");
             return;
         }
 
-
-        if (radioAudioSource == null)
-            radioAudioSource = GetComponent<AudioSource>();
-
-        // Ask AudioManager to stop ambient loop if available and persist that choice
-        if (AudioManager.instance != null)
+        if (requirePurchase && !isPurchased)
         {
-            AudioManager.instance.DisableAmbientLooping(true);
+            PlayUnpurchasedFallback();
+            Debug.Log("[RadioCOntroller] StartRadio called but radio not purchased.");
+            return;
         }
 
         if (audiotracks == null || audiotracks.Length == 0)
@@ -130,139 +156,306 @@ public class RadioCOntroller : MonoBehaviour
             return;
         }
 
-        // ensure track is correct and playing
-        updateTrack(currentTrackIndex);
+        if (!IsTrackIndexValid(currentTrackIndex) || IsTrackDisabled(currentTrackIndex))
+        {
+            currentTrackIndex = FindNextEnabledTrackIndex(currentTrackIndex, 1);
+        }
+
+        if (!IsTrackIndexValid(currentTrackIndex))
+        {
+            Debug.LogWarning("[RadioCOntroller] No enabled audio tracks available.");
+            return;
+        }
+
+        DisableAmbientLoopIfPossible();
+        UpdateTrack(currentTrackIndex, keepCurrentTime: true);
+
         if (!radioAudioSource.isPlaying)
         {
-            radioAudioSource.volume = 1f; // use audio source volume (AudioManager may control mixer)
+            radioAudioSource.volume = 1f;
             radioAudioSource.Play();
         }
 
-        // ensure the playback monitor coroutine is running
-        StartCoroutine(PlaybackMonitor());
-    }
-
-    //public void noRadio()
-    //{
-    //    // No radio duct tape: if purchase is required but not yet purchased, play the "no audio" track and do not start normal playback.
-    //        if (requirePurchase && !isPurchased)
-    //        {
-    //            if (radioAudioSource == null)
-    //                radioAudioSource = GetComponent<AudioSource>();
-
-    //            radioAudioSource.clip = noAudiotracks.trackAudioClip;
-
-    //            if (!radioAudioSource.isPlaying)
-    //            {
-    //                radioAudioSource.volume = 1f; // use audio source volume (AudioManager may control mixer)
-    //                radioAudioSource.Play();
-    //            }
-    //            Debug.Log("[RadioCOntroller] StartRadio called but radio not purchased.");
-    //        return;
-    //        }
-        
-    //}
-
-    public void skipforwardButton()
-    {
-        if (requirePurchase && !isPurchased) return;
-        if (audiotracks == null || audiotracks.Length == 0) return;
-        int next = (currentTrackIndex + 1) % audiotracks.Length;
-        StartTransitionTo(next);
-    }
-
-    public void skipbackwardButton()
-    {
-        if (requirePurchase && !isPurchased) return;
-        if (audiotracks == null || audiotracks.Length == 0) return;
-        int prev = (currentTrackIndex - 1 + audiotracks.Length) % audiotracks.Length;
-        StartTransitionTo(prev);
+        EnsurePlaybackMonitorRunning();
+        RefreshSongCards();
+        RefreshNowPlayingUI();
     }
 
     public void PlayAudio()
     {
-        if (requirePurchase && !isPurchased) return;
-        if (isTransitioning) return;
-        if (!radioAudioSource.isPlaying)
+        if (!CanUsePurchasedRadio() || isTransitioning)
         {
-            // Ensure ambient loop is disabled when radio starts playing and persist (radio can only play if purchased)
-            if (AudioManager.instance != null)
-                AudioManager.instance.DisableAmbientLooping(true);
-
-            radioAudioSource.Play();
+            return;
         }
-    }
 
-    void updateTrack(int index)
-    {
-        radioAudioSource.clip = audiotracks[index].trackAudioClip;
-        if (trackTitleText != null)
-            trackTitleText.text = audiotracks[index].trackAudioClip.name;
+        DisableAmbientLoopIfPossible();
+        CacheAudioSource();
+
+        if (radioAudioSource != null && !radioAudioSource.isPlaying)
+        {
+            radioAudioSource.Play();
+            EnsurePlaybackMonitorRunning();
+        }
+
+        RefreshSongCards();
+        RefreshNowPlayingUI();
     }
 
     public void PauseAudio()
     {
-        if (requirePurchase && !isPurchased) return;
-        radioAudioSource.Pause();
+        if (!CanUsePurchasedRadio())
+        {
+            return;
+        }
+
+        CacheAudioSource();
+        radioAudioSource?.Pause();
+        RefreshSongCards();
+        RefreshNowPlayingUI();
+    }
+
+    public void TogglePlayPause()
+    {
+        if (!CanUsePurchasedRadio())
+        {
+            return;
+        }
+
+        CacheAudioSource();
+
+        if (radioAudioSource == null)
+        {
+            return;
+        }
+
+        if (radioAudioSource.isPlaying)
+        {
+            PauseAudio();
+        }
+        else
+        {
+            PlayAudio();
+        }
     }
 
     public void StopAudio()
     {
-        if (requirePurchase && !isPurchased) return;
-        if (isTransitioning) return;
-        radioAudioSource.Stop();
+        if (!CanUsePurchasedRadio() || isTransitioning)
+        {
+            return;
+        }
 
-        // Optionally re-enable ambient loop when radio stops:
-        //if (AudioManager.instance != null)
-        //    AudioManager.instance.EnableAmbientLooping();
+        CacheAudioSource();
+        radioAudioSource?.Stop();
+        RefreshSongCards();
+        RefreshNowPlayingUI();
     }
 
     public void LoopAudio()
     {
-        if (requirePurchase && !isPurchased);
-        radioAudioSource.loop = !radioAudioSource.loop;
+        if (!CanUsePurchasedRadio())
+        {
+            return;
+        }
+
+        CacheAudioSource();
+
+        if (radioAudioSource != null)
+        {
+            radioAudioSource.loop = !radioAudioSource.loop;
+        }
+    }
+
+    public void skipforwardButton()
+    {
+        if (!CanUsePurchasedRadio() || audiotracks == null || audiotracks.Length == 0)
+        {
+            return;
+        }
+
+        int next = FindNextEnabledTrackIndex(currentTrackIndex, 1);
+        if (next != currentTrackIndex)
+        {
+            StartTransitionTo(next);
+        }
+    }
+
+    public void skipbackwardButton()
+    {
+        if (!CanUsePurchasedRadio() || audiotracks == null || audiotracks.Length == 0)
+        {
+            return;
+        }
+
+        int previous = FindNextEnabledTrackIndex(currentTrackIndex, -1);
+        if (previous != currentTrackIndex)
+        {
+            StartTransitionTo(previous);
+        }
+    }
+
+    public void PlayTrackByIndex(int index)
+    {
+        if (!CanUsePurchasedRadio())
+        {
+            return;
+        }
+
+        if (!IsTrackIndexValid(index) || IsTrackDisabled(index))
+        {
+            return;
+        }
+
+        if (index == currentTrackIndex)
+        {
+            PlayAudio();
+            return;
+        }
+
+        StartTransitionTo(index);
+    }
+
+    public void RebuildSongCards()
+    {
+        for (int i = spawnedSongCards.Count - 1; i >= 0; i--)
+        {
+            if (spawnedSongCards[i] != null)
+            {
+                Destroy(spawnedSongCards[i].gameObject);
+            }
+        }
+
+        spawnedSongCards.Clear();
+        BuildSongCardsIfNeeded();
+        RefreshSongCards();
+    }
+
+    private void BuildSongCardsIfNeeded()
+    {
+        if (spawnedSongCards.Count > 0)
+        {
+            return;
+        }
+
+        if (songCardContentParent == null || songCardPrefab == null)
+        {
+            return;
+        }
+
+        if (audiotracks == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < audiotracks.Length; i++)
+        {
+            SongButtonUI card = Instantiate(songCardPrefab, songCardContentParent);
+            card.name = $"SongCard_{i}_{GetTrackTitle(i)}";
+            card.Initialize(
+                i,
+                GetTrackTitle(i),
+                GetTrackLength(i),
+                songToggleGroup,
+                PlayTrackByIndex,
+                SetSongEnabled
+            );
+
+            spawnedSongCards.Add(card);
+        }
+    }
+
+    private void RefreshSongCards()
+    {
+        if (spawnedSongCards.Count == 0)
+        {
+            return;
+        }
+
+        for (int i = 0; i < spawnedSongCards.Count; i++)
+        {
+            SongButtonUI card = spawnedSongCards[i];
+            if (card == null)
+            {
+                continue;
+            }
+
+            bool selected = i == currentTrackIndex;
+            bool playing = selected && IsPlaying && !isTransitioning;
+            bool enabled = !IsTrackDisabled(i);
+            float currentTime = selected && radioAudioSource != null ? radioAudioSource.time : 0f;
+            float duration = GetTrackLength(i);
+
+            card.Refresh(selected, playing, enabled, currentTime, duration, requirePurchase && !isPurchased);
+        }
+    }
+
+    private void SetSongEnabled(int index, bool enabled)
+    {
+        if (!IsTrackIndexValid(index))
+        {
+            return;
+        }
+
+        if (enabled)
+        {
+            disabledSongIndexes.Remove(index);
+        }
+        else
+        {
+            disabledSongIndexes.Add(index);
+        }
+
+        if (IsTrackDisabled(currentTrackIndex))
+        {
+            int next = FindNextEnabledTrackIndex(currentTrackIndex, 1);
+            if (IsTrackIndexValid(next) && next != currentTrackIndex)
+            {
+                StartTransitionTo(next);
+            }
+            else
+            {
+                StopAudio();
+            }
+        }
+
+        RefreshSongCards();
     }
 
     private void StartTransitionTo(int newIndex)
     {
-        if (isTransitioning) return;
+        if (isTransitioning || !IsTrackIndexValid(newIndex) || IsTrackDisabled(newIndex))
+        {
+            return;
+        }
+
         StartCoroutine(TransitionToTrack(newIndex));
     }
 
     private IEnumerator TransitionToTrack(int newIndex)
     {
         isTransitioning = true;
-        yield return StartCoroutine(FadeOut(radioAudioSource, 0.5f));
+        bool shouldPlayAfterTransition = radioAudioSource == null || radioAudioSource.isPlaying || newIndex != currentTrackIndex;
+
+        CacheAudioSource();
+
+        if (radioAudioSource != null && radioAudioSource.isPlaying)
+        {
+            yield return StartCoroutine(FadeOut(radioAudioSource, transitionSeconds));
+        }
+
         currentTrackIndex = newIndex;
-        updateTrack(currentTrackIndex);
-        yield return StartCoroutine(FadeIn(radioAudioSource, 0.5f));
+        UpdateTrack(currentTrackIndex, keepCurrentTime: false);
+
+        if (shouldPlayAfterTransition && radioAudioSource != null)
+        {
+            DisableAmbientLoopIfPossible();
+            yield return StartCoroutine(FadeIn(radioAudioSource, transitionSeconds));
+            EnsurePlaybackMonitorRunning();
+        }
+
         isTransitioning = false;
-    }
-
-    public IEnumerator FadeOut(AudioSource audioSource, float fadeTime)
-    {
-        if (audioSource == null) yield break;
-        float startVolume = audioSource.volume;
-        while (audioSource.volume > 0f)
-        {
-            audioSource.volume -= startVolume * Time.deltaTime / fadeTime;
-            yield return null;
-        }
-        audioSource.Stop();
-        audioSource.volume = startVolume;
-    }
-
-    public IEnumerator FadeIn(AudioSource audioSource, float fadeTime)
-    {
-        if (audioSource == null) yield break;
-        audioSource.Play();
-        audioSource.volume = 0f;
-        while (audioSource.volume < 1.0f)
-        {
-            audioSource.volume += Time.deltaTime / fadeTime;
-            yield return null;
-        }
-        audioSource.volume = 1f;
+        RefreshSongCards();
+        RefreshNowPlayingUI();
     }
 
     private IEnumerator PlaybackMonitor()
@@ -277,15 +470,11 @@ public class RadioCOntroller : MonoBehaviour
                 continue;
             }
 
-            // Wait until the clip starts playing
             while (!radioAudioSource.isPlaying)
             {
                 yield return null;
             }
-            Debug.Log($"Playback stopped. time={radioAudioSource.time}, clipLength={radioAudioSource.clip.length}");
-            Debug.Log("PlaybackMonitor detected playback");
 
-            // Wait until it stops playing (either ended, paused or stopped)
             while (radioAudioSource.isPlaying)
             {
                 yield return null;
@@ -293,48 +482,269 @@ public class RadioCOntroller : MonoBehaviour
 
             if (requirePurchase && !isPurchased)
             {
-                if (radioAudioSource == null)
-                    radioAudioSource = GetComponent<AudioSource>();
-
-                radioAudioSource.clip = noAudiotracks.trackAudioClip;
-
-                if (!radioAudioSource.isPlaying)
-                {
-                    radioAudioSource.volume = 1f; // use audio source volume (AudioManager may control mixer)
-                    radioAudioSource.Play();
-                }
-                Debug.Log("[RadioCOntroller] StartRadio called but radio not purchased.");
-                StartCoroutine(PlaybackMonitor());
+                PlayUnpurchasedFallback();
                 yield return null;
+                continue;
             }
-                // If a transition is running, skip reacting here.
-                if (isTransitioning)
+
+            if (isTransitioning)
             {
                 yield return null;
                 continue;
             }
 
-            // Determine whether the clip ended naturally (time near clip length).
             float clipLength = radioAudioSource.clip != null ? radioAudioSource.clip.length : 0f;
             float time = radioAudioSource.time;
-            Debug.Log($"Ended naturally? {time >= clipLength - endEpsilon}");
-            if (clipLength > 0f && time >= clipLength - endEpsilon)
-            {
-                // advance to next track and wrap around
-                int next = (currentTrackIndex + 1) % audiotracks.Length;
-                StartTransitionTo(next);
+            bool endedNaturally = clipLength > 0f && time >= clipLength - endEpsilon;
 
-                // wait until transition completes before continuing monitoring
-                while (isTransitioning)
+            if (endedNaturally && !radioAudioSource.loop)
+            {
+                int next = FindNextEnabledTrackIndex(currentTrackIndex, 1);
+                if (next != currentTrackIndex)
                 {
-                    yield return null;
+                    StartTransitionTo(next);
+
+                    while (isTransitioning)
+                    {
+                        yield return null;
+                    }
                 }
             }
-            else
+
+            yield return null;
+        }
+    }
+
+    private void UpdateTrack(int index, bool keepCurrentTime)
+    {
+        if (!IsTrackIndexValid(index))
+        {
+            return;
+        }
+
+        CacheAudioSource();
+
+        AudioClip clip = GetTrackClip(index);
+        if (radioAudioSource == null || clip == null)
+        {
+            return;
+        }
+
+        float previousTime = keepCurrentTime && radioAudioSource.clip == clip ? radioAudioSource.time : 0f;
+        bool wasPlaying = radioAudioSource.isPlaying;
+
+        radioAudioSource.clip = clip;
+
+        if (previousTime > 0f && previousTime < clip.length)
+        {
+            radioAudioSource.time = previousTime;
+        }
+
+        if (wasPlaying && !radioAudioSource.isPlaying)
+        {
+            radioAudioSource.Play();
+        }
+
+        RefreshNowPlayingUI();
+    }
+
+    private void RefreshNowPlayingUI()
+    {
+        string title = IsTrackIndexValid(currentTrackIndex) ? GetTrackTitle(currentTrackIndex) : "No Track";
+        float currentTime = radioAudioSource != null ? radioAudioSource.time : 0f;
+        float duration = IsTrackIndexValid(currentTrackIndex) ? GetTrackLength(currentTrackIndex) : 0f;
+        float fillAmount = duration > 0f ? Mathf.Clamp01(currentTime / duration) : 0f;
+
+        if (trackTitleText != null)
+        {
+            trackTitleText.SetText(title);
+        }
+
+        if (nowPlayingText != null)
+        {
+            nowPlayingText.SetText(IsPlaying ? $"Now Playing: {title}" : $"Selected: {title}");
+        }
+
+        if (nowPlayingProgressFill != null)
+        {
+            nowPlayingProgressFill.fillAmount = fillAmount;
+        }
+
+        if (nowPlayingTimerText != null)
+        {
+            nowPlayingTimerText.SetText($"{FormatTime(currentTime)} / {FormatTime(duration)}");
+        }
+
+        if (playPauseButtonText != null)
+        {
+            playPauseButtonText.SetText(IsPlaying ? "Pause" : "Play");
+        }
+    }
+
+    private void PlayUnpurchasedFallback()
+    {
+        CacheAudioSource();
+
+        if (radioAudioSource == null || noAudiotracks == null || noAudiotracks.trackAudioClip == null)
+        {
+            return;
+        }
+
+        radioAudioSource.clip = noAudiotracks.trackAudioClip;
+
+        if (!radioAudioSource.isPlaying)
+        {
+            radioAudioSource.volume = 1f;
+            radioAudioSource.Play();
+        }
+    }
+
+    private void EnsurePlaybackMonitorRunning()
+    {
+        if (playbackMonitorCoroutine != null)
+        {
+            return;
+        }
+
+        playbackMonitorCoroutine = StartCoroutine(PlaybackMonitor());
+    }
+
+    private void CacheAudioSource()
+    {
+        if (radioAudioSource == null)
+        {
+            radioAudioSource = GetComponent<AudioSource>();
+        }
+    }
+
+    private bool CanUsePurchasedRadio()
+    {
+        return !requirePurchase || isPurchased;
+    }
+
+    private void DisableAmbientLoopIfPossible()
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.DisableAmbientLooping(true);
+        }
+    }
+
+    private bool IsTrackIndexValid(int index)
+    {
+        return audiotracks != null && index >= 0 && index < audiotracks.Length && GetTrackClip(index) != null;
+    }
+
+    private AudioClip GetTrackClip(int index)
+    {
+        if (audiotracks == null || index < 0 || index >= audiotracks.Length || audiotracks[index] == null)
+        {
+            return null;
+        }
+
+        return audiotracks[index].trackAudioClip;
+    }
+
+    private string GetTrackTitle(int index)
+    {
+        AudioClip clip = GetTrackClip(index);
+        return clip != null ? clip.name : $"Track {index + 1}";
+    }
+
+    private float GetTrackLength(int index)
+    {
+        AudioClip clip = GetTrackClip(index);
+        return clip != null ? clip.length : 0f;
+    }
+
+    private bool IsTrackDisabled(int index)
+    {
+        return disabledSongIndexes.Contains(index);
+    }
+
+    private int FindNextEnabledTrackIndex(int startIndex, int direction)
+    {
+        if (audiotracks == null || audiotracks.Length == 0)
+        {
+            return -1;
+        }
+
+        direction = direction >= 0 ? 1 : -1;
+        int count = audiotracks.Length;
+
+        for (int step = 1; step <= count; step++)
+        {
+            int candidate = (startIndex + (step * direction)) % count;
+            if (candidate < 0)
             {
-                // stopped or paused manually — do nothing and continue monitoring
-                yield return null;
+                candidate += count;
+            }
+
+            if (IsTrackIndexValid(candidate) && !IsTrackDisabled(candidate))
+            {
+                return candidate;
             }
         }
+
+        return startIndex;
+    }
+
+    public IEnumerator FadeOut(AudioSource audioSource, float fadeTime)
+    {
+        if (audioSource == null)
+        {
+            yield break;
+        }
+
+        fadeTime = Mathf.Max(0.01f, fadeTime);
+        float startVolume = audioSource.volume;
+        float timer = 0f;
+
+        while (timer < fadeTime)
+        {
+            timer += Time.unscaledDeltaTime;
+            audioSource.volume = Mathf.Lerp(startVolume, 0f, Mathf.Clamp01(timer / fadeTime));
+            yield return null;
+        }
+
+        audioSource.Stop();
+        audioSource.volume = startVolume;
+    }
+
+    public IEnumerator FadeIn(AudioSource audioSource, float fadeTime)
+    {
+        if (audioSource == null)
+        {
+            yield break;
+        }
+
+        fadeTime = Mathf.Max(0.01f, fadeTime);
+        float targetVolume = 1f;
+        float timer = 0f;
+
+        audioSource.volume = 0f;
+        audioSource.Play();
+
+        while (timer < fadeTime)
+        {
+            timer += Time.unscaledDeltaTime;
+            audioSource.volume = Mathf.Lerp(0f, targetVolume, Mathf.Clamp01(timer / fadeTime));
+            yield return null;
+        }
+
+        audioSource.volume = targetVolume;
+    }
+
+    public static string FormatTime(float seconds)
+    {
+        if (float.IsNaN(seconds) || float.IsInfinity(seconds) || seconds < 0f)
+        {
+            seconds = 0f;
+        }
+
+        int wholeSeconds = Mathf.FloorToInt(seconds);
+        int minutes = wholeSeconds / 60;
+        int remainingSeconds = wholeSeconds % 60;
+        return $"{minutes}:{remainingSeconds:00}";
     }
 }
