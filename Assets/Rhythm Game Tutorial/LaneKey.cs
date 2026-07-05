@@ -121,6 +121,40 @@ public class LaneKey : MonoBehaviour
         if (s_lastWrongFrame == Time.frameCount)
             return;
 
+        // Try to consume/penalize the closest hittable note across all lanes so the subsequent
+        // OnTriggerExit for that note won't apply an additional Miss penalty.
+        Note penalizeCandidate = null;
+        float penalizeBest = float.MaxValue;
+        foreach (var n in notes)
+        {
+            if (n == null)
+                continue;
+            if (!n.canBeHit || n.wasHit)
+                continue;
+
+            // Use Note's helper to compute time-until-hit; take absolute difference.
+            float diff = Mathf.Abs(n.GetTimeUntilHit());
+            if (hitWindow != null && diff > hitWindow.badRange)
+                continue;
+
+            if (diff < penalizeBest)
+            {
+                penalizeBest = diff;
+                penalizeCandidate = n;
+            }
+        }
+
+        if (penalizeCandidate != null)
+        {
+            // Mark as penalized so OnTriggerExit won't add another Miss, and prevent hits.
+            penalizeCandidate.penalized = true;
+            penalizeCandidate.wasHit = true;
+
+            // Remove the note visually immediately to avoid confusion (mirrors behavior of Hit).
+            // This avoids OnTriggerExit running and doubles being punished.
+            try { Object.Destroy(penalizeCandidate.gameObject); } catch { }
+        }
+
         s_lastWrongFrame = Time.frameCount;
 
         MiniScoreManager.AddWrongPress();

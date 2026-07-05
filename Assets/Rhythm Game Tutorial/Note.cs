@@ -9,6 +9,10 @@ public class Note : MonoBehaviour
     public bool canBeHit = false;
     public bool wasHit = false;
 
+    // If a wrong press has already consumed/penalized this note, set this to true
+    // so the note exit does not apply an additional miss penalty.
+    [HideInInspector] public bool penalized = false;
+
     public HitWindow hitWindow;
     public AudioSource musicSource;
 
@@ -132,7 +136,8 @@ public class Note : MonoBehaviour
         {
             canBeHit = false;
 
-            if (!wasHit)
+            // Only apply a miss penalty if the note wasn't hit and wasn't already penalized by a wrong press.
+            if (!wasHit && !penalized)
             {
                 MiniScoreManager.AddMiss();
                 UI_RhythmHUD.Instance.ShowFeedback("MISS");

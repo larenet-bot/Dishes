@@ -43,6 +43,9 @@ public class RhythmGameEndManager : MonoBehaviour
     [Tooltip("Global scale applied to the computed reward. Use < 1 to make rewards smaller.")]
     [Range(0f, 1f)] public float rewardScale = 0.05f;
 
+    [Tooltip("Flat payout added to every run in addition to the computed reward.")]
+    public float flatPayout = 100f;
+
     [Tooltip("Optional reference to a RhythmMiniGame toggle component; if set, will call ToggleMiniGame() after showing results (optional).")]
     public RhythmMiniGameToggle toggleRef;
 
@@ -105,6 +108,9 @@ public class RhythmGameEndManager : MonoBehaviour
         float safeAccuracy = Mathf.Max(accuracy, 0f); // accuracy already clamped; keep explicit
         float reward = baseValue * (float)totalNotes * multiplier * safeAccuracy * rewardScale;
         reward = Mathf.Max(0f, reward);
+
+        // Add flat payout
+        reward += flatPayout;
 
         // Award reward via ScoreManager so UI/profit-rate trackers receive pending adjustments correctly
         if (ScoreManager.Instance != null)

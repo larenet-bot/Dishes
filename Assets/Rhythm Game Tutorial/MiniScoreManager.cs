@@ -13,13 +13,13 @@ public static class MiniScoreManager
 
     // ----- adjustable values -----
     public static int perfectValue = 300;
-    public static int goodValue = 150;
-    public static int badValue = 50;
+    public static int goodValue = 250;
+    public static int badValue = 200;
     public static int missValue = 0;
 
     // Penalty for pressing a wrong key when there is a hittable note in another lane.
     // Set to a negative value to reduce score.
-    public static int wrongPressValue = -300;
+    public static int wrongPressValue = -150;
 
     // Frame-tracker to avoid applying multiple score penalties in the same frame
     // (e.g. a note Exit triggers a Miss and a simultaneous wrong key press).
