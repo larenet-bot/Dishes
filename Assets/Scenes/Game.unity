@@ -16432,7 +16432,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8418947683755063568, guid: e54e827729c64a649a3b097bd5634217, type: 3}
+  m_Sprite: {fileID: -1658982746917928584, guid: 57ac1075ca1fed74798a7235efd22f71, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -21301,7 +21301,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8418947683755063568, guid: e54e827729c64a649a3b097bd5634217, type: 3}
+  m_Sprite: {fileID: -1658982746917928584, guid: 57ac1075ca1fed74798a7235efd22f71, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -53547,17 +53547,17 @@ MonoBehaviour:
     loreDescription: Cheap Bar Soap that barely cleans
     cost: 100
     multiplier: 1
-    icon: {fileID: 8160856787165218221, guid: bfa0394716ca628469a34c76cf123161, type: 3}
+    icon: {fileID: 21300000, guid: 277ede34a3c8ab34ea0e0215e3e4bc13, type: 3}
   - tierName: Dish Soap
     description: Increases ALL DPS by 50%
     loreDescription: Plain Dish Soap
-    cost: 100
+    cost: 10000
     multiplier: 1.5
     icon: {fileID: -7309660979087376691, guid: d010a97ad69e230489a057250235478b, type: 3}
   - tierName: Premium Soap
     description: Increases ALL DPS by 50%
     loreDescription: Can clean a duck really well
-    cost: 1000
+    cost: 1000000
     multiplier: 1.5
     icon: {fileID: -6550787402295075670, guid: 59c3961594a5dd24fb265ab1623cc74c, type: 3}
   soapMenuPanel: {fileID: 467942471}
@@ -53574,22 +53574,36 @@ MonoBehaviour:
     loreDescription: Not very durable plastic gloves
     cost: 100
     dishesAdded: 0
-    icon: {fileID: 5363654752389830098, guid: f6a5c623f9cdd544496b0486268da885, type: 3}
+    icon: {fileID: 21300000, guid: c24a598025a157f49a4f7d2fef14326d, type: 3}
     requiredDishes: 0
-  - tierName: Latex Glove
+  - tierName: Nitrile Gloves
     description: When you complete a wash cycle, complete 2 dishes
-    loreDescription: Gloves that wear down quickly
-    cost: 100
-    dishesAdded: 1
-    icon: {fileID: 7274173115437100561, guid: 1ca911c2098c144478f2d2a31f2d745c, type: 3}
-    requiredDishes: 10
-  - tierName: Nitrile Glove
-    description: When you complete a wash cycle, complete 3 dishes
     loreDescription: Reliable, but uncomfortable gloves
     cost: 100
-    dishesAdded: 2
-    icon: {fileID: 4319018798289120088, guid: 52b54fd1e09b12e418a5f9990486a707, type: 3}
+    dishesAdded: 1
+    icon: {fileID: 21300000, guid: 219fe41ef09716940a0c1ab02008ffcb, type: 3}
     requiredDishes: 100
+  - tierName: Leather Gloves
+    description: When you complete a wash cycle, complete 3 dishes
+    loreDescription: Famously good in water
+    cost: 1000
+    dishesAdded: 2
+    icon: {fileID: 21300000, guid: 27e208022dea4f048aae4f09b2cee78a, type: 3}
+    requiredDishes: 1000
+  - tierName: Hazmat Gloves
+    description: When you complete a wash cycle, complete 4 dishes
+    loreDescription: Handle with care
+    cost: 10000
+    dishesAdded: 3
+    icon: {fileID: 21300000, guid: adbd2be7103c4364aaa16cedc453fdee, type: 3}
+    requiredDishes: 10000
+  - tierName: Iron Gauntlets
+    description: When you complete a wash cycle, complete 5 dishes
+    loreDescription: Uses the finest steel in the kingdom
+    cost: 100000
+    dishesAdded: 4
+    icon: {fileID: 21300000, guid: 29d81897754d93e4f8957e7cab4a389b, type: 3}
+    requiredDishes: 100000
   gloveMenuPanel: {fileID: 1816192135}
   gloveNameText: {fileID: 1255283782}
   gloveDescText: {fileID: 1192016311}
@@ -53603,15 +53617,29 @@ MonoBehaviour:
     loreDescription: Taken from the beach. Doesn't clean well
     cost: 10
     stagesPerClick: 1
-    icon: {fileID: 8979297078104028494, guid: 4a51ca4d51e6d1e47bbd6fc448252461, type: 3}
+    icon: {fileID: 21300000, guid: df797ab6e335b5f4383918aff57ab5b0, type: 3}
     requiredDishes: 0
   - tierName: Sponge Gramps
-    description: Clicks one more click per click
-    loreDescription: Cheap, stor bought sponge.
-    cost: 20
+    description: Each click washes an extra dish stage.
+    loreDescription: Cheap, store bought sponge.
+    cost: 100
     stagesPerClick: 2
-    icon: {fileID: 6863436470346006442, guid: 54a3958fefc46364fb2592b6793a0e8a, type: 3}
+    icon: {fileID: 7882333895033355968, guid: 1140a4b3c30f9cd44aa23eda47fdacd7, type: 3}
     requiredDishes: 100
+  - tierName: 40 Grit Sandpaper
+    description: Each click progresses through 3 dish stages.
+    loreDescription: They don't teach you this one in shop class.
+    cost: 4000
+    stagesPerClick: 3
+    icon: {fileID: 21300000, guid: f3856858a157045419a7bc0f9f01dff4, type: 3}
+    requiredDishes: 2000
+  - tierName: Steel Wool
+    description: Each click progresses through 4 dish stages.
+    loreDescription: This will shave off grime in no time
+    cost: 30000
+    stagesPerClick: 4
+    icon: {fileID: 21300000, guid: 29ee5dbe4ac7885458c3aad78c34bbbd, type: 3}
+    requiredDishes: 15000
   spongeMenuPanel: {fileID: 68355194}
   spongeNameText: {fileID: 1939614010}
   spongeDescText: {fileID: 1460034764}
@@ -54889,7 +54917,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8418947683755063568, guid: e54e827729c64a649a3b097bd5634217, type: 3}
+  m_Sprite: {fileID: -1658982746917928584, guid: 57ac1075ca1fed74798a7235efd22f71, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

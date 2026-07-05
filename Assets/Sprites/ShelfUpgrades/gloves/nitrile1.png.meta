@@ -1,0 +1,1651 @@
+fileFormatVersion: 2
+guid: 05fec615a6b16bc4e92e1ee1fe99d3c4
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7095371387671529993
+    second: nitrile1_0
+  - first:
+      213: 230576074684210457
+    second: nitrile1_1
+  - first:
+      213: 1046967814483570553
+    second: nitrile1_2
+  - first:
+      213: -2142925342812472754
+    second: nitrile1_3
+  - first:
+      213: 3031494937947360704
+    second: nitrile1_4
+  - first:
+      213: 8573276200867391975
+    second: nitrile1_5
+  - first:
+      213: 1283234440713728078
+    second: nitrile1_6
+  - first:
+      213: 2441112360534019259
+    second: nitrile1_7
+  - first:
+      213: 6802375594892737765
+    second: nitrile1_8
+  - first:
+      213: 6951966307539789915
+    second: nitrile1_9
+  - first:
+      213: -1241770133440799894
+    second: nitrile1_10
+  - first:
+      213: 6469586029865790079
+    second: nitrile1_11
+  - first:
+      213: 42277490578635950
+    second: nitrile1_12
+  - first:
+      213: 3984120212351791262
+    second: nitrile1_13
+  - first:
+      213: -6084985400211230409
+    second: nitrile1_14
+  - first:
+      213: -2595686538749871676
+    second: nitrile1_15
+  - first:
+      213: -1304552859982016365
+    second: nitrile1_16
+  - first:
+      213: -3635420879046832629
+    second: nitrile1_17
+  - first:
+      213: 7632749275457318344
+    second: nitrile1_18
+  - first:
+      213: 1294740595682910496
+    second: nitrile1_19
+  - first:
+      213: 1188167047202373958
+    second: nitrile1_20
+  - first:
+      213: -726647682326576132
+    second: nitrile1_21
+  - first:
+      213: 210402138338009914
+    second: nitrile1_22
+  - first:
+      213: 3610846085741159996
+    second: nitrile1_23
+  - first:
+      213: 2305090229081832181
+    second: nitrile1_24
+  - first:
+      213: -6547530598409046499
+    second: nitrile1_25
+  - first:
+      213: 8193794880942161408
+    second: nitrile1_26
+  - first:
+      213: -8876467275893960325
+    second: nitrile1_27
+  - first:
+      213: 5410465921286132714
+    second: nitrile1_28
+  - first:
+      213: -3290691141956999310
+    second: nitrile1_29
+  - first:
+      213: -6662641389549207615
+    second: nitrile1_30
+  - first:
+      213: 1762858521616950653
+    second: nitrile1_31
+  - first:
+      213: 8623264578676265969
+    second: nitrile1_32
+  - first:
+      213: -2570559027091878315
+    second: nitrile1_33
+  - first:
+      213: 636120524163203779
+    second: nitrile1_34
+  - first:
+      213: 8721823920755285743
+    second: nitrile1_35
+  - first:
+      213: -879786423179466788
+    second: nitrile1_36
+  - first:
+      213: -5252435082974310331
+    second: nitrile1_37
+  - first:
+      213: -6495684584224505208
+    second: nitrile1_38
+  - first:
+      213: 818799091356351784
+    second: nitrile1_39
+  - first:
+      213: -5124827254626895524
+    second: nitrile1_40
+  - first:
+      213: -4206797895416044072
+    second: nitrile1_41
+  - first:
+      213: 8292571617059715177
+    second: nitrile1_42
+  - first:
+      213: 4099418304564332928
+    second: nitrile1_43
+  - first:
+      213: 5402862825990110006
+    second: nitrile1_44
+  - first:
+      213: 5395067241764229005
+    second: nitrile1_45
+  - first:
+      213: -4434203860986319136
+    second: nitrile1_46
+  - first:
+      213: -1367738860291970264
+    second: nitrile1_47
+  - first:
+      213: -683632228347468449
+    second: nitrile1_48
+  - first:
+      213: 1013996505397415285
+    second: nitrile1_49
+  - first:
+      213: 5717667330397381400
+    second: nitrile1_50
+  - first:
+      213: -7186241438954141281
+    second: nitrile1_51
+  - first:
+      213: 9066307366343799597
+    second: nitrile1_52
+  - first:
+      213: -1465311296860427367
+    second: nitrile1_53
+  - first:
+      213: 110048689572852387
+    second: nitrile1_54
+  - first:
+      213: -5114335945601991360
+    second: nitrile1_55
+  - first:
+      213: 4951679845773385097
+    second: nitrile1_56
+  - first:
+      213: 3603900231813604609
+    second: nitrile1_57
+  - first:
+      213: -3154289418210670653
+    second: nitrile1_58
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: nitrile1_0
+      rect:
+        serializedVersion: 2
+        x: 683
+        y: 3726
+        width: 280
+        height: 322
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f53e58d05d288d90800000000000000
+      internalID: -7095371387671529993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_1
+      rect:
+        serializedVersion: 2
+        x: 1118
+        y: 3839
+        width: 290
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91d9141e7bb233300800000000000000
+      internalID: 230576074684210457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_2
+      rect:
+        serializedVersion: 2
+        x: 1046
+        y: 3780
+        width: 14
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97f6f812ea3978e00800000000000000
+      internalID: 1046967814483570553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_3
+      rect:
+        serializedVersion: 2
+        x: 1057
+        y: 3793
+        width: 17
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4afa7121ccc242e0800000000000000
+      internalID: -2142925342812472754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_4
+      rect:
+        serializedVersion: 2
+        x: 1072
+        y: 3800
+        width: 10
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0cd4fb2a598021a20800000000000000
+      internalID: 3031494937947360704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_5
+      rect:
+        serializedVersion: 2
+        x: 1081
+        y: 3785
+        width: 15
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e9e20218456af670800000000000000
+      internalID: 8573276200867391975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_6
+      rect:
+        serializedVersion: 2
+        x: 1094
+        y: 3801
+        width: 8
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e40f94acce6fec110800000000000000
+      internalID: 1283234440713728078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_7
+      rect:
+        serializedVersion: 2
+        x: 1096
+        y: 3789
+        width: 13
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbc027222c290e120800000000000000
+      internalID: 2441112360534019259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_8
+      rect:
+        serializedVersion: 2
+        x: 1104
+        y: 3805
+        width: 6
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ec3e522094e66e50800000000000000
+      internalID: 6802375594892737765
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_9
+      rect:
+        serializedVersion: 2
+        x: 1108
+        y: 3786
+        width: 14
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b58a46b06885a7060800000000000000
+      internalID: 6951966307539789915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_10
+      rect:
+        serializedVersion: 2
+        x: 1116
+        y: 3776
+        width: 21
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6b529f84a854cee0800000000000000
+      internalID: -1241770133440799894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_11
+      rect:
+        serializedVersion: 2
+        x: 1136
+        y: 3795
+        width: 9
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7aeaf1873698c950800000000000000
+      internalID: 6469586029865790079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_12
+      rect:
+        serializedVersion: 2
+        x: 1146
+        y: 3795
+        width: 17
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eac3fe75723369000800000000000000
+      internalID: 42277490578635950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_13
+      rect:
+        serializedVersion: 2
+        x: 1033
+        y: 3791
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e90beaf69307a4730800000000000000
+      internalID: 3984120212351791262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_14
+      rect:
+        serializedVersion: 2
+        x: 1036
+        y: 3778
+        width: 7
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 731b8f4a40acd8ba0800000000000000
+      internalID: -6084985400211230409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_15
+      rect:
+        serializedVersion: 2
+        x: 1042
+        y: 3793
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c9fc8578d44afbd0800000000000000
+      internalID: -2595686538749871676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_16
+      rect:
+        serializedVersion: 2
+        x: 1050
+        y: 3713
+        width: 30
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3905d0ee51c45ede0800000000000000
+      internalID: -1304552859982016365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_17
+      rect:
+        serializedVersion: 2
+        x: 1090
+        y: 3793
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0e0067c8f36c8dc0800000000000000
+      internalID: -3635420879046832629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_18
+      rect:
+        serializedVersion: 2
+        x: 1092
+        y: 3770
+        width: 13
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8cde047a609fce960800000000000000
+      internalID: 7632749275457318344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_19
+      rect:
+        serializedVersion: 2
+        x: 1131
+        y: 3734
+        width: 20
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02125f146b7d7f110800000000000000
+      internalID: 1294740595682910496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_20
+      rect:
+        serializedVersion: 2
+        x: 1151
+        y: 3747
+        width: 29
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 641825e52a73d7010800000000000000
+      internalID: 1188167047202373958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_21
+      rect:
+        serializedVersion: 2
+        x: 1019
+        y: 3753
+        width: 15
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf3401a68cd6ae5f0800000000000000
+      internalID: -726647682326576132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_22
+      rect:
+        serializedVersion: 2
+        x: 1033
+        y: 3761
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a33ae9b41af7be200800000000000000
+      internalID: 210402138338009914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_23
+      rect:
+        serializedVersion: 2
+        x: 1035
+        y: 3750
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c362637426d4c1230800000000000000
+      internalID: 3610846085741159996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_24
+      rect:
+        serializedVersion: 2
+        x: 1039
+        y: 3771
+        width: 10
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fa75a7b9535dff10800000000000000
+      internalID: 2305090229081832181
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_25
+      rect:
+        serializedVersion: 2
+        x: 1040
+        y: 3754
+        width: 9
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d16f3dd6c9f7225a0800000000000000
+      internalID: -6547530598409046499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_26
+      rect:
+        serializedVersion: 2
+        x: 1050
+        y: 3770
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00eb8f8180536b170800000000000000
+      internalID: 8193794880942161408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_27
+      rect:
+        serializedVersion: 2
+        x: 1073
+        y: 3749
+        width: 16
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7116f7ca0470d480800000000000000
+      internalID: -8876467275893960325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_28
+      rect:
+        serializedVersion: 2
+        x: 1083
+        y: 3762
+        width: 9
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae3dd9be616d51b40800000000000000
+      internalID: 5410465921286132714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_29
+      rect:
+        serializedVersion: 2
+        x: 1084
+        y: 3734
+        width: 29
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 277e02a57dd1552d0800000000000000
+      internalID: -3290691141956999310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_30
+      rect:
+        serializedVersion: 2
+        x: 1094
+        y: 3758
+        width: 11
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1cfba16d4fa8983a0800000000000000
+      internalID: -6662641389549207615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_31
+      rect:
+        serializedVersion: 2
+        x: 1105
+        y: 3754
+        width: 11
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d75af324c7ee67810800000000000000
+      internalID: 1762858521616950653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_32
+      rect:
+        serializedVersion: 2
+        x: 1106
+        y: 3755
+        width: 23
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f31530427dfba770800000000000000
+      internalID: 8623264578676265969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_33
+      rect:
+        serializedVersion: 2
+        x: 1119
+        y: 3718
+        width: 18
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55ec30c2f2a835cd0800000000000000
+      internalID: -2570559027091878315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_34
+      rect:
+        serializedVersion: 2
+        x: 1127
+        y: 3771
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c245151f34f3d800800000000000000
+      internalID: 636120524163203779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_35
+      rect:
+        serializedVersion: 2
+        x: 1160
+        y: 3758
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fee9f1e45a42a0970800000000000000
+      internalID: 8721823920755285743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_36
+      rect:
+        serializedVersion: 2
+        x: 1016
+        y: 3718
+        width: 8
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd72d20d8ee5ac3f0800000000000000
+      internalID: -879786423179466788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_37
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 3733
+        width: 10
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5405481ee1a9b17b0800000000000000
+      internalID: -5252435082974310331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_38
+      rect:
+        serializedVersion: 2
+        x: 1039
+        y: 3738
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88241584941bad5a0800000000000000
+      internalID: -6495684584224505208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_39
+      rect:
+        serializedVersion: 2
+        x: 1093
+        y: 3731
+        width: 10
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82d35b67f65fc5b00800000000000000
+      internalID: 818799091356351784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_40
+      rect:
+        serializedVersion: 2
+        x: 1108
+        y: 3734
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5939b0b3c4f0e8b0800000000000000
+      internalID: -5124827254626895524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_41
+      rect:
+        serializedVersion: 2
+        x: 1144
+        y: 3722
+        width: 15
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d5add94a937e95c0800000000000000
+      internalID: -4206797895416044072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_42
+      rect:
+        serializedVersion: 2
+        x: 1159
+        y: 3728
+        width: 11
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 968b45523f1251370800000000000000
+      internalID: 8292571617059715177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_43
+      rect:
+        serializedVersion: 2
+        x: 1174
+        y: 3707
+        width: 48
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0898a457a3f04e830800000000000000
+      internalID: 4099418304564332928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_44
+      rect:
+        serializedVersion: 2
+        x: 976
+        y: 1595
+        width: 2402
+        height: 2133
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63bbd495d13dafa40800000000000000
+      internalID: 5402862825990110006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_45
+      rect:
+        serializedVersion: 2
+        x: 1032
+        y: 3713
+        width: 14
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8f04b472112fda40800000000000000
+      internalID: 5395067241764229005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_46
+      rect:
+        serializedVersion: 2
+        x: 1081
+        y: 3702
+        width: 8
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0eeae34f41b8672c0800000000000000
+      internalID: -4434203860986319136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_47
+      rect:
+        serializedVersion: 2
+        x: 1091
+        y: 3707
+        width: 14
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82baccec0c0d40de0800000000000000
+      internalID: -1367738860291970264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_48
+      rect:
+        serializedVersion: 2
+        x: 1106
+        y: 3713
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5527504c104386f0800000000000000
+      internalID: -683632228347468449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_49
+      rect:
+        serializedVersion: 2
+        x: 1126
+        y: 3696
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57d43b30370721e00800000000000000
+      internalID: 1013996505397415285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_50
+      rect:
+        serializedVersion: 2
+        x: 1145
+        y: 3707
+        width: 10
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 813213cb42c395f40800000000000000
+      internalID: 5717667330397381400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_51
+      rect:
+        serializedVersion: 2
+        x: 1154
+        y: 3712
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9942f05c77554c90800000000000000
+      internalID: -7186241438954141281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_52
+      rect:
+        serializedVersion: 2
+        x: 1158
+        y: 3696
+        width: 14
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d23fd6ba38ef1dd70800000000000000
+      internalID: 9066307366343799597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_53
+      rect:
+        serializedVersion: 2
+        x: 1172
+        y: 3708
+        width: 12
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99b6449932b2aabe0800000000000000
+      internalID: -1465311296860427367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_54
+      rect:
+        serializedVersion: 2
+        x: 1192
+        y: 3700
+        width: 6
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a2bcf933b8f68100800000000000000
+      internalID: 110048689572852387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_55
+      rect:
+        serializedVersion: 2
+        x: 1040
+        y: 3701
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04db16ced8a3609b0800000000000000
+      internalID: -5114335945601991360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_56
+      rect:
+        serializedVersion: 2
+        x: 1069
+        y: 3699
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98d98c8a596e7b440800000000000000
+      internalID: 4951679845773385097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_57
+      rect:
+        serializedVersion: 2
+        x: 1220
+        y: 3700
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 105a233aa20a30230800000000000000
+      internalID: 3603900231813604609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nitrile1_58
+      rect:
+        serializedVersion: 2
+        x: 711
+        y: 3427
+        width: 226
+        height: 207
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c787cc7c76b934d0800000000000000
+      internalID: -3154289418210670653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      nitrile1_0: -7095371387671529993
+      nitrile1_1: 230576074684210457
+      nitrile1_10: -1241770133440799894
+      nitrile1_11: 6469586029865790079
+      nitrile1_12: 42277490578635950
+      nitrile1_13: 3984120212351791262
+      nitrile1_14: -6084985400211230409
+      nitrile1_15: -2595686538749871676
+      nitrile1_16: -1304552859982016365
+      nitrile1_17: -3635420879046832629
+      nitrile1_18: 7632749275457318344
+      nitrile1_19: 1294740595682910496
+      nitrile1_2: 1046967814483570553
+      nitrile1_20: 1188167047202373958
+      nitrile1_21: -726647682326576132
+      nitrile1_22: 210402138338009914
+      nitrile1_23: 3610846085741159996
+      nitrile1_24: 2305090229081832181
+      nitrile1_25: -6547530598409046499
+      nitrile1_26: 8193794880942161408
+      nitrile1_27: -8876467275893960325
+      nitrile1_28: 5410465921286132714
+      nitrile1_29: -3290691141956999310
+      nitrile1_3: -2142925342812472754
+      nitrile1_30: -6662641389549207615
+      nitrile1_31: 1762858521616950653
+      nitrile1_32: 8623264578676265969
+      nitrile1_33: -2570559027091878315
+      nitrile1_34: 636120524163203779
+      nitrile1_35: 8721823920755285743
+      nitrile1_36: -879786423179466788
+      nitrile1_37: -5252435082974310331
+      nitrile1_38: -6495684584224505208
+      nitrile1_39: 818799091356351784
+      nitrile1_4: 3031494937947360704
+      nitrile1_40: -5124827254626895524
+      nitrile1_41: -4206797895416044072
+      nitrile1_42: 8292571617059715177
+      nitrile1_43: 4099418304564332928
+      nitrile1_44: 5402862825990110006
+      nitrile1_45: 5395067241764229005
+      nitrile1_46: -4434203860986319136
+      nitrile1_47: -1367738860291970264
+      nitrile1_48: -683632228347468449
+      nitrile1_49: 1013996505397415285
+      nitrile1_5: 8573276200867391975
+      nitrile1_50: 5717667330397381400
+      nitrile1_51: -7186241438954141281
+      nitrile1_52: 9066307366343799597
+      nitrile1_53: -1465311296860427367
+      nitrile1_54: 110048689572852387
+      nitrile1_55: -5114335945601991360
+      nitrile1_56: 4951679845773385097
+      nitrile1_57: 3603900231813604609
+      nitrile1_58: -3154289418210670653
+      nitrile1_6: 1283234440713728078
+      nitrile1_7: 2441112360534019259
+      nitrile1_8: 6802375594892737765
+      nitrile1_9: 6951966307539789915
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
