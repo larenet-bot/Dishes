@@ -1,0 +1,533 @@
+fileFormatVersion: 2
+guid: 01db7c3662387eb47a0198e607579c81
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 71763751084166220
+    second: BWpigg2_0
+  - first:
+      213: 7054189389973693315
+    second: BWpigg2_1
+  - first:
+      213: 784002713766920432
+    second: BWpigg2_2
+  - first:
+      213: -4193954358109556078
+    second: BWpigg2_3
+  - first:
+      213: -7092874826435036893
+    second: BWpigg2_4
+  - first:
+      213: -6311927186007539312
+    second: BWpigg2_5
+  - first:
+      213: 1319477430500020833
+    second: BWpigg2_6
+  - first:
+      213: 9143970097403574839
+    second: BWpigg2_7
+  - first:
+      213: 9078298834777730429
+    second: BWpigg2_8
+  - first:
+      213: 6694146760105905166
+    second: BWpigg2_9
+  - first:
+      213: -280562217797296879
+    second: BWpigg2_10
+  - first:
+      213: -1936121434880134373
+    second: BWpigg2_11
+  - first:
+      213: -4264843047528956751
+    second: BWpigg2_12
+  - first:
+      213: 2988292094485400019
+    second: BWpigg2_13
+  - first:
+      213: -1570935248383283066
+    second: BWpigg2_14
+  - first:
+      213: -8041520349012024110
+    second: BWpigg2_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: BWpigg2_0
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 1146
+        width: 47
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4c0f1b50c4fef000800000000000000
+      internalID: 71763751084166220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BWpigg2_1
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 1254
+        width: 14
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38326bf10e385e160800000000000000
+      internalID: 7054189389973693315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BWpigg2_2
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 1223
+        width: 24
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f00509705651ea00800000000000000
+      internalID: 784002713766920432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BWpigg2_3
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 74
+        width: 2824
+        height: 2738
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 292bda85bb41cc5c0800000000000000
+      internalID: -4193954358109556078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BWpigg2_4
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 1248
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 329770ecceb019d90800000000000000
+      internalID: -7092874826435036893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BWpigg2_5
+      rect:
+        serializedVersion: 2
+        x: 2882
+        y: 1244
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 091c3e59aa78768a0800000000000000
+      internalID: -6311927186007539312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BWpigg2_6
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 1051
+        width: 71
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 162591e6bb9bf4210800000000000000
+      internalID: 1319477430500020833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BWpigg2_7
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 1112
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73ab8845b58e5ee70800000000000000
+      internalID: 9143970097403574839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BWpigg2_8
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 1104
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7de4cbf0b89cfd70800000000000000
+      internalID: 9078298834777730429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BWpigg2_9
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 1069
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0cc17ed20366ec50800000000000000
+      internalID: 6694146760105905166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BWpigg2_10
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 1055
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11ddbce362e3b1cf0800000000000000
+      internalID: -280562217797296879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BWpigg2_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 918
+        width: 94
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1333ff10d38125e0800000000000000
+      internalID: -1936121434880134373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BWpigg2_12
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 1027
+        width: 29
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bcfd3928db30d4c0800000000000000
+      internalID: -4264843047528956751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BWpigg2_13
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 819
+        width: 78
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d909e8c3db887920800000000000000
+      internalID: 2988292094485400019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BWpigg2_14
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 920
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68079faf6bae23ae0800000000000000
+      internalID: -1570935248383283066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BWpigg2_15
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 916
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d4201f29d7c66090800000000000000
+      internalID: -8041520349012024110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      BWpigg2_0: 71763751084166220
+      BWpigg2_1: 7054189389973693315
+      BWpigg2_10: -280562217797296879
+      BWpigg2_11: -1936121434880134373
+      BWpigg2_12: -4264843047528956751
+      BWpigg2_13: 2988292094485400019
+      BWpigg2_14: -1570935248383283066
+      BWpigg2_15: -8041520349012024110
+      BWpigg2_2: 784002713766920432
+      BWpigg2_3: -4193954358109556078
+      BWpigg2_4: -7092874826435036893
+      BWpigg2_5: -6311927186007539312
+      BWpigg2_6: 1319477430500020833
+      BWpigg2_7: 9143970097403574839
+      BWpigg2_8: 9078298834777730429
+      BWpigg2_9: 6694146760105905166
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

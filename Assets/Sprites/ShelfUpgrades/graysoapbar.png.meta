@@ -1,0 +1,1157 @@
+fileFormatVersion: 2
+guid: e5fcbf4fcfe914f4abf16c2582536382
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3931333887900318859
+    second: graysoapbar_0
+  - first:
+      213: 8645639756814568294
+    second: graysoapbar_1
+  - first:
+      213: 2275477461276639344
+    second: graysoapbar_2
+  - first:
+      213: 838041863113598919
+    second: graysoapbar_3
+  - first:
+      213: 7444470053459042257
+    second: graysoapbar_4
+  - first:
+      213: -5143559121166868768
+    second: graysoapbar_5
+  - first:
+      213: -245898059717600664
+    second: graysoapbar_6
+  - first:
+      213: 1617067466631163194
+    second: graysoapbar_7
+  - first:
+      213: -57122726976166807
+    second: graysoapbar_8
+  - first:
+      213: -8142953040994583891
+    second: graysoapbar_9
+  - first:
+      213: 7876545396872012114
+    second: graysoapbar_10
+  - first:
+      213: 6220557688210559946
+    second: graysoapbar_11
+  - first:
+      213: -6827239295841764960
+    second: graysoapbar_12
+  - first:
+      213: 8804281587091459281
+    second: graysoapbar_13
+  - first:
+      213: -2268863731481352247
+    second: graysoapbar_14
+  - first:
+      213: 4454933040855430437
+    second: graysoapbar_15
+  - first:
+      213: -6999225528639517206
+    second: graysoapbar_16
+  - first:
+      213: 5337475975012120264
+    second: graysoapbar_17
+  - first:
+      213: 8596529337626275459
+    second: graysoapbar_18
+  - first:
+      213: -5637290274205491544
+    second: graysoapbar_19
+  - first:
+      213: 3110832326371705291
+    second: graysoapbar_20
+  - first:
+      213: 4073513207852534164
+    second: graysoapbar_21
+  - first:
+      213: -7965428860417154394
+    second: graysoapbar_22
+  - first:
+      213: 9176211991360246440
+    second: graysoapbar_23
+  - first:
+      213: 3531805362895249205
+    second: graysoapbar_24
+  - first:
+      213: 1830874706905866599
+    second: graysoapbar_25
+  - first:
+      213: -8157887052622046590
+    second: graysoapbar_26
+  - first:
+      213: 1692714234172059317
+    second: graysoapbar_27
+  - first:
+      213: -7736266900949411030
+    second: graysoapbar_28
+  - first:
+      213: -8469510300614549099
+    second: graysoapbar_29
+  - first:
+      213: 9135885651652635415
+    second: graysoapbar_30
+  - first:
+      213: 425336837098141531
+    second: graysoapbar_31
+  - first:
+      213: 8834994429292356495
+    second: graysoapbar_32
+  - first:
+      213: 143389909645014660
+    second: graysoapbar_33
+  - first:
+      213: 5192561226064280268
+    second: graysoapbar_34
+  - first:
+      213: -199540283701862824
+    second: graysoapbar_35
+  - first:
+      213: -1124605853704187154
+    second: graysoapbar_36
+  - first:
+      213: -6740661635366946622
+    second: graysoapbar_37
+  - first:
+      213: -333068307850077825
+    second: graysoapbar_38
+  - first:
+      213: -7616343867004720455
+    second: graysoapbar_39
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: graysoapbar_0
+      rect:
+        serializedVersion: 2
+        x: 3465
+        y: 4672
+        width: 92
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5730f3678a81179c0800000000000000
+      internalID: -3931333887900318859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_1
+      rect:
+        serializedVersion: 2
+        x: 3548
+        y: 4733
+        width: 14
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66b4de06d8b7bf770800000000000000
+      internalID: 8645639756814568294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_2
+      rect:
+        serializedVersion: 2
+        x: 3556
+        y: 4717
+        width: 28
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0704dcde1be149f10800000000000000
+      internalID: 2275477461276639344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_3
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 464
+        width: 3215
+        height: 4176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c7eac562a251ab00800000000000000
+      internalID: 838041863113598919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_4
+      rect:
+        serializedVersion: 2
+        x: 2305
+        y: 4610
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1df95753212105760800000000000000
+      internalID: 7444470053459042257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_5
+      rect:
+        serializedVersion: 2
+        x: 2316
+        y: 4605
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0eed0a52b386e98b0800000000000000
+      internalID: -5143559121166868768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_6
+      rect:
+        serializedVersion: 2
+        x: 2326
+        y: 4609
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86a139b7405669cf0800000000000000
+      internalID: -245898059717600664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_7
+      rect:
+        serializedVersion: 2
+        x: 2376
+        y: 4606
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3d24661b4af07610800000000000000
+      internalID: 1617067466631163194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_8
+      rect:
+        serializedVersion: 2
+        x: 2547
+        y: 4590
+        width: 17
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 964ebf5be2f053ff0800000000000000
+      internalID: -57122726976166807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_9
+      rect:
+        serializedVersion: 2
+        x: 3517
+        y: 4610
+        width: 64
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: daab4d83a5b6efe80800000000000000
+      internalID: -8142953040994583891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_10
+      rect:
+        serializedVersion: 2
+        x: 3780
+        y: 4611
+        width: 21
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2516bc58e4c1f4d60800000000000000
+      internalID: 7876545396872012114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_11
+      rect:
+        serializedVersion: 2
+        x: 2341
+        y: 4599
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac39d9e624cd35650800000000000000
+      internalID: 6220557688210559946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_12
+      rect:
+        serializedVersion: 2
+        x: 2365
+        y: 4599
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a973ce5806c041a0800000000000000
+      internalID: -6827239295841764960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_13
+      rect:
+        serializedVersion: 2
+        x: 2380
+        y: 4594
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1dc4915d4771f2a70800000000000000
+      internalID: 8804281587091459281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_14
+      rect:
+        serializedVersion: 2
+        x: 2507
+        y: 4595
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c7694905706380e0800000000000000
+      internalID: -2268863731481352247
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_15
+      rect:
+        serializedVersion: 2
+        x: 2616
+        y: 4588
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 525b6565ff913dd30800000000000000
+      internalID: 4454933040855430437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_16
+      rect:
+        serializedVersion: 2
+        x: 3110
+        y: 4597
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aed88961771cdde90800000000000000
+      internalID: -6999225528639517206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_17
+      rect:
+        serializedVersion: 2
+        x: 2590
+        y: 4587
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c677cfbe16821a40800000000000000
+      internalID: 5337475975012120264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_18
+      rect:
+        serializedVersion: 2
+        x: 3798
+        y: 4592
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38e207ed2e10d4770800000000000000
+      internalID: 8596529337626275459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_19
+      rect:
+        serializedVersion: 2
+        x: 3889
+        y: 4427
+        width: 11
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ae973efc5254c1b0800000000000000
+      internalID: -5637290274205491544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_20
+      rect:
+        serializedVersion: 2
+        x: 3893
+        y: 4412
+        width: 10
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc10039d485eb2b20800000000000000
+      internalID: 3110832326371705291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_21
+      rect:
+        serializedVersion: 2
+        x: 3895
+        y: 4379
+        width: 15
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49989ed1ea6088830800000000000000
+      internalID: 4073513207852534164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_22
+      rect:
+        serializedVersion: 2
+        x: 3901
+        y: 4371
+        width: 9
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a2e03377ac157190800000000000000
+      internalID: -7965428860417154394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_23
+      rect:
+        serializedVersion: 2
+        x: 3903
+        y: 4278
+        width: 24
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a215b04034785f70800000000000000
+      internalID: 9176211991360246440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_24
+      rect:
+        serializedVersion: 2
+        x: 3915
+        y: 4267
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53fd037e34e730130800000000000000
+      internalID: 3531805362895249205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_25
+      rect:
+        serializedVersion: 2
+        x: 3918
+        y: 4247
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7612f5578d2986910800000000000000
+      internalID: 1830874706905866599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_26
+      rect:
+        serializedVersion: 2
+        x: 3919
+        y: 4238
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28a54bea2fc59ce80800000000000000
+      internalID: -8157887052622046590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_27
+      rect:
+        serializedVersion: 2
+        x: 3921
+        y: 4186
+        width: 14
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bea21aa0aabd7710800000000000000
+      internalID: 1692714234172059317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_28
+      rect:
+        serializedVersion: 2
+        x: 3926
+        y: 4230
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2b5c49fd3243a490800000000000000
+      internalID: -7736266900949411030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_29
+      rect:
+        serializedVersion: 2
+        x: 3859
+        y: 3255
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 591ab564141467a80800000000000000
+      internalID: -8469510300614549099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_30
+      rect:
+        serializedVersion: 2
+        x: 3874
+        y: 3236
+        width: 26
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71be75f989f29ce70800000000000000
+      internalID: 9135885651652635415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_31
+      rect:
+        serializedVersion: 2
+        x: 3895
+        y: 3217
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b577f1d899917e500800000000000000
+      internalID: 425336837098141531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_32
+      rect:
+        serializedVersion: 2
+        x: 734
+        y: 1606
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f83a686af943c9a70800000000000000
+      internalID: 8834994429292356495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_33
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 1597
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48634c4fc5c6df100800000000000000
+      internalID: 143389909645014660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_34
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 1586
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cca370a7ceeaf0840800000000000000
+      internalID: 5192561226064280268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_35
+      rect:
+        serializedVersion: 2
+        x: 738
+        y: 1566
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85ed19f4b271b3df0800000000000000
+      internalID: -199540283701862824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_36
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 1467
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee213a93fe89460f0800000000000000
+      internalID: -1124605853704187154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_37
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 1444
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c879d8c4fb5472a0800000000000000
+      internalID: -6740661635366946622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_38
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 1430
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f79d7a08324b06bf0800000000000000
+      internalID: -333068307850077825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: graysoapbar_39
+      rect:
+        serializedVersion: 2
+        x: 1705
+        y: 439
+        width: 116
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ba65f72b9f4d4690800000000000000
+      internalID: -7616343867004720455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      graysoapbar_0: -3931333887900318859
+      graysoapbar_1: 8645639756814568294
+      graysoapbar_10: 7876545396872012114
+      graysoapbar_11: 6220557688210559946
+      graysoapbar_12: -6827239295841764960
+      graysoapbar_13: 8804281587091459281
+      graysoapbar_14: -2268863731481352247
+      graysoapbar_15: 4454933040855430437
+      graysoapbar_16: -6999225528639517206
+      graysoapbar_17: 5337475975012120264
+      graysoapbar_18: 8596529337626275459
+      graysoapbar_19: -5637290274205491544
+      graysoapbar_2: 2275477461276639344
+      graysoapbar_20: 3110832326371705291
+      graysoapbar_21: 4073513207852534164
+      graysoapbar_22: -7965428860417154394
+      graysoapbar_23: 9176211991360246440
+      graysoapbar_24: 3531805362895249205
+      graysoapbar_25: 1830874706905866599
+      graysoapbar_26: -8157887052622046590
+      graysoapbar_27: 1692714234172059317
+      graysoapbar_28: -7736266900949411030
+      graysoapbar_29: -8469510300614549099
+      graysoapbar_3: 838041863113598919
+      graysoapbar_30: 9135885651652635415
+      graysoapbar_31: 425336837098141531
+      graysoapbar_32: 8834994429292356495
+      graysoapbar_33: 143389909645014660
+      graysoapbar_34: 5192561226064280268
+      graysoapbar_35: -199540283701862824
+      graysoapbar_36: -1124605853704187154
+      graysoapbar_37: -6740661635366946622
+      graysoapbar_38: -333068307850077825
+      graysoapbar_39: -7616343867004720455
+      graysoapbar_4: 7444470053459042257
+      graysoapbar_5: -5143559121166868768
+      graysoapbar_6: -245898059717600664
+      graysoapbar_7: 1617067466631163194
+      graysoapbar_8: -57122726976166807
+      graysoapbar_9: -8142953040994583891
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

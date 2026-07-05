@@ -5319,7 +5319,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4dbfbfc653cac614f9d1468c500cb286, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 28b576ec5633c134a9923db61aebbbe1, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -44499,7 +44499,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4dbfbfc653cac614f9d1468c500cb286, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 28b576ec5633c134a9923db61aebbbe1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -53743,14 +53743,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ed50b4e8e828349ab8983247fe453b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  piggyBankTiers: []
+  piggyBankTiers:
+  - tierName: Toy Piggybank
+    description: A prop from a childrens playset, can you even actually put money
+      in this thing?
+    loreDescription: Would allow for offline earning if it was not so small.
+    cost: 1
+    value: 0
+    icon: {fileID: 21300000, guid: 01db7c3662387eb47a0198e607579c81, type: 3}
+    requiredDishes: 1
+  - tierName: Ceramic Piggy Bank
+    description: A sturdier piggy bank.
+    loreDescription: Allows 2 hours of offline earnings.
+    cost: 150
+    value: 7200
+    icon: {fileID: 0}
+    requiredDishes: 100
+  - tierName: Golden Piggy Bank
+    description: A luxurious piggy bank.Allows 4 hours of offline earnings.
+    loreDescription: Allows 4 hours of offline earnings.
+    cost: 1500
+    value: 14400
+    icon: {fileID: 0}
+    requiredDishes: 500
+  - tierName: Large Piggy Bank
+    description: A luxurious piggy bank.Allows 4 hours of offline earnings.
+    loreDescription: Allows 6 hours of offline earnings.
+    cost: 30000
+    value: 28800
+    icon: {fileID: 0}
+    requiredDishes: 2000
+  - tierName: Larger Piggy Bank
+    description: A luxurious piggy bank.Allows 4 hours of offline earnings.
+    loreDescription: Allows 8 hours of offline earnings.
+    cost: 60000
+    value: 57600
+    icon: {fileID: 0}
+    requiredDishes: 4000
+  - tierName: Largest Piggy Bank
+    description: A luxurious piggy bank.Allows 4 hours of offline earnings.
+    loreDescription: Allows 12 hours of offline earnings.
+    cost: 100000
+    value: 57600
+    icon: {fileID: 0}
+    requiredDishes: 5000
   piggyBankMenuPanel: {fileID: 609932578}
   piggyBankNameText: {fileID: 379964881}
   piggyBankDescText: {fileID: 1986038604}
   piggyBankCostText: {fileID: 753936200}
   piggyBankUpgradeButton: {fileID: 670214128}
   piggyBankCloseButton: {fileID: 1435630435}
-  piggyBankButtonImage: {fileID: 0}
+  piggyBankButtonImage: {fileID: 1672635295}
   radioTiers:
   - tierName: Radio
     description: Jam Out
@@ -53768,16 +53811,22 @@ MonoBehaviour:
   RadioButtonImage: {fileID: 1934337363}
   radioControlPanel: {fileID: 1108493256}
   soapTiers:
+  - tierName: Soap
+    description: I do not know how they have not owned soap this whole time
+    loreDescription: 
+    cost: 100
+    multiplier: 1
+    icon: {fileID: 21300000, guid: e5fcbf4fcfe914f4abf16c2582536382, type: 3}
   - tierName: Bar Soap
     description: Affects ALL DPS. Currently has no affect
     loreDescription: Cheap Bar Soap that barely cleans
-    cost: 100
-    multiplier: 1
+    cost: 10000
+    multiplier: 1.5
     icon: {fileID: 21300000, guid: 277ede34a3c8ab34ea0e0215e3e4bc13, type: 3}
   - tierName: Dish Soap
     description: Increases ALL DPS by 50%
     loreDescription: Plain Dish Soap
-    cost: 10000
+    cost: 100000
     multiplier: 1.5
     icon: {fileID: -7309660979087376691, guid: d010a97ad69e230489a057250235478b, type: 3}
   - tierName: Premium Soap
@@ -53794,40 +53843,47 @@ MonoBehaviour:
   soapCloseButton: {fileID: 546323910}
   soapButtonImage: {fileID: 874988174}
   gloveTiers:
+  - tierName: Gloves
+    description: We should really own some gloves to help with the pruning
+    loreDescription: 
+    cost: 100
+    dishesAdded: 1
+    icon: {fileID: 21300000, guid: 05fec615a6b16bc4e92e1ee1fe99d3c4, type: 3}
+    requiredDishes: 100
   - tierName: Plastic Glove
     description: Increase the number of dishes done per hand wash. Currently has
       no affect.
     loreDescription: Not very durable plastic gloves
     cost: 100
-    dishesAdded: 0
+    dishesAdded: 1
     icon: {fileID: 4711868936782936243, guid: c24a598025a157f49a4f7d2fef14326d, type: 3}
     requiredDishes: 0
   - tierName: Nitrile Gloves
     description: When you complete a wash cycle, complete 2 dishes
     loreDescription: Reliable, but uncomfortable gloves
-    cost: 100
-    dishesAdded: 1
+    cost: 1000
+    dishesAdded: 2
     icon: {fileID: -8906984491684469267, guid: 219fe41ef09716940a0c1ab02008ffcb, type: 3}
     requiredDishes: 100
   - tierName: Leather Gloves
     description: When you complete a wash cycle, complete 3 dishes
     loreDescription: Famously good in water
-    cost: 1000
-    dishesAdded: 2
+    cost: 10000
+    dishesAdded: 3
     icon: {fileID: -1153459837678745334, guid: 27e208022dea4f048aae4f09b2cee78a, type: 3}
     requiredDishes: 1000
   - tierName: Hazmat Gloves
     description: When you complete a wash cycle, complete 4 dishes
     loreDescription: Handle with care
-    cost: 10000
-    dishesAdded: 3
+    cost: 100000
+    dishesAdded: 4
     icon: {fileID: 1031332181780460172, guid: adbd2be7103c4364aaa16cedc453fdee, type: 3}
     requiredDishes: 10000
   - tierName: Iron Gauntlets
     description: When you complete a wash cycle, complete 5 dishes
     loreDescription: Uses the finest steel in the kingdom
-    cost: 100000
-    dishesAdded: 4
+    cost: 1000000
+    dishesAdded: 5
     icon: {fileID: 2511552782532377631, guid: 29d81897754d93e4f8957e7cab4a389b, type: 3}
     requiredDishes: 100000
   gloveMenuPanel: {fileID: 1816192135}

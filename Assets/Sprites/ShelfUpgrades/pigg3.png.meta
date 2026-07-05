@@ -1,0 +1,533 @@
+fileFormatVersion: 2
+guid: 28b576ec5633c134a9923db61aebbbe1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4760403961127681554
+    second: pigg3_0
+  - first:
+      213: 8221950164883934167
+    second: pigg3_1
+  - first:
+      213: 6403100645166298929
+    second: pigg3_2
+  - first:
+      213: 1831466808853656215
+    second: pigg3_3
+  - first:
+      213: 8611108981805056196
+    second: pigg3_4
+  - first:
+      213: -5497253777647512236
+    second: pigg3_5
+  - first:
+      213: -4791571681989895347
+    second: pigg3_6
+  - first:
+      213: 6771515289437766574
+    second: pigg3_7
+  - first:
+      213: -2377486546516002214
+    second: pigg3_8
+  - first:
+      213: -2460733009978239655
+    second: pigg3_9
+  - first:
+      213: 410744368341272618
+    second: pigg3_10
+  - first:
+      213: -1221967638510993058
+    second: pigg3_11
+  - first:
+      213: 5979716244136765960
+    second: pigg3_12
+  - first:
+      213: 8007965624071991872
+    second: pigg3_13
+  - first:
+      213: 4602435519480678785
+    second: pigg3_14
+  - first:
+      213: -7523228844219907051
+    second: pigg3_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: pigg3_0
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 1146
+        width: 47
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21eb0625e2a501240800000000000000
+      internalID: 4760403961127681554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pigg3_1
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 1254
+        width: 14
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7db0fdafc1c3a1270800000000000000
+      internalID: 8221950164883934167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pigg3_2
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 1223
+        width: 24
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13736389c126cd850800000000000000
+      internalID: 6403100645166298929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pigg3_3
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 74
+        width: 2824
+        height: 2738
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 792f3afeb5daa6910800000000000000
+      internalID: 1831466808853656215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pigg3_4
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 1248
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c08aaecefdc08770800000000000000
+      internalID: 8611108981805056196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pigg3_5
+      rect:
+        serializedVersion: 2
+        x: 2882
+        y: 1244
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 455552f90d4d5b3b0800000000000000
+      internalID: -5497253777647512236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pigg3_6
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 1051
+        width: 71
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4bdb2b21fae08db0800000000000000
+      internalID: -4791571681989895347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pigg3_7
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 1112
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea3801a574149fd50800000000000000
+      internalID: 6771515289437766574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pigg3_8
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 1104
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5ab4a81598710fd0800000000000000
+      internalID: -2377486546516002214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pigg3_9
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 1069
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9555b2d6d58b9ddd0800000000000000
+      internalID: -2460733009978239655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pigg3_10
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 1055
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a284978a3d143b500800000000000000
+      internalID: 410744368341272618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pigg3_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 918
+        width: 94
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e51878338e2ba0fe0800000000000000
+      internalID: -1221967638510993058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pigg3_12
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 1027
+        width: 29
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80aa76dfd383cf250800000000000000
+      internalID: 5979716244136765960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pigg3_13
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 819
+        width: 78
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 042b95c9e42022f60800000000000000
+      internalID: 8007965624071991872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pigg3_14
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 920
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 189494068b22fdf30800000000000000
+      internalID: 4602435519480678785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pigg3_15
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 916
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 514cc48d93f189790800000000000000
+      internalID: -7523228844219907051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      pigg3_0: 4760403961127681554
+      pigg3_1: 8221950164883934167
+      pigg3_10: 410744368341272618
+      pigg3_11: -1221967638510993058
+      pigg3_12: 5979716244136765960
+      pigg3_13: 8007965624071991872
+      pigg3_14: 4602435519480678785
+      pigg3_15: -7523228844219907051
+      pigg3_2: 6403100645166298929
+      pigg3_3: 1831466808853656215
+      pigg3_4: 8611108981805056196
+      pigg3_5: -5497253777647512236
+      pigg3_6: -4791571681989895347
+      pigg3_7: 6771515289437766574
+      pigg3_8: -2377486546516002214
+      pigg3_9: -2460733009978239655
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

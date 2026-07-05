@@ -64307,16 +64307,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 598e24caac8300046866a27f5d1df710, type: 2}
   noAudiotracks: {fileID: 11400000, guid: 2ffa35112386e434885177482d724033, type: 2}
   trackTitleText: {fileID: 379076677}
-  songCardContentParent: {fileID: 0}
-  songCardPrefab: {fileID: 0}
-  songToggleGroup: {fileID: 0}
-  nowPlayingText: {fileID: 0}
-  nowPlayingProgressFill: {fileID: 0}
-  nowPlayingTimerText: {fileID: 0}
-  playPauseButtonText: {fileID: 0}
-  rebuildSongCardsOnEnable: 0
+  trackListContent: {fileID: 0}
+  trackRowTemplate: {fileID: 0}
+  rebuildTrackRowsOnStart: 1
   autoPlayOnAwake: 1
-  transitionSeconds: 0.5
   requirePurchase: 1
 --- !u!114 &1934337362
 MonoBehaviour:
@@ -66736,7 +66730,7 @@ MonoBehaviour:
     loreDescription: Would allow for offline earning if it was not so small.
     cost: 1
     value: 0
-    icon: {fileID: 0}
+    icon: {fileID: 21300000, guid: 01db7c3662387eb47a0198e607579c81, type: 3}
     requiredDishes: 1
   - tierName: Ceramic Piggy Bank
     description: A sturdier piggy bank.
@@ -66797,16 +66791,22 @@ MonoBehaviour:
   RadioButtonImage: {fileID: 1934337363}
   radioControlPanel: {fileID: 1108493256}
   soapTiers:
+  - tierName: Soap
+    description: I do not know how they have not owned soap this whole time
+    loreDescription: 
+    cost: 100
+    multiplier: 1
+    icon: {fileID: 21300000, guid: e5fcbf4fcfe914f4abf16c2582536382, type: 3}
   - tierName: Bar Soap
     description: Affects ALL DPS. Currently has no affect
     loreDescription: Cheap Bar Soap that barely cleans
-    cost: 100
-    multiplier: 1
+    cost: 10000
+    multiplier: 1.5
     icon: {fileID: 21300000, guid: 277ede34a3c8ab34ea0e0215e3e4bc13, type: 3}
   - tierName: Dish Soap
     description: Increases ALL DPS by 50%
     loreDescription: Plain Dish Soap
-    cost: 10000
+    cost: 100000
     multiplier: 1.5
     icon: {fileID: -7309660979087376691, guid: d010a97ad69e230489a057250235478b, type: 3}
   - tierName: Premium Soap
@@ -66823,42 +66823,49 @@ MonoBehaviour:
   soapCloseButton: {fileID: 546323910}
   soapButtonImage: {fileID: 874988174}
   gloveTiers:
+  - tierName: Gloves
+    description: We should really own some gloves to help with the pruning
+    loreDescription: 
+    cost: 100
+    dishesAdded: 1
+    icon: {fileID: 21300000, guid: 05fec615a6b16bc4e92e1ee1fe99d3c4, type: 3}
+    requiredDishes: 100
   - tierName: Plastic Glove
     description: Increase the number of dishes done per hand wash. Currently has
       no affect.
     loreDescription: Not very durable plastic gloves
     cost: 100
-    dishesAdded: 0
+    dishesAdded: 1
     icon: {fileID: 4711868936782936243, guid: c24a598025a157f49a4f7d2fef14326d, type: 3}
     requiredDishes: 0
   - tierName: Nitrile Gloves
     description: When you complete a wash cycle, complete 2 dishes
     loreDescription: Reliable, but uncomfortable gloves
-    cost: 100
-    dishesAdded: 1
-    icon: {fileID: -8906984491684469267, guid: 219fe41ef09716940a0c1ab02008ffcb, type: 3}
-    requiredDishes: 100
-  - tierName: Lether Gloves
-    description: When you complete a wash cycle, complete 3 dishes
-    loreDescription: Famously good in water
     cost: 1000
     dishesAdded: 2
+    icon: {fileID: -8906984491684469267, guid: 219fe41ef09716940a0c1ab02008ffcb, type: 3}
+    requiredDishes: 100
+  - tierName: Leather Gloves
+    description: When you complete a wash cycle, complete 3 dishes
+    loreDescription: Famously good in water
+    cost: 10000
+    dishesAdded: 3
     icon: {fileID: -1153459837678745334, guid: 27e208022dea4f048aae4f09b2cee78a, type: 3}
     requiredDishes: 1000
   - tierName: Hazmat Gloves
     description: When you complete a wash cycle, complete 4 dishes
     loreDescription: Handle with care
-    cost: 10000
-    dishesAdded: 3
+    cost: 100000
+    dishesAdded: 4
     icon: {fileID: 1031332181780460172, guid: adbd2be7103c4364aaa16cedc453fdee, type: 3}
     requiredDishes: 10000
   - tierName: Iron Gauntlets
     description: When you complete a wash cycle, complete 5 dishes
     loreDescription: Uses the finest steel in the kingdom
-    cost: 10000
-    dishesAdded: 4
+    cost: 1000000
+    dishesAdded: 5
     icon: {fileID: 2511552782532377631, guid: 29d81897754d93e4f8957e7cab4a389b, type: 3}
-    requiredDishes: 10000
+    requiredDishes: 100000
   gloveMenuPanel: {fileID: 1816192135}
   gloveNameText: {fileID: 1255283782}
   gloveDescText: {fileID: 1192016311}
@@ -66904,6 +66911,7 @@ MonoBehaviour:
   spongeButtonImage: {fileID: 26829586}
   backgroundOverlayButton: {fileID: 0}
   raycastCanvas: {fileID: 967766793}
+  additionalClickInsideRoots: []
 --- !u!4 &2032377219
 Transform:
   m_ObjectHideFlags: 0
