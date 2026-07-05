@@ -296,7 +296,18 @@ public class CutsceneManager : MonoBehaviour
     private IEnumerator EndCutscene()
     {
         dialogueText.text = "Loading...";
-        yield return new WaitForSeconds(1.5f);
+
+        // short delay so the "Loading..." UI is visible
+        yield return new WaitForSeconds(0.5f);
+
+        // Fade out the music smoothly if an AudioManager exists.
+        // FadeOutMusic stops the music when finished.
+        if (AudioManager.instance != null)
+        {
+            // Adjust duration as desired (0 for immediate stop, >0 for smooth fade).
+            yield return StartCoroutine(AudioManager.instance.FadeOutMusic(0.5f));
+        }
+
         SceneManager.LoadScene(nextSceneName);
     }
 
