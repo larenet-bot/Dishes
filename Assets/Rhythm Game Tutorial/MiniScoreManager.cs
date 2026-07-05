@@ -21,6 +21,10 @@ public static class MiniScoreManager
     // Set to a negative value to reduce score.
     public static int wrongPressValue = -300;
 
+    // Frame-tracker to avoid applying multiple score penalties in the same frame
+    // (e.g. a note Exit triggers a Miss and a simultaneous wrong key press).
+    private static int s_lastPenaltyFrame = -1;
+
     public static void ResetScore()
     {
         Score = 0;
@@ -29,6 +33,7 @@ public static class MiniScoreManager
         Bads = 0;
         Misses = 0;
         WrongPresses = 0;
+        s_lastPenaltyFrame = -1;
 
         OnScoreUpdated?.Invoke();
     }
@@ -56,17 +61,38 @@ public static class MiniScoreManager
 
     public static void AddMiss()
     {
+        // Always increment miss stat, but only apply the score change once per frame.
         Misses++;
+
+        if (s_lastPenaltyFrame == Time.frameCount)
+        {
+            // Another penalty already applied this frame (e.g. wrong press).
+            OnScoreUpdated?.Invoke();
+            return;
+        }
+
         Score += missValue;
+        s_lastPenaltyFrame = Time.frameCount;
         OnScoreUpdated?.Invoke();
     }
 
     public static void AddWrongPress()
     {
+        // Track wrong-press stat
         WrongPresses++;
-        // Also count wrong presses as misses
+
+        // If a penalty was already applied this frame (a Miss or a previous WrongPress),
+        // avoid applying another score penalty to prevent double punishment.
+        if (s_lastPenaltyFrame == Time.frameCount)
+        {
+            OnScoreUpdated?.Invoke();
+            return;
+        }
+
+        // Apply wrong press penalty (also increment Misses to reflect missed note if desired)
         Misses++;
         Score += wrongPressValue;
+        s_lastPenaltyFrame = Time.frameCount;
         OnScoreUpdated?.Invoke();
     }
 }

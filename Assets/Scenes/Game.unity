@@ -2162,9 +2162,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb828ce082aacf44aa595922d7ff301d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  perfectRange: 0.03
-  goodRange: 0.07
-  badRange: 0.12
+  perfectRange: 0.05
+  goodRange: 0.1
+  badRange: 0.2
 --- !u!1 &91498831
 GameObject:
   m_ObjectHideFlags: 0

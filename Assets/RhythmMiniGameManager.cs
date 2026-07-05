@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RhythmMiniGameToggle : MonoBehaviour
@@ -9,6 +10,9 @@ public class RhythmMiniGameToggle : MonoBehaviour
 
     [Header("Minigame Audio")]
     public AudioSource minigameAudioSource;
+
+    // Keep track of which main UI children we hid so we can restore them on close.
+    private List<GameObject> hiddenMainUIChildren = new List<GameObject>();
 
     private bool isActive = false;
     private bool waitingForStart = false;
@@ -32,9 +36,6 @@ public class RhythmMiniGameToggle : MonoBehaviour
         else CloseMiniGame();
     }
 
-    // New API: Open the minigame UI. If waitForSpace==false you expect to start audio/spawning immediately from caller.
-    // showDifficulty controls whether the BeatmapSelector panel (difficulty picker) should be shown when opening.
-    // Default true preserves the new behaviour; callers that already manage the selector should pass false.
     public void OpenMiniGame(bool waitForSpace = true, bool showDifficulty = true)
     {
         if (isActive) return;
@@ -52,7 +53,28 @@ public class RhythmMiniGameToggle : MonoBehaviour
 
         isActive = true;
         if (rhythmMiniGame != null) rhythmMiniGame.SetActive(true);
-        if (mainGameUI != null) mainGameUI.SetActive(false);
+
+        // Instead of disabling the entire mainGameUI (which also disables employee UI),
+        // hide only top-level children under mainGameUI except those that contain an EmployeeManager.
+        hiddenMainUIChildren.Clear();
+        if (mainGameUI != null)
+        {
+            var emp = FindAnyObjectByType<EmployeeManager>();
+            Transform empRoot = emp != null ? emp.transform : null;
+
+            foreach (Transform child in mainGameUI.transform)
+            {
+                // If the employee manager is a descendant of this child, skip hiding it
+                if (empRoot != null && (child == empRoot || empRoot.IsChildOf(child)))
+                    continue;
+
+                if (child.gameObject.activeSelf)
+                {
+                    child.gameObject.SetActive(false);
+                    hiddenMainUIChildren.Add(child.gameObject);
+                }
+            }
+        }
 
         if (AudioManager.instance != null)
             AudioManager.instance.MuteMainMusic(true);
@@ -70,7 +92,17 @@ public class RhythmMiniGameToggle : MonoBehaviour
 
         isActive = false;
         if (rhythmMiniGame != null) rhythmMiniGame.SetActive(false);
-        if (mainGameUI != null) mainGameUI.SetActive(true);
+
+        // Restore previously hidden main UI children so the UI returns to its prior state.
+        if (mainGameUI != null)
+        {
+            foreach (var go in hiddenMainUIChildren)
+            {
+                if (go != null)
+                    go.SetActive(true);
+            }
+            hiddenMainUIChildren.Clear();
+        }
 
         if (minigameAudioSource != null)
             minigameAudioSource.Stop();
