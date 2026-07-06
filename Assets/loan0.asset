@@ -16,9 +16,12 @@ MonoBehaviour:
   - text: 'Wow, you paid off what you owe me already. You got talent, kid! Hows about
       I give you a full time job? '
     sfx: {fileID: 0}
-    background: {fileID: 0}
+    background: {fileID: 3948306919617432873, guid: 641f115ca2ba30b40b2cecaf4c0bcc13, type: 3}
     backgroundTrack: {fileID: 0}
     postDelay: 0
+    fadeMode: 0
+    fadeDuration: 1
+    blackScreenTime: 0
     branchId: 0
     hasChoices: 1
     choices:
@@ -31,9 +34,12 @@ MonoBehaviour:
     overrideNextLineIndex: -1
   - text: Perfect, now you can help me pay off my own debt! HAHAAH
     sfx: {fileID: 0}
-    background: {fileID: 0}
+    background: {fileID: -2703453209824367449, guid: 86d760265f37ddd4db3676ef1726b974, type: 3}
     backgroundTrack: {fileID: 0}
     postDelay: 0
+    fadeMode: 0
+    fadeDuration: 1
+    blackScreenTime: 0
     branchId: 1
     hasChoices: 0
     choices:
