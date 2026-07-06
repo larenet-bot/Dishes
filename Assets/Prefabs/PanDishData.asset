@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: 
   stageSprites:
-  - {fileID: 3085640609853253258, guid: 50e7140037741a944a2886477e23e3d9, type: 3}
-  - {fileID: -244619644059929732, guid: b67e23dbbcccd354387859637062b431, type: 3}
-  - {fileID: -2865675941598591749, guid: ae6afa3570701ed40a30b93c2e3ecc2d, type: 3}
+  - {fileID: -7259167506840717807, guid: 9b120ddc730fcdf4087cbfdc4efb112a, type: 3}
+  - {fileID: 4009690772873828297, guid: ad039e5369cdb3944856b40b4008ceb5, type: 3}
+  - {fileID: -2706467956616797186, guid: 8451393b1732f43408dd340c5ebd1750, type: 3}
+  - {fileID: 6004949589090206674, guid: 6db8d9ce2485d6a45b701501bb206f50, type: 3}
+  - {fileID: 4126420550926038133, guid: 4c99870bf0352b144b601c88e8893db3, type: 3}
   uiScale: 2
   profitPerDish: 64
   unlockAtDishCount: 3000
