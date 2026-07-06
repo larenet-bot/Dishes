@@ -56339,6 +56339,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8628750436600265019, guid: fcf555f22d1b6b24b99494c5053111d4, type: 3}
+      propertyPath: sfxGroup
+      value: 
+      objectReference: {fileID: 8994725383216735636, guid: e30935e55bf325e448023fdd8451a615, type: 2}
+    - target: {fileID: 8628750436600265019, guid: fcf555f22d1b6b24b99494c5053111d4, type: 3}
       propertyPath: audioMixer
       value: 
       objectReference: {fileID: 24100000, guid: e30935e55bf325e448023fdd8451a615, type: 2}

@@ -134,6 +134,12 @@ public class EmployeeManager : MonoBehaviour
         if (sfxSource == null)
             sfxSource = gameObject.AddComponent<AudioSource>();
 
+        // If there's a central AudioManager and it exposes an SFX group, route this source through it
+        if (AudioManager.instance != null && AudioManager.instance.sfxGroup != null && sfxSource != null)
+        {
+            sfxSource.outputAudioMixerGroup = AudioManager.instance.sfxGroup;
+        }
+
         if (tooltipManager == null)
             tooltipManager = FindFirstObjectByType<TooltipManager>();
 

@@ -15,6 +15,7 @@ public class AudioManager : MonoBehaviour
 
     [Header("Mixer Group")]
     public AudioMixerGroup musicGroup;
+    public AudioMixerGroup sfxGroup;
 
     [Header("Transition Settings")]
     public bool crossfadeEnabled = true;
@@ -51,6 +52,9 @@ public class AudioManager : MonoBehaviour
 
         if (musicSource != null)
             musicSource.outputAudioMixerGroup = musicGroup;
+
+        if (sfxSource != null)
+            sfxSource.outputAudioMixerGroup = sfxGroup;
 
         // create a secondary internal audio source for smooth crossfades
         secondaryMusicSource = gameObject.AddComponent<AudioSource>();
