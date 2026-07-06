@@ -1479,7 +1479,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1441.11, y: -239}
+  m_AnchoredPosition: {x: 1441.11, y: -300}
   m_SizeDelta: {x: 297.39, y: 331.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &49672669
@@ -29502,6 +29502,7 @@ RectTransform:
   m_LocalScale: {x: 1.0000798, y: 1.0000798, z: 1.0000798}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1188008483}
   - {fileID: 1043575371}
   - {fileID: 1814730498}
   - {fileID: 49672668}
@@ -38963,8 +38964,10 @@ MonoBehaviour:
     debuffPerUpgrade: 0.5
     firstPurchaseAnimationObjects:
     - {fileID: 1043575368}
+    firstPurchaseAnimationDelaySeconds: 0
     purchaseSfx:
     - {fileID: 8300000, guid: 90135d1f05bcfcd4aab4d25c7981584d, type: 3}
+    firstPurchaseSfx: []
     upgrades:
     - upgradeName: Old Cheese
       description: Stinky cheese
@@ -38995,8 +38998,10 @@ MonoBehaviour:
     debuffPerUpgrade: 0.5
     firstPurchaseAnimationObjects:
     - {fileID: 1814730495}
+    firstPurchaseAnimationDelaySeconds: 0
     purchaseSfx:
     - {fileID: 8300000, guid: e6f3a7fadd750494685f2c6cd54a8d8d, type: 3}
+    firstPurchaseSfx: []
     upgrades:
     - upgradeName: Magic Fedora
       description: Give him sentience to do dishes
@@ -39027,8 +39032,10 @@ MonoBehaviour:
     debuffPerUpgrade: 0.5
     firstPurchaseAnimationObjects:
     - {fileID: 49672667}
+    firstPurchaseAnimationDelaySeconds: 0
     purchaseSfx:
     - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
+    firstPurchaseSfx: []
     upgrades:
     - upgradeName: College Credit
       description: Gain 1 college credit per semester
@@ -39059,8 +39066,10 @@ MonoBehaviour:
     debuffPerUpgrade: 0.5
     firstPurchaseAnimationObjects:
     - {fileID: 1466528336}
+    firstPurchaseAnimationDelaySeconds: 0
     purchaseSfx:
     - {fileID: 8300000, guid: d37bc434a8e59fa4b8b082bab2cecb9a, type: 3}
+    firstPurchaseSfx: []
     upgrades:
     - upgradeName: Unicycle
       description: Unicycle
@@ -39091,8 +39100,10 @@ MonoBehaviour:
     debuffPerUpgrade: 0.5
     firstPurchaseAnimationObjects:
     - {fileID: 231956303}
+    firstPurchaseAnimationDelaySeconds: 0
     purchaseSfx:
     - {fileID: 8300000, guid: d769c2644a0087b449e415c687eb8169, type: 3}
+    firstPurchaseSfx: []
     upgrades:
     - upgradeName: Amplifier
       description: For turbo mode
@@ -39123,8 +39134,10 @@ MonoBehaviour:
     debuffPerUpgrade: 0.5
     firstPurchaseAnimationObjects:
     - {fileID: 661816467}
+    firstPurchaseAnimationDelaySeconds: 0
     purchaseSfx:
     - {fileID: 8300000, guid: ef0b8f3064dacc5418907d2a6250ef32, type: 3}
+    firstPurchaseSfx: []
     upgrades:
     - upgradeName: Roof Pizza
       description: Roof Pizza
@@ -39155,8 +39168,10 @@ MonoBehaviour:
     debuffPerUpgrade: 0.5
     firstPurchaseAnimationObjects:
     - {fileID: 1724355833}
+    firstPurchaseAnimationDelaySeconds: 0
     purchaseSfx:
     - {fileID: 8300000, guid: 7ea08711ec9dbc74c86766f5fd894b01, type: 3}
+    firstPurchaseSfx: []
     upgrades:
     - upgradeName: Peanut
       description: A Peanut!
@@ -39187,8 +39202,10 @@ MonoBehaviour:
     debuffPerUpgrade: 0.5
     firstPurchaseAnimationObjects:
     - {fileID: 373846054}
+    firstPurchaseAnimationDelaySeconds: 0
     purchaseSfx:
     - {fileID: 8300000, guid: 3c858bee5de052541a5cd99ecbe8ceea, type: 3}
+    firstPurchaseSfx: []
     upgrades:
     - upgradeName: Tesseract
       description: Let's other dimensions clean your dishes
@@ -39217,9 +39234,13 @@ MonoBehaviour:
     dishesPerSecond: 51.2
     startingDebuff: 1
     debuffPerUpgrade: 0.5
-    firstPurchaseAnimationObjects: []
+    firstPurchaseAnimationObjects:
+    - {fileID: 1188008482}
+    firstPurchaseAnimationDelaySeconds: 6.8
     purchaseSfx:
     - {fileID: 8300000, guid: 1fc629ddcef30ba40a22a05d3a1e8ba8, type: 3}
+    firstPurchaseSfx:
+    - {fileID: 8300000, guid: 244bb8a095c6f794ab4110f4e4304060, type: 3}
     upgrades:
     - upgradeName: Fire Hose
       description: 2000 psi Firehose
@@ -39959,6 +39980,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1185630301}
+  m_CullTransparentMesh: 1
+--- !u!1 &1188008482
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1188008483}
+  - component: {fileID: 1188008485}
+  - component: {fileID: 1188008484}
+  m_Layer: 0
+  m_Name: Firetruck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1188008483
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188008482}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 823180043}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1980, y: 35.44}
+  m_SizeDelta: {x: 1189.98, y: 1190}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1188008484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188008482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -347627570514976070, guid: 7768829fdfadd5a4396808e37f2c455d, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1188008485
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188008482}
   m_CullTransparentMesh: 1
 --- !u!1 &1188830880
 GameObject:
@@ -43892,8 +43988,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -126.72, y: 0.63245}
-  m_SizeDelta: {x: 192.62, y: 131.69}
+  m_AnchoredPosition: {x: -180, y: 0.63}
+  m_SizeDelta: {x: 192.63, y: 131.68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1339973906
 CanvasRenderer:
@@ -43923,7 +44019,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -8283620988547500454, guid: a860f0712713a3e4cb2b693d886704c1, type: 3}
+  m_Sprite: {fileID: -8283620988547500454, guid: 21bfb4194eaafd54d8b934d35803e67f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -47195,7 +47291,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -126.72, y: 0.63}
+  m_AnchoredPosition: {x: -180, y: 0.63}
   m_SizeDelta: {x: 192.63, y: 131.68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1424465259
@@ -47226,7 +47322,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -8283620988547500454, guid: a860f0712713a3e4cb2b693d886704c1, type: 3}
+  m_Sprite: {fileID: -8283620988547500454, guid: 21bfb4194eaafd54d8b934d35803e67f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -52267,6 +52363,16 @@ MonoBehaviour:
   - targetObject: {fileID: 1604324559}
     tooltipText: "Your Dish Pile: \n\nPlate: 20.8%\n\nBowl: 18.8%\n\nSauce Pan: 16.7%\n\nPot:
       16.7%\n\nSheet Pan: 14.6%\n\nBread Pan: 12.5%"
+  - targetObject: {fileID: 256008162}
+    tooltipText: Increase offline ernings
+  - targetObject: {fileID: 364919156}
+    tooltipText: Clean the place up, then stylize it
+  - targetObject: {fileID: 874988171}
+    tooltipText: Increase all DPS
+  - targetObject: {fileID: 1606771879}
+    tooltipText: Increase dishes completed per wash
+  - targetObject: {fileID: 26829583}
+    tooltipText: Clean each dish faster
   tooltipCanvas: {fileID: 1037320927}
   tooltipRoot: {fileID: 0}
   tooltipText: {fileID: 0}
@@ -56577,8 +56683,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1848.84, y: 53.67}
-  m_SizeDelta: {x: 501.87, y: 351.16}
+  m_AnchoredPosition: {x: -1971.41, y: 150}
+  m_SizeDelta: {x: 747.02, y: 522.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1724355835
 MonoBehaviour:
@@ -56600,7 +56706,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -8283620988547500454, guid: a860f0712713a3e4cb2b693d886704c1, type: 3}
+  m_Sprite: {fileID: -8283620988547500454, guid: 21bfb4194eaafd54d8b934d35803e67f, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -44,8 +45,14 @@ public class EmployeeManager : MonoBehaviour
         [Tooltip("Objects that appear when this employee type is bought for the first time.")]
         public GameObject[] firstPurchaseAnimationObjects;
 
+        [Tooltip("Seconds to wait after the first purchase before the first-purchase objects appear. 0 spawns immediately.")]
+        [Min(0f)] public float firstPurchaseAnimationDelaySeconds = 0f;
+
         [Header("Audio")]
         public AudioClip[] purchaseSfx;
+
+        [Tooltip("Optional SFX that only plays the first time this employee type is bought. If empty, normal purchase SFX is used.")]
+        public AudioClip[] firstPurchaseSfx;
 
         [Header("Upgrade Tiers")]
         public List<EmployeeUpgradeTier> upgrades = new List<EmployeeUpgradeTier>();
@@ -312,13 +319,20 @@ public class EmployeeManager : MonoBehaviour
 
         if (thisEmployeeWasUnownedBeforePurchase)
         {
-            PlayEmployeeFirstPurchaseAnimations(emp);
-            NotifyFirstPurchaseAnimationsIfOffscreen(emp);
+            PlayEmployeeFirstPurchaseAnimationsWithOptionalDelay(emp);
         }
 
         emp.currentCost = Mathf.Max(0.01f, emp.currentCost * emp.costMultiplier);
 
-        PlayPurchaseSfx(emp);
+        if (thisEmployeeWasUnownedBeforePurchase)
+        {
+            PlayFirstPurchaseSfx(emp);
+        }
+        else
+        {
+            PlayPurchaseSfx(emp);
+        }
+
         RefreshAllEmployeeUI();
     }
 
@@ -348,6 +362,30 @@ public class EmployeeManager : MonoBehaviour
         }
     }
 
+    private void PlayEmployeeFirstPurchaseAnimationsWithOptionalDelay(EmployeeDefinition emp)
+    {
+        if (emp == null) return;
+
+        float delay = Mathf.Max(0f, emp.firstPurchaseAnimationDelaySeconds);
+
+        if (delay <= 0f)
+        {
+            PlayEmployeeFirstPurchaseAnimations(emp);
+            NotifyFirstPurchaseAnimationsIfOffscreen(emp);
+            return;
+        }
+
+        StartCoroutine(PlayEmployeeFirstPurchaseAnimationsAfterDelay(emp, delay));
+    }
+
+    private IEnumerator PlayEmployeeFirstPurchaseAnimationsAfterDelay(EmployeeDefinition emp, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        PlayEmployeeFirstPurchaseAnimations(emp);
+        NotifyFirstPurchaseAnimationsIfOffscreen(emp);
+    }
+
     private void PlayEmployeeFirstPurchaseAnimations(EmployeeDefinition emp)
     {
         if (emp == null || emp.firstPurchaseAnimationObjects == null) return;
@@ -372,13 +410,32 @@ public class EmployeeManager : MonoBehaviour
         }
     }
 
+    private void PlayFirstPurchaseSfx(EmployeeDefinition emp)
+    {
+        if (emp != null && emp.firstPurchaseSfx != null && emp.firstPurchaseSfx.Length > 0)
+        {
+            PlaySfxFromArray(emp.firstPurchaseSfx);
+            return;
+        }
+
+        PlayPurchaseSfx(emp);
+    }
+
     private void PlayPurchaseSfx(EmployeeDefinition emp)
     {
-        if (emp == null || emp.purchaseSfx == null || emp.purchaseSfx.Length == 0)
+        if (emp == null)
             return;
 
-        int idx = UnityEngine.Random.Range(0, emp.purchaseSfx.Length);
-        AudioClip clip = emp.purchaseSfx[idx];
+        PlaySfxFromArray(emp.purchaseSfx);
+    }
+
+    private void PlaySfxFromArray(AudioClip[] clips)
+    {
+        if (clips == null || clips.Length == 0)
+            return;
+
+        int idx = UnityEngine.Random.Range(0, clips.Length);
+        AudioClip clip = clips[idx];
 
         if (clip == null)
             return;
