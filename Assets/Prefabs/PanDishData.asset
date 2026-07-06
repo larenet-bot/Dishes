@@ -19,7 +19,7 @@ MonoBehaviour:
   - {fileID: -2706467956616797186, guid: 8451393b1732f43408dd340c5ebd1750, type: 3}
   - {fileID: 6004949589090206674, guid: 6db8d9ce2485d6a45b701501bb206f50, type: 3}
   - {fileID: 4126420550926038133, guid: 4c99870bf0352b144b601c88e8893db3, type: 3}
-  uiScale: 2
+  uiScale: 0.25
   profitPerDish: 64
   unlockAtDishCount: 3000
   spawnChance: 0.35
