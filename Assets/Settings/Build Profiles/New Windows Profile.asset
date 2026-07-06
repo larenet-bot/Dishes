@@ -36,7 +36,7 @@ MonoBehaviour:
     - line: '|   useOnDemandResources: 0'
     - line: '|   accelerometerFrequency: 60'
     - line: '|   companyName: Posh Mouse'
-    - line: '|   productName: Incremental_Dishes'
+    - line: '|   productName: Rinse & Repeat'
     - line: '|   defaultCursor: {fileID: 2800000, guid: f64f46058eee2664e9d1acb1c468d747,
         type: 3}'
     - line: '|   cursorHotspot: {x: 10, y: 0}'
@@ -65,7 +65,7 @@ MonoBehaviour:
     - line: '|     width: 1'
     - line: '|     height: 1'
     - line: '|   m_SplashScreenLogos:'
-    - line: '|   - logo: {fileID: -1560532185419089687, guid: d4b9be220bfdeb64a95b969cfa5d9b31,
+    - line: '|   - logo: {fileID: 21300000, guid: d4b9be220bfdeb64a95b969cfa5d9b31,
         type: 3}'
     - line: '|     duration: 3'
     - line: '|   m_VirtualRealitySplashScreen: {instanceID: 0}'
@@ -171,7 +171,7 @@ MonoBehaviour:
     - line: '|   loadStoreDebugModeEnabled: 0'
     - line: '|   visionOSBundleVersion: 1.0'
     - line: '|   tvOSBundleVersion: 1.0'
-    - line: '|   bundleVersion: 1.7'
+    - line: '|   bundleVersion: 2.0'
     - line: '|   preloadedAssets:'
     - line: '|   - {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100,
         type: 3}'
