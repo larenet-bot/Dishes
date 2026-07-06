@@ -1727,11 +1727,11 @@ MonoBehaviour:
   - loanName: Payoff Your Shares
     amount: 10000000
     loadSceneOnPay: 1
-    sceneName: Kitchen2Intro
+    sceneName: Loan2
   useKitchenScopedLoanProgress: 1
   kitchenId: kitchen_1
   allowGlobalSaveMigrationForThisKitchen: 1
-  unlockOtherBusinessesWhenAllLoansPaid: 1
+  unlockOtherBusinessesWhenAllLoansPaid: 0
   preferSaveManagerLoanIndex: 1
   usePersistence: 0
   prefsKey_CurrentLoanIndex: LOAN_CURRENT_INDEX
@@ -43868,7 +43868,7 @@ MonoBehaviour:
   - targetObject: {fileID: 1217270753}
     tooltipText: 'Pay off your loan, and progress through the story. '
   - targetObject: {fileID: 217780734}
-    tooltipText: Check on your other business ventures.
+    tooltipText: 
   - targetObject: {fileID: 837573789}
     tooltipText: "Your Dish Pile: \n\nPlate: %100"
   - targetObject: {fileID: 1641849826}
