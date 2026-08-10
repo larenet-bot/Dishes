@@ -22,6 +22,10 @@ public class RadioCOntroller : MonoBehaviour
     [Tooltip("If true, the radio rebuilds the scroll list from audiotracks on Start.")]
     [SerializeField] private bool rebuildTrackRowsOnStart = true;
 
+    [Header("Playback Options")]
+    [Tooltip("If true the playlist will restart from the first track after the last track finishes.")]
+    [SerializeField] private bool loopPlaylist = true;
+
     private readonly List<SongButtonUI> trackRows = new List<SongButtonUI>();
 
     private AudioSource radioAudioSource;
@@ -506,8 +510,26 @@ public class RadioCOntroller : MonoBehaviour
                     continue;
                 }
 
-                int next = (currentTrackIndex + 1) % audiotracks.Length;
-                StartTransitionTo(next);
+                int nextIndex = currentTrackIndex + 1;
+
+                if (nextIndex >= audiotracks.Length)
+                {
+                    if (loopPlaylist)
+                    {
+                        // restart at top
+                        nextIndex = 0;
+                    }
+                    else
+                    {
+                        // reached end of queue and not configured to loop:
+                        radioAudioSource.Stop();
+                        RefreshTrackRows();
+                        yield return null;
+                        continue;
+                    }
+                }
+
+                StartTransitionTo(nextIndex);
 
                 while (isTransitioning)
                 {

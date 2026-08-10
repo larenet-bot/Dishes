@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class SettingsMenu : MonoBehaviour
 {
+    public static SettingsMenu Instance { get; private set; }
+
     [Header("UI References")]
     public TMP_Dropdown resolutionDropdown;
 
@@ -37,7 +39,23 @@ public class SettingsMenu : MonoBehaviour
 
     private void Awake()
     {
+        // Ensure a single persistent SettingsMenu instance; destroy duplicates.
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
     }
 
     private void OnEnable()
