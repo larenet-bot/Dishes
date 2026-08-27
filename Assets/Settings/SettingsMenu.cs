@@ -36,6 +36,7 @@ public class SettingsMenu : MonoBehaviour
 
     private readonly List<Collider2D> collidersDisabledBySettings = new List<Collider2D>();
     private float settingsColliderRefreshTimer = 0f;
+    private bool closeHandled = false;
 
     private void Awake()
     {
@@ -63,6 +64,7 @@ public class SettingsMenu : MonoBehaviour
         if (!Application.isPlaying)
             return;
 
+        closeHandled = false; // reset when menu opens
         settingsColliderRefreshTimer = 0f;
         DisableSettingsObjectColliders(true);
         SyncVisualFilterToggle();
@@ -73,7 +75,21 @@ public class SettingsMenu : MonoBehaviour
         if (!Application.isPlaying)
             return;
 
+        // centralize cleanup so it runs once regardless of how the menu was closed
+        HandleClosed();
+    }
+
+    private void HandleClosed()
+    {
+        if (closeHandled)
+            return;
+
+        closeHandled = true;
+
+        // existing cleanup that used to be in OnDisable
         RestoreSettingsObjectColliders();
+
+        Debug.Log("[SettingsMenu] HandleClosed() performed cleanup");
     }
 
     private void Start()
@@ -343,7 +359,19 @@ public class SettingsMenu : MonoBehaviour
 
     public void CloseSettings()
     {
+        Debug.Log("[SettingsMenu] CloseSettings() called");
+
+        // if already inactive, ensure cleanup still runs (HandleClosed will guard duplicates)
+        if (!gameObject.activeSelf)
+        {
+            HandleClosed();
+            return;
+        }
+
         gameObject.SetActive(false);
+
+        // If CloseSettings is invoked directly (not via SetActive), ensure cleanup runs.
+        // OnDisable will call HandleClosed when SetActive(false) runs; this is a no-op if already handled.
     }
 
     public void ToggleSettings()

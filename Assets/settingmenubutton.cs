@@ -10,33 +10,36 @@ public class InGameSettingsButton : MonoBehaviour
 
     public void ToggleSettings()
     {
+        Debug.Log("GEAR CLICKED - Before: isOpen = " + isOpen);
+
         isOpen = !isOpen;
         settingsMenu.SetActive(isOpen);
 
-        // Pause game when menu is open
-        //Time.timeScale = isOpen ? 0f : 1f;
-        //Debug.Log("Time.timeScale = " + Time.timeScale);
-
+        Debug.Log("GEAR CLICKED - After: isOpen = " + isOpen);
+        Debug.Log("Settings Menu Active = " + settingsMenu.activeSelf);
     }
+
     public void CloseSettings()
     {
-        settingsMenu.SetActive(false);
+        Debug.Log("BACK CLICKED - Closing settings");
+
         isOpen = false;
-        //Time.timeScale = 1f;
+        settingsMenu.SetActive(false);
+
+        Debug.Log("BACK CLICKED - isOpen = " + isOpen);
+        Debug.Log("Settings Menu Active = " + settingsMenu.activeSelf);
     }
 
     public void GoToMenu()
     {
-        // Ensure time is running and settings UI closed
         CloseSettings();
 
         if (string.IsNullOrEmpty(menuSceneName))
         {
-            Debug.LogWarning("Menu scene name is empty. Set `menuSceneName` in the inspector.");
+            Debug.LogWarning("Menu scene name is empty. Set `menuSceneName` in the Inspector.");
             return;
         }
 
         SceneManager.LoadScene(menuSceneName);
     }
 }
-

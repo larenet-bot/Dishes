@@ -3184,7 +3184,7 @@ MonoBehaviour:
     menuRoot: {fileID: 863348881}
     mainPanel: {fileID: 863348883}
     closeOnEscape: 1
-    closeOnOutsideClick: 1
+    closeOnOutsideClick: 0
     closeOtherMenusWhenOpened: 1
     canBeClosedByOtherMenus: 1
     onCloseRequested:
@@ -3204,7 +3204,19 @@ MonoBehaviour:
           m_CallState: 2
     onOpenDetected:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 863348884}
+          m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
+          m_MethodName: OpenSettings
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - menuName: Soap
     menuRoot: {fileID: 467942471}
     mainPanel: {fileID: 467942472}
@@ -37292,6 +37304,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1243360683}
     - target: {fileID: 2038036023327635419, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2038036023327635419, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
@@ -37306,6 +37322,10 @@ PrefabInstance:
     - target: {fileID: 2038036023327635419, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: InGameSettingsButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2038036023327635419, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2067666063866953844, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_Layer
@@ -37574,6 +37594,10 @@ PrefabInstance:
     - target: {fileID: 7217545044076599532, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7231427581170576270, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7511760034257947526, guid: a36903dfffd9207439e5d7e983c1135f, type: 3}
       propertyPath: m_Layer
@@ -51389,6 +51413,7 @@ MonoBehaviour:
   trackListContent: {fileID: 335464686}
   trackRowTemplate: {fileID: 5010739219852154245, guid: 847bfa588d72eff438c607a0a209f3d3, type: 3}
   rebuildTrackRowsOnStart: 1
+  loopPlaylist: 1
   autoPlayOnAwake: 1
   requirePurchase: 1
 --- !u!114 &1934337362

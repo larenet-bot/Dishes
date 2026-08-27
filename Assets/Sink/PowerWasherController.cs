@@ -62,7 +62,7 @@ public class PowerWasherController : MonoBehaviour
         if (sinkManager == null)
             sinkManager = SinkManager.Instance;
 
-        Debug.Log($"PW SinkManager: {sinkManager.GetInstanceID()}");
+        //Debug.Log($"PW SinkManager: {sinkManager.GetInstanceID()}");
         if (!enablePowerWasherHold || dishClicker == null)
         {
             return;
@@ -217,7 +217,7 @@ public class PowerWasherController : MonoBehaviour
 
     private void ResetHoldState()
     {
-        Debug.Log($"ResetHoldState! holdSeconds was {holdSeconds}");
+       // Debug.Log($"ResetHoldState! holdSeconds was {holdSeconds}");
         if (!isHolding && !isTurboJetSkillCheckActive)
         {
             holdStageUnits = 0f;
