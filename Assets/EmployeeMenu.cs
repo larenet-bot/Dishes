@@ -323,9 +323,15 @@ public class EmployeeManager : MonoBehaviour
 
         emp.count++;
 
+        // First-time purchase: show activation animation (may be delayed).
+        // Subsequent purchases: immediately play the purchase spin on the scene objects.
         if (thisEmployeeWasUnownedBeforePurchase)
         {
             PlayEmployeeFirstPurchaseAnimationsWithOptionalDelay(emp);
+        }
+        else
+        {
+            TryPlayPurchaseSpin(emp);
         }
 
         emp.currentCost = Mathf.Max(0.01f, emp.currentCost * emp.costMultiplier);
@@ -413,6 +419,31 @@ public class EmployeeManager : MonoBehaviour
                 animator.Rebind();
                 animator.Update(0f);
             }
+
+            // If the object supports a spin on purchase, trigger it now that it's active.
+            var spin = obj.GetComponent<EmployeePurchaseSpin>();
+            if (spin == null)
+                spin = obj.AddComponent<EmployeePurchaseSpin>();
+
+            spin.PlaySpin();
+        }
+    }
+
+    private void TryPlayPurchaseSpin(EmployeeDefinition emp)
+    {
+        if (emp == null || emp.firstPurchaseAnimationObjects == null) return;
+
+        for (int i = 0; i < emp.firstPurchaseAnimationObjects.Length; i++)
+        {
+            GameObject obj = emp.firstPurchaseAnimationObjects[i];
+            if (obj == null) continue;
+
+            var spin = obj.GetComponent<EmployeePurchaseSpin>();
+            if (spin == null)
+                spin = obj.AddComponent<EmployeePurchaseSpin>();
+
+            // Play immediately (no activation required for already-active objects).
+            spin.PlaySpin();
         }
     }
 
