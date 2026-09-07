@@ -12,8 +12,9 @@ public class GuidedIntroManager : MonoBehaviour
     [SerializeField]
     private int currentStepIndex = 0;
 
-    private bool introActive = false;
+    private int currentActionCount = 0;
 
+    private bool introActive = false;
     private void Start()
     {
         if (introSteps == null || introSteps.Length == 0)
@@ -28,6 +29,7 @@ public class GuidedIntroManager : MonoBehaviour
     public void StartIntro()
     {
         currentStepIndex = 0;
+        currentActionCount = 0;
         introActive = true;
 
         ShowCurrentStep();
@@ -76,6 +78,7 @@ public class GuidedIntroManager : MonoBehaviour
     private void AdvanceToNextStep()
     {
         currentStepIndex++;
+        currentActionCount = 0;
 
         if (currentStepIndex >= introSteps.Length)
         {
@@ -121,16 +124,42 @@ public class GuidedIntroManager : MonoBehaviour
     {
         return introActive;
     }
-    private void Update()
+    public void ReportMovementPerformed()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TestCompleteStep();
-        }
+        ReportCompletion(CompletionType.MovementPerformed);
     }
-   
-    public void TestCompleteStep()
+
+
+
+    public void ReportCompletion(CompletionType completionType)
     {
+        if (!introActive)
+            return;
+
+        GuidedIntroStep currentStep = GetCurrentStep();
+
+        if (currentStep == null)
+            return;
+
+        if (currentStep.completionType != completionType)
+            return;
+
+        currentActionCount++;
+
+        Debug.Log(
+            $"GUIDED INTRO: Correct action completed - " +
+            $"{completionType} " +
+            $"({currentActionCount}/{currentStep.requiredActions})"
+        );
+
+        if (currentActionCount < currentStep.requiredActions)
+            return;
+
         CompleteCurrentStep();
+    }
+
+    public void ReportButtonClicked()
+    {
+        ReportCompletion(CompletionType.ButtonClicked);
     }
 }

@@ -16,5 +16,6 @@ MonoBehaviour:
   dialogueText: Those won't clean themsleves, you best get started
   instructionText: Click on the Center Dish
   completionType: 1
+  requiredActions: 3
   targetObject: {fileID: 0}
   highlightTarget: 1

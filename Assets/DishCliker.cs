@@ -13,6 +13,10 @@ public class DishClicker : MonoBehaviour
     [Tooltip("Legacy click requirement value. Dish stage progression currently follows the active dish data and upgrade settings.")]
     public int clicksRequired = 3;
 
+    [Header("Guided Intro")]
+    [Tooltip("Optional reference to the guided intro manager.")]
+    public GuidedIntroManager guidedIntroManager;
+
     [Header("Scene References")]
     [Tooltip("Visual component that displays the current dish state.")]
     public DishVisual dishVisual;
@@ -111,8 +115,20 @@ public class DishClicker : MonoBehaviour
             return;
         }
 
+        // Tell the guided intro that the player clicked a dish.
+        if (guidedIntroManager != null)
+        {
+            guidedIntroManager.ReportCompletion(CompletionType.DishClicked);
+        }
+
         int stagesPerClick = upgrades != null ? Mathf.Max(1, upgrades.GetCurrentStagesPerClick()) : 1;
-        AdvanceDishProgress(stagesPerClick, burstBubbles: true, isManualCompletion: true, spawnRewardAtDish: false);
+
+        AdvanceDishProgress(
+            stagesPerClick,
+            burstBubbles: true,
+            isManualCompletion: true,
+            spawnRewardAtDish: false
+        );
     }
 
     /// <summary>

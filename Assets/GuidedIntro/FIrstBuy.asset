@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GuidedIntroStep
   speakerName: Duck
   dialogueText: Man dishes suck, lets get someone else to do it!
-  instructionText: Click on Help Wanted
-  completionType: 0
+  instructionText: Buy an employee
+  completionType: 3
+  requiredActions: 1
   targetObject: {fileID: 0}
   highlightTarget: 1

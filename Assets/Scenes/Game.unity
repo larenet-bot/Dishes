@@ -22607,6 +22607,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1555438052}
+        m_TargetAssemblyTypeName: GuidedIntroManager, Assembly-CSharp
+        m_MethodName: ReportButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &751712710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25060,8 +25072,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -6.6729736, y: 0}
+  m_SizeDelta: {x: 13.3459, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &846484863
 MonoBehaviour:
@@ -25076,7 +25088,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.33333334}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -31981,7 +31993,7 @@ MonoBehaviour:
   - employeeName: Helpful Critter
     description: A helpful critter who always dreamed he'd work at a resturant. Just
       not as a dishwasher.
-    baseCost: 15
+    baseCost: 1
     costMultiplier: 1.15
     dishesPerSecond: 0.2
     startingDebuff: 1
@@ -35472,6 +35484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clicksRequired: 3
+  guidedIntroManager: {fileID: 1555438052}
   dishVisual: {fileID: 1318212021}
   upgrades: {fileID: 0}
   sinkManager: {fileID: 1433253104}
@@ -52410,8 +52423,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -40.88623, y: -447.08997}
-  m_SizeDelta: {x: -684.0725, y: -954.18}
+  m_AnchoredPosition: {x: 32.926, y: -468}
+  m_SizeDelta: {x: -785.8525, y: -954.18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1949874014
 MonoBehaviour:

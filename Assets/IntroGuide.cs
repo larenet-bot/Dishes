@@ -22,6 +22,10 @@ public class GuidedIntroStep : ScriptableObject
     [Tooltip("What the player needs to do before this step is completed.")]
     public CompletionType completionType;
 
+    [Tooltip("The number of times the required action must happen before this step is completed.")]
+    [Min(1)]
+    public int requiredActions = 1;
+
     [Tooltip("The object involved in completing this step, if required.")]
     public GameObject targetObject;
 
@@ -40,5 +44,6 @@ public enum CompletionType
     UpgradePurchased,
     SinkPurchased,
     EmployeePurchased,
+    MovementPerformed,
     AchievementUnlocked
 }

@@ -27,7 +27,7 @@ public class EmployeeManager : MonoBehaviour
         [TextArea] public string description;
 
         [Tooltip("Starting cost for this employee.")]
-        public float baseCost = 50f;
+        public float baseCost = 1f;
 
         [Tooltip("Cost multiplier applied every time you buy one.")]
         public float costMultiplier = 1.15f;
