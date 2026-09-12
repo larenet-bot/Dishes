@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GuidedIntroStep
   speakerName: Duck
   dialogueText: Great, lets see that employee in action in the kitchen
-  instructionText: Use arrow keys to move
+  instructionText: Use arrow keys/ A&D to move
   completionType: 8
   requiredActions: 1
   targetObject: {fileID: 0}
