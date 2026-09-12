@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Movement
   m_EditorClassIdentifier: Assembly-CSharp::GuidedIntroStep
   speakerName: Duck
-  dialogueText: Great, lets see that employee in action
+  dialogueText: Great, lets see that employee in action in the kitchen
   instructionText: Use arrow keys to move
   completionType: 8
   requiredActions: 1

@@ -5,8 +5,10 @@ public class CameraPanClamp2D : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Camera cam;
-    [SerializeField] private Transform backgroundBounds; // long background object
+    [SerializeField] private Transform backgroundBounds;
 
+    [Header("Guided Intro")]
+    [SerializeField] private GuidedIntroManager guidedIntroManager;
     [Header("Input")]
     [SerializeField] private bool panWithKeyboard = true;
     [SerializeField] private float keyboardSpeed = 12f;
@@ -40,6 +42,12 @@ public class CameraPanClamp2D : MonoBehaviour
         if (panWithKeyboard)
         {
             float h = Input.GetAxisRaw("Horizontal");
+
+            if (h != 0f && guidedIntroManager != null)
+            {
+                guidedIntroManager.ReportMovementPerformed();
+            }
+
             deltaX += h * keyboardSpeed * Time.unscaledDeltaTime;
         }
 
