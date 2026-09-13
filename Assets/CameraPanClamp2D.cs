@@ -43,13 +43,22 @@ public class CameraPanClamp2D : MonoBehaviour
         {
             float h = Input.GetAxisRaw("Horizontal");
 
-            if (h != 0f && guidedIntroManager != null)
+            if (guidedIntroManager != null)
             {
-                guidedIntroManager.ReportMovementPerformed();
+                if (Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    guidedIntroManager.ReportMovementLeft();
+                }
+
+                if (Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    guidedIntroManager.ReportMovementRight();
+                }
             }
 
             deltaX += h * keyboardSpeed * Time.unscaledDeltaTime;
         }
+
 
         // Mouse drag pan (MMB by default)
         if (panWithMouseDrag && Input.GetMouseButton(dragMouseButton))
@@ -119,6 +128,7 @@ public class CameraPanClamp2D : MonoBehaviour
         Debug.LogWarning("[CameraPanClamp2D] backgroundBounds needs a Collider2D or SpriteRenderer.");
         worldBounds = new Bounds(backgroundBounds.position, Vector3.one);
     }
+
 
 #if UNITY_EDITOR
     private void OnValidate()

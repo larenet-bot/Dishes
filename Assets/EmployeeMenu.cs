@@ -91,10 +91,12 @@ public class EmployeeManager : MonoBehaviour
             return dishesPerSecond * count;
         }
     }
-
     [Header("References")]
     [SerializeField] private ScoreManager scoreManager;
     [SerializeField] private AudioSource sfxSource;
+
+    [Header("Guided Intro")]
+    [SerializeField] private GuidedIntroManager guidedIntroManager;
 
     [Header("Employees")]
     [SerializeField] private List<EmployeeDefinition> employees = new List<EmployeeDefinition>();
@@ -346,6 +348,17 @@ public class EmployeeManager : MonoBehaviour
         }
 
         RefreshAllEmployeeUI();
+        // Notify the guided intro that an employee was successfully purchased.
+        if (guidedIntroManager != null)
+        {
+            var currentStep = guidedIntroManager.GetCurrentStep();
+            Debug.Log($"[DEBUG] Reporting employee purchase to GuidedIntroManager. IsActive={guidedIntroManager.IsIntroActive()}, CurrentStepIndex={guidedIntroManager.GetCurrentStepIndex()}, CurrentStepType={(currentStep != null ? currentStep.completionType.ToString() : "null")}, RequiredActions={(currentStep != null ? currentStep.requiredActions.ToString() : "n/a")}");
+            guidedIntroManager.ReportCompletion(CompletionType.EmployeePurchased);
+        }
+        else
+        {
+            Debug.LogWarning("[DEBUG] guidedIntroManager is null on EmployeeManager — guided intro will not receive EmployeePurchased.");
+        }
     }
 
     private void HideEmployeeAnimationObjects(EmployeeDefinition emp)

@@ -14,6 +14,9 @@ public class GuidedIntroManager : MonoBehaviour
 
     private int currentActionCount = 0;
 
+    private bool leftMovementCompleted = false;
+    private bool rightMovementCompleted = false;
+
     private bool introActive = false;
     private void Start()
     {
@@ -30,6 +33,10 @@ public class GuidedIntroManager : MonoBehaviour
     {
         currentStepIndex = 0;
         currentActionCount = 0;
+
+        leftMovementCompleted = false;
+        rightMovementCompleted = false;
+
         introActive = true;
 
         ShowCurrentStep();
@@ -80,6 +87,9 @@ public class GuidedIntroManager : MonoBehaviour
         currentStepIndex++;
         currentActionCount = 0;
 
+        leftMovementCompleted = false;
+        rightMovementCompleted = false;
+
         if (currentStepIndex >= introSteps.Length)
         {
             CompleteIntro();
@@ -124,12 +134,9 @@ public class GuidedIntroManager : MonoBehaviour
     {
         return introActive;
     }
-    public void ReportMovementPerformed()
-    {
-        ReportCompletion(CompletionType.MovementPerformed);
-    }
 
 
+   
 
     public void ReportCompletion(CompletionType completionType)
     {
@@ -141,6 +148,40 @@ public class GuidedIntroManager : MonoBehaviour
         if (currentStep == null)
             return;
 
+        // Special handling for the movement tutorial.
+        if (completionType == CompletionType.LeftMovementPerformed)
+        {
+            if (currentStep.completionType != CompletionType.LeftMovementPerformed &&
+                currentStep.completionType != CompletionType.RightMovementPerformed)
+            {
+                return;
+            }
+
+            leftMovementCompleted = true;
+
+            Debug.Log("GUIDED INTRO: Left movement completed.");
+
+            CheckMovementTutorialComplete();
+            return;
+        }
+
+        if (completionType == CompletionType.RightMovementPerformed)
+        {
+            if (currentStep.completionType != CompletionType.LeftMovementPerformed &&
+                currentStep.completionType != CompletionType.RightMovementPerformed)
+            {
+                return;
+            }
+
+            rightMovementCompleted = true;
+
+            Debug.Log("GUIDED INTRO: Right movement completed.");
+
+            CheckMovementTutorialComplete();
+            return;
+        }
+
+        // Normal completion handling.
         if (currentStep.completionType != completionType)
             return;
 
@@ -158,8 +199,62 @@ public class GuidedIntroManager : MonoBehaviour
         CompleteCurrentStep();
     }
 
-    public void ReportButtonClicked()
+
+
+    public void ReportMovementLeft()
     {
-        ReportCompletion(CompletionType.ButtonClicked);
+        if (!introActive)
+            return;
+
+        GuidedIntroStep currentStep = GetCurrentStep();
+
+        if (currentStep == null)
+            return;
+
+        if (currentStep.completionType != CompletionType.MovementBothDirections)
+            return;
+
+        leftMovementCompleted = true;
+
+        Debug.Log("GUIDED INTRO: Left movement completed.");
+
+        CheckMovementTutorialComplete();
     }
+
+    public void ReportMovementRight()
+    {
+        if (!introActive)
+            return;
+
+        GuidedIntroStep currentStep = GetCurrentStep();
+
+        if (currentStep == null)
+            return;
+
+        if (currentStep.completionType != CompletionType.MovementBothDirections)
+            return;
+
+        rightMovementCompleted = true;
+
+        Debug.Log("GUIDED INTRO: Right movement completed.");
+
+        CheckMovementTutorialComplete();
+    }
+    private void CheckMovementTutorialComplete()
+    {
+        if (leftMovementCompleted && rightMovementCompleted)
+        {
+            Debug.Log(
+                "GUIDED INTRO: Both left and right movement completed."
+            );
+
+            CompleteCurrentStep();
+        }
+    }
+    public void ReportSettingsOpened()
+    {
+        ReportCompletion(CompletionType.SettingsOpened);
+    }
+
+
 }

@@ -44,6 +44,9 @@ public enum CompletionType
     UpgradePurchased,
     SinkPurchased,
     EmployeePurchased,
-    MovementPerformed,
+    MovementBothDirections,
+    LeftMovementPerformed,
+    RightMovementPerformed,
+    SettingsOpened,
     AchievementUnlocked
 }

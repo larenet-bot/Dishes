@@ -6,6 +6,9 @@ public class InGameSettingsButton : MonoBehaviour
     [SerializeField] private GameObject settingsMenu;
     [SerializeField] private string menuSceneName = "MainMenu";
 
+    [Header("Guided Intro")]
+    [SerializeField] private GuidedIntroManager guidedIntroManager;
+
     private bool isOpen = false;
 
     public void ToggleSettings()
@@ -13,10 +16,15 @@ public class InGameSettingsButton : MonoBehaviour
         isOpen = !isOpen;
         settingsMenu.SetActive(isOpen);
 
+        // Tell the guided intro when the settings menu is opened.
+        if (isOpen && guidedIntroManager != null)
+        {
+            guidedIntroManager.ReportSettingsOpened();
+        }
+
         // Pause game when menu is open
         //Time.timeScale = isOpen ? 0f : 1f;
         //Debug.Log("Time.timeScale = " + Time.timeScale);
-
     }
     public void CloseSettings()
     {
