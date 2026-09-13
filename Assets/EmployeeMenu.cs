@@ -48,6 +48,10 @@ public class EmployeeManager : MonoBehaviour
         [Tooltip("Seconds to wait after the first purchase before the first-purchase objects appear. 0 spawns immediately.")]
         [Min(0f)] public float firstPurchaseAnimationDelaySeconds = 0f;
 
+        [Header("First Purchase Cost Override")]
+        [Tooltip("If > 0, after the first purchase this employee's next cost will be set to this value (scaling starts from there).")]
+        public float costAfterFirstPurchase = 0f;
+
         [Header("Audio")]
         public AudioClip[] purchaseSfx;
 
@@ -336,7 +340,17 @@ public class EmployeeManager : MonoBehaviour
             TryPlayPurchaseSpin(emp);
         }
 
-        emp.currentCost = Mathf.Max(0.01f, emp.currentCost * emp.costMultiplier);
+        // Update cost for next purchase:
+        if (thisEmployeeWasUnownedBeforePurchase && emp.costAfterFirstPurchase > 0f)
+        {
+            // Set the next cost explicitly for the special-case first purchase.
+            emp.currentCost = Mathf.Max(0.01f, emp.costAfterFirstPurchase);
+        }
+        else
+        {
+            // Normal scaling from the current cost.
+            emp.currentCost = Mathf.Max(0.01f, emp.currentCost * emp.costMultiplier);
+        }
 
         if (thisEmployeeWasUnownedBeforePurchase)
         {
