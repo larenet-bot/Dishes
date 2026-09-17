@@ -36,6 +36,13 @@ public class CooldownManager : MonoBehaviour
         [Tooltip("Target checked when cooldown ends. Leave empty to use the minigame button itself.")]
         public Transform notificationTarget;
 
+        // NEW: Hide this minigame UI until the kitchen has cleaned enough dishes.
+        [Header("Unlock")]
+        [Tooltip("If true, this minigame's button/fill/text will remain hidden until requiredDishesToUnlock is reached.")]
+        public bool hideUntilUnlocked = false;
+        [Tooltip("Number of cleaned dishes required before this entry becomes visible.")]
+        public long requiredDishesToUnlock = 100;
+
         [HideInInspector] public bool wasCoolingDownLastFrame;
 
         [HideInInspector] public string originalButtonText;
@@ -297,6 +304,33 @@ public class CooldownManager : MonoBehaviour
         if (entry == null || string.IsNullOrWhiteSpace(entry.minigameId))
         {
             return;
+        }
+
+        // If this entry is configured to remain hidden until unlocked, enforce that here.
+        if (entry.hideUntilUnlocked)
+        {
+            long totalDishes = ScoreManager.Instance != null ? ScoreManager.Instance.GetTotalDishes() : 0L;
+            if (totalDishes < entry.requiredDishesToUnlock)
+            {
+                // Hide the whole button (so it cannot be clicked) and any progress visuals.
+                if (entry.minigameButton != null && entry.minigameButton.gameObject.activeSelf)
+                    entry.minigameButton.gameObject.SetActive(false);
+
+                if (entry.fillImage != null && entry.fillImage.gameObject.activeSelf)
+                    entry.fillImage.gameObject.SetActive(false);
+
+                if (entry.buttonText != null)
+                    entry.buttonText.text = ""; // or show locked label if you prefer
+
+                // Do not update cooldown visuals while locked.
+                return;
+            }
+            else
+            {
+                // Ensure visible again once unlocked.
+                if (entry.minigameButton != null && !entry.minigameButton.gameObject.activeSelf)
+                    entry.minigameButton.gameObject.SetActive(true);
+            }
         }
 
         bool isCoolingDown = KitchenBusinessProgress.IsMinigameOnCooldown(kitchenId, entry.minigameId);

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GuidedIntroManager : MonoBehaviour
 {
+    private const string IntroCompletedKey = "GuidedIntroCompleted";
     [Header("Intro Steps")]
     [Tooltip("The steps of the guided introduction, in the order they should play.")]
     public GuidedIntroStep[] introSteps;
@@ -18,11 +19,25 @@ public class GuidedIntroManager : MonoBehaviour
     private bool rightMovementCompleted = false;
 
     private bool introActive = false;
-    private void Start()
+   private void Start()
     {
         if (introSteps == null || introSteps.Length == 0)
         {
             Debug.LogWarning("GuidedIntroManager has no intro steps assigned.");
+            return;
+        }
+
+        // Don't start the intro if the player has already completed it.
+        if (PlayerPrefs.GetInt(IntroCompletedKey, 0) == 1)
+        {
+            introActive = false;
+
+            if (introUI != null)
+            {
+                introUI.Hide();
+            }
+
+            Debug.Log("GUIDED INTRO: Already completed. Skipping intro.");
             return;
         }
 
@@ -102,6 +117,10 @@ public class GuidedIntroManager : MonoBehaviour
     private void CompleteIntro()
     {
         introActive = false;
+
+        // Remember that the player has completed the guided intro.
+        PlayerPrefs.SetInt(IntroCompletedKey, 1);
+        PlayerPrefs.Save();
 
         if (introUI != null)
         {

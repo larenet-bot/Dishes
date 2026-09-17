@@ -1129,7 +1129,15 @@ public class SaveManager : MonoBehaviour
                 AudioManager.instance.EnableAmbientLooping();
             }
 
+            // Legacy key kept for compatibility with older code.
             PlayerPrefs.SetInt("HasSeenIntro", 0);
+
+            // Reset the new guided intro completion flag so the guided intro will play again.
+            if (PlayerPrefs.HasKey("GuidedIntro_Completed"))
+            {
+                PlayerPrefs.DeleteKey("GuidedIntro_Completed");
+            }
+
             PlayerPrefs.Save();
 
             if (logSaveEvents)

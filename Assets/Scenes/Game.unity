@@ -16176,6 +16176,8 @@ MonoBehaviour:
   rhythmMiniGame: {fileID: 2000261553}
   mainGameUI: {fileID: 125825043}
   minigameAudioSource: {fileID: 20115327}
+  requiredDishesToUnlock: 100
+  openMinigameButton: {fileID: 1069080868}
 --- !u!1 &544485228
 GameObject:
   m_ObjectHideFlags: 0
@@ -29654,7 +29656,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1069080869
 RectTransform:
   m_ObjectHideFlags: 0
@@ -36969,6 +36971,8 @@ MonoBehaviour:
     customCooldownSeconds: 0
     readyTextOverride: Ready
     notificationTarget: {fileID: 0}
+    hideUntilUnlocked: 1
+    requiredDishesToUnlock: 100
     wasCoolingDownLastFrame: 0
     originalButtonText: 
 --- !u!4 &1372325943
@@ -42155,6 +42159,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2c70002861dc8d748aea32f6d76f03d4, type: 2}
   introUI: {fileID: 1949874016}
   currentStepIndex: 0
+  alwaysShowOnLaunch: 0
 --- !u!4 &1555438053
 Transform:
   m_ObjectHideFlags: 0

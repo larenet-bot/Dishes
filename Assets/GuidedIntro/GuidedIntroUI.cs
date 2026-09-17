@@ -11,6 +11,12 @@ public class GuidedIntroUI : MonoBehaviour
     public TMP_Text dialogueText;
     public TMP_Text instructionText;
 
+    private void Awake()
+    {
+        // The guided intro should not be visible when the scene starts.
+        Hide();
+    }
+
     public void ShowStep(GuidedIntroStep step)
     {
         if (step == null)
@@ -28,6 +34,9 @@ public class GuidedIntroUI : MonoBehaviour
 
     public void Hide()
     {
-        dialoguePanel.SetActive(false);
+        if (dialoguePanel != null)
+        {
+            dialoguePanel.SetActive(false);
+        }
     }
 }
