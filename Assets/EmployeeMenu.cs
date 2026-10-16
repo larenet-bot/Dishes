@@ -334,7 +334,16 @@ public class EmployeeManager : MonoBehaviour
             TryPlayPurchaseSpin(emp);
         }
 
-        emp.currentCost = Mathf.Max(0.01f, emp.currentCost * emp.costMultiplier);
+        if (thisEmployeeWasUnownedBeforePurchase &&
+            emp.employeeName != null &&
+            string.Equals(emp.employeeName.Trim(), "Helpful Critter", System.StringComparison.OrdinalIgnoreCase))
+        {
+            emp.currentCost = cost + 10f;
+        }
+        else
+        {
+            emp.currentCost = Mathf.Max(0.01f, emp.currentCost * emp.costMultiplier);
+        }
 
         if (thisEmployeeWasUnownedBeforePurchase)
         {
