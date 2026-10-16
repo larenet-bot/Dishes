@@ -34809,6 +34809,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settingsMenu: {fileID: 863348881}
   menuSceneName: Menu
+  guidedIntroManager: {fileID: 1555438052}
 --- !u!1 &1282778152
 GameObject:
   m_ObjectHideFlags: 0
@@ -42145,9 +42146,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 54f9c7bddfd806443a61660840e8473e, type: 2}
   - {fileID: 11400000, guid: 9dbe4b57320273d43964b11ac3ff99ef, type: 2}
   - {fileID: 11400000, guid: 8d8e590a3287f4446ab1a90a034e9d1f, type: 2}
+  - {fileID: 11400000, guid: 8639a99274ccced4c940b96e35e12ab2, type: 2}
   introUI: {fileID: 1949874016}
   currentStepIndex: 0
-  alwaysShowOnLaunch: 0
 --- !u!4 &1555438053
 Transform:
   m_ObjectHideFlags: 0

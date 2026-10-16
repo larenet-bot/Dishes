@@ -181,4 +181,11 @@ public class GuidedIntroManager : MonoBehaviour
     {
         ReportCompletion(CompletionType.ButtonClicked);
     }
+    public void ReportSettingsOpened()
+    {
+        if (!introActive)
+            return;
+
+        CompleteIntro();
+    }
 }

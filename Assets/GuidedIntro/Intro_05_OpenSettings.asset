@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Intro_05_OpenSettings
   m_EditorClassIdentifier: Assembly-CSharp::GuidedIntroStep
   speakerName: Duck
-  dialogueText: Before we continue, let's take a look at your settings.
+  dialogueText: Feel free to make the kitchen more comfortable for yourself
   instructionText: press esc or click cog
   completionType: 9
   requiredActions: 1
