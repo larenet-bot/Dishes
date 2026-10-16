@@ -77,7 +77,9 @@ public class RhythmMiniGameToggle : MonoBehaviour
 
     void Update()
     {
-        // Keep enforcing lock/unlock UI state until unlocked to prevent other systems from enabling the control prematurely.
+        Debug.Log("[RhythmMiniGameToggle] UPDATE RUNNING");
+
+        // Keep enforcing lock/unlock UI state until unlocked
         UpdateUnlockState();
 
         if (isActive && waitingForStart)
@@ -92,7 +94,12 @@ public class RhythmMiniGameToggle : MonoBehaviour
     private void UpdateUnlockState()
     {
         long totalDishes = ScoreManager.Instance != null ? ScoreManager.Instance.GetTotalDishes() : 0L;
-
+        Debug.Log(
+        $"[RhythmMiniGameToggle] Unlock check | " +
+        $"Dishes = {totalDishes} | " +
+        $"Required = {requiredDishesToUnlock} | " +
+        $"isUnlocked = {isUnlocked}"
+    );
         if (totalDishes >= requiredDishesToUnlock)
         {
             if (!isUnlocked)
@@ -160,12 +167,24 @@ public class RhythmMiniGameToggle : MonoBehaviour
     // Legacy toggle kept for compatibility with existing wiring
     public void ToggleMiniGame()
     {
-        // Safety: ignore toggle attempts while still locked (button should be invisible/non-interactable, but guard anyway).
-        if (!isUnlocked)
-            return;
+        Debug.Log(
+            $"[RhythmMiniGameToggle] ToggleMiniGame CALLED | " +
+            $"isUnlocked = {isUnlocked} | " +
+            $"isActive = {isActive}"
+        );
 
-        if (!isActive) OpenMiniGame(waitForSpace: true);
-        else CloseMiniGame();
+        if (!isUnlocked)
+        {
+            Debug.LogWarning(
+                "[RhythmMiniGameToggle] Toggle ignored because isUnlocked is FALSE."
+            );
+            return;
+        }
+
+        if (!isActive)
+            OpenMiniGame(waitForSpace: true);
+        else
+            CloseMiniGame();
     }
 
     public void OpenMiniGame(bool waitForSpace = true, bool showDifficulty = true)
@@ -191,8 +210,24 @@ public class RhythmMiniGameToggle : MonoBehaviour
         DishPileManager.Instance?.CompleteActiveCompletedDishAnimations();
 
         isActive = true;
-        if (rhythmMiniGame != null) rhythmMiniGame.SetActive(true);
 
+        Debug.Log($"[RhythmMiniGameToggle] Opening minigame. rhythmMiniGame = {rhythmMiniGame}");
+
+        if (rhythmMiniGame != null)
+        {
+            rhythmMiniGame.SetActive(true);
+
+            Debug.Log(
+                $"[RhythmMiniGameToggle] rhythmMiniGame active after SetActive: " +
+                $"{rhythmMiniGame.activeSelf}"
+            );
+        }
+        else
+        {
+            Debug.LogError(
+                "[RhythmMiniGameToggle] rhythmMiniGame is NULL!"
+            );
+        }
         // Instead of disabling the entire mainGameUI (which also disables employee UI),
         // hide only top-level children under mainGameUI except those that contain an EmployeeManager.
         hiddenMainUIChildren.Clear();
