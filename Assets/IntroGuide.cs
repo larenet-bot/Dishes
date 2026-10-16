@@ -45,5 +45,6 @@ public enum CompletionType
     SinkPurchased,
     EmployeePurchased,
     MovementPerformed,
+    SettingsOpened,
     AchievementUnlocked
 }

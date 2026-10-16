@@ -1132,11 +1132,11 @@ public class SaveManager : MonoBehaviour
             // Legacy key kept for compatibility with older code.
             PlayerPrefs.SetInt("HasSeenIntro", 0);
 
-            // Reset the new guided intro completion flag so the guided intro will play again.
-            if (PlayerPrefs.HasKey("GuidedIntro_Completed"))
-            {
-                PlayerPrefs.DeleteKey("GuidedIntro_Completed");
-            }
+            // Reset the key used by GuidedIntroManager.
+            PlayerPrefs.DeleteKey("GuidedIntroCompleted");
+
+            // Also remove the previously used, misspelled key.
+            PlayerPrefs.DeleteKey("GuidedIntro_Completed");
 
             PlayerPrefs.Save();
 
