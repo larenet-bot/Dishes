@@ -15,7 +15,7 @@ MonoBehaviour:
   speakerName: Duck
   dialogueText: Man dishes suck, lets get someone else to do it!
   instructionText: Buy an employee
-  completionType: 7
+  completionType: 3
   requiredActions: 1
   targetObject: {fileID: 0}
-  highlightTarget: 0
+  highlightTarget: 1

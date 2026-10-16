@@ -31992,7 +31992,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreManager: {fileID: 1535544642}
   sfxSource: {fileID: 2072260067}
-  guidedIntroManager: {fileID: 1555438052}
   employees:
   - employeeName: Helpful Critter
     description: A helpful critter who always dreamed he'd work at a resturant. Just
@@ -32316,7 +32315,7 @@ MonoBehaviour:
   helpWantedButton: {fileID: 751712707}
   closeButton: {fileID: 658681995}
   globalEmployeeProfitMultiplier: 1
-  tooltipManager: {fileID: 1649524014}
+  tooltipManager: {fileID: 0}
   tooltipRoot: {fileID: 764468234}
 --- !u!4 &1151283106
 Transform:
@@ -34819,7 +34818,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settingsMenu: {fileID: 863348881}
   menuSceneName: Menu
-  guidedIntroManager: {fileID: 1555438052}
 --- !u!1 &1282778152
 GameObject:
   m_ObjectHideFlags: 0
@@ -42156,7 +42154,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 54f9c7bddfd806443a61660840e8473e, type: 2}
   - {fileID: 11400000, guid: 9dbe4b57320273d43964b11ac3ff99ef, type: 2}
   - {fileID: 11400000, guid: 8d8e590a3287f4446ab1a90a034e9d1f, type: 2}
-  - {fileID: 11400000, guid: 2c70002861dc8d748aea32f6d76f03d4, type: 2}
   introUI: {fileID: 1949874016}
   currentStepIndex: 0
   alwaysShowOnLaunch: 0
