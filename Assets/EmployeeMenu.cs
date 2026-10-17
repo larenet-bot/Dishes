@@ -121,6 +121,8 @@ public class EmployeeManager : MonoBehaviour
     [Tooltip("Old fixed employee tooltip root. Kept only so existing scene references can be disabled.")]
     [SerializeField] private RectTransform tooltipRoot;
 
+    [SerializeField] private bool logEmployeeSfxPlayback = true;
+
     private void Reset()
     {
         scoreManager = FindFirstObjectByType<ScoreManager>();
@@ -460,22 +462,22 @@ public class EmployeeManager : MonoBehaviour
     {
         if (emp != null && emp.firstPurchaseSfx != null && emp.firstPurchaseSfx.Length > 0)
         {
-            PlaySfxFromArray(emp.firstPurchaseSfx);
+            PlaySfxFromArray(emp.firstPurchaseSfx, emp, "first purchase");
             return;
         }
 
-        PlayPurchaseSfx(emp);
+        PlayPurchaseSfx(emp, "first purchase (regular SFX fallback)");
     }
 
-    private void PlayPurchaseSfx(EmployeeDefinition emp)
+    private void PlayPurchaseSfx(EmployeeDefinition emp, string eventName = "purchase")
     {
         if (emp == null)
             return;
 
-        PlaySfxFromArray(emp.purchaseSfx);
+        PlaySfxFromArray(emp.purchaseSfx, emp, eventName);
     }
 
-    private void PlaySfxFromArray(AudioClip[] clips)
+    private void PlaySfxFromArray(AudioClip[] clips, EmployeeDefinition emp, string eventName)
     {
         if (clips == null || clips.Length == 0)
             return;
@@ -486,16 +488,48 @@ public class EmployeeManager : MonoBehaviour
         if (clip == null)
             return;
 
-        if (AudioManager.instance != null)
+        AudioManager audioManager = AudioManager.instance;
+        AudioSource playbackSource = audioManager != null ? audioManager.sfxSource : sfxSource;
+
+        if (logEmployeeSfxPlayback)
         {
-            AudioManager.instance.PlaySFX(clip);
+            string route = audioManager != null
+                ? "AudioManager.PlaySFX"
+                : "EmployeeManager fallback";
+
+            GameObject playbackObject = playbackSource != null
+                ? playbackSource.gameObject
+                : null;
+
+            string playbackObjectName = playbackObject != null
+                ? playbackObject.name
+                : "<missing AudioSource>";
+
+            int playbackObjectId = playbackObject != null
+                ? playbackObject.GetInstanceID()
+                : 0;
+
+            string mixerGroupName = playbackSource != null && playbackSource.outputAudioMixerGroup != null
+                ? playbackSource.outputAudioMixerGroup.name
+                : "<none>";
+
+            string employeeName = emp != null ? emp.employeeName : "<unknown>";
+
+            Debug.Log(
+                $"[Employee Purchase SFX] Playing GameObject='{playbackObjectName}' (InstanceID={playbackObjectId}), " +
+                $"employee='{employeeName}', event='{eventName}', clip='{clip.name}', " +
+                $"route='{route}', mixerGroup='{mixerGroupName}'.",
+                playbackObject != null ? playbackObject : gameObject);
+        }
+
+        if (audioManager != null)
+        {
+            audioManager.PlaySFX(clip);
             return;
         }
 
         if (sfxSource != null)
-        {
             sfxSource.PlayOneShot(clip);
-        }
     }
 
     public void BuyEmployeeUpgrade(int index)
@@ -645,7 +679,7 @@ public class EmployeeManager : MonoBehaviour
         if (!IsValidEmployeeIndex(index))
             return;
 
-        PlayPurchaseSfx(employees[index]);
+        PlayPurchaseSfx(employees[index], "employee scene click");
     }
 
     public void ShowEmployeeDescription(int index)

@@ -22527,6 +22527,7 @@ GameObject:
   - component: {fileID: 751712711}
   - component: {fileID: 751712710}
   - component: {fileID: 751712709}
+  - component: {fileID: 751712712}
   m_Layer: 5
   m_Name: EmployeesMenu
   m_TagString: Untagged
@@ -22660,6 +22661,103 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 751712707}
   m_CullTransparentMesh: 1
+--- !u!82 &751712712
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751712707}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 8994725383216735636, guid: e30935e55bf325e448023fdd8451a615, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &753262102
 GameObject:
   m_ObjectHideFlags: 0
@@ -29217,6 +29315,7 @@ GameObject:
   - component: {fileID: 1043575370}
   - component: {fileID: 1043575369}
   - component: {fileID: 1043575372}
+  - component: {fileID: 1043575373}
   m_Layer: 5
   m_Name: Mouse_Sheet_0
   m_TagString: Untagged
@@ -29366,6 +29465,103 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 30.007328, y: 30}
   m_EdgeRadius: 0
+--- !u!82 &1043575373
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1043575368}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 8994725383216735636, guid: e30935e55bf325e448023fdd8451a615, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1051638271
 GameObject:
   m_ObjectHideFlags: 0
@@ -31971,6 +32167,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1151283106}
   - component: {fileID: 1151283105}
+  - component: {fileID: 1151283107}
   m_Layer: 0
   m_Name: EmployeeManager
   m_TagString: Untagged
@@ -32130,40 +32327,6 @@ MonoBehaviour:
     currentCost: 0
     currentUpgradeIndex: 0
     currentDebuff: 0
-  - employeeName: WASH-E
-    description: A cleaning machine
-    baseCost: 12000
-    costMultiplier: 1.15
-    dishesPerSecond: 3.2
-    startingDebuff: 1
-    debuffPerUpgrade: 0.5
-    firstPurchaseAnimationObjects:
-    - {fileID: 1900343759}
-    firstPurchaseAnimationDelaySeconds: 0
-    purchaseSfx:
-    - {fileID: 8300000, guid: d769c2644a0087b449e415c687eb8169, type: 3}
-    firstPurchaseSfx: []
-    upgrades:
-    - upgradeName: Amplifier
-      description: For turbo mode
-      icon: {fileID: -4455473766417857067, guid: b39d2151ddd338147aa50689b3591d64, type: 3}
-      cost: 60000
-    panelRoot: {fileID: 1879129989}
-    buyButton: {fileID: 843345050}
-    upgradeButton: {fileID: 1162552476}
-    nameText: {fileID: 423541973}
-    costText: {fileID: 1223298861}
-    countText: {fileID: 449113855}
-    dishesPerSecondText: {fileID: 998378084}
-    profitPerSecondText: {fileID: 251391965}
-    upgradeStatusText: {fileID: 778567497}
-    employeeImage: {fileID: 310906499}
-    employeeBlackoutImage: {fileID: 59006076}
-    upgradeImage: {fileID: 1162552475}
-    count: 0
-    currentCost: 0
-    currentUpgradeIndex: 0
-    currentDebuff: 0
   - employeeName: Car Washers
     description: Car washers owned by a respectable business owner
     baseCost: 50000
@@ -32301,6 +32464,40 @@ MonoBehaviour:
     currentCost: 0
     currentUpgradeIndex: 0
     currentDebuff: 0
+  - employeeName: WASH-E
+    description: A cleaning machine
+    baseCost: 12000
+    costMultiplier: 1.15
+    dishesPerSecond: 3.2
+    startingDebuff: 1
+    debuffPerUpgrade: 0.5
+    firstPurchaseAnimationObjects:
+    - {fileID: 1900343759}
+    firstPurchaseAnimationDelaySeconds: 0
+    purchaseSfx:
+    - {fileID: 8300000, guid: d769c2644a0087b449e415c687eb8169, type: 3}
+    firstPurchaseSfx: []
+    upgrades:
+    - upgradeName: Amplifier
+      description: For turbo mode
+      icon: {fileID: -4455473766417857067, guid: b39d2151ddd338147aa50689b3591d64, type: 3}
+      cost: 60000
+    panelRoot: {fileID: 1879129989}
+    buyButton: {fileID: 843345050}
+    upgradeButton: {fileID: 1162552476}
+    nameText: {fileID: 423541973}
+    costText: {fileID: 1223298861}
+    countText: {fileID: 449113855}
+    dishesPerSecondText: {fileID: 998378084}
+    profitPerSecondText: {fileID: 251391965}
+    upgradeStatusText: {fileID: 778567497}
+    employeeImage: {fileID: 310906499}
+    employeeBlackoutImage: {fileID: 59006076}
+    upgradeImage: {fileID: 1162552475}
+    count: 0
+    currentCost: 0
+    currentUpgradeIndex: 0
+    currentDebuff: 0
   employeeProfitInterval: 1
   employeesPanel: {fileID: 789398971}
   helpWantedButton: {fileID: 751712707}
@@ -32308,6 +32505,7 @@ MonoBehaviour:
   globalEmployeeProfitMultiplier: 1
   tooltipManager: {fileID: 0}
   tooltipRoot: {fileID: 764468234}
+  logEmployeeSfxPlayback: 1
 --- !u!4 &1151283106
 Transform:
   m_ObjectHideFlags: 0
@@ -32323,6 +32521,103 @@ Transform:
   m_Children: []
   m_Father: {fileID: 125825044}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1151283107
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151283104}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 8994725383216735636, guid: e30935e55bf325e448023fdd8451a615, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1153729983
 GameObject:
   m_ObjectHideFlags: 0
@@ -57091,7 +57386,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1141288091413117190, guid: fcf555f22d1b6b24b99494c5053111d4, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8271484555805508495, guid: fcf555f22d1b6b24b99494c5053111d4, type: 3}
       propertyPath: m_Resource
@@ -57109,7 +57404,8 @@ PrefabInstance:
       propertyPath: ambientLoopClip
       value: 
       objectReference: {fileID: 8300000, guid: 7f9572d21982af248a60e3a30d8b284e, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5581202375062290076, guid: fcf555f22d1b6b24b99494c5053111d4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

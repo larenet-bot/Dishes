@@ -42,26 +42,42 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
+
         if (instance == null)
         {
             instance = this;
-            // Preserve the AudioManager across scene loads so ambient state survives reloads
             DontDestroyOnLoad(gameObject);
         }
-        else Destroy(gameObject);
+        else if (instance != this)
+        {
+            Debug.LogWarning(
+                $"[AudioManager] Destroying duplicate on '{gameObject.name}' " +
+                $"(ID={GetInstanceID()}); existing instance is on " +
+                $"'{instance.gameObject.name}' (ID={instance.GetInstanceID()}).",
+                this);
 
+            Destroy(gameObject);
+            return;
+        }
         if (musicSource != null)
-            musicSource.outputAudioMixerGroup = musicGroup;
+    musicSource.outputAudioMixerGroup = musicGroup;
 
-        if (sfxSource != null)
-            sfxSource.outputAudioMixerGroup = sfxGroup;
+if (sfxSource != null)
+    sfxSource.outputAudioMixerGroup = sfxGroup;
+
+Debug.Log(
+    $"[AudioManager Awake] ID={GetInstanceID()}, Object='{gameObject.name}', " +
+    $"MusicGroup='{(musicGroup != null ? musicGroup.name : "<NULL>")}', " +
+    $"SFXGroup='{(sfxGroup != null ? sfxGroup.name : "<NULL>")}', " +
+    $"SFXOutput='{(sfxSource != null && sfxSource.outputAudioMixerGroup != null ? sfxSource.outputAudioMixerGroup.name : "<NULL>")}'",
+    this);
 
         // create a secondary internal audio source for smooth crossfades
         secondaryMusicSource = gameObject.AddComponent<AudioSource>();
         secondaryMusicSource.playOnAwake = false;
         secondaryMusicSource.outputAudioMixerGroup = musicGroup;
         secondaryMusicSource.spatialBlend = 0f;
-        // copy loop setting from the inspector-assigned musicSource to keep behavior consistent
+        // copy loop setting from the inspector-assigned musicSource to keep behaviorF consistent
         secondaryMusicSource.loop = musicSource != null ? musicSource.loop : false;
 
         // create ambient source for looping background audio
@@ -235,7 +251,11 @@ public class AudioManager : MonoBehaviour
     public void PlaySFX(AudioClip clip)
     {
         if (clip != null && sfxSource != null)
-            sfxSource.PlayOneShot(clip);
+            Debug.Log(
+    $"SFX Source: {sfxSource.name}, " +
+    $"Mixer Group: {(sfxSource.outputAudioMixerGroup != null ? sfxSource.outputAudioMixerGroup.name : "<none>")}"
+);
+        sfxSource.PlayOneShot(clip);
     }
 
     /// <summary>
