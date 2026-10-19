@@ -32,8 +32,20 @@ public class RhythmMiniGameToggle : MonoBehaviour
 
     void Awake()
     {
+        if (rhythmMiniGame == null)
+        {
+            foreach (GameObject candidate in Resources.FindObjectsOfTypeAll<GameObject>())
+            {
+                if (candidate.name == "RythmMiniGame" && candidate.scene.IsValid())
+                {
+                    rhythmMiniGame = candidate;
+                    break;
+                }
+            }
+        }
+
         if (openMinigameButton == null)
-            openMinigameButton = this.gameObject;
+            openMinigameButton = gameObject;
     }
 
     void Start()
@@ -115,25 +127,19 @@ public class RhythmMiniGameToggle : MonoBehaviour
     {
         if (openMinigameButton == null) return;
 
-        // Make sure button is not interactable and not blocking raycasts
         var btn = openMinigameButton.GetComponent<Button>();
-        if (btn != null && btn.interactable)
+        if (btn != null)
             btn.interactable = false;
 
         var cg = openMinigameButton.GetComponent<CanvasGroup>();
         if (cg == null)
-        {
-            // Add a CanvasGroup to control visibility & raycasts without relying solely on SetActive.
             cg = openMinigameButton.AddComponent<CanvasGroup>();
-        }
 
         cg.alpha = 0f;
         cg.blocksRaycasts = false;
         cg.interactable = false;
 
-        // Also try to deactivate the GameObject to make it invisible (in case no CanvasGroup exists).
-        if (openMinigameButton.activeSelf)
-            openMinigameButton.SetActive(false);
+       
     }
 
     private void ApplyUnlockedState()
@@ -160,65 +166,140 @@ public class RhythmMiniGameToggle : MonoBehaviour
     // Legacy toggle kept for compatibility with existing wiring
     public void ToggleMiniGame()
     {
-        // Safety: ignore toggle attempts while still locked (button should be invisible/non-interactable, but guard anyway).
-        if (!isUnlocked)
-            return;
+        Debug.Log(
+            $"[RhythmMiniGameToggle] Click received. " +
+            $"Unlocked={isUnlocked}, Active={isActive}, " +
+            $"Dishes={(ScoreManager.Instance != null ? ScoreManager.Instance.GetTotalDishes() : -1)}"
+        );
 
-        if (!isActive) OpenMiniGame(waitForSpace: true);
-        else CloseMiniGame();
+        if (!isUnlocked)
+        {
+            Debug.LogWarning("[RhythmMiniGameToggle] Blocked: not unlocked.");
+            return;
+        }
+
+        if (isActive)
+        {
+            CloseMiniGame();
+        }
+        else
+        {
+            OpenMiniGame(waitForSpace: true);
+        }
     }
 
     public void OpenMiniGame(bool waitForSpace = true, bool showDifficulty = true)
     {
-        if (isActive) return;
+        Debug.Log($"[RhythmMiniGameToggle] OpenMiniGame called. " +
+                  $"Unlocked={isUnlocked}, Active={isActive}, " +
+                  $"RhythmUI={(rhythmMiniGame != null ? rhythmMiniGame.name : "NULL")}, " +
+                  $"MainUI={(mainGameUI != null ? mainGameUI.name : "NULL")}");
 
-        // Safety guard in case this is invoked while still locked.
         if (!isUnlocked)
         {
-            Debug.Log($"[RhythmMiniGameToggle] Attempted to open minigame while locked. Requires {requiredDishesToUnlock} cleaned dishes.");
+            Debug.LogWarning("[RhythmMiniGameToggle] Cannot open: minigame is locked.");
             return;
         }
 
-        // Optionally show the difficulty/beatmap selector if present in scene.
-        if (showDifficulty)
+        if (rhythmMiniGame == null)
         {
-            var selector = FindAnyObjectByType<BeatmapSelector>();
-            if (selector != null && selector.beatmapPanel != null)
-                selector.beatmapPanel.SetActive(true);
+            Debug.LogError("[RhythmMiniGameToggle] rhythmMiniGame is not assigned!");
+            return;
         }
+
+        rhythmMiniGame.SetActive(true);
+        Debug.Log($"[UI DEBUG] Minigame object: {rhythmMiniGame.name}");
+        Debug.Log($"[UI DEBUG] Minigame activeSelf: {rhythmMiniGame.activeSelf}");
+        Debug.Log($"[UI DEBUG] Minigame activeInHierarchy: {rhythmMiniGame.activeInHierarchy}");
+
+        Debug.Log($"[UI DEBUG] Main UI reference: " +
+            (mainGameUI != null ? mainGameUI.name : "NULL"));
+
+        if (mainGameUI != null)
+        {
+            Debug.Log($"[UI DEBUG] Main UI active: {mainGameUI.activeSelf}");
+
+            foreach (Transform child in mainGameUI.transform)
+            {
+                Debug.Log($"[UI DEBUG] Main UI child: {child.name}, " +
+                          $"activeSelf: {child.gameObject.activeSelf}");
+            }
+        }
+
+        foreach (Transform child in rhythmMiniGame.transform)
+        {
+            Debug.Log($"[UI DEBUG] Minigame child: {child.name}, " +
+                      $"activeSelf: {child.gameObject.activeSelf}");
+        }
+
 
         RestoreScaledTime();
         DishPileManager.Instance?.CompleteActiveCompletedDishAnimations();
 
-        isActive = true;
-        if (rhythmMiniGame != null) rhythmMiniGame.SetActive(true);
-
-        // Instead of disabling the entire mainGameUI (which also disables employee UI),
-        // hide only top-level children under mainGameUI except those that contain an EmployeeManager.
         hiddenMainUIChildren.Clear();
+
+        // Hide the main game's UI children.
         if (mainGameUI != null)
         {
-            var emp = FindAnyObjectByType<EmployeeManager>();
-            Transform empRoot = emp != null ? emp.transform : null;
-
             foreach (Transform child in mainGameUI.transform)
             {
-                // If the employee manager is a descendant of this child, skip hiding it
-                if (empRoot != null && (child == empRoot || empRoot.IsChildOf(child)))
+                // Do not hide the rhythm minigame or a parent containing it.
+                if (child == rhythmMiniGame.transform ||
+                    rhythmMiniGame.transform.IsChildOf(child))
+                {
                     continue;
+                }
+
+                // Keep the employee UI visible if required by your setup.
+                var emp = FindAnyObjectByType<EmployeeManager>();
+                Transform empRoot = emp != null ? emp.transform : null;
+
+                if (empRoot != null &&
+                    (child == empRoot || empRoot.IsChildOf(child)))
+                {
+                    continue;
+                }
 
                 if (child.gameObject.activeSelf)
                 {
                     child.gameObject.SetActive(false);
                     hiddenMainUIChildren.Add(child.gameObject);
+
+                    Debug.Log($"[RhythmMiniGameToggle] Hid main UI: {child.name}");
                 }
             }
+        }
+        else
+        {
+            Debug.LogWarning("[RhythmMiniGameToggle] mainGameUI is not assigned!");
+        }
+
+        Canvas rhythmCanvas = rhythmMiniGame.GetComponentInChildren<Canvas>(true);
+
+        Debug.Log(
+            $"[RhythmMiniGameToggle] " +
+            $"Object={rhythmMiniGame.name}, " +
+            $"ActiveSelf={rhythmMiniGame.activeSelf}, " +
+            $"ActiveInHierarchy={rhythmMiniGame.activeInHierarchy}, " +
+            $"Canvas={(rhythmCanvas != null ? rhythmCanvas.name : "NONE")}, " +
+            $"CanvasEnabled={(rhythmCanvas != null && rhythmCanvas.enabled)}"
+        );
+
+        if (showDifficulty)
+        {
+            var selector = FindAnyObjectByType<BeatmapSelector>();
+
+            if (selector != null && selector.beatmapPanel != null)
+                selector.beatmapPanel.SetActive(true);
         }
 
         if (AudioManager.instance != null)
             AudioManager.instance.MuteMainMusic(true);
 
+        isActive = true;
         waitingForStart = waitForSpace;
+
+        Debug.Log("[RhythmMiniGameToggle] Minigame opened successfully.");
     }
 
     // Close the mini-game UI and stop minigame audio
@@ -279,5 +360,4 @@ public class RhythmMiniGameToggle : MonoBehaviour
         else
             ApplyUnlockedState();
     }
-
     }
