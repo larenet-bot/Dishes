@@ -149,44 +149,30 @@ public class RhythmGameEndManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+
     public void ContinueAndExit()
     {
         RestoreScaledTime();
         DishPileManager.Instance?.CompleteActiveCompletedDishAnimations();
 
-        // Hide results
+        // Hide the results panel first.
         if (resultsPanel != null)
             resultsPanel.SetActive(false);
 
-        // Disable minigame
-        if (rhythmMiniGame != null)
-            rhythmMiniGame.SetActive(false);
-
-        // Re-enable main game
-        if (mainGameUI != null)
-            mainGameUI.SetActive(true);
-
-        // Restore audio and UI state for the minigame properly:
-        // Prefer using a provided RhythmMiniGameToggle (it handles stopping minigame audio and restoring AudioManager).
+        // Let the toggle manager restore the UI it originally hid.
         if (toggleRef != null)
         {
-            try
-            {
-                toggleRef.CloseMiniGame();
-            }
-            catch
-            {
-                // If toggleRef.CloseMiniGame fails for any reason, fall back to restoring audio directly.
-                if (AudioManager.instance != null)
-                {
-                    AudioManager.instance.MuteMainMusic(false);
-                    AudioManager.instance.RestoreMainMusic();
-                }
-            }
+            toggleRef.CloseMiniGame();
         }
         else
         {
-            // No toggleRef provided: restore main music through AudioManager if available.
+            // Fallback if no toggle manager is assigned.
+            if (rhythmMiniGame != null)
+                rhythmMiniGame.SetActive(false);
+
+            if (mainGameUI != null)
+                mainGameUI.SetActive(true);
+
             if (AudioManager.instance != null)
             {
                 AudioManager.instance.MuteMainMusic(false);
@@ -194,40 +180,33 @@ public class RhythmGameEndManager : MonoBehaviour
             }
         }
 
-        // Start radio playback after minigame if a RadioCOntroller exists and is allowed to play.
+        // Restart radio playback if available.
         var radio = FindAnyObjectByType<RadioCOntroller>();
         if (radio != null)
-        {
-            // RadioCOntroller.StartRadio enforces purchase/require rules internally,
-            // so it's safe to call directly here.
             radio.StartRadio();
-        }
 
-        // Re-enable any bubble spawners that may have been paused/disabled while the minigame ran.
-        try
+        // Restore bubble spawners.
+        var bubbleSpawners = Object.FindObjectsByType<Bubble>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None
+        );
+
+        foreach (var spawner in bubbleSpawners)
         {
-            var bubbleSpawners = Object.FindObjectsByType<Bubble>();
-            for (int i = 0; i < bubbleSpawners.Length; i++)
-            {
-                var sp = bubbleSpawners[i];
-                if (sp == null) continue;
+            if (spawner == null)
+                continue;
 
-                // If the GameObject was deactivated while minigame ran, ensure it's active
-                if (!sp.gameObject.activeInHierarchy)
-                    sp.gameObject.SetActive(true);
+            if (!spawner.gameObject.activeSelf)
+                spawner.gameObject.SetActive(true);
 
-                // Restart spawning coroutine safely
-                sp.StartSpawning();
-            }
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogWarning($"[RhythmGameEndManager] Failed to re-enable bubble spawners: {ex.Message}");
+            spawner.StartSpawning();
         }
 
-        // Trigger cooldown
         StartCoroutine(MinigameCooldownRoutine());
+
+        Debug.Log("[RhythmGameEndManager] Continue pressed; returned to main game.");
     }
+
 
     private IEnumerator MinigameCooldownRoutine()
     {

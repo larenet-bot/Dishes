@@ -164,29 +164,39 @@ public class RhythmMiniGameToggle : MonoBehaviour
     }
 
     // Legacy toggle kept for compatibility with existing wiring
+
     public void ToggleMiniGame()
     {
+        long dishes = ScoreManager.Instance != null
+            ? ScoreManager.Instance.GetTotalDishes()
+            : 0L;
+
         Debug.Log(
             $"[RhythmMiniGameToggle] Click received. " +
-            $"Unlocked={isUnlocked}, Active={isActive}, " +
-            $"Dishes={(ScoreManager.Instance != null ? ScoreManager.Instance.GetTotalDishes() : -1)}"
+            $"Unlocked={isUnlocked}, Active={isActive}, Dishes={dishes}"
         );
 
-        if (!isUnlocked)
+        // Recheck the actual dish requirement when clicked.
+        if (dishes >= requiredDishesToUnlock)
         {
-            Debug.LogWarning("[RhythmMiniGameToggle] Blocked: not unlocked.");
+            isUnlocked = true;
+            ApplyLockedState(false);
+        }
+        else
+        {
+            isUnlocked = false;
+            Debug.LogWarning(
+                $"[RhythmMiniGameToggle] Need {requiredDishesToUnlock} dishes; currently have {dishes}."
+            );
             return;
         }
 
         if (isActive)
-        {
             CloseMiniGame();
-        }
         else
-        {
             OpenMiniGame(waitForSpace: true);
-        }
     }
+
 
     public void OpenMiniGame(bool waitForSpace = true, bool showDifficulty = true)
     {
@@ -305,7 +315,7 @@ public class RhythmMiniGameToggle : MonoBehaviour
     // Close the mini-game UI and stop minigame audio
     public void CloseMiniGame()
     {
-        if (!isActive) return;
+        
 
         RestoreScaledTime();
         DishPileManager.Instance?.CompleteActiveCompletedDishAnimations();
@@ -313,16 +323,25 @@ public class RhythmMiniGameToggle : MonoBehaviour
         isActive = false;
         if (rhythmMiniGame != null) rhythmMiniGame.SetActive(false);
 
-        // Restore previously hidden main UI children so the UI returns to its prior state.
+        // Restore the main UI root.
         if (mainGameUI != null)
         {
-            foreach (var go in hiddenMainUIChildren)
+            mainGameUI.SetActive(true);
+
+            // Restore children that were recorded when opening the minigame.
+            foreach (Transform child in mainGameUI.transform)
             {
-                if (go != null)
-                    go.SetActive(true);
+                child.gameObject.SetActive(true);
             }
-            hiddenMainUIChildren.Clear();
+
+            Debug.Log(
+                $"[RhythmMiniGameToggle] Restored main UI: {mainGameUI.name}, " +
+                $"Children: {mainGameUI.transform.childCount}"
+            );
         }
+
+        // Clear the saved list.
+        hiddenMainUIChildren.Clear();
 
         if (minigameAudioSource != null)
             minigameAudioSource.Stop();
