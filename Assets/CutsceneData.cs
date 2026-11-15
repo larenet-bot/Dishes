@@ -5,6 +5,11 @@ public class CutsceneData : ScriptableObject
 {
     public CutsceneLine[] lines;
 
+    [Header("Dialogue Appearance")]
+    public string speakerName;
+    public Sprite speakerPortrait;
+
+
     [Header("Global Settings")]
     public AudioClip typingSFX;
     public int typingSFXIntervalChars = 2;

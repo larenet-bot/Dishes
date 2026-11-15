@@ -139,6 +139,8 @@ public class RadioCOntroller : MonoBehaviour
                     radioAudioSource.volume = 1f;
                     radioAudioSource.Play();
                 }
+
+                EnsurePlaybackMonitorRunning();
             }
 
             Debug.Log("[RadioCOntroller] StartRadio called but radio not purchased.");
@@ -489,6 +491,13 @@ public class RadioCOntroller : MonoBehaviour
 
             if (requirePurchase && !isPurchased)
             {
+                if (noAudiotracks != null
+                    && noAudiotracks.trackAudioClip != null
+                    && radioAudioSource.clip == noAudiotracks.trackAudioClip)
+                {
+                    radioAudioSource.Play();
+                }
+
                 yield return null;
                 continue;
             }
