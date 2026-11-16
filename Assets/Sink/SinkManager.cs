@@ -72,13 +72,39 @@ public class SinkManager : MonoBehaviour
         if (Instance != null && Instance != this) Destroy(gameObject);
         else Instance = this;
 
-        BuildLookup();
-
         if (nodes == null || nodes.Count == 0)
         {
             SeedDefaults();
-            BuildLookup();
         }
+
+        EnsureWashBasinSoakPopupNode();
+        BuildLookup();
+    }
+
+    private void EnsureWashBasinSoakPopupNode()
+    {
+        const string nodeId = "wb_soak_popup";
+
+        if (nodes == null)
+            nodes = new List<SinkNode>();
+
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            if (nodes[i] != null && nodes[i].id == nodeId)
+                return;
+        }
+
+        nodes.Add(new SinkNode
+        {
+            id = nodeId,
+            branch = SinkType.WashBasin,
+            tier = 3,
+            displayName = "Soak slots",
+            description = "When Overnight Soak is ready, clicking the next dish will roll a slot machine to increase profit on dish",
+            loreDescription = "",
+            cost = 1800f,
+            requires = new List<string> { "wb_technique" }
+        });
     }
 
     private void BuildLookup()

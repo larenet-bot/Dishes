@@ -115,6 +115,11 @@ public class DishClicker : MonoBehaviour
             return;
         }
 
+        if (washBasinSoakTechnique != null && washBasinSoakTechnique.TryOpenReadyPopup())
+        {
+            return;
+        }
+
         // Tell the guided intro that the player clicked a dish.
         if (guidedIntroManager != null)
         {
