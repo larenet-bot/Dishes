@@ -1,234 +1,200 @@
+using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Runs the Dishwasher rinse cycle when the player is committed to the Dishwasher sink.
-/// Awards "background" washes that increase dishes + profit without resetting the current dish visuals.
+/// Dishwasher V2. Does NOT start cycles until DishwasherLoadMenu submits a
+/// valid arrangement. Rewards the exact loaded dish types at cycle completion.
+/// Replaces the old timer-only auto-wash controller without modifying ScoreManager.
 /// </summary>
 public class DishwasherCycleController : MonoBehaviour
 {
-    [Header("Refs")]
+    [Header("Existing References")]
     public SinkManager sinkManager;
     public ScoreManager scoreManager;
-    public DishClicker dishClicker;
+    public DishClicker dishClicker; // Retained for existing inspector links; not used for loaded rewards.
 
-    [Header("UI")]
-    [Tooltip("Optional root to hide/show when dishwasher is active.")]
+    [Header("Loading Menu")]
+    [SerializeField] private DishwasherLoadMenu loadMenu;
+
+    [Header("Existing Timer UI")]
     public GameObject timerRoot;
-
-    [Tooltip("Fill image (0..1). Set Image Type = Filled.")]
     public Image timerFill;
-
-    [Tooltip("Text like 'Rinse 4:12'.")]
     public TMP_Text timerText;
-
-    [Tooltip("Optional: extra line for technique info.")]
     public TMP_Text statusText;
 
-    [Header("Behavior")]
+    [Header("Cycle Behavior")]
     public bool runWhilePaused = false;
+    [Tooltip("Until the upgrade tree is reworked, preserve purchased dw_amount bonuses as extra washes of loaded dishes.")]
+    [SerializeField] private bool honorLegacyDishCountUpgrades = true;
 
-    private float cycleDuration = 300f;
-    private float cycleRemaining = 300f;
-    private int autoWashCount = 0;
+    [Header("Completion (optional)")]
+    [SerializeField] private AudioClip completionDing;
+    [Tooltip("Use the EXISTING RewardTextSpawner component, not a new prefab.")]
+    [SerializeField] private RewardTextSpawner rewardTextSpawner;
+    [Tooltip("A world-space transform above the dishwasher scene button/image.")]
+    [SerializeField] private Transform payoutWorldAnchor;
 
-    private System.Action<SinkManager.SinkType> sinkTypeHandler;
-    private System.Action<string> nodePurchasedHandler;
-    private System.Action sinkResetHandler;
+    private readonly List<DishData> activeLoad = new List<DishData>();
+    private float cycleDuration;
+    private float cycleRemaining;
+    private int completedCycles;
+    private bool isRunning;
+    private Action<SinkManager.SinkType> sinkTypeHandler;
+    private Action<string> nodePurchasedHandler;
+    private Action sinkResetHandler;
+
+    public bool IsRunning => isRunning;
+    public float SecondsRemaining => isRunning ? cycleRemaining : 0f;
+    public int LoadedDishCount => activeLoad.Count;
+    public event Action<int, double> CycleCompleted;
 
     private void Reset()
     {
         sinkManager = FindAnyObjectByType<SinkManager>();
         scoreManager = FindAnyObjectByType<ScoreManager>();
         dishClicker = FindAnyObjectByType<DishClicker>();
+        loadMenu = FindAnyObjectByType<DishwasherLoadMenu>();
     }
 
     private void Awake()
     {
         if (sinkManager == null) sinkManager = FindAnyObjectByType<SinkManager>();
-        if (scoreManager == null) scoreManager = FindAnyObjectByType<ScoreManager>();
-        if (dishClicker == null) dishClicker = FindAnyObjectByType<DishClicker>();
+        if (scoreManager == null) scoreManager = ScoreManager.Instance != null ? ScoreManager.Instance : FindAnyObjectByType<ScoreManager>();
+        if (loadMenu == null) loadMenu = FindAnyObjectByType<DishwasherLoadMenu>();
 
         sinkTypeHandler = _ => OnSinkStateChanged();
         nodePurchasedHandler = _ => OnUpgradesChanged();
-        sinkResetHandler = () => OnSinkStateChanged();
-
+        sinkResetHandler = OnSinkStateChanged;
         if (sinkManager != null)
         {
             sinkManager.OnSinkTypeChanged += sinkTypeHandler;
             sinkManager.OnNodePurchased += nodePurchasedHandler;
             sinkManager.OnSinkReset += sinkResetHandler;
         }
-
         OnSinkStateChanged();
     }
 
     private void OnDestroy()
     {
-        if (sinkManager != null)
-        {
-            if (sinkTypeHandler != null) sinkManager.OnSinkTypeChanged -= sinkTypeHandler;
-            if (nodePurchasedHandler != null) sinkManager.OnNodePurchased -= nodePurchasedHandler;
-            if (sinkResetHandler != null) sinkManager.OnSinkReset -= sinkResetHandler;
-        }
+        if (sinkManager == null) return;
+        if (sinkTypeHandler != null) sinkManager.OnSinkTypeChanged -= sinkTypeHandler;
+        if (nodePurchasedHandler != null) sinkManager.OnNodePurchased -= nodePurchasedHandler;
+        if (sinkResetHandler != null) sinkManager.OnSinkReset -= sinkResetHandler;
     }
 
     private void Update()
     {
-        if (sinkManager == null || scoreManager == null) return;
+        bool active = sinkManager != null && sinkManager.CurrentSinkType == SinkManager.SinkType.Dishwasher;
+        SetUIVisible(active);
+        if (!active) return;
 
-        bool dishwasherActive = sinkManager.CurrentSinkType == SinkManager.SinkType.Dishwasher;
-        if (!dishwasherActive)
+        if (isRunning && (runWhilePaused || Time.timeScale != 0f))
         {
-            SetUIVisible(false);
-            return;
+            cycleRemaining -= runWhilePaused ? Time.unscaledDeltaTime : Time.deltaTime;
+            if (cycleRemaining <= 0f) CompleteCycle();
         }
-
-        SetUIVisible(true);
-
-        if (!runWhilePaused && Time.timeScale == 0f)
-        {
-            UpdateUI();
-            return;
-        }
-
-        if (cycleDuration <= 0f) cycleDuration = 1f;
-
-        float dt = runWhilePaused ? Time.unscaledDeltaTime : Time.deltaTime;
-
-        cycleRemaining -= dt;
-        if (cycleRemaining <= 0f)
-        {
-            TriggerAutoWash();
-            // Start next cycle (use latest upgrades)
-            cycleDuration = sinkManager.GetDishwasherCycleSeconds();
-            cycleRemaining = cycleDuration;
-        }
-
         UpdateUI();
     }
 
-    private void TriggerAutoWash()
+    public bool TryStartLoadedCycle(IReadOnlyList<DishData> load)
     {
-        DishData dish = null;
-        if (dishClicker != null) dish = dishClicker.GetCurrentDishData();
+        if (isRunning || sinkManager == null || scoreManager == null ||
+            sinkManager.CurrentSinkType != SinkManager.SinkType.Dishwasher || load == null || load.Count == 0)
+            return false;
 
-        if (dish == null)
+        for (int i = 0; i < load.Count; i++)
+            if (load[i] == null) return false;
+
+        activeLoad.Clear();
+        for (int i = 0; i < load.Count; i++) activeLoad.Add(load[i]);
+        cycleDuration = Mathf.Max(1f, sinkManager.GetDishwasherCycleSeconds());
+        cycleRemaining = cycleDuration;
+        isRunning = true;
+        UpdateUI();
+        return true;
+    }
+
+    private void CompleteCycle()
+    {
+        if (!isRunning) return;
+        isRunning = false;  // Mark complete BEFORE calling any other systems.
+        cycleRemaining = 0f;
+        int loadedCount = activeLoad.Count;
+        completedCycles++;
+
+        float cashMultiplier = (sinkManager != null && sinkManager.HasHeatDryBoostTechnique() &&
+            completedCycles % 10 == 0) ? 2f : 1f;
+
+        double moneyBefore = scoreManager != null ? scoreManager.GetTotalProfitDouble() : 0d;
+        if (scoreManager != null)
         {
-            // Fallback: try score manager's starter list
-            if (scoreManager.allDishes != null && scoreManager.allDishes.Count > 0)
-                dish = scoreManager.allDishes[0];
+            for (int i = 0; i < activeLoad.Count; i++)
+                scoreManager.AwardBackgroundWash(activeLoad[i], 1L, cashMultiplier);
+
+            // Keep old purchased amount-branch upgrades functional until their
+            // replacement with dishwasher-size upgrades. Extra counted washes
+            // use the most valuable dish already present in the load.
+            if (honorLegacyDishCountUpgrades && activeLoad.Count > 0 && sinkManager != null)
+            {
+                double mult = Mathf.Max(1f, sinkManager.GetDishwasherDishesMultiplier());
+                long targetCount = (long)Math.Round(loadedCount * mult, MidpointRounding.AwayFromZero);
+                long extra = Math.Max(0L, targetCount - loadedCount);
+                DishData mostValuable = activeLoad[0];
+                for (int i = 1; i < activeLoad.Count; i++)
+                    if (activeLoad[i].profitPerDish > mostValuable.profitPerDish)
+                        mostValuable = activeLoad[i];
+                if (extra > 0L) scoreManager.AwardBackgroundWash(mostValuable, extra, cashMultiplier);
+            }
+        }
+        double moneyEarned = scoreManager != null
+            ? Math.Max(0d, scoreManager.GetTotalProfitDouble() - moneyBefore) : 0d;
+
+        activeLoad.Clear();
+        if (completionDing != null && AudioManager.instance != null)
+            AudioManager.instance.PlaySFX(completionDing);
+
+        if (rewardTextSpawner != null && payoutWorldAnchor != null && moneyEarned > 0d)
+        {
+            float safeFloat = (float)Math.Min(float.MaxValue, moneyEarned);
+            rewardTextSpawner.SpawnRewardTextAtWorld(safeFloat, payoutWorldAnchor.position);
         }
 
-        if (dish == null) return;
-
-        long baseDishes = 1;
-        if (dishClicker != null)
-        {
-            // Uses same logic as manual completion but does not change visuals.
-            baseDishes = dishClicker.PreviewManualDishesAwarded();
-        }
-        else
-        {
-            baseDishes = Mathf.Max(1, scoreManager.GetDishCountIncrement());
-        }
-
-        float mult = sinkManager.GetDishwasherDishesMultiplier();
-        long dishesAwarded = (long)System.Math.Max(1, System.Math.Round(baseDishes * mult));
-
-        autoWashCount++;
-
-        float cashMult = 1f;
-        if (sinkManager.HasHeatDryBoostTechnique())
-        {
-            // Every 10th auto-wash yields double cash
-            if (autoWashCount % 10 == 0) cashMult = 2f;
-        }
-
-        scoreManager.AwardBackgroundWash(dish, dishesAwarded, cashMult);
-
-        if (statusText != null)
-        {
-            if (cashMult > 1f) statusText.text = "Heat Dry Boost x2";
-        }
+        UpdateUI();
+        CycleCompleted?.Invoke(loadedCount, moneyEarned);
     }
 
     private void OnSinkStateChanged()
     {
-        if (sinkManager == null) return;
-
-        bool dishwasherActive = sinkManager.CurrentSinkType == SinkManager.SinkType.Dishwasher;
-        if (!dishwasherActive)
+        bool active = sinkManager != null && sinkManager.CurrentSinkType == SinkManager.SinkType.Dishwasher;
+        if (!active)
         {
-            SetUIVisible(false);
-            autoWashCount = 0;
-            cycleDuration = 300f;
-            cycleRemaining = 300f;
-            return;
+            CancelCycle();
+            completedCycles = 0;
         }
-
-        cycleDuration = sinkManager.GetDishwasherCycleSeconds();
-        cycleRemaining = Mathf.Clamp(cycleRemaining, 0f, cycleDuration);
-
-        // If we just switched to dishwasher, start a full cycle.
-        if (cycleRemaining <= 0.01f) cycleRemaining = cycleDuration;
-
-        SetUIVisible(true);
+        SetUIVisible(active);
         UpdateUI();
     }
 
     private void OnUpgradesChanged()
     {
-        if (sinkManager == null) return;
-        if (sinkManager.CurrentSinkType != SinkManager.SinkType.Dishwasher) return;
-
-        // Adjust remaining time proportionally when cycle length changes
+        if (!isRunning || sinkManager == null) return;
         float oldDuration = Mathf.Max(1f, cycleDuration);
         float newDuration = Mathf.Max(1f, sinkManager.GetDishwasherCycleSeconds());
-
         float progress = 1f - Mathf.Clamp01(cycleRemaining / oldDuration);
         cycleDuration = newDuration;
-        cycleRemaining = Mathf.Clamp(newDuration * (1f - progress), 0f, newDuration);
-
+        cycleRemaining = newDuration * (1f - progress);
         UpdateUI();
     }
 
-    private void UpdateUI()
+    private void CancelCycle()
     {
-        if (timerFill != null)
-        {
-            float t = (cycleDuration <= 0f) ? 0f : 1f - Mathf.Clamp01(cycleRemaining / cycleDuration);
-            timerFill.fillAmount = t;
-        }
-
-        if (timerText != null)
-        {
-            int seconds = Mathf.CeilToInt(Mathf.Max(0f, cycleRemaining));
-            int min = seconds / 60;
-            int sec = seconds % 60;
-            timerText.text = $"Rinse {min}:{sec:00}";
-        }
-
-        if (statusText != null)
-        {
-            if (sinkManager == null || sinkManager.CurrentSinkType != SinkManager.SinkType.Dishwasher)
-            {
-                statusText.text = "";
-                return;
-            }
-
-            if (sinkManager.HasHeatDryBoostTechnique())
-            {
-                int next = 10 - (autoWashCount % 10);
-                if (next == 10) next = 0;
-                statusText.text = next == 0 ? "Next auto-wash x2" : $"x2 in {next} auto";
-            }
-            else
-            {
-                statusText.text = "";
-            }
-        }
+        isRunning = false;
+        activeLoad.Clear();
+        cycleRemaining = 0f;
+        cycleDuration = 0f;
     }
 
     private void SetUIVisible(bool visible)
@@ -242,18 +208,78 @@ public class DishwasherCycleController : MonoBehaviour
         }
     }
 
-    // --- Optional save hooks ---
-    public float GetCycleRemainingSeconds() => cycleRemaining;
-    public int GetAutoWashCount() => autoWashCount;
-
-    public void LoadDishwasherState(float remainingSeconds, int loadedAutoWashCount)
+    private void UpdateUI()
     {
-        autoWashCount = Mathf.Max(0, loadedAutoWashCount);
+        if (timerFill != null)
+            timerFill.fillAmount = isRunning && cycleDuration > 0f ?
+                1f - Mathf.Clamp01(cycleRemaining / cycleDuration) : 0f;
 
-        if (sinkManager == null) sinkManager = FindAnyObjectByType<SinkManager>();
-        cycleDuration = sinkManager != null ? sinkManager.GetDishwasherCycleSeconds() : 300f;
-        cycleRemaining = Mathf.Clamp(remainingSeconds, 0f, Mathf.Max(1f, cycleDuration));
+        if (timerText != null)
+        {
+            if (isRunning)
+            {
+                int remaining = Mathf.CeilToInt(Mathf.Max(0f, cycleRemaining));
+                timerText.text = $"Rinse {remaining / 60}:{remaining % 60:00}";
+            }
+            else timerText.text = "Ready to Load";
+        }
+        if (statusText != null)
+        {
+            if (isRunning) statusText.text = $"Washing {activeLoad.Count} dishes";
+            else if (sinkManager != null && sinkManager.CurrentSinkType == SinkManager.SinkType.Dishwasher &&
+                sinkManager.HasHeatDryBoostTechnique())
+                statusText.text = $"Heat Dry: {10 - (completedCycles % 10)} cycles to x2";
+            else statusText.text = "";
+        }
+    }
 
+    public void WriteSaveState(DishwasherSaveState save)
+    {
+        if (save == null) return;
+        save.cycleRunning = isRunning;
+        save.secondsRemaining = isRunning ? Mathf.Max(0f, cycleRemaining) : 0f;
+        save.cycleDuration = isRunning ? cycleDuration : 0f;
+        save.completedCycles = completedCycles;
+    }
+
+    public void ApplySaveState(DishwasherSaveState save, DishSpawner spawner)
+    {
+        CancelCycle();
+        completedCycles = save != null ? Mathf.Max(0, save.completedCycles) : 0;
+        if (save == null || !save.cycleRunning || spawner == null || sinkManager == null ||
+            sinkManager.CurrentSinkType != SinkManager.SinkType.Dishwasher) { UpdateUI(); return; }
+
+        if (save.dishes != null)
+        {
+            foreach (DishwasherSavedDish entry in save.dishes)
+            {
+                if (entry == null || !entry.inDishwasher) continue;
+                DishData data = DishwasherLoadMenu.ResolveDish(spawner, entry);
+                if (data != null) activeLoad.Add(data);
+            }
+        }
+        if (activeLoad.Count == 0)
+        {
+            Debug.LogWarning("[Dishwasher] A saved cycle had no resolvable dishes. It was cancelled.", this);
+            UpdateUI();
+            return;
+        }
+        cycleDuration = save.cycleDuration > 0f ? save.cycleDuration :
+            Mathf.Max(1f, sinkManager.GetDishwasherCycleSeconds());
+        cycleRemaining = Mathf.Clamp(save.secondsRemaining, 0f, cycleDuration);
+        isRunning = true;
+        UpdateUI();
+    }
+
+    // Compatibility hooks for any older code calling these methods.
+    public float GetCycleRemainingSeconds() => SecondsRemaining;
+    public int GetAutoWashCount() => completedCycles;
+    public void LoadDishwasherState(float remainingSeconds, int previousAutoWashCount)
+    {
+        // No historical load composition exists in the old save format, so
+        // restoring only a timer must never create phantom money.
+        completedCycles = Mathf.Max(0, previousAutoWashCount);
+        if (isRunning) cycleRemaining = Mathf.Clamp(remainingSeconds, 0f, cycleDuration);
         UpdateUI();
     }
 }
