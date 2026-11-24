@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Dishwasher V4: four-rack packing using existing dirty sprites and assigned rack art.
+/// Dishwasher V6: four-rack packing using existing dirty sprites and assigned rack art.
 /// The loading menu has four distinct rectangular placement zones and optional Dishpod.
 /// Lives on an ALWAYS-ACTIVE scene object outside the hidden menu root.
 /// </summary>
@@ -69,6 +69,7 @@ public class DishwasherLoadMenu : MonoBehaviour
 
     private readonly List<DishwasherDraggableDish> dishes = new List<DishwasherDraggableDish>();
     private DishwasherDraggableDish selectedDish;
+    private string lastSelectionPreview;
     private bool pileGenerated;
     private bool loadLocked;
     private bool hasWiredButtons;
@@ -136,8 +137,11 @@ public class DishwasherLoadMenu : MonoBehaviour
     private void Update()
     {
         if (menuRoot == null || !menuRoot.activeInHierarchy) return;
-        if (!loadLocked && selectedDish != null && Input.GetKeyDown(KeyCode.R))
-            selectedDish.RotateClockwise();
+        if (!loadLocked && selectedDish != null)
+        {
+            if (Input.GetKeyDown(KeyCode.R)) selectedDish.RotateClockwise();
+            UpdateSelectedDishStatus(); // Reflect soap/gloves, Dishpod placement and temporary buffs.
+        }
         if (loadLocked && cycleController != null && cycleController.IsRunning && selectedDish == null)
         {
             int remaining = Mathf.CeilToInt(cycleController.SecondsRemaining);
@@ -390,7 +394,7 @@ public class DishwasherLoadMenu : MonoBehaviour
 
         loadLocked = cycleController != null && cycleController.IsRunning;
         if (loadLocked) LockForRunningCycle();
-        else SetStatus("Select a dish to see its default reward.");
+        else SetStatus("Select a dish to see its current reward.");
         RefreshButtons();
     }
 
@@ -399,19 +403,57 @@ public class DishwasherLoadMenu : MonoBehaviour
         if (loadLocked && dish != null) return;
         if (selectedDish != null) selectedDish.SetSelected(false);
         selectedDish = dish;
+        lastSelectionPreview = null;
         if (selectedDish == null) return;
         selectedDish.SetSelected(true);
+        UpdateSelectedDishStatus();
+    }
+
+    private bool HasDishpodInRack()
+    {
+        foreach (DishwasherDraggableDish dish in dishes)
+        {
+            if (dish != null && dish.IsDishpod && GetRackIndex(dish) >= 0)
+                return true;
+        }
+        return false;
+    }
+
+    private void UpdateSelectedDishStatus()
+    {
+        if (selectedDish == null) return;
+
+        string message;
         if (selectedDish.IsDishpod)
         {
             float bonus = cycleController != null ?
                 (cycleController.DishpodProfitMultiplier - 1f) * 100f : 25f;
-            SetStatus($"Dishpod: +{bonus:0.#}% profit on loaded dishes this cycle.");
-            return;
+            message = $"Dishpod: +{bonus:0.#}% profit on loaded dishes this cycle.";
         }
-        DishData data = selectedDish.Dish;
-        if (data == null) return;
-        string displayName = string.IsNullOrWhiteSpace(data.displayName) ? data.name : data.displayName;
-        SetStatus($"{displayName}: {BigNumberFormatter.FormatMoney((double)data.profitPerDish)} default");
+        else
+        {
+            DishData data = selectedDish.Dish;
+            if (data == null) return;
+            string displayName = string.IsNullOrWhiteSpace(data.displayName) ? data.name : data.displayName;
+            long dishCount = cycleController != null ? cycleController.DishesAwardedPerLoadedDish :
+                (scoreManager != null ? Math.Max(1L, (long)scoreManager.GetDishCountIncrement()) : 1L);
+            bool hasPod = HasDishpodInRack();
+            double reward = cycleController != null ? cycleController.PreviewDishReward(data, hasPod) :
+                (scoreManager != null ? (double)data.profitPerDish * dishCount *
+                    scoreManager.GetEffectiveDishProfitMultiplier() : (double)data.profitPerDish);
+            string dishCountLabel = dishCount > 1 ? $" ({dishCount} dishes with gloves)" : "";
+            string buffLabel = scoreManager != null && scoreManager.IsWellMotivatedActive ?
+                " [Well Motivated active]" : "";
+            message = $"{displayName}: {BigNumberFormatter.FormatMoney(reward)} current{dishCountLabel}{buffLabel}";
+        }
+
+        // Do not overwrite placement-error messages on every Update. Refresh
+        // the preview only when a relevant multiplier or selection changes.
+        if (message != lastSelectionPreview)
+        {
+            lastSelectionPreview = message;
+            SetStatus(message);
+        }
     }
 
     public bool TryGetLayerPoint(Vector2 screen, Camera camera, out Vector2 point)
@@ -429,7 +471,11 @@ public class DishwasherLoadMenu : MonoBehaviour
         RefreshButtons();
     }
 
-    public void NotifyDishMoved() => RefreshButtons();
+    public void NotifyDishMoved()
+    {
+        RefreshButtons();
+        UpdateSelectedDishStatus();
+    }
 
     private static bool CenterInside(DishwasherDraggableDish dish, RectTransform area)
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Dishwasher V4. Does NOT start cycles until DishwasherLoadMenu submits a
+/// Dishwasher V6. Does NOT start cycles until DishwasherLoadMenu submits a
 /// valid arrangement. Rewards the exact loaded dish types at cycle completion.
 /// Replaces the old timer-only auto-wash controller without modifying ScoreManager.
 /// </summary>
@@ -53,6 +53,23 @@ public class DishwasherCycleController : MonoBehaviour
     private Action sinkResetHandler;
 
     public float DishpodProfitMultiplier => Mathf.Max(1f, dishpodProfitMultiplier);
+
+    // The same glove-derived dish count used by ScoreManager's manual dish awards.
+    // Each physically loaded dish awards this many completed dishes and their profit.
+    public long DishesAwardedPerLoadedDish => scoreManager != null
+        ? Math.Max(1L, (long)scoreManager.GetDishCountIncrement()) : 1L;
+
+    // Live preview of one dish's payout if a cycle finished now. The temporary
+    // Well Motivated bubble boost is evaluated again at actual completion.
+    public double PreviewDishReward(DishData dish, bool dishpodInRack)
+    {
+        if (dish == null || scoreManager == null) return 0d;
+        float cashMultiplier = dishpodInRack && sinkManager != null &&
+            sinkManager.HasDishpodTechnique() ? DishpodProfitMultiplier : 1f;
+        return (double)DishesAwardedPerLoadedDish * dish.profitPerDish *
+            scoreManager.GetEffectiveDishProfitMultiplier() * cashMultiplier;
+    }
+
     public bool IsRunning => isRunning;
     public float SecondsRemaining => isRunning ? cycleRemaining : 0f;
     public int LoadedDishCount => activeLoad.Count;
@@ -144,6 +161,7 @@ public class DishwasherCycleController : MonoBehaviour
         completedCycles++;
 
         float cashMultiplier = activeHasDishpod ? Mathf.Max(1f, dishpodProfitMultiplier) : 1f;
+        long dishesPerLoadedDish = DishesAwardedPerLoadedDish;
 
         // Compute the awarded amount from the same inputs ScoreManager uses.
         // Subtracting two large wallet totals can round a valid reward to zero.
@@ -154,10 +172,11 @@ public class DishwasherCycleController : MonoBehaviour
             for (int i = 0; i < activeLoad.Count; i++)
             {
                 DishData dish = activeLoad[i];
-                moneyEarned += (double)dish.profitPerDish * effectiveMultiplier * cashMultiplier;
+                moneyEarned += dishesPerLoadedDish * (double)dish.profitPerDish *
+                    effectiveMultiplier * cashMultiplier;
                 // ScoreManager remains the ONLY place that credits the wallet,
                 // completed dishes, and the measured profit-rate income.
-                scoreManager.AwardBackgroundWash(dish, 1L, cashMultiplier);
+                scoreManager.AwardBackgroundWash(dish, dishesPerLoadedDish, cashMultiplier);
             }
         }
 
