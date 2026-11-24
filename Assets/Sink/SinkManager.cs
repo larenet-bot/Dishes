@@ -31,6 +31,8 @@ public class SinkManager : MonoBehaviour
         [Header("Purchase")]
         public float cost = 0f;
         public bool isTechnique = false;
+        [Tooltip("Preserve retired upgrades in saves/refunds without displaying them in the menu.")]
+        public bool hiddenFromMenu = false;
 
         [Tooltip("If true, purchasing this node commits the player to this sink branch (if still Basic).")]
         public bool unlocksSinkType = false;
@@ -78,6 +80,7 @@ public class SinkManager : MonoBehaviour
         }
 
         EnsureWashBasinSoakPopupNode();
+        UpdateDishwasherUpgradeDefinitions();
         BuildLookup();
     }
 
@@ -105,6 +108,47 @@ public class SinkManager : MonoBehaviour
             cost = 1800f,
             requires = new List<string> { "wb_technique" }
         });
+    }
+
+    // Run against scene-serialized node lists as well as SeedDefaults().
+    // This changes dishwasher text/behavior without touching partner-authored Wash Basin nodes.
+    private void UpdateDishwasherUpgradeDefinitions()
+    {
+        if (nodes == null) return;
+        foreach (SinkNode node in nodes)
+        {
+            if (node == null) continue;
+            switch (node.id)
+            {
+                case "dw_unlock":
+                    node.description = "Unlock a dishwasher with manual dish loading and a 90-second wash cycle.";
+                    break;
+                case "dw_amount1":
+                    node.displayName = "Top Rack";
+                    node.description = "Unlock a second, shallower dish-loading rack.";
+                    break;
+                case "dw_amount2":
+                    node.displayName = "Double Decker";
+                    node.description = "Unlock a third rack matching the Top Rack in size.";
+                    break;
+                case "dw_amount3":
+                    node.displayName = "Triple Decker";
+                    node.description = "Unlock a fourth rack matching the Top Rack in size.";
+                    node.hiddenFromMenu = false;
+                    break;
+                case "dw_technique":
+                    node.displayName = "TECHNIQUE: Dishpod";
+                    node.description = "Adds one Dishpod to each dirty pile. Fit it into a rack to multiply the profit from that cycle.";
+                    break;
+                case "dw_time1":
+                case "dw_time2":
+                    node.description = "Shorten the dishwasher cycle by 30 seconds.";
+                    break;
+                case "dw_time3":
+                    node.description = "Shorten the dishwasher cycle by 30 more seconds, to a minimum of 5 seconds.";
+                    break;
+            }
+        }
     }
 
     private void BuildLookup()
@@ -145,7 +189,7 @@ public class SinkManager : MonoBehaviour
 
         return nodes
             .Select((n, idx) => new { n, idx })
-            .Where(x => x.n != null && x.n.branch == branch)
+            .Where(x => x.n != null && x.n.branch == branch && !x.n.hiddenFromMenu)
             .OrderBy(x => x.n.tier)
             .ThenBy(x => x.idx) // keeps your inspector order within a tier
             .Select(x => x.n)
@@ -156,6 +200,7 @@ public class SinkManager : MonoBehaviour
     {
         var node = GetNode(nodeId);
         if (node == null) return false;
+        if (node.hiddenFromMenu) return false;
         if (IsPurchased(nodeId)) return false;
 
         // Lockout after commit
@@ -418,25 +463,22 @@ public class SinkManager : MonoBehaviour
 
     public float GetDishwasherCycleSeconds()
     {
-        float seconds = 300f;
+        float seconds = 90f;
 
-        if (IsPurchased("dw_time1")) seconds -= 60f;
-        if (IsPurchased("dw_time2")) seconds -= 60f;
-        if (IsPurchased("dw_time3")) seconds -= 60f;
+        if (IsPurchased("dw_time1")) seconds -= 30f;
+        if (IsPurchased("dw_time2")) seconds -= 30f;
+        if (IsPurchased("dw_time3")) seconds -= 30f;
 
-        return Mathf.Max(30f, seconds);
+        // Zero-second cycles would allow a continuous, unbounded profit loop.
+        return Mathf.Max(5f, seconds);
     }
 
 
-    public float GetDishwasherDishesMultiplier()
-    {
-        if (IsPurchased("dw_amount3")) return 2.50f;          // +150%
-        if (IsPurchased("dw_amount2")) return 2.00f;          // +100%
-        if (IsPurchased("dw_amount1")) return 1.50f;          // +50%
-        return 1f;
-    }
+    // Legacy API: capacity upgrades now grant separate racks, not extra rewards.
+    public float GetDishwasherDishesMultiplier() => 1f;
 
 
+    public bool HasDishpodTechnique() => IsPurchased("dw_technique");
     public bool HasHeatDryBoostTechnique() => IsPurchased("dw_technique");
     // --------------------------
     // Save hooks (optional)
@@ -779,8 +821,8 @@ public class SinkManager : MonoBehaviour
             id = "dw_amount3",
             branch = SinkType.Dishwasher,
             tier = 4,
-            displayName = "XL Dishwasher",
-            description = "Increase dishes done per cycle by 150%.",
+            displayName = "Triple Decker",
+            description = "Unlock a fourth rack matching the Top Rack in size.",
             loreDescription = "",
             cost = 5000f,
             requires = new List<string> { "dw_amount2" }

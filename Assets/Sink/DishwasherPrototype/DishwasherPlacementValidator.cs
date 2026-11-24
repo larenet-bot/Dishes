@@ -11,17 +11,23 @@ public static class DishwasherPlacementValidator
 
     public static List<DishwasherDraggableDish> FindInvalidLoadedDishes(
         List<DishwasherDraggableDish> loaded,
-        RectTransform dishwasherArea,
+        Dictionary<DishwasherDraggableDish, RectTransform> rackForDish,
         RectTransform sharedLayer)
     {
         var invalid = new HashSet<DishwasherDraggableDish>();
-        var allShapes = new List<List<List<Vector2>>>(loaded.Count);
-        Rect boundary = dishwasherArea.rect;
+        var shapes = new List<List<List<Vector2>>>(loaded.Count);
 
         foreach (DishwasherDraggableDish dish in loaded)
         {
-            List<List<Vector2>> inArea = dish.GetOutlinesInSpace(dishwasherArea);
-            foreach (List<Vector2> polygon in inArea)
+            RectTransform area;
+            if (!rackForDish.TryGetValue(dish, out area) || area == null)
+            {
+                invalid.Add(dish);
+                shapes.Add(null);
+                continue;
+            }
+            Rect boundary = area.rect;
+            foreach (List<Vector2> polygon in dish.GetOutlinesInSpace(area))
             {
                 foreach (Vector2 point in polygon)
                 {
@@ -33,14 +39,19 @@ public static class DishwasherPlacementValidator
                     }
                 }
             }
-            allShapes.Add(dish.GetOutlinesInSpace(sharedLayer));
+            shapes.Add(dish.GetOutlinesInSpace(sharedLayer));
         }
 
         for (int a = 0; a < loaded.Count; a++)
         {
             for (int b = a + 1; b < loaded.Count; b++)
             {
-                if (ShapesOverlap(allShapes[a], allShapes[b]))
+                // Different racks are separate shelves, even if their UI graphics overlap.
+                RectTransform rackA, rackB;
+                if (!rackForDish.TryGetValue(loaded[a], out rackA) ||
+                    !rackForDish.TryGetValue(loaded[b], out rackB) || rackA != rackB)
+                    continue;
+                if (shapes[a] != null && shapes[b] != null && ShapesOverlap(shapes[a], shapes[b]))
                 {
                     invalid.Add(loaded[a]);
                     invalid.Add(loaded[b]);
@@ -48,10 +59,19 @@ public static class DishwasherPlacementValidator
             }
         }
 
-        var ordered = new List<DishwasherDraggableDish>();
+        var result = new List<DishwasherDraggableDish>();
         foreach (DishwasherDraggableDish dish in loaded)
-            if (invalid.Contains(dish)) ordered.Add(dish);
-        return ordered;
+            if (invalid.Contains(dish)) result.Add(dish);
+        return result;
+    }
+
+    // Kept for earlier prototype callers.
+    public static List<DishwasherDraggableDish> FindInvalidLoadedDishes(
+        List<DishwasherDraggableDish> loaded, RectTransform dishwasherArea, RectTransform sharedLayer)
+    {
+        var singleRack = new Dictionary<DishwasherDraggableDish, RectTransform>();
+        foreach (DishwasherDraggableDish dish in loaded) singleRack[dish] = dishwasherArea;
+        return FindInvalidLoadedDishes(loaded, singleRack, sharedLayer);
     }
 
     private static bool ShapesOverlap(List<List<Vector2>> a, List<List<Vector2>> b)

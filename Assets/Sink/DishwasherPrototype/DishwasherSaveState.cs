@@ -10,6 +10,7 @@ public class DishwasherSaveState
     public float secondsRemaining = 0f;
     public float cycleDuration = 0f;
     public int completedCycles = 0;
+    public bool cycleHasDishpod = false;
     public List<DishwasherSavedDish> dishes = new List<DishwasherSavedDish>();
 }
 
@@ -20,6 +21,9 @@ public class DishwasherSavedDish
     public string dishAssetName;
     public int fallbackPoolIndex = -1;
     public bool inDishwasher;
+    // V2 saves have rackIndex=0, meaning the original bottom rack.
+    public int rackIndex = 0;
+    public bool isDishpod = false;
     // Coordinates relative to the center of the dishwasher or staging area.
     public float normalizedX;
     public float normalizedY;

@@ -470,143 +470,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!1 &16234053
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 16234054}
-  - component: {fileID: 16234056}
-  - component: {fileID: 16234055}
-  m_Layer: 0
-  m_Name: Text (TMP)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &16234054
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 16234053}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1393965340}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &16234055
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 16234053}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: Dishwasher
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_characterHorizontalScale: 1
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &16234056
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 16234053}
-  m_CullTransparentMesh: 1
 --- !u!1 &20115325
 GameObject:
   m_ObjectHideFlags: 0
@@ -15729,6 +15592,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2098386462}
+  - {fileID: 1390258138}
+  - {fileID: 596703367}
   - {fileID: 1532343035}
   - {fileID: 456507905}
   - {fileID: 427591893}
@@ -18343,6 +18208,81 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &596703366
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 596703367}
+  - component: {fileID: 596703369}
+  - component: {fileID: 596703368}
+  m_Layer: 0
+  m_Name: DishwasherArea3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &596703367
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596703366}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 531562081}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 325, y: -625}
+  m_SizeDelta: {x: 625, y: 800}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &596703368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596703366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 857411284116449629, guid: 8fb910a21eda3db429764dca1471530a, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &596703369
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596703366}
+  m_CullTransparentMesh: 1
 --- !u!1 &599346605
 GameObject:
   m_ObjectHideFlags: 0
@@ -28964,11 +28904,16 @@ MonoBehaviour:
   sinkManager: {fileID: 1433253104}
   scoreManager: {fileID: 1535544642}
   dishClicker: {fileID: 1318212022}
+  loadMenu: {fileID: 0}
   timerRoot: {fileID: 1595481391}
   timerFill: {fileID: 850356340}
   timerText: {fileID: 1893607054}
   statusText: {fileID: 490914644}
   runWhilePaused: 1
+  dishpodProfitMultiplier: 1.25
+  completionDing: {fileID: 0}
+  rewardTextSpawner: {fileID: 0}
+  payoutWorldAnchor: {fileID: 0}
 --- !u!1 &958188499
 GameObject:
   m_ObjectHideFlags: 0
@@ -30770,7 +30715,6 @@ RectTransform:
   - {fileID: 1108493257}
   - {fileID: 605944033}
   - {fileID: 1949874013}
-  - {fileID: 1393965340}
   - {fileID: 531562081}
   m_Father: {fileID: 125825044}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -37336,24 +37280,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 1300662677}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 368eff9442aa75c45a92c10cb7ede3d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 899c05b6b7744d6489bfdf0ab8ac3bf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DishwasherLoadMenu
   sinkManager: {fileID: 1433253104}
   dishSpawner: {fileID: 638805220}
   scoreManager: {fileID: 1535544642}
+  cycleController: {fileID: 953856051}
   menuRoot: {fileID: 531562078}
   dishwasherArea: {fileID: 2098386462}
   dirtyPileArea: {fileID: 1532343035}
   dishLayer: {fileID: 456507905}
+  topRackArea: {fileID: 1390258138}
+  doubleDeckerArea: {fileID: 596703367}
+  dishpodSprite: {fileID: 8687771988115295435, guid: e8902db948a4ff94b82cbb40b4be38b1, type: 3}
+  dishpodSizeMultiplier: 0.25
   openMenuButton: {fileID: 1393965337}
   closeButton: {fileID: 905886688}
   startCycleButton: {fileID: 427591890}
   resetPrototypeButton: {fileID: 851829591}
   statusText: {fileID: 1615822701}
-  startButtonLabel: {fileID: 636649599}
+  startButtonLabel: {fileID: 675023602}
   dishesPerPile: 10
   dishwasherSizeMultiplier: 0.3
+  dishSizeOverrides:
+  - dish: {fileID: 11400000, guid: 3cd3f8425b8689d42809be67103a7277, type: 2}
+    multiplier: 2
+  - dish: {fileID: 11400000, guid: 2865ed711bf4596458dccf77faac9937, type: 2}
+    multiplier: 2
+  - dish: {fileID: 11400000, guid: 324e2ec81847e844bb11468e0f8099ac, type: 2}
+    multiplier: 3
+  - dish: {fileID: 11400000, guid: c9a4a8555426ec540b2589c5efb29275, type: 2}
+    multiplier: 3
+  - dish: {fileID: 11400000, guid: 2952548b87e0cbe4f98a916dc632a106, type: 2}
+    multiplier: 4
+  - dish: {fileID: 11400000, guid: 76c18aad63a7d82449eb1b6be9ce3a3c, type: 2}
+    multiplier: 4
   selectionPadding: 7
   requireDishwasherSink: 1
 --- !u!1 &1312267498
@@ -39711,6 +39673,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1382054632}
   m_CullTransparentMesh: 1
+--- !u!1 &1390258137
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1390258138}
+  - component: {fileID: 1390258140}
+  - component: {fileID: 1390258139}
+  m_Layer: 0
+  m_Name: DishwasherArea2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1390258138
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390258137}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 531562081}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 975, y: -110}
+  m_SizeDelta: {x: 625, y: 200}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1390258139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390258137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 857411284116449629, guid: 8fb910a21eda3db429764dca1471530a, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1390258140
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390258137}
+  m_CullTransparentMesh: 1
 --- !u!1 &1393965336
 GameObject:
   m_ObjectHideFlags: 0
@@ -39794,8 +39831,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: -2522174090283386278, guid: 909aa334a67e6a745be62499d6f9adfd, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -39819,18 +39856,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1393965336}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 108, y: 108, z: 108}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 16234054}
-  m_Father: {fileID: 1037320924}
+  m_Children: []
+  m_Father: {fileID: 1819217423}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 300, y: -50}
+  m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1395161911
 GameObject:
@@ -41136,6 +41172,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 500
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 1
     requires: []
   - id: pw_rate1
@@ -41146,6 +41183,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 2000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - pw_unlock
@@ -41158,6 +41196,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 2000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - pw_unlock
@@ -41171,6 +41210,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 50000
     isTechnique: 1
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - pw_unlock
@@ -41182,6 +41222,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 50000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - pw_rate1
@@ -41194,6 +41235,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 50000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - pw_momentum1
@@ -41205,6 +41247,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 100000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - pw_rate2
@@ -41216,6 +41259,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 100000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - pw_momentum2
@@ -41228,6 +41272,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 500
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 1
     requires: []
   - id: wb_hole1
@@ -41238,6 +41283,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 2000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - wb_unlock
@@ -41249,6 +41295,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 2000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - wb_unlock
@@ -41260,6 +41307,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 50000
     isTechnique: 1
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - wb_unlock
@@ -41271,6 +41319,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 50000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - wb_hole1
@@ -41282,6 +41331,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 50000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - wb_chance1
@@ -41293,6 +41343,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 100000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - wb_hole2
@@ -41305,6 +41356,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 100000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - wb_chance2
@@ -41317,6 +41369,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 500
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 1
     requires: []
   - id: dw_amount1
@@ -41327,6 +41380,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 2000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - dw_unlock
@@ -41338,6 +41392,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 2000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - dw_unlock
@@ -41349,6 +41404,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 50000
     isTechnique: 1
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - dw_unlock
@@ -41360,6 +41416,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 50000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - dw_amount1
@@ -41371,6 +41428,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 50000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - dw_time1
@@ -41382,6 +41440,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 100000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - dw_amount2
@@ -41393,6 +41452,7 @@ MonoBehaviour:
     loreDescription: 
     cost: 100000
     isTechnique: 0
+    hiddenFromMenu: 0
     unlocksSinkType: 0
     requires:
     - dw_time2
@@ -44388,10 +44448,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 531562081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 437.7204, y: 15.484985}
-  m_SizeDelta: {x: -1063.0356, y: -212.19}
+  m_AnchoredPosition: {x: -325, y: 75}
+  m_SizeDelta: {x: 600, y: -250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1532343036
 MonoBehaviour:
@@ -46517,13 +46577,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 32
+  m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -46584,10 +46644,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 531562081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -317.25, y: 100}
-  m_SizeDelta: {x: 834.51, y: 50}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 340, y: -120}
+  m_SizeDelta: {x: 640, y: 190}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1616949942
 GameObject:
@@ -52749,6 +52809,7 @@ RectTransform:
   - {fileID: 1178471663}
   - {fileID: 137410830}
   - {fileID: 1580268281}
+  - {fileID: 1393965340}
   - {fileID: 1580966303}
   m_Father: {fileID: 967766790}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -59814,10 +59875,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 531562081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -398.6082, y: 15.4853}
-  m_SizeDelta: {x: 671.7988, y: 867.8107}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 975, y: -625}
+  m_SizeDelta: {x: 625, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2098386463
 MonoBehaviour:

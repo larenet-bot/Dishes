@@ -5,8 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Dishwasher V2. Opens the packing UI, builds independent dirty-sprite dishes,
-/// validates polygon placement, and starts the real DishwasherCycleController.
+/// Dishwasher V4: four-rack packing using existing dirty sprites and assigned rack art.
+/// The loading menu has four distinct rectangular placement zones and optional Dishpod.
 /// Lives on an ALWAYS-ACTIVE scene object outside the hidden menu root.
 /// </summary>
 public class DishwasherLoadMenu : MonoBehaviour
@@ -31,6 +31,20 @@ public class DishwasherLoadMenu : MonoBehaviour
     [SerializeField] private RectTransform dirtyPileArea;
     [SerializeField] private RectTransform dishLayer;
 
+    [Header("Optional Rack Upgrades (UI Images / RectTransforms)")]
+    [Tooltip("Keep the original DishwasherArea as the bottom rack. Top Rack is a separate Image, the same width but shorter.")]
+    [SerializeField] private RectTransform topRackArea;
+    [Tooltip("Clone Top Rack's Image and RectTransform for Double Decker, but give it a distinct position.")]
+    [SerializeField] private RectTransform doubleDeckerArea;
+    [Tooltip("Clone the Top Rack image again for Triple Decker. It is its own independent loading area.")]
+    [SerializeField] private RectTransform tripleDeckerArea;
+
+    [Header("Dishpod Technique (requires your own sprite)")]
+    [Tooltip("Assign a sprite imported by you. Nothing will be generated if this is missing.")]
+    [SerializeField] private Sprite dishpodSprite;
+    [Tooltip("Multiplies dishpod sprite's native width and height. Independent from dish scale.")]
+    [SerializeField, Min(0.01f)] private float dishpodSizeMultiplier = 0.25f;
+
     [Header("Existing Buttons / Feedback")]
     [SerializeField] private Button openMenuButton;
     [SerializeField] private Button closeButton;
@@ -48,6 +62,10 @@ public class DishwasherLoadMenu : MonoBehaviour
     [SerializeField] private List<DishSizeOverride> dishSizeOverrides = new List<DishSizeOverride>();
     [SerializeField, Range(0f, 24f)] private float selectionPadding = 7f;
     [SerializeField] private bool requireDishwasherSink = true;
+
+    // The menu root may be inactive when a cycle finishes; the parent Canvas stays active.
+    public Canvas RewardCanvas => menuRoot != null ? menuRoot.GetComponentInParent<Canvas>() : null;
+    public TMP_Text RewardTextStyle => statusText;
 
     private readonly List<DishwasherDraggableDish> dishes = new List<DishwasherDraggableDish>();
     private DishwasherDraggableDish selectedDish;
@@ -78,11 +96,16 @@ public class DishwasherLoadMenu : MonoBehaviour
         {
             sinkManager.OnSinkTypeChanged += OnSinkTypeChanged;
             sinkManager.OnSinkReset += OnSinkReset;
+            sinkManager.OnNodePurchased += OnNodePurchased;
         }
         if (cycleController != null) cycleController.CycleCompleted += HandleCycleCompleted;
     }
 
-    private void Start() => RefreshBranchVisibility();
+    private void Start()
+    {
+        RefreshBranchVisibility();
+        RefreshRackVisibility();
+    }
 
     private void OnDestroy()
     {
@@ -90,6 +113,7 @@ public class DishwasherLoadMenu : MonoBehaviour
         {
             sinkManager.OnSinkTypeChanged -= OnSinkTypeChanged;
             sinkManager.OnSinkReset -= OnSinkReset;
+            sinkManager.OnNodePurchased -= OnNodePurchased;
         }
         if (cycleController != null) cycleController.CycleCompleted -= HandleCycleCompleted;
         if (!hasWiredButtons) return;
@@ -114,7 +138,7 @@ public class DishwasherLoadMenu : MonoBehaviour
         if (menuRoot == null || !menuRoot.activeInHierarchy) return;
         if (!loadLocked && selectedDish != null && Input.GetKeyDown(KeyCode.R))
             selectedDish.RotateClockwise();
-        if (loadLocked && cycleController != null && cycleController.IsRunning)
+        if (loadLocked && cycleController != null && cycleController.IsRunning && selectedDish == null)
         {
             int remaining = Mathf.CeilToInt(cycleController.SecondsRemaining);
             SetStatus($"Washing {cycleController.LoadedDishCount} dishes — {remaining / 60}:{remaining % 60:00} remaining");
@@ -126,6 +150,63 @@ public class DishwasherLoadMenu : MonoBehaviour
 
     private void OnSinkTypeChanged(SinkManager.SinkType _) => HandleSinkChange();
     private void OnSinkReset() => HandleSinkChange();
+
+    private void OnNodePurchased(string nodeId)
+    {
+        if (nodeId == "dw_amount1" || nodeId == "dw_amount2" || nodeId == "dw_amount3")
+        {
+            // Reveal new racks immediately without unlocking, clearing, or restarting the running load.
+            RefreshRackVisibility();
+        }
+        if (nodeId == "dw_technique" && pileGenerated && !loadLocked &&
+            (cycleController == null || !cycleController.IsRunning))
+            EnsureDishpodInPile();
+        RefreshButtons();
+    }
+
+    private RectTransform GetRackArea(int index)
+    {
+        if (index == 0) return dishwasherArea;
+        if (sinkManager == null) return null;
+        if (index == 1 && sinkManager.IsPurchased("dw_amount1")) return topRackArea;
+        if (index == 2 && sinkManager.IsPurchased("dw_amount2")) return doubleDeckerArea;
+        if (index == 3 && sinkManager.IsPurchased("dw_amount3")) return tripleDeckerArea;
+        return null;
+    }
+
+    private void RefreshRackVisibility()
+    {
+        if (topRackArea != null)
+            topRackArea.gameObject.SetActive(sinkManager != null &&
+                sinkManager.CurrentSinkType == SinkManager.SinkType.Dishwasher &&
+                sinkManager.IsPurchased("dw_amount1"));
+        if (doubleDeckerArea != null)
+            doubleDeckerArea.gameObject.SetActive(sinkManager != null &&
+                sinkManager.CurrentSinkType == SinkManager.SinkType.Dishwasher &&
+                sinkManager.IsPurchased("dw_amount2"));
+        if (tripleDeckerArea != null)
+            tripleDeckerArea.gameObject.SetActive(sinkManager != null &&
+                sinkManager.CurrentSinkType == SinkManager.SinkType.Dishwasher &&
+                sinkManager.IsPurchased("dw_amount3"));
+    }
+
+    private int GetRackIndex(DishwasherDraggableDish dish, bool stable = false)
+    {
+        if (dish == null || dishLayer == null) return -1;
+        // The UI loading regions must not overlap; if they do, the first wins.
+        Vector3 center = stable ? dishLayer.TransformPoint(dish.StablePosition) : dish.RectTransform.position;
+        for (int i = 0; i < 4; i++)
+        {
+            RectTransform rack = GetRackArea(i);
+            if (rack != null && rack.rect.Contains(rack.InverseTransformPoint(center))) return i;
+        }
+        return -1;
+    }
+
+    private RectTransform GetRackForDish(DishwasherDraggableDish dish, bool stable = false)
+    {
+        return GetRackArea(GetRackIndex(dish, stable));
+    }
     private void HandleSinkChange()
     {
         if (!IsAllowedBranch())
@@ -135,6 +216,7 @@ public class DishwasherLoadMenu : MonoBehaviour
             CloseMenu();
         }
         RefreshBranchVisibility();
+        RefreshRackVisibility();
     }
 
     private void RefreshBranchVisibility()
@@ -155,6 +237,7 @@ public class DishwasherLoadMenu : MonoBehaviour
         if (MenuManager.Instance != null) MenuManager.Instance.OpenMenu(menuRoot);
         else menuRoot.SetActive(true);
         Canvas.ForceUpdateCanvases();
+        RefreshRackVisibility();
         if (!pileGenerated) GeneratePile();
         RefreshButtons();
     }
@@ -219,6 +302,45 @@ public class DishwasherLoadMenu : MonoBehaviour
         return draggable;
     }
 
+    private DishwasherDraggableDish CreateDishpod(int index)
+    {
+        if (dishpodSprite == null)
+        {
+            Debug.LogWarning("[Dishwasher] Assign your Dishpod Sprite in DishwasherLoadMenu to enable the technique.", this);
+            return null;
+        }
+        GameObject go = new GameObject($"Dishpod_{index}",
+            typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(DishwasherDraggableDish));
+        go.transform.SetParent(dishLayer, false);
+        DishwasherDraggableDish pod = go.GetComponent<DishwasherDraggableDish>();
+        pod.SelectionPadding = selectionPadding;
+        pod.InitializeDishpod(this, dishpodSprite, dishpodSizeMultiplier);
+        dishes.Add(pod);
+        return pod;
+    }
+
+    private void PlaceInStaging(DishwasherDraggableDish dish)
+    {
+        if (dish == null) return;
+        RectTransform rt = dish.RectTransform;
+        Vector2 center = dishLayer.InverseTransformPoint(
+            dirtyPileArea.TransformPoint(dirtyPileArea.rect.center));
+        float rx = Mathf.Max(0f, (dirtyPileArea.rect.width - rt.rect.width) * 0.5f);
+        float ry = Mathf.Max(0f, (dirtyPileArea.rect.height - rt.rect.height) * 0.5f);
+        rt.anchoredPosition = center + new Vector2(
+            UnityEngine.Random.Range(-rx, rx), UnityEngine.Random.Range(-ry, ry));
+        dish.ApplyQuarterTurns(UnityEngine.Random.Range(0, 4));
+    }
+
+    private void EnsureDishpodInPile()
+    {
+        if (sinkManager == null || !sinkManager.HasDishpodTechnique()) return;
+        foreach (DishwasherDraggableDish dish in dishes)
+            if (dish != null && dish.IsDishpod) return;
+        DishwasherDraggableDish pod = CreateDishpod(dishes.Count);
+        if (pod != null) PlaceInStaging(pod);
+    }
+
     private void GeneratePile()
     {
         if (dishSpawner == null || dirtyPileArea == null || dishLayer == null)
@@ -236,10 +358,12 @@ public class DishwasherLoadMenu : MonoBehaviour
             for (int i = 0; i < restore.dishes.Count; i++)
             {
                 DishwasherSavedDish state = restore.dishes[i];
-                DishData data = ResolveDish(dishSpawner, state);
-                DishwasherDraggableDish dish = CreateDish(data, i);
+                DishwasherDraggableDish dish = state.isDishpod
+                    ? (sinkManager != null && sinkManager.HasDishpodTechnique() ? CreateDishpod(i) : null)
+                    : CreateDish(ResolveDish(dishSpawner, state), i);
                 if (dish == null) continue;
-                RectTransform targetArea = state.inDishwasher ? dishwasherArea : dirtyPileArea;
+                RectTransform savedRack = state.inDishwasher ? GetRackArea(state.rackIndex) : null;
+                RectTransform targetArea = savedRack != null ? savedRack : dirtyPileArea;
                 Vector2 local = targetArea.rect.center + new Vector2(
                     state.normalizedX * targetArea.rect.width,
                     state.normalizedY * targetArea.rect.height);
@@ -247,29 +371,26 @@ public class DishwasherLoadMenu : MonoBehaviour
                 dish.ApplyQuarterTurns(state.quarterTurns);
             }
             pileGenerated = dishes.Count > 0;
+            if (!loadLocked && (cycleController == null || !cycleController.IsRunning)) EnsureDishpodInPile();
         }
         else
         {
             pendingRestore = null;
             long total = scoreManager != null ? scoreManager.GetTotalDishes() : 0L;
-            Vector2 center = dishLayer.InverseTransformPoint(dirtyPileArea.TransformPoint(dirtyPileArea.rect.center));
             for (int i = 0; i < dishesPerPile; i++)
             {
                 DishData data = dishSpawner.GetRandomDish(total);
                 DishwasherDraggableDish dish = CreateDish(data, i);
                 if (dish == null) continue;
-                RectTransform rt = dish.RectTransform;
-                float rx = Mathf.Max(0f, (dirtyPileArea.rect.width - rt.rect.width) * 0.5f);
-                float ry = Mathf.Max(0f, (dirtyPileArea.rect.height - rt.rect.height) * 0.5f);
-                rt.anchoredPosition = center + new Vector2(UnityEngine.Random.Range(-rx, rx), UnityEngine.Random.Range(-ry, ry));
-                dish.ApplyQuarterTurns(UnityEngine.Random.Range(0, 4));
+                PlaceInStaging(dish);
             }
+            EnsureDishpodInPile();
             pileGenerated = dishes.Count > 0;
         }
 
         loadLocked = cycleController != null && cycleController.IsRunning;
         if (loadLocked) LockForRunningCycle();
-        else SetStatus("Drag dishes into the dishwasher. Click a dish and press R to rotate.");
+        else SetStatus("Select a dish to see its default reward.");
         RefreshButtons();
     }
 
@@ -278,12 +399,19 @@ public class DishwasherLoadMenu : MonoBehaviour
         if (loadLocked && dish != null) return;
         if (selectedDish != null) selectedDish.SetSelected(false);
         selectedDish = dish;
-        if (selectedDish != null)
+        if (selectedDish == null) return;
+        selectedDish.SetSelected(true);
+        if (selectedDish.IsDishpod)
         {
-            selectedDish.SetSelected(true);
-            string name = string.IsNullOrEmpty(dish.Dish.displayName) ? dish.Dish.name : dish.Dish.displayName;
-            SetStatus($"Selected: {name} | R = rotate 90 degrees clockwise");
+            float bonus = cycleController != null ?
+                (cycleController.DishpodProfitMultiplier - 1f) * 100f : 25f;
+            SetStatus($"Dishpod: +{bonus:0.#}% profit on loaded dishes this cycle.");
+            return;
         }
+        DishData data = selectedDish.Dish;
+        if (data == null) return;
+        string displayName = string.IsNullOrWhiteSpace(data.displayName) ? data.name : data.displayName;
+        SetStatus($"{displayName}: {BigNumberFormatter.FormatMoney((double)data.profitPerDish)} default");
     }
 
     public bool TryGetLayerPoint(Vector2 screen, Camera camera, out Vector2 point)
@@ -296,7 +424,7 @@ public class DishwasherLoadMenu : MonoBehaviour
     public void FinishDrag(DishwasherDraggableDish dish, Vector2 previousPosition)
     {
         if (dish == null || loadLocked) return;
-        if (!CenterInside(dish, dirtyPileArea) && !CenterInside(dish, dishwasherArea))
+        if (!CenterInside(dish, dirtyPileArea) && GetRackIndex(dish) < 0)
             dish.RectTransform.anchoredPosition = previousPosition;
         RefreshButtons();
     }
@@ -314,7 +442,7 @@ public class DishwasherLoadMenu : MonoBehaviour
     {
         var loaded = new List<DishwasherDraggableDish>();
         foreach (DishwasherDraggableDish dish in dishes)
-            if (dish != null && CenterInside(dish, dishwasherArea)) loaded.Add(dish);
+            if (dish != null && GetRackIndex(dish) >= 0) loaded.Add(dish);
         return loaded;
     }
 
@@ -322,10 +450,12 @@ public class DishwasherLoadMenu : MonoBehaviour
     {
         if (loadLocked || (cycleController != null && cycleController.IsRunning)) return;
         List<DishwasherDraggableDish> loaded = GetLoadedDishes();
-        if (loaded.Count == 0) { RefreshButtons(); return; }
+        if (!loaded.Exists(d => !d.IsDishpod)) { RefreshButtons(); return; }
 
+        var rackMap = new Dictionary<DishwasherDraggableDish, RectTransform>();
+        foreach (DishwasherDraggableDish dish in loaded) rackMap[dish] = GetRackForDish(dish);
         List<DishwasherDraggableDish> invalid = DishwasherPlacementValidator.FindInvalidLoadedDishes(
-            loaded, dishwasherArea, dishLayer);
+            loaded, rackMap, dishLayer);
         if (invalid.Count > 0)
         {
             foreach (DishwasherDraggableDish dish in invalid) dish.Shake();
@@ -341,8 +471,13 @@ public class DishwasherLoadMenu : MonoBehaviour
         }
 
         List<DishData> loadedData = new List<DishData>(loaded.Count);
-        foreach (DishwasherDraggableDish dish in loaded) loadedData.Add(dish.Dish);
-        if (!cycleController.TryStartLoadedCycle(loadedData))
+        bool hasDishpod = false;
+        foreach (DishwasherDraggableDish dish in loaded)
+        {
+            if (dish.IsDishpod) hasDishpod = true;
+            else if (dish.Dish != null) loadedData.Add(dish.Dish);
+        }
+        if (!cycleController.TryStartLoadedCycle(loadedData, hasDishpod))
         {
             SetStatus("Could not start the dishwasher cycle. Check the controller and branch unlock.");
             return;
@@ -358,7 +493,7 @@ public class DishwasherLoadMenu : MonoBehaviour
         Select(null);
         foreach (DishwasherDraggableDish dish in dishes)
         {
-            bool loaded = CenterInside(dish, dishwasherArea);
+            bool loaded = GetRackIndex(dish) >= 0;
             dish.Locked = true;
             dish.SetWashingAnimation(loaded);
             // Hide leftover staging dishes until the wash completes.
@@ -379,7 +514,8 @@ public class DishwasherLoadMenu : MonoBehaviour
     private void RefreshButtons()
     {
         bool washing = loadLocked || (cycleController != null && cycleController.IsRunning);
-        if (startCycleButton != null) startCycleButton.interactable = !washing && GetLoadedDishes().Count > 0;
+        if (startCycleButton != null) startCycleButton.interactable = !washing &&
+            GetLoadedDishes().Exists(d => !d.IsDishpod);
         if (startButtonLabel != null) startButtonLabel.text = washing ? "Washing" : "Start Cycle";
         if (resetPrototypeButton != null) resetPrototypeButton.interactable = !washing;
     }
@@ -397,17 +533,20 @@ public class DishwasherLoadMenu : MonoBehaviour
         var state = new DishwasherSaveState { hasPile = true };
         foreach (DishwasherDraggableDish dish in dishes)
         {
-            if (dish == null || dish.Dish == null) continue;
-            bool inside = IsStableCenterInside(dish, dishwasherArea);
-            RectTransform area = inside ? dishwasherArea : dirtyPileArea;
+            if (dish == null || (!dish.IsDishpod && dish.Dish == null)) continue;
+            int rackIndex = GetRackIndex(dish, true);
+            bool inside = rackIndex >= 0;
+            RectTransform area = inside ? GetRackArea(rackIndex) : dirtyPileArea;
             Vector3 worldCenter = dishLayer.TransformPoint(dish.StablePosition);
             Vector2 center = area.InverseTransformPoint(worldCenter);
             state.dishes.Add(new DishwasherSavedDish
             {
-                dishAssetName = dish.Dish.name,
-                fallbackPoolIndex = dishSpawner != null && dishSpawner.allDishes != null ?
+                dishAssetName = dish.IsDishpod ? "" : dish.Dish.name,
+                fallbackPoolIndex = !dish.IsDishpod && dishSpawner != null && dishSpawner.allDishes != null ?
                     dishSpawner.allDishes.IndexOf(dish.Dish) : -1,
+                isDishpod = dish.IsDishpod,
                 inDishwasher = inside,
+                rackIndex = inside ? rackIndex : -1,
                 normalizedX = (center.x - area.rect.center.x) / Mathf.Max(0.01f, area.rect.width),
                 normalizedY = (center.y - area.rect.center.y) / Mathf.Max(0.01f, area.rect.height),
                 quarterTurns = dish.GetQuarterTurns()

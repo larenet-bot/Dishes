@@ -27,6 +27,7 @@ public class DishwasherDraggableDish : MonoBehaviour,
     private float animationPhase;
 
     public DishData Dish { get; private set; }
+    public bool IsDishpod { get; private set; }
     public RectTransform RectTransform => rectTransform;
     public bool Locked
     {
@@ -62,25 +63,39 @@ public class DishwasherDraggableDish : MonoBehaviour,
     {
         owner = menu;
         Dish = dish;
-        if (rectTransform == null) rectTransform = (RectTransform)transform;
-        if (image == null) image = GetComponent<Image>();
-
+        IsDishpod = false;
         Sprite sprite = dish != null && dish.stageSprites != null && dish.stageSprites.Length > 0
             ? dish.stageSprites[0] : null;
-        if (sprite == null) return;
+        float normalScale = dish != null && dish.uiScale > 0f ? dish.uiScale : 1f;
+        SetupSprite(sprite, normalScale * Mathf.Max(0.01f, sizeMultiplier));
+    }
 
+    public void InitializeDishpod(DishwasherLoadMenu menu, Sprite podSprite, float sizeMultiplier)
+    {
+        owner = menu;
+        Dish = null;
+        IsDishpod = true;
+        SetupSprite(podSprite, Mathf.Max(0.01f, sizeMultiplier));
+    }
+
+    private void SetupSprite(Sprite sprite, float size)
+    {
+        if (rectTransform == null) rectTransform = (RectTransform)transform;
+        if (image == null) image = GetComponent<Image>();
+        if (sprite == null)
+        {
+            Debug.LogError("[Dishwasher] Dish or dishpod sprite missing.", this);
+            return;
+        }
         image.sprite = sprite;
         image.type = Image.Type.Simple;
         image.preserveAspect = false;
         image.raycastTarget = true;
         image.color = Color.white;
-
-        float normalScale = dish.uiScale > 0f ? dish.uiScale : 1f;
-        float scale = normalScale * Mathf.Max(0.01f, sizeMultiplier);
         rectTransform.anchorMin = rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
         rectTransform.pivot = new Vector2(0.5f, 0.5f);
         rectTransform.localScale = Vector3.one;
-        rectTransform.sizeDelta = sprite.rect.size * scale;
+        rectTransform.sizeDelta = sprite.rect.size * size;
         BuildLocalOutlines(sprite);
         CreateSelectionOutline();
     }
