@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Dishwasher V6: four-rack packing using existing dirty sprites and assigned rack art.
+/// Dishwasher V7: optional persistent automatic packing alongside manual four-rack loading.
 /// The loading menu has four distinct rectangular placement zones and optional Dishpod.
 /// Lives on an ALWAYS-ACTIVE scene object outside the hidden menu root.
 /// </summary>
@@ -63,6 +63,16 @@ public class DishwasherLoadMenu : MonoBehaviour
     [SerializeField, Range(0f, 24f)] private float selectionPadding = 7f;
     [SerializeField] private bool requireDishwasherSink = true;
 
+    [Header("Auto-sort (HUD control outside the dishwasher menu)")]
+    [Tooltip("Assign a Toggle on an always-active HUD Canvas, not inside menuRoot. Leave it unassigned to use manual loading only.")]
+    [SerializeField] private Toggle autoSortToggle;
+    [Tooltip("Optional HUD container for the Toggle and its label. The controller shows it only while the dishwasher branch is active.")]
+    [SerializeField] private GameObject autoSortHudRoot;
+    [Tooltip("Only this fraction of each rack's usable width and height is considered. Manual packing can use the entire rack.")]
+    [SerializeField, Range(0.5f, 1f)] private float autoSortRackCoverage = 0.9f;
+    [Tooltip("Minimum empty space between packed bounding rectangles (UI units). Larger values make automatic packing less efficient.")]
+    [SerializeField, Range(0f, 50f)] private float autoSortDishGap = 14f;
+
     // The menu root may be inactive when a cycle finishes; the parent Canvas stays active.
     public Canvas RewardCanvas => menuRoot != null ? menuRoot.GetComponentInParent<Canvas>() : null;
     public TMP_Text RewardTextStyle => statusText;
@@ -74,6 +84,11 @@ public class DishwasherLoadMenu : MonoBehaviour
     private bool loadLocked;
     private bool hasWiredButtons;
     private DishwasherSaveState pendingRestore;
+    private bool autoSortEnabled;
+    private bool autoPackPending;
+    private float nextAutoPackAttempt;
+
+    public bool AutoSortEnabled => autoSortEnabled;
 
     private void Reset()
     {
@@ -92,6 +107,7 @@ public class DishwasherLoadMenu : MonoBehaviour
             scoreManager.dishSpawner : FindAnyObjectByType<DishSpawner>();
         if (cycleController == null) cycleController = FindAnyObjectByType<DishwasherCycleController>();
         WireButtons();
+        if (autoSortToggle != null) autoSortToggle.SetIsOnWithoutNotify(autoSortEnabled);
         if (menuRoot != null) menuRoot.SetActive(false);
         if (sinkManager != null)
         {
@@ -122,6 +138,7 @@ public class DishwasherLoadMenu : MonoBehaviour
         if (closeButton != null) closeButton.onClick.RemoveListener(CloseMenu);
         if (startCycleButton != null) startCycleButton.onClick.RemoveListener(StartLoad);
         if (resetPrototypeButton != null) resetPrototypeButton.onClick.RemoveListener(ResetPrototype);
+        if (autoSortToggle != null) autoSortToggle.onValueChanged.RemoveListener(SetAutoSortEnabled);
     }
 
     private void WireButtons()
@@ -131,11 +148,15 @@ public class DishwasherLoadMenu : MonoBehaviour
         if (closeButton != null) closeButton.onClick.AddListener(CloseMenu);
         if (startCycleButton != null) startCycleButton.onClick.AddListener(StartLoad);
         if (resetPrototypeButton != null) resetPrototypeButton.onClick.AddListener(ResetPrototype);
+        if (autoSortToggle != null) autoSortToggle.onValueChanged.AddListener(SetAutoSortEnabled);
         hasWiredButtons = true;
     }
 
     private void Update()
     {
+        // Auto-sort operates while menuRoot is hidden. A completed cycle is
+        // automatically followed by a newly generated pile and a new load.
+        TryRunAutoSort();
         if (menuRoot == null || !menuRoot.activeInHierarchy) return;
         if (!loadLocked && selectedDish != null)
         {
@@ -165,6 +186,8 @@ public class DishwasherLoadMenu : MonoBehaviour
         if (nodeId == "dw_technique" && pileGenerated && !loadLocked &&
             (cycleController == null || !cycleController.IsRunning))
             EnsureDishpodInPile();
+        if (autoSortEnabled && (nodeId == "dw_amount1" || nodeId == "dw_amount2" ||
+            nodeId == "dw_amount3" || nodeId == "dw_technique")) autoPackPending = true;
         RefreshButtons();
     }
 
@@ -221,12 +244,15 @@ public class DishwasherLoadMenu : MonoBehaviour
         }
         RefreshBranchVisibility();
         RefreshRackVisibility();
+        if (autoSortEnabled && IsAllowedBranch()) autoPackPending = true;
     }
 
     private void RefreshBranchVisibility()
     {
         bool enabled = IsAllowedBranch();
         if (openMenuButton != null) openMenuButton.gameObject.SetActive(enabled);
+        if (autoSortHudRoot != null) autoSortHudRoot.SetActive(enabled);
+        else if (autoSortToggle != null) autoSortToggle.gameObject.SetActive(enabled);
         if (!enabled && menuRoot != null && menuRoot.activeSelf) CloseMenu();
     }
 
@@ -262,8 +288,9 @@ public class DishwasherLoadMenu : MonoBehaviour
         }
         ClearPile();
         pendingRestore = null;
-        if (menuRoot != null && menuRoot.activeInHierarchy) GeneratePile();
+        if ((menuRoot != null && menuRoot.activeInHierarchy) || autoSortEnabled) GeneratePile();
         else SetStatus("Load cleared. Open the menu for a new pile.");
+        autoPackPending = autoSortEnabled;
     }
 
     private void ClearPile()
@@ -395,6 +422,7 @@ public class DishwasherLoadMenu : MonoBehaviour
         loadLocked = cycleController != null && cycleController.IsRunning;
         if (loadLocked) LockForRunningCycle();
         else SetStatus("Select a dish to see its current reward.");
+        if (autoSortEnabled && !loadLocked) autoPackPending = true;
         RefreshButtons();
     }
 
@@ -551,10 +579,80 @@ public class DishwasherLoadMenu : MonoBehaviour
     {
         ClearPile();
         pendingRestore = null;
-        if (menuRoot != null && menuRoot.activeInHierarchy)
+        if ((menuRoot != null && menuRoot.activeInHierarchy) || autoSortEnabled)
             GeneratePile();
+        // Start the next automatic cycle in Update, not inside CycleCompleted.
+        // This keeps the controller's completion event and payout orderly.
+        autoPackPending = autoSortEnabled;
         SetStatus($"Cycle complete: {cleanedCount} loaded dishes, +{BigNumberFormatter.FormatMoney(earned)}. Ready for a new load.");
         RefreshButtons();
+    }
+
+    public void SetAutoSortEnabled(bool enabled)
+    {
+        autoSortEnabled = enabled;
+        if (autoSortToggle != null && autoSortToggle.isOn != enabled)
+            autoSortToggle.SetIsOnWithoutNotify(enabled);
+
+        autoPackPending = enabled;
+        nextAutoPackAttempt = 0f;
+        if (menuRoot != null && menuRoot.activeInHierarchy)
+            SetStatus(enabled ? "Auto-sort enabled. The next load will start automatically." :
+                "Auto-sort disabled. The current wash will finish; future loads are manual.");
+    }
+
+    private void TryRunAutoSort()
+    {
+        if (!autoSortEnabled || !autoPackPending || !IsAllowedBranch() ||
+            cycleController == null || cycleController.IsRunning || loadLocked ||
+            Time.unscaledTime < nextAutoPackAttempt) return;
+
+        if (dishLayer == null || dirtyPileArea == null || dishwasherArea == null || dishSpawner == null)
+            return;
+
+        // Ensure UI transforms have been evaluated even when the menu is closed.
+        Canvas.ForceUpdateCanvases();
+        dishwasherArea.ForceUpdateRectTransforms();
+        dirtyPileArea.ForceUpdateRectTransforms();
+        dishLayer.ForceUpdateRectTransforms();
+        if (dishwasherArea.rect.width < 1f || dishwasherArea.rect.height < 1f)
+        {
+            nextAutoPackAttempt = Time.unscaledTime + 0.5f;
+            return;
+        }
+
+        if (!pileGenerated) GeneratePile();
+        if (!pileGenerated) return;
+
+        // Pack at most once for a given pile. Failed loads remain available to
+        // the player, avoiding a zero-duration reroll or CPU-heavy retry loop.
+        autoPackPending = false;
+        Select(null);
+        foreach (DishwasherDraggableDish dish in dishes)
+            if (dish != null) PlaceInStaging(dish);
+
+        var racks = new List<RectTransform>(4);
+        for (int i = 0; i < 4; i++)
+        {
+            RectTransform rack = GetRackArea(i);
+            if (rack != null) racks.Add(rack);
+        }
+        DishwasherAutoSorter.Pack(dishes, dishLayer, racks,
+            autoSortRackCoverage, autoSortDishGap);
+
+        List<DishwasherDraggableDish> loaded = GetLoadedDishes();
+        var rackMap = new Dictionary<DishwasherDraggableDish, RectTransform>();
+        foreach (DishwasherDraggableDish dish in loaded) rackMap[dish] = GetRackForDish(dish);
+        foreach (DishwasherDraggableDish bad in DishwasherPlacementValidator.FindInvalidLoadedDishes(
+            loaded, rackMap, dishLayer)) PlaceInStaging(bad);
+
+        if (GetLoadedDishes().Exists(d => !d.IsDishpod))
+            StartLoad();
+        else
+        {
+            SetStatus("Auto-sort found no dishes that fit. Place dishes manually or unlock another rack.");
+            Debug.LogWarning("[Dishwasher] Auto-sort couldn't fit a regular dish in any unlocked rack.", this);
+        }
     }
 
     private void RefreshButtons()
@@ -574,9 +672,13 @@ public class DishwasherLoadMenu : MonoBehaviour
     public DishwasherSaveState GetSaveState()
     {
         if (!pileGenerated)
-            return pendingRestore != null ? pendingRestore : new DishwasherSaveState();
+        {
+            DishwasherSaveState empty = pendingRestore ?? new DishwasherSaveState();
+            empty.autoSortEnabled = autoSortEnabled;
+            return empty;
+        }
 
-        var state = new DishwasherSaveState { hasPile = true };
+        var state = new DishwasherSaveState { hasPile = true, autoSortEnabled = autoSortEnabled };
         foreach (DishwasherDraggableDish dish in dishes)
         {
             if (dish == null || (!dish.IsDishpod && dish.Dish == null)) continue;
@@ -611,7 +713,12 @@ public class DishwasherLoadMenu : MonoBehaviour
     {
         ClearPile();
         pendingRestore = state;
+        autoSortEnabled = state != null && state.autoSortEnabled;
+        autoPackPending = autoSortEnabled;
+        nextAutoPackAttempt = 0f;
+        if (autoSortToggle != null) autoSortToggle.SetIsOnWithoutNotify(autoSortEnabled);
         // Restore the UI only when opened, once RectTransform layout exists.
+        // Automatic mode will reconstruct the saved pile while the menu stays hidden.
         loadLocked = state != null && state.cycleRunning;
         RefreshButtons();
     }

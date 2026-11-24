@@ -11,6 +11,8 @@ public class DishwasherSaveState
     public float cycleDuration = 0f;
     public int completedCycles = 0;
     public bool cycleHasDishpod = false;
+    // V7: saved per kitchen; false for existing V6 and older saves.
+    public bool autoSortEnabled = false;
     public List<DishwasherSavedDish> dishes = new List<DishwasherSavedDish>();
 }
 
