@@ -484,6 +484,16 @@ public class SaveManager : MonoBehaviour
             kitchen.purchasedSinkNodeIds = new List<string>();
         }
 
+        // Saves written before dishwasher persistence may not contain this field.
+        if (kitchen.dishwasherLoad == null)
+        {
+            kitchen.dishwasherLoad = new DishwasherSaveState();
+        }
+        if (kitchen.dishwasherLoad.dishes == null)
+        {
+            kitchen.dishwasherLoad.dishes = new List<DishwasherSavedDish>();
+        }
+
         if (kitchen.achievedAchievementIds == null)
         {
             kitchen.achievedAchievementIds = new List<string>();
@@ -580,6 +590,26 @@ public class SaveManager : MonoBehaviour
         if (dishPile != null)
         {
             dishPile.ApplySaveState(kitchen.hasCleanPileProgress, kitchen.cleanPileHighestDishIndex);
+        }
+
+        // Restore dishwasher only AFTER SinkManager.LoadFromSave has selected the branch
+        // and restored purchased rack / technique nodes. The menu reconstructs its
+        // RectTransforms lazily when opened; the cycle resumes with its remaining time.
+        DishwasherLoadMenu dishwasherMenu = FindFirstObjectByType<DishwasherLoadMenu>();
+        DishwasherCycleController dishwasherCycle = FindFirstObjectByType<DishwasherCycleController>();
+        if (dishwasherMenu != null || dishwasherCycle != null)
+        {
+            DishwasherSaveState savedDishwasher = kitchen.dishwasherLoad ?? new DishwasherSaveState();
+            if (dishwasherMenu != null)
+            {
+                dishwasherMenu.ApplySaveState(savedDishwasher);
+            }
+            if (dishwasherCycle != null)
+            {
+                DishSpawner savedDishPool = score.dishSpawner != null
+                    ? score.dishSpawner : FindFirstObjectByType<DishSpawner>();
+                dishwasherCycle.ApplySaveState(savedDishwasher, savedDishPool);
+            }
         }
 
         if (AchievementManager.Instance != null)
@@ -922,6 +952,21 @@ public class SaveManager : MonoBehaviour
         {
             kitchen.currentSinkType = (int)sinks.CurrentSinkType;
             kitchen.purchasedSinkNodeIds = sinks.GetPurchasedNodeIds();
+        }
+
+        // Store the exact pile (asset IDs, locations, rotations, rack indices) and
+        // the running cycle in this kitchen's own save bucket. Do not clear a
+        // kitchen's saved dishwasher state in scenes without a loading menu.
+        DishwasherLoadMenu dishwasherMenu = FindFirstObjectByType<DishwasherLoadMenu>();
+        if (dishwasherMenu != null)
+        {
+            DishwasherSaveState snapshot = dishwasherMenu.GetSaveState() ?? new DishwasherSaveState();
+            DishwasherCycleController dishwasherCycle = FindFirstObjectByType<DishwasherCycleController>();
+            if (dishwasherCycle != null)
+            {
+                dishwasherCycle.WriteSaveState(snapshot);
+            }
+            kitchen.dishwasherLoad = snapshot;
         }
 
         // Persist achievements from runtime manager into save data

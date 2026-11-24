@@ -76,6 +76,9 @@ public class KitchenSaveData
     public int currentSinkType = 0;
     public List<string> purchasedSinkNodeIds = new List<string>();
 
+    // Saves the dishwasher pile and any cycle in progress independently for each kitchen.
+    public DishwasherSaveState dishwasherLoad = new DishwasherSaveState();
+
     public int currentLoanIndex = 0;
 
     // These are the rates shown in the Other Businesses menu.
