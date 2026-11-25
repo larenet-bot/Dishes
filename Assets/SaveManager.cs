@@ -269,6 +269,8 @@ public class SaveManager : MonoBehaviour
         }
 
         bool hasLegacyProgress =
+            loadedData.sinkButtonDiscoveryState > 0 ||
+            loadedData.currentSinkType != 0 ||
             loadedData.totalDishes > 0 ||
             loadedData.totalProfit > 0f ||
             loadedData.currentLoanIndex > 0 ||
@@ -314,6 +316,7 @@ public class SaveManager : MonoBehaviour
             employeeProfitMultiplier = loadedData.employeeProfitMultiplier > 0f ? loadedData.employeeProfitMultiplier : 1f,
             currentSinkType = loadedData.currentSinkType,
             purchasedSinkNodeIds = loadedData.purchasedSinkNodeIds ?? new List<string>(),
+            sinkButtonDiscoveryState = loadedData.sinkButtonDiscoveryState,
             currentLoanIndex = loadedData.currentLoanIndex,
             cachedMoneyPerSecond = System.Math.Max(0f, loadedData.cachedMoneyPerSecond),
             cachedDishesPerSecond = System.Math.Max(0f, loadedData.cachedDishesPerSecond),
@@ -584,7 +587,7 @@ public class SaveManager : MonoBehaviour
         if (sinks != null)
         {
             List<string> purchasedSinkNodes = kitchen.purchasedSinkNodeIds ?? new List<string>();
-            sinks.LoadFromSave((SinkManager.SinkType)kitchen.currentSinkType, purchasedSinkNodes);
+            sinks.LoadFromSave((SinkManager.SinkType)kitchen.currentSinkType, purchasedSinkNodes, kitchen.sinkButtonDiscoveryState);
         }
 
         if (dishPile != null)
@@ -952,6 +955,7 @@ public class SaveManager : MonoBehaviour
         {
             kitchen.currentSinkType = (int)sinks.CurrentSinkType;
             kitchen.purchasedSinkNodeIds = sinks.GetPurchasedNodeIds();
+            kitchen.sinkButtonDiscoveryState = sinks.SinkButtonDiscoveryState;
         }
 
         // Store the exact pile (asset IDs, locations, rotations, rack indices) and
@@ -1085,6 +1089,7 @@ public class SaveManager : MonoBehaviour
         loadedData.employeeProfitMultiplier = kitchen.employeeProfitMultiplier;
         loadedData.currentSinkType = kitchen.currentSinkType;
         loadedData.purchasedSinkNodeIds = kitchen.purchasedSinkNodeIds;
+        loadedData.sinkButtonDiscoveryState = kitchen.sinkButtonDiscoveryState;
         loadedData.currentLoanIndex = kitchen.currentLoanIndex;
         loadedData.cachedMoneyPerSecond = kitchen.cachedMoneyPerSecond;
         loadedData.cachedDishesPerSecond = kitchen.cachedDishesPerSecond;

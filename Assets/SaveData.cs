@@ -33,6 +33,7 @@ public class SaveData
 
     public int currentSinkType = 0;
     public List<string> purchasedSinkNodeIds = new List<string>();
+    public int sinkButtonDiscoveryState = 0;
 
     public int currentLoanIndex = 0;
 
@@ -75,6 +76,7 @@ public class KitchenSaveData
 
     public int currentSinkType = 0;
     public List<string> purchasedSinkNodeIds = new List<string>();
+    public int sinkButtonDiscoveryState = 0;
 
     // Saves the dishwasher pile and any cycle in progress independently for each kitchen.
     public DishwasherSaveState dishwasherLoad = new DishwasherSaveState();

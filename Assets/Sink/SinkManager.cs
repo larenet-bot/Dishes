@@ -69,6 +69,14 @@ public class SinkManager : MonoBehaviour
 
     public SinkType CurrentSinkType => currentSinkType;
 
+    // 0 = hidden, 1 = revealed/pulsing, 2 = permanently revealed.
+    public int SinkButtonDiscoveryState { get; private set; }
+
+    public void MarkSinkButtonRevealed()
+    {
+        if (SinkButtonDiscoveryState == 0) SinkButtonDiscoveryState = 1;
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this) Destroy(gameObject);
@@ -251,6 +259,7 @@ public class SinkManager : MonoBehaviour
         if (node.unlocksSinkType && currentSinkType == SinkType.Basic)
         {
             currentSinkType = node.branch;
+            SinkButtonDiscoveryState = 2;
             OnSinkTypeChanged?.Invoke(currentSinkType);
         }
 
@@ -489,7 +498,7 @@ public class SinkManager : MonoBehaviour
         return purchased.ToList();
     }
 
-    public void LoadFromSave(SinkType sinkType, List<string> purchasedNodeIds)
+    public void LoadFromSave(SinkType sinkType, List<string> purchasedNodeIds, int sinkButtonDiscoveryState = 0)
     {
         purchased.Clear();
 
@@ -505,6 +514,7 @@ public class SinkManager : MonoBehaviour
         }
 
         currentSinkType = sinkType;
+        SinkButtonDiscoveryState = sinkType != SinkType.Basic ? 2 : Mathf.Clamp(sinkButtonDiscoveryState, 0, 2);
         OnSinkTypeChanged?.Invoke(currentSinkType);
     }
 
